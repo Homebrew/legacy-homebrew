@@ -1,16 +1,17 @@
 class Fibjs < Formula
   desc "JavaScript on Fiber"
-  homepage "http://fibjs.org"
-  url "https://github.com/xicilion/fibjs/releases/download/v0.1.8/fibjs-0.1.8-fullsrc.zip"
-  sha256 "42ee9fa64a4259d88d648b8e5538226b2158a2d3546468b14a14b81c10ee8ed0"
+  homepage "http://fibjs.org/en/index.html"
+  url "https://github.com/xicilion/fibjs/releases/download/v0.2.0/fullsrc.zip"
+  version "0.2.0"
+  sha256 "db79df72f4e46e23f1ee3c0c21c5e265ee1fd6ccf841a6cf544b1fa7241713c5"
 
   head "https://github.com/xicilion/fibjs.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "80cbbfc5f3d9d8363a64a820901354aa854422cf1a2adaa6cdba9efb9cd758e8" => :el_capitan
-    sha256 "0e1f3230c3eecc949082cc78bbcf7d716058a487aa24aa773437f2ee5947d9c5" => :yosemite
-    sha256 "e98f75ad475496d0f16b90b7c66cbd4a800490ba51c1634a23eaacf923e0b477" => :mavericks
+    sha256 "582616a3f4eb28d8b0153890f504af2b7b6feb2e35c5b035e12110d08edf8d97" => :el_capitan
+    sha256 "97832036fe7302f20c3a2ce04b543fdb38283818d45fd19a497549a4d361585a" => :yosemite
+    sha256 "e28aee6fbd4f4a6475dcd720784bd9ca45a77f77674a9432c67b6ede84560d8b" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -24,8 +25,7 @@ class Fibjs < Formula
     path = testpath/"test.js"
     path.write "console.log('hello');"
 
-    output = `#{bin}/fibjs #{path}`.strip
+    output = shell_output("#{bin}/fibjs #{path}").strip
     assert_equal "hello", output
-    assert_equal 0, $?.exitstatus
   end
 end

@@ -3,11 +3,12 @@ class Libsoup < Formula
   homepage "https://live.gnome.org/LibSoup"
   url "https://download.gnome.org/sources/libsoup/2.52/libsoup-2.52.2.tar.xz"
   sha256 "db55628b5c7d952945bb71b236469057c8dfb8dea0c271513579c6273c2093dc"
+  revision 1
 
   bottle do
-    sha256 "f690c3bdcf810826c4554a101ba39102a003327e7e71030a6c13f24cbac04233" => :el_capitan
-    sha256 "672005c4674f59ef20130bd17c0573f92c6b501f4166eeb45a5fe7c6fcd8eae1" => :yosemite
-    sha256 "78b5f71f42cd3fe02106db1ae54b17a8888fd76cb95f7adbaf06695ea91a7411" => :mavericks
+    sha256 "de28079d444082ea4f6f2aca4388152aa8d303926917baa5f656bdd7d222ef72" => :el_capitan
+    sha256 "20307b7b63cc31b13243d5c69352a650ddb9c814f7ed3da4e25eaf5658488d95" => :yosemite
+    sha256 "5906c25c1cc3da2f65759625853be406fda083a8551129b79141196dbb63c81c" => :mavericks
   end
 
   depends_on "pkg-config" => :build

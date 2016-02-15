@@ -1,13 +1,13 @@
 class Goffice < Formula
   desc "Gnumeric spreadsheet program"
   homepage "https://developer.gnome.org/goffice/"
-  url "https://download.gnome.org/sources/goffice/0.10/goffice-0.10.24.tar.xz"
-  sha256 "cda70eab0b0b0e29c3bea09849bcfca0c2ccc20038ee69e7e14cde664484af5a"
+  url "https://download.gnome.org/sources/goffice/0.10/goffice-0.10.27.tar.xz"
+  sha256 "3717b400fd190f18cf1dd7a16e1991b1f7c7cbdfeb1993656e7972347168d8c0"
 
   bottle do
-    sha256 "1319b1e75f5836a12680c647416cab589056ddee308be6b5026f232628fcde3a" => :el_capitan
-    sha256 "3ce1e26b2ea36baa919acf8422eea81c78b742ddc6d97395b2dce4403f5bcba7" => :yosemite
-    sha256 "cf01cfb2af3148cc3a747b808cd654728ec525aa55b92ab1347d69c985de3f46" => :mavericks
+    sha256 "8bcaebdbad7414bc4605b5f3c6e591eeff7f3b881f7f9e9c38a46fb8b4cac46e" => :el_capitan
+    sha256 "189507e849c0ecc18396b54a6b67fe0eff65bed367dadce003758a794a762718" => :yosemite
+    sha256 "fe3b3b1b9677c586476edf7933704b22bab55390c76f93380e327203698aa2a8" => :mavericks
   end
 
   head do

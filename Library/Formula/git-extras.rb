@@ -1,24 +1,27 @@
 class GitExtras < Formula
   desc "Small git utilities"
   homepage "https://github.com/tj/git-extras"
-  url "https://github.com/tj/git-extras/archive/3.0.0.tar.gz"
-  sha256 "490742428824d6e807e894c3b6612be37a9a9a4e8fbea747d1813e5d62b2a807"
   head "https://github.com/tj/git-extras.git"
-  revision 1
+
+  stable do
+    url "https://github.com/tj/git-extras/archive/4.1.0.tar.gz"
+    sha256 "d4c028e2fe78abde8f3e640b70f431318fb28d82894dde22772efe8ba3563f85"
+    # Disable "git extras update", which will produce a broken install under Homebrew
+    # https://github.com/Homebrew/homebrew/issues/44520
+    # https://github.com/tj/git-extras/pull/491
+    patch :DATA
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ee2ab2e65bf576c2f63132cac7e1e81d764fd48e71897c37b62b7767d7bf4a05" => :el_capitan
-    sha256 "d8991a2ec84f64b6add9a4f369b31becc02d32e6b80d48909825339dabafd812" => :yosemite
-    sha256 "2a168cd564773f8bb5e936082715df4e624fb1caaf94a9b5a96ca37882c5708c" => :mavericks
+    sha256 "f820c2530817015aa26f4fd8879e67847496b4c958a232adfde962dcd7b5a488" => :el_capitan
+    sha256 "6a9555f8c96d1b2bc146eaf1778dee50787f44ee4d98b21a862b50a17556dc47" => :yosemite
+    sha256 "1b0d3064c639782265ed8180c3136e86cfc65e8fa607a3b347113320888e85fe" => :mavericks
   end
 
-  # Disable "git extras update", which will produce a broken install under Homebrew
-  # https://github.com/Homebrew/homebrew/issues/44520
-  patch :DATA
+  conflicts_with "git-town", :because => "git-extras also ships a git-sync binary"
 
   def install
-    inreplace "Makefile", %r{\$\(DESTDIR\)(?=/etc/bash_completion\.d)}, "$(DESTDIR)$(PREFIX)"
     system "make", "PREFIX=#{prefix}", "install"
   end
 
@@ -30,22 +33,18 @@ end
 
 __END__
 diff --git a/bin/git-extras b/bin/git-extras
-index c9b2bfe..96168fc 100755
+index 3856179..e2ac72c 100755
 --- a/bin/git-extras
 +++ b/bin/git-extras
-@@ -3,17 +3,12 @@
- VERSION="3.0.0"
+@@ -4,13 +4,12 @@ VERSION="4.0.0"
+ INSTALL_SCRIPT="https://raw.githubusercontent.com/tj/git-extras/master/install.sh"
 
  update() {
 -  local bin=$(which git-extras)
 -  local prefix=${bin%/*/*}
 -  local orig=$PWD
 -
--  cd /tmp \
--    && rm -fr ./git-extras \
--    && git clone --depth 1 https://github.com/tj/git-extras.git \
--    && cd git-extras \
--    && PREFIX="$prefix" make install \
+-  curl -s $INSTALL_SCRIPT | PREFIX="$prefix" bash /dev/stdin \
 -    && cd "$orig" \
 -    && echo "... updated git-extras $VERSION -> $(git extras --version)"
 +  echo "This git-extras installation is managed by Homebrew."
@@ -56,4 +55,4 @@ index c9b2bfe..96168fc 100755
 +  return 1
  }
 
- case "$1" in
+ updateForWindows() {

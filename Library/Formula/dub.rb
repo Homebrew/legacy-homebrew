@@ -1,6 +1,6 @@
 class Dub < Formula
   desc "Build tool for D projects"
-  homepage "http://code.dlang.org/about"
+  homepage "https://code.dlang.org/about"
   url "https://github.com/D-Programming-Language/dub/archive/v0.9.24.tar.gz"
   sha256 "88fe9ff507d47cb74af685ad234158426219b7fdd7609de016fc6f5199def866"
   head "https://github.com/D-Programming-Language/dub.git", :shallow => false

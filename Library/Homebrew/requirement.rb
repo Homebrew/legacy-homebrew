@@ -69,7 +69,7 @@ class Requirement
   end
 
   # Overriding #modify_build_environment is deprecated.
-  # Pass a block to the the env DSL method instead.
+  # Pass a block to the env DSL method instead.
   # Note: #satisfied? should be called before invoking this method
   # as the env modifications may depend on its side effects.
   def modify_build_environment
@@ -131,6 +131,10 @@ class Requirement
   end
 
   def which(cmd)
+    super(cmd, ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
+  end
+
+  def which_all(cmd)
     super(cmd, ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
   end
 

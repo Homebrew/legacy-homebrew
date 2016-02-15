@@ -14,6 +14,9 @@ class Pkcs11Helper < Formula
     sha256 "24bb6ab8aa56792d9b658fa617eef363fc9be794dc3327e5afb88eed30ea8af1" => :mavericks
   end
 
+  option "without-threading", "Build without threading support"
+  option "without-slotevent", "Build without slotevent support"
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
@@ -21,9 +24,17 @@ class Pkcs11Helper < Formula
   depends_on "openssl"
 
   def install
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+
+    args << "--disable-threading" if build.without? "threading"
+    args << "--disable-slotevent" if build.without? "slotevent"
+
     system "autoreconf", "--verbose", "--install", "--force"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *args
     system "make", "install"
   end
 end

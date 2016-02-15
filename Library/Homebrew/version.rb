@@ -307,8 +307,12 @@ class Version
     m = /[-_]((?:\d+\.)*\d\.\d+-(?:p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
     return m.captures.first unless m.nil?
 
+    # URL with no extension e.g. https://waf.io/waf-1.8.12
+    m = /-((?:\d+\.)*\d+)$/.match(spec_s)
+    return m.captures.first unless m.nil?
+
     # e.g. lame-398-1
-    m = /-((?:\d)+-\d)/.match(stem)
+    m = /-((?:\d)+-\d+)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. foobar-4.5.1

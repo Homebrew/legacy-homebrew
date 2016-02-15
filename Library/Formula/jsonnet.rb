@@ -22,7 +22,7 @@ class Jsonnet < Formula
   end
 
   test do
-    require "json"
+    require "utils/json"
 
     (testpath/"example.jsonnet").write <<-EOS
       {
@@ -34,20 +34,18 @@ class Jsonnet < Formula
       }
     EOS
 
-    expected_output = <<-EOS
-      {
-        "person1": {
-          "name": "Alice",
-          "welcome": "Hello Alice!"
-        },
-        "person2": {
-          "name": "Bob",
-          "welcome": "Hello Bob!"
-        }
+    expected_output = {
+      "person1" => {
+        "name" => "Alice",
+        "welcome" => "Hello Alice!"
+      },
+      "person2" => {
+        "name" => "Bob",
+        "welcome" => "Hello Bob!"
       }
-    EOS
+    }
 
     output = shell_output("#{bin}/jsonnet #{testpath}/example.jsonnet")
-    assert_equal JSON.parse(expected_output), JSON.parse(output)
+    assert_equal expected_output, Utils::JSON.load(output)
   end
 end

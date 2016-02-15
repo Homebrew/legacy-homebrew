@@ -1,15 +1,15 @@
 class Cdb < Formula
   desc "Create and read constant databases"
-  homepage "http://cr.yp.to/cdb.html"
-  url "http://cr.yp.to/cdb/cdb-0.75.tar.gz"
+  homepage "https://cr.yp.to/cdb.html"
+  url "https://cr.yp.to/cdb/cdb-0.75.tar.gz"
   sha256 "1919577799a50c080a8a05a1cbfa5fa7e7abc823d8d7df2eeb181e624b7952c5"
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "48bbaace024d61f6e464c0251cebaae18aaea57f8874ec0e4df41dd15ab81cf4" => :el_capitan
-    sha256 "d37679fe36ab396b9b195ee65da4271320f56afba844cf9167f5b50b0bb1ee11" => :yosemite
-    sha256 "8d79537ee9db01074b1766082626913dee4e1b01b1de1b11975f57e64ca1b0bd" => :mavericks
+    revision 2
+    sha256 "ac5a34c222875d86113275127632fe02ccc15c0332c7719cdac8321aa0f83bc4" => :el_capitan
+    sha256 "4181f08e221e9cebd1cb9f7dd0082fef86d8f8571831491464340b68be238186" => :yosemite
+    sha256 "e0be7db3074bc27f430c2b7536b4f3676cafc9d7e574971cdb592340be0fec06" => :mavericks
   end
 
   def install

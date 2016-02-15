@@ -6,9 +6,10 @@ class Global < Formula
   sha256 "c0fc831c1a54a5ee4f5fc765a7af90ade773e4fb4763416c0b6d4d2e571b1d1f"
 
   bottle do
-    sha256 "3b95c738a13d098ab7ae312dfce2fb58ae931508dfd9cc0ddaa4b03207f4008c" => :el_capitan
-    sha256 "92ac310e7f060425aa8a8cb76f8a12675beb49c862b327ba26dcdb20981255eb" => :yosemite
-    sha256 "88caf7e8c5cdb6f413a3f9ea197ea54c66130d96a21a464b17624e456192fe82" => :mavericks
+    revision 1
+    sha256 "432b8b30de89d9ed96823ebe4b47c43014d5814906b20d6245f76fe26fa0af3d" => :el_capitan
+    sha256 "f9c2a8ccb08ad3c0a0c64baa3c5bbb08e2e0fcc0a6a05feea0bc29bebee4c3b5" => :yosemite
+    sha256 "c39ec27d6f39fb26594522bb0e4d104669292631d361fe8768ad679079ad0203" => :mavericks
   end
 
   head do
@@ -30,8 +31,8 @@ class Global < Formula
   skip_clean "lib/gtags"
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
-    sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.1.tar.gz"
+    sha256 "13a0ef5fafd7b16cf995bc28fe7aab0780dab1b2fda0fc89e033709af8b8a47b"
   end
 
   def install

@@ -3,14 +3,13 @@ class Lua < Formula
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.4.tar.gz"
   sha256 "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
-  revision 1
+  revision 3
 
   bottle do
     cellar :any
-    sha256 "b8ab4306d8c3c5ff2a5289986238af1e0090d3793f73987c9c8beb07826b2e64" => :el_capitan
-    sha256 "ad2fceaf391771c9e4120f00ac78c5e634aa3c6cd911566e38d016fec4d6c315" => :yosemite
-    sha256 "997e8eb591ea1e44dc9cf0910cac61137e0e231d228953b61826ff37a452a8dc" => :mavericks
-    sha256 "519abb38296981baf49dd00ac80a2ac742f8e278b0b616d88d7fab8702ad430d" => :mountain_lion
+    sha256 "5e52670b9b9c2554018545afcc13a08efde638aab521d39740c273992fc65922" => :el_capitan
+    sha256 "3a1f5bfe0fd490c96e933b0726d327079b6a1cd6b9e881440173351ff9a349ad" => :yosemite
+    sha256 "a84d3ebd9afa4a61b0120471e5a0dfcc670d294701a64edebd25fcc815fe76f8" => :mavericks
   end
 
   def pour_bottle?
@@ -51,8 +50,8 @@ class Lua < Formula
   end
 
   resource "luarocks" do
-    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz"
-    sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
+    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.3.0.tar.gz"
+    sha256 "68e38feeb66052e29ad1935a71b875194ed8b9c67c2223af5f4d4e3e2464ed97"
   end
 
   def install

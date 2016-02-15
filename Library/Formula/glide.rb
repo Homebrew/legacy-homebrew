@@ -3,14 +3,14 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.8.1.tar.gz"
-  sha256 "a38d7dd9f88871a251c9859278b432435de6ab007abc54e72554cf6a0aabeeb9"
+  url "https://github.com/Masterminds/glide/archive/0.8.3.tar.gz"
+  sha256 "ec8f7c97f84733bc051d18c10fe6e0e12b2e08cd25400e75702c061be01870c0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "52f1204a2ae05667ef1f64c72934386333bfc5066d58655cdbd47c2ce407435d" => :el_capitan
-    sha256 "59af93f467c94e34270b0b49d7686af92bbdeac1d8e82ea5eed36397d2b756e4" => :yosemite
-    sha256 "d5e821c77777bf57e9158a0875c47cf6d1f958d5e2a42e6ddfb23b3c2fe5d916" => :mavericks
+    sha256 "775bef47edb206a2f466dee107d1165b0ae7cef7ffd376330d8e136dcdd2d8df" => :el_capitan
+    sha256 "95e3c0b8d4ab42330ef837a1af2118ce5c527d832c3bf1fdb394669347074e11" => :yosemite
+    sha256 "b96f9e195121df3ddfeb8f9ee31dbb9570435671dc1e8408002c48eb732e68f4" => :mavericks
   end
 
   depends_on "go" => :build
@@ -32,7 +32,7 @@ class Glide < Formula
 
   go_resource "github.com/codegangsta/cli" do
     url "https://github.com/codegangsta/cli.git",
-      :revision => "0302d3914d2a6ad61404584cdae6e6dbc9c03599"
+      :revision => "b5232bb2934f606f9f27a1305f1eea224e8e8b88"
   end
 
   go_resource "github.com/Masterminds/semver" do

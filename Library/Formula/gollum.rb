@@ -5,13 +5,15 @@ class Gollum < Formula
   homepage "https://github.com/trivago/gollum"
   url "https://github.com/trivago/gollum/archive/v0.4.1.tar.gz"
   sha256 "73b5d4f7fa600d4d6182a80f5cea29f84296d2acf1fb9dd841beafd2620e66b6"
+  revision 1
+
   head "https://github.com/trivago/gollum.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8ad63a6fbaa02ec9f0bbf86eb2def9f99a55daad75d69378720e83a6f159a857" => :el_capitan
-    sha256 "18ecedf42adef5f8b6aac0f14ba7dd0cfbcf31c3033765512839f81e709d8399" => :yosemite
-    sha256 "54fc84b7ed04d308ee0b51f03a7936e8a2b4efddfab7b3743c3f7ae680747658" => :mavericks
+    sha256 "192fabe2a686f142e0aa156e08ee7eeccf05a39a2f1f7de0b5c3907c2573d0d2" => :el_capitan
+    sha256 "611172cdba9b0be68760f38fc03e19275e07cd9b3f031895967877ff9b1c7ea9" => :yosemite
+    sha256 "02f7c2fd0da3707ea9015ba0ae9645fa93387211e4eb798fbda23b10d7d12917" => :mavericks
   end
 
   depends_on "go" => :build
@@ -151,6 +153,6 @@ class Gollum < Formula
         Stream: "profile"
     EOS
 
-    assert_match /parsed as ok/, shell_output("#{bin}/gollum -tc #{testpath}/test.conf")
+    assert_match "parsed as ok", shell_output("#{bin}/gollum -tc #{testpath}/test.conf")
   end
 end

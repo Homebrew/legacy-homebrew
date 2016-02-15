@@ -10,6 +10,7 @@ require "software_spec"
 require "install_renamed"
 require "pkg_version"
 require "tap"
+require "core_formula_repository"
 require "formula_renames"
 require "keg"
 require "migrator"
@@ -77,7 +78,6 @@ class Formula
   # This contains all the attributes (e.g. URL, checksum) that apply to the
   # stable version of this formula.
   # @private
-
   attr_reader :stable
 
   # The development {SoftwareSpec} for this {Formula}.
@@ -106,6 +106,10 @@ class Formula
   # @see #active_spec
   # @private
   attr_reader :active_spec_sym
+
+  # most recent modified time for source files
+  # @private
+  attr_reader :source_modified_time
 
   # Used for creating new Homebrew versions of software without new upstream
   # versions.
@@ -867,7 +871,7 @@ class Formula
   # @private
   def link_overwrite?(path)
     # Don't overwrite files not created by Homebrew.
-    return false unless path.stat.uid == File.stat(HOMEBREW_BREW_FILE).uid
+    return false unless path.stat.uid == HOMEBREW_BREW_FILE.stat.uid
     # Don't overwrite files belong to other keg except when that
     # keg's formula is deleted.
     begin
@@ -1040,8 +1044,8 @@ class Formula
   # less consistent and the standard parameters are more memorable.
   def std_cmake_args
     %W[
-      -DCMAKE_C_FLAGS_RELEASE=
-      -DCMAKE_CXX_FLAGS_RELEASE=
+      -DCMAKE_C_FLAGS_RELEASE=-DNDEBUG
+      -DCMAKE_CXX_FLAGS_RELEASE=-DNDEBUG
       -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DCMAKE_BUILD_TYPE=Release
       -DCMAKE_FIND_FRAMEWORK=LAST
@@ -1240,6 +1244,8 @@ class Formula
       "outdated" => outdated?,
       "keg_only" => keg_only?,
       "dependencies" => deps.map(&:name).uniq,
+      "recommended_dependencies" => deps.select(&:recommended?).map(&:name).uniq,
+      "optional_dependencies" => deps.select(&:optional?).map(&:name).uniq,
       "conflicts_with" => conflicts.map(&:name),
       "caveats" => caveats
     }
@@ -1286,7 +1292,7 @@ class Formula
       hsh["installed"] << {
         "version" => keg.version.to_s,
         "used_options" => tab.used_options.as_flags,
-        "built_as_bottle" => tab.built_bottle,
+        "built_as_bottle" => tab.built_as_bottle,
         "poured_from_bottle" => tab.poured_from_bottle
       }
     end
@@ -1355,7 +1361,7 @@ class Formula
     user_site_packages.mkpath
     (user_site_packages/"homebrew.pth").write <<-EOS.undent
       import site; site.addsitedir("#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
-      import sys; sys.path.insert(0, "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
+      import sys, os; sys.path = (os.environ["PYTHONPATH"].split(os.pathsep) if "PYTHONPATH" in os.environ else []) + ["#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"] + sys.path
     EOS
   end
 
@@ -1473,6 +1479,29 @@ class Formula
     end
   end
 
+  # @private
+  def eligible_kegs_for_cleanup
+    eligible_for_cleanup = []
+    if installed?
+      eligible_kegs = installed_kegs.select { |k| pkg_version > k.version }
+      if eligible_kegs.any?
+        eligible_kegs.each do |keg|
+          if keg.linked?
+            opoo "Skipping (old) #{keg} due to it being linked"
+          else
+            eligible_for_cleanup << keg
+          end
+        end
+      end
+    elsif installed_prefixes.any? && !pinned?
+      # If the cellar only has one version installed, don't complain
+      # that we can't tell which one to keep. Don't complain at all if the
+      # only installed version is a pinned formula.
+      opoo "Skipping #{full_name}: most recent version #{pkg_version} not installed"
+    end
+    eligible_for_cleanup
+  end
+
   private
 
   def exec_cmd(cmd, args, out, logfn)
@@ -1505,6 +1534,7 @@ class Formula
 
   def stage
     active_spec.stage do
+      @source_modified_time = active_spec.source_modified_time
       @buildpath = Pathname.pwd
       env_home = buildpath/".brew_home"
       mkdir_p env_home

@@ -1,14 +1,14 @@
 class Dbxml < Formula
   desc "Embeddable XML database with XQuery support and other advanced features"
   homepage "http://www.oracle.com/us/products/database/berkeley-db/xml/overview/index.html"
-  url "http://download.oracle.com/berkeley-db/dbxml-6.0.17.tar.gz"
-  sha256 "97c79a850ae92ef4945fcf558fbfed41469dd2bda6ad85bd05837cd428e594e8"
+  url "http://download.oracle.com/berkeley-db/dbxml-6.0.18.tar.gz"
+  sha256 "5851f60a47920718b701752528a449f30b16ddbf5402a2a5e8cde8b4aecfabc8"
 
   bottle do
     cellar :any
-    sha256 "e61af38290271e289d8f8e0fbb39f727fe6c9999d7a0cc9531caa59d4ed7c90b" => :el_capitan
-    sha256 "9b17ab965313607cee1419b5172e81b54a2f1abc951d55471192571a55aa06b9" => :yosemite
-    sha256 "7132f822ef547094f01340f3a4324bbf3726ec6ed9b39a569c44b3afd7736f63" => :mavericks
+    sha256 "fb36c58d1ccfcbd8a64aff8f6296ada9379ade8413382b70275b6209216aed64" => :el_capitan
+    sha256 "2c1f4a931b7ffdf2a3a5d0a0aaf1be9434b4483549d47eda7868ee2fa4456837" => :yosemite
+    sha256 "c6975e34ad3640650a9da0f08e99f9f763ec47bc3532c28466233e10eaeccaa1" => :mavericks
   end
 
   depends_on "xerces-c"

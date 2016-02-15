@@ -1,15 +1,15 @@
 class Postgis < Formula
   desc "Adds support for geographic objects to PostgreSQL"
   homepage "http://postgis.net"
-  url "http://download.osgeo.org/postgis/source/postgis-2.2.0.tar.gz"
-  sha256 "66f0f8480d535959b8bb9abb5ee5d602d1001413ca770df120baf3de627f9e91"
-  revision 1
+  url "http://download.osgeo.org/postgis/source/postgis-2.2.1.tar.gz"
+  sha256 "0fe500b0250203aac656bfa8f42f8458b63f33258404844e066e0e535988fa09"
 
   bottle do
     cellar :any
-    sha256 "62cf5035a8b6416750a860766c1a749992845648cb0d0747e218c9ad20e4a7b2" => :el_capitan
-    sha256 "aceca66201f882492dd3153d69734c1457481f14f77eba02be6bf7f6efe9f2b1" => :yosemite
-    sha256 "78227842c2e507d22da896f47ac09b546ca45209e526f5e39e993a2283f0bc49" => :mavericks
+    revision 1
+    sha256 "6e18d0615e27b1afcbf0280185a31cc63259401c6042d82177609fa48d4a6f39" => :el_capitan
+    sha256 "b127be9f51766193b4a0713e313047316f7f89532258345174f29a9a27553b9d" => :yosemite
+    sha256 "5bf42a43897e9358f0a9ee0b9aa290717c2b74fede7488df66b9c0c344c5adb0" => :mavericks
   end
 
   head do
@@ -36,6 +36,7 @@ class Postgis < Formula
   # For GeoJSON and raster handling
   depends_on "json-c"
   depends_on "gdal" => :recommended
+  depends_on "pcre" => :build if build.with? "gdal"
 
   # For advanced 2D/3D functions
   depends_on "sfcgal" => :recommended
@@ -116,11 +117,11 @@ class Postgis < Formula
   def caveats
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:
-        http://postgis.net/docs/manual-2.1/postgis_installation.html#create_new_db_extensions
+        http://postgis.net/docs/manual-2.2/postgis_installation.html#create_new_db_extensions
       If you are currently using PostGIS 2.0+, you can go the soft upgrade path:
         ALTER EXTENSION postgis UPDATE TO "#{version}";
       Users of 1.5 and below will need to go the hard-upgrade path, see here:
-        http://postgis.net/docs/manual-2.1/postgis_installation.html#upgrading
+        http://postgis.net/docs/manual-2.2/postgis_installation.html#upgrading
 
       PostGIS SQL scripts installed to:
         #{HOMEBREW_PREFIX}/share/postgis

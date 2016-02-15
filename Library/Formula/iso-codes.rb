@@ -1,17 +1,16 @@
 class IsoCodes < Formula
   desc "ISO language, territory, currency, script codes, and their translations"
   homepage "https://pkg-isocodes.alioth.debian.org/"
-  url "https://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.61.tar.xz"
-  sha256 "a79bf119afdc20feef12965f26f9d97868819003a76355a6f027a14a6539167d"
+  url "https://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.64.tar.xz"
+  sha256 "5ef061381e37e9576760df1ad504d4bbc84c270da30512b2891baed9add70729"
 
   head "git://git.debian.org/git/iso-codes/iso-codes.git", :shallow => false
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "443f678c1dec1caf6324f51fbe14aba98504b34d1207de8a86c75f4aceb00d22" => :el_capitan
-    sha256 "de96d8f33f363621e11c881f8f013a68bffbd58e0d0e9371eaa8f6f00c5b6c5f" => :yosemite
-    sha256 "d5a5beccd811923c51c655d9f3e9f3b1279340e4f67da87b8d0f334222e236a9" => :mavericks
-    sha256 "f0a590da2b2f1e86683b17ebc5cd419fe06110b90160adbcce3a551e0136a26e" => :mountain_lion
+    sha256 "355fcd7d9f70238d58f29410783d8784f41d2576cc06e3ab3ba2be3abc37ed76" => :el_capitan
+    sha256 "7d35d749b7ec99d9437778f012f3add07085405faa888c7861fa39c5cd0725e1" => :yosemite
+    sha256 "f2c49b4911463b54b1a0d527064fc4628f98eab13dd03f6938fa5b2ad763eab9" => :mavericks
   end
 
   depends_on "gettext" => :build

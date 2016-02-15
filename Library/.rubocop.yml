@@ -23,6 +23,11 @@ Style/CommandLiteral:
 Style/RegexpLiteral:
     EnforcedStyle: slashes
 
+# our current conditional style is established, clear and
+# requiring users to change that now would be confusing.
+Style/ConditionalAssignment:
+    Enabled: false
+
 # no metrics for formulas
 Metrics/AbcSize:
     Enabled: false
@@ -125,5 +130,7 @@ Style/DotPosition:
   EnforcedStyle: trailing
 
 # makes diffs nicer
-Style/TrailingComma:
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: no_comma
+Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: comma

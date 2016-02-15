@@ -1,18 +1,12 @@
 class Rcssserver < Formula
   desc "Server for RoboCup Soccer Simulator"
   homepage "http://sserver.sourceforge.net/"
-  url "https://downloads.sourceforge.net/sserver/rcssserver/15.2.2/rcssserver-15.2.2.tar.gz"
-  sha256 "329b3008689dac16d1f39ad8f5c8341aef283ef3750d137dcf299d1fbc30355a"
-  revision 1
-
-  bottle do
-    revision 2
-    sha256 "979098bc6a12cfd6259e7d04dc46d56e066c1886d96e4d10900a151e8b635dd5" => :yosemite
-    sha256 "1658febeae0a35d422acc63cd8fef1282fd81811a3f2742d8b34000c5fc8ab07" => :mavericks
-    sha256 "a2560cd1527389c7312d71bede3ccd09eb6e037f42ceb79c41e9a030ed3b6b7e" => :mountain_lion
-  end
+  revision 3
 
   stable do
+    url "https://downloads.sourceforge.net/sserver/rcssserver/15.2.2/rcssserver-15.2.2.tar.gz"
+    sha256 "329b3008689dac16d1f39ad8f5c8341aef283ef3750d137dcf299d1fbc30355a"
+
     resource "rcssmonitor" do
       url "https://downloads.sourceforge.net/sserver/rcssmonitor/15.1.1/rcssmonitor-15.1.1.tar.gz"
       sha256 "51f85f65cd147f5a9018a6a2af117fc45358eb2989399343eaadd09f2184ee41"
@@ -22,6 +16,12 @@ class Rcssserver < Formula
       url "https://downloads.sourceforge.net/sserver/rcsslogplayer/15.1.1/rcsslogplayer-15.1.1.tar.gz"
       sha256 "216473a9300e0733f66054345b8ea0afc50ce922341ac48eb5ef03d09bb740e6"
     end
+  end
+
+  bottle do
+    sha256 "c38e5393d6d4c9074d2c70da05e0be9f61bc2f935848a3e2061a93f2b002e9af" => :el_capitan
+    sha256 "d7db1cd2a729f558cbb3569e1c858f9de8b6ced18b8eaf110b8db53881ad8c84" => :yosemite
+    sha256 "053199b5e554e73a385ffd7de6ef8bf9e04b1c3876e6fed0b9ca1c98066364a1" => :mavericks
   end
 
   head do
@@ -50,7 +50,7 @@ class Rcssserver < Formula
 
     if build.head?
       # These inreplaces are artifacts of the upstream packaging process:
-      # http://sourceforge.net/p/sserver/discussion/76439/thread/bd3ad6e4
+      # https://sourceforge.net/p/sserver/discussion/76439/thread/bd3ad6e4
       inreplace "src/Makefile.am" do |s|
         s.gsub! "coach_lang_parser.h", "coach_lang_parser.hpp"
         s.gsub! "player_command_parser.h", "player_command_parser.hpp"
@@ -67,6 +67,15 @@ class Rcssserver < Formula
 
     resources.each do |r|
       r.stage do
+        # This line being glued together means unrelated libraries
+        # are joined and cause a fatal linking error build compile.
+        # -framework Security-ldbus-1 -lz -ldbus-1
+        # ld: framework not found Security-ldbus-1
+        # Currently same error in both rcssmonitor & rcsslogplayer.
+        # https://sourceforge.net/p/sserver/mailman/message/34765272/
+        inreplace "configure", "$QT4_REQUIRED_MODULES)$($PKG_CONFIG",
+                               "$QT4_REQUIRED_MODULES) $($PKG_CONFIG"
+
         system "./bootstrap" if build.head?
         system "./configure", "--prefix=#{prefix}"
         system "make", "install"

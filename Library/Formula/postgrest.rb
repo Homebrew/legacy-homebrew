@@ -6,24 +6,21 @@ class Postgrest < Formula
 
   desc "Serves a fully RESTful API from any existing PostgreSQL database."
   homepage "https://github.com/begriffs/postgrest"
-  url "https://github.com/begriffs/postgrest/archive/v0.3.0.1.tar.gz"
-  sha256 "d2e92795a480e3a06d625905fb20bce30e5b86af6525cdec809e6a88200efab8"
+  url "https://github.com/begriffs/postgrest/archive/v0.3.0.4.tar.gz"
+  sha256 "2afbb8735a157e0b6afbec7da57cc70396cdbecb0670d96e2b006c0a1625f2f0"
 
   bottle do
-    revision 1
-    sha256 "6e3dbaeeba86ca9f071af471d5a3296652aedc9b6484674ed337f23abef88f85" => :el_capitan
-    sha256 "a6ad263ae0aa979ed9da6bcb9002316a0a3e3980653c2a1921efbbfc1f3edf3a" => :yosemite
-    sha256 "6d2ee6020ab78948b30aefddb92f3d372eb0f6f9629b2d64399f5b7863a54ace" => :mavericks
+    sha256 "1f73fc12b6017629128bb3427a646d2822e60dbeff42e62e869bb1474b15652c" => :el_capitan
+    sha256 "3eb8bf4f6a22c5d6ee1d69e572c73266739e66c71e15dc1d3b99c1fb1b907023" => :yosemite
+    sha256 "20a5e7499db351cef6647e3db0c0107ec5f8c8ecbbe5137b1f76832697af1c97" => :mavericks
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "postgresql"
 
-  setup_ghc_compilers
-
   def install
-    install_cabal_package "--enable-executable-stripping"
+    install_cabal_package :using => ["happy"]
   end
 
   test do

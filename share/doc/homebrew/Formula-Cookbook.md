@@ -70,11 +70,11 @@ so you can override this with `brew create <url> --set-name <name>`.
 
 ## Fill in the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)
 
-**We don’t accept formulae without [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)s!**
+**We don’t accept formulae without a [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)!**
 
 A SSL/TLS (https) [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) is preferred, if one is available.
 
-Try to summarize from the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) what the formula does in the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription. Note that the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription is automatically preprended with the formula name.
+Try to summarize from the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) what the formula does in the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription. Note that the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription is automatically prepended with the formula name.
 
 ## Check the build system
 
@@ -165,7 +165,7 @@ Sometimes there’s hard conflict between formulae, and it can’t be avoided or
 `mbedtls` ships and compiles a "Hello World" executable. This is obviously non-essential to `mbedtls`’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
 
 [pdftohtml](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/pdftohtml.rb) provides an example of a serious
-conflict, where both formula ship a identically-named binary that is essential to functionality, so a [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) is preferable.
+conflict, where both formula ship an identically-named binary that is essential to functionality, so a [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) is preferable.
 
 As a general rule, [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) should be a last-resort option. It’s a fairly blunt instrument.
 
@@ -225,7 +225,7 @@ end
 
 [jrnl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/jrnl.rb) is an example of a formula that does this well. The end result means the user doesn't have use `pip` or Python and can just run `jrnl`.
 
-[homebrew-pypi-poet](https://github.com/tdsmith/homebrew-pypi-poet) can help you generate resource stanzas for the dependencies of your Python application and [homebrew-go-resources](https://github.com/samertm/homebrew-go-resources) can help you generate go\_resource stanzas for the dependencies of your go application.
+[homebrew-pypi-poet](https://github.com/tdsmith/homebrew-pypi-poet) can help you generate resource stanzas for the dependencies of your Python application and [gdm](https://github.com/sparrc/gdm#homebrew) can help you generate go\_resource stanzas for the dependencies of your go application.
 
 ## Install the formula
 
@@ -303,7 +303,7 @@ The established standard for Git commit messages is:
 
 * the first line is a commit summary of *50 characters or less*
 * two (2) newlines, then
-* explain the commit throughly
+* explain the commit thoroughly
 
 At Homebrew, we like to put the name of the formula up front like so: `foobar 7.3 (new formula)`.
 This may seem crazy short, but you’ll find that forcing yourself to summarise the commit encourages you to be atomic and concise. If you can’t summarise it in 50-80 characters, you’re probably trying to commit two commits as one. For a more thorough explanation, please read Tim Pope’s excellent blog post, [A Note About Git Commit Messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
@@ -338,7 +338,7 @@ Three commands are provided for displaying informational messages to the user:
 *   `opoo` for warning messages
 *   `odie` for error messages and immediately exiting
 
-In particular, when a test needs to be performed before installation use `onoe` to bail out gracefully. For example:
+In particular, when a test needs to be performed before installation use `odie` to bail out gracefully. For example:
 
 ```ruby
 if build.with?("qt") && build.with("qt5")
@@ -676,7 +676,7 @@ Generally we'd rather you were specific about what files or directories need to 
     </tr>
     <tr>
       <th><code>buildpath</code></th>
-      <td>A temporary dir somewhere on your system</td>
+      <td>A temporary directory somewhere on your system</td>
       <td><code>/private/tmp/[formula-name]-0q2b/[formula-name]</code></td>
     </tr>
   </tbody>
@@ -769,7 +769,7 @@ Check if the formula you are updating is a dependency for any other formulae by 
 
 Homebrew wants to maintain a consistent Ruby style across all formulae based on [Ruby Style Guide](https://github.com/styleguide/ruby). Other formulae may not have been updated to match this guide yet but all new ones should. Also:
 
-* The order of methods in a formula should be consistent with other formulae (e.g.: `def patches` goes before `def install`)
+* The order of methods in a formula should be consistent with other formulae (e.g.: `def install` goes before `def post_install`)
 * An empty line is required before the `__END__` line
 
 # Troubleshooting for people writing new formulae
@@ -815,7 +815,7 @@ When using Homebrew's `gfortran` compiler, the standard `CFLAGS` are used and us
 
 # How to start over (reset to  upstream `master`)
 
-Have you created a real mess in git which stops you from creating a commit you want to submit to us? You might want to consider consider starting again from scratch. Your changes can be reset to the Homebrew's `master` branch by running:
+Have you created a real mess in git which stops you from creating a commit you want to submit to us? You might want to consider starting again from scratch. Your changes can be reset to the Homebrew's `master` branch by running:
 
 ```shell
 git checkout -f master

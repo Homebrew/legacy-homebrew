@@ -6,7 +6,7 @@ module CompilerConstants
     "gcc-4.0"  => :gcc_4_0,
     "gcc-4.2"  => :gcc,
     "llvm-gcc" => :llvm,
-    "clang"    => :clang
+    "clang"    => :clang,
   }
 
   COMPILERS = COMPILER_SYMBOL_MAP.values +
@@ -67,12 +67,12 @@ class CompilerFailure
       create(:gcc => "4.3"),
       create(:gcc => "4.4"),
       create(:gcc => "4.5"),
-      create(:gcc => "4.6")
+      create(:gcc => "4.6"),
     ],
     :openmp => [
       create(:clang),
-      create(:llvm)
-    ]
+      create(:llvm),
+    ],
   }
 end
 
@@ -85,7 +85,7 @@ class CompilerSelector
     :clang   => [:clang, :gcc, :llvm, :gnu, :gcc_4_0],
     :gcc     => [:gcc, :llvm, :gnu, :clang, :gcc_4_0],
     :llvm    => [:llvm, :gcc, :gnu, :clang, :gcc_4_0],
-    :gcc_4_0 => [:gcc_4_0, :gcc, :llvm, :gnu, :clang]
+    :gcc_4_0 => [:gcc_4_0, :gcc, :llvm, :gnu, :clang],
   }
 
   def self.select_for(formula, compilers = self.compilers)

@@ -5,21 +5,19 @@ class Shellcheck < Formula
 
   desc "Static analysis and lint tool, for (ba)sh scripts"
   homepage "http://www.shellcheck.net"
-  url "https://github.com/koalaman/shellcheck/archive/v0.4.1.tar.gz"
-  sha256 "47518d9024cbd0a15796bc2da3894047b648c9d30605a4e16f3514784e72ec24"
+  url "https://github.com/koalaman/shellcheck/archive/v0.4.3.tar.gz"
+  sha256 "229a3bd5e38c4da2ce7ddf43c06ca388454e0406f3dbfc44865208b6b334109e"
   head "https://github.com/koalaman/shellcheck.git"
 
   bottle do
-    sha256 "14e1a8a2f36ddc39337d311d808be42714d61b13321d2eebf3a56652b47e92c7" => :el_capitan
-    sha256 "ac1178a4fb95b1f9ce7e0306cae1092c42fc6bd790e4687ebc23b52ffab9a008" => :yosemite
-    sha256 "08df00a8b3af043ffdba9b21ac77904958cb3d32d945b9a57cdda6293adbe181" => :mavericks
+    sha256 "daf97f6a1ff883a55039074774c30a049635207d2c9af573c2cacd2d700a09a7" => :el_capitan
+    sha256 "a3ba4ae51b06d96ef1275938a0183f7590a437dce5f015011d1a104aaa092274" => :yosemite
+    sha256 "62e937dccd8b7f49c3e5f15b49b8fa26f3a71e51ae04af41a6dd5d83721b055e" => :mavericks
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "pandoc" => :build
-
-  setup_ghc_compilers
 
   def install
     install_cabal_package

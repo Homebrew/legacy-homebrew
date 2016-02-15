@@ -1,8 +1,9 @@
 class Elasticsearch < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.1.1/elasticsearch-2.1.1.tar.gz"
-  sha256 "ebd69c0483f20ba7e51caa9606d4e3ce5fe2667e1216c799f0cdbb815c317ce6"
+  url "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.2.0/elasticsearch-2.2.0.tar.gz"
+  sha256 "ed70cc81e1f55cd5f0032beea2907227b6ad8e7457dcb75ddc97a2cc6e054d30"
+  revision 1
 
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
@@ -32,7 +33,7 @@ class Elasticsearch < Formula
     rm_f Dir["bin/*.exe"]
 
     # Install everything else into package directory
-    libexec.install "bin", "config", "lib"
+    libexec.install "bin", "config", "lib", "modules"
 
     # Set up Elasticsearch for local development:
     inreplace "#{libexec}/config/elasticsearch.yml" do |s|
@@ -61,7 +62,7 @@ class Elasticsearch < Formula
     (etc/"elasticsearch/scripts").mkdir unless File.exist?(etc/"elasticsearch/scripts")
     (libexec/"config").rmtree
 
-    bin.write_exec_script Dir[libexec/"bin/*"]
+    bin.write_exec_script Dir[libexec/"bin/elasticsearch"]
   end
 
   def post_install
@@ -77,6 +78,7 @@ class Elasticsearch < Formula
     Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
     Plugins: #{libexec}/plugins/
     Config:  #{etc}/elasticsearch/
+    plugin script: #{libexec}/bin/plugin
     EOS
   end
 
@@ -88,7 +90,7 @@ class Elasticsearch < Formula
       <plist version="1.0">
         <dict>
           <key>KeepAlive</key>
-          <true/>
+          <false/>
           <key>Label</key>
           <string>#{plist_name}</string>
           <key>ProgramArguments</key>
@@ -112,10 +114,11 @@ class Elasticsearch < Formula
   end
 
   test do
-    system "#{bin}/plugin", "list"
+    system "#{libexec}/bin/plugin", "list"
     pid = "#{testpath}/pid"
     begin
-      system "#{bin}/elasticsearch", "-d", "-p", pid, "--path.data", testpath
+      mkdir testpath/"config"
+      system "#{bin}/elasticsearch", "-d", "-p", pid, "--path.home", testpath
       sleep 10
       system "curl", "-XGET", "localhost:9200/"
     ensure

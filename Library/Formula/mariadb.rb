@@ -1,13 +1,13 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.9/source/mariadb-10.1.9.tar.gz"
-  sha256 "8e9c5826722cedb4209bf06ae61069664513149479a6634e3d8115961edfe110"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.11/source/mariadb-10.1.11.tar.gz"
+  sha256 "cd32927370343b4f14bcc6073bca163623c27843ae7bc59c8c6a9ebeda0325ce"
 
   bottle do
-    sha256 "b650d5ba130641a2bdb00f4816f2b2f909ba31eeb45b03c494e3d028ed101f09" => :el_capitan
-    sha256 "31125ce124c1090d10204db37f9960961df40dd414525f3b33e73540f2fd5e54" => :yosemite
-    sha256 "cbe67bbf8a185203d0cbf2c1d333e07edc62b9c389f31bedcf415ea16ebdd9ad" => :mavericks
+    sha256 "4e1cce301d858389bbd772f6fa4673290dc5a747c82db47f6f24f80b98b76b84" => :el_capitan
+    sha256 "1caaca8c441b4288013e165ddccac0ffd949726199fd32383bd9dc55da6af31f" => :yosemite
+    sha256 "7701f36c03cee889aa3dbd0573ae8c04a9270631d87ff4bd7a9a134b89e6f9c8" => :mavericks
   end
 
   option :universal
@@ -30,6 +30,8 @@ class Mariadb < Formula
   conflicts_with "mysql-connector-c",
     :because => "both install MySQL client libraries"
   conflicts_with "mytop", :because => "both install `mytop` binaries"
+  conflicts_with "mariadb-connector-c",
+    :because => "both install plugins"
 
   def install
     # Don't hard-code the libtool path. See:
@@ -139,6 +141,8 @@ class Mariadb < Formula
         s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
       end
     end
+    # remove non-executable from bin
+    rm bin+"maria_add_gis_sp.sql"
   end
 
   def post_install

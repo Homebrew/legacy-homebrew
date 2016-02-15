@@ -19,8 +19,6 @@ class Cgrep < Formula
   depends_on "cabal-install" => :build
   depends_on "pcre"
 
-  setup_ghc_compilers
-
   def install
     install_cabal_package
   end

@@ -31,4 +31,10 @@ I'm not indented
 
     assert_equal "hello\ngoodbye\n\n", undented
   end
+
+  def test_inreplace_sub_failure
+    s = "foobar".extend StringInreplaceExtension
+    s.sub! "not here", "test"
+    assert_equal [%(expected replacement of "not here" with "test")], s.errors
+  end
 end

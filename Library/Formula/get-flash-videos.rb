@@ -1,14 +1,14 @@
 class GetFlashVideos < Formula
   desc "Download or play videos from various Flash-based websites"
   homepage "https://github.com/monsieurvideo/get-flash-videos"
-  url "https://github.com/monsieurvideo/get-flash-videos/archive/1.25.90.tar.gz"
-  sha256 "b6c3b3db558c5b373ef4e8162b2c0ac2ebf6696f8c1d4e261406671856610c57"
+  url "https://github.com/monsieurvideo/get-flash-videos/archive/1.25.91.tar.gz"
+  sha256 "af673516741f08b61da4dfbb49343bb56c353f7c4bfbf209972e2223d987e8e9"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fca39d2474946ab2e10a9e361762c07524516ed2907e0cb9942fabca46ccca53" => :el_capitan
-    sha256 "d60a64e719c7097b7caa0be8d7424d7019df4cd8bc4e09e8173ba0dfbf84758a" => :yosemite
-    sha256 "13d00aa46643c8e2cd3e8b6fe10d39a999a20d740d4529c4316e4b0a639af6ab" => :mavericks
+    sha256 "1f09bd2333d59e2f9b74cad060ab24c874a1d98728d40e41b55cc2d4a6b45ebb" => :el_capitan
+    sha256 "bb59c101f017b084ab672c853379d43a82088bbb30a39ee079993cb854d4b2fe" => :yosemite
+    sha256 "007f0b643544676053327d08a9d9a1bbe26d658876ae0623f76f2656867695f7" => :mavericks
   end
 
   depends_on "rtmpdump"
@@ -19,8 +19,8 @@ class GetFlashVideos < Formula
   end
 
   resource "LWP::Protocol" do
-    url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/libwww-perl-6.13.tar.gz"
-    sha256 "5fbd13eebd1933e5a203fceb2c1629efbccff3efc8fab6ec0285c79d0a95f8b2"
+    url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/libwww-perl-6.15.tar.gz"
+    sha256 "6f349d45c21b1ec0501c4437dfcb70570940e6c3d5bff783bd91d4cddead8322"
   end
 
   resource "Tie::IxHash" do

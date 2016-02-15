@@ -145,6 +145,10 @@ module Homebrew
       return ofail "Formula not installed or up-to-date: #{f.full_name}"
     end
 
+    unless f.tap
+      return ofail "Formula not from core or any taps: #{f.full_name}"
+    end
+
     if f.bottle_disabled?
       ofail "Formula has disabled bottle: #{f.full_name}"
       puts f.bottle_disable_reason
@@ -186,10 +190,6 @@ module Homebrew
     relocatable = false
     skip_relocation = false
 
-    formula_source_time = f.stable.stage do
-      Pathname.pwd.to_enum(:find).map(&:mtime).max
-    end
-
     keg.lock do
       original_tab = nil
 
@@ -201,6 +201,7 @@ module Homebrew
 
         keg.delete_pyc_files!
 
+        Tab.clear_cache
         tab = Tab.for_keg(keg)
         original_tab = tab.dup
         tab.poured_from_bottle = false
@@ -208,11 +209,20 @@ module Homebrew
         tab.time = nil
         tab.write
 
-        keg.find {|k| File.utime(File.atime(k), formula_source_time, k) }
+        keg.find do |file|
+          if file.symlink?
+            # Ruby does not support `File.lutime` yet.
+            # Shellout using `touch` to change modified time of symlink itself.
+            system "/usr/bin/touch", "-h",
+                   "-t", tab.source_modified_time.strftime("%Y%m%d%H%M.%S"), file
+          else
+            file.utime(tab.source_modified_time, tab.source_modified_time)
+          end
+        end
 
         cd cellar do
           safe_system "tar", "cf", tar_path, "#{f.name}/#{f.pkg_version}"
-          File.utime(File.atime(tar_path), formula_source_time, tar_path)
+          tar_path.utime(tab.source_modified_time, tab.source_modified_time)
           relocatable_tar_path = "#{f}-bottle.tar"
           mv tar_path, relocatable_tar_path
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
@@ -247,6 +257,8 @@ module Homebrew
         ignore_interrupts do
           original_tab.write
           keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
+            Keg::CELLAR_PLACEHOLDER, cellar
+          keg.relocate_text_files Keg::PREFIX_PLACEHOLDER, prefix,
             Keg::CELLAR_PLACEHOLDER, cellar
         end
       end
@@ -363,15 +375,15 @@ module Homebrew
             else
               string = s.sub!(
                 /(
-                  \ {2}(                                                              # two spaces at the beginning
-                    url\ ['"][\S\ ]+['"]                                              # url with a string
+                  \ {2}(                                                         # two spaces at the beginning
+                    (url|head)\ ['"][\S\ ]+['"]                                  # url or head with a string
                     (
-                      ,[\S\ ]*$                                                       # url may have options
-                      (\n^\ {3}[\S\ ]+$)*                                             # options can be in multiple lines
+                      ,[\S\ ]*$                                                  # url may have options
+                      (\n^\ {3}[\S\ ]+$)*                                        # options can be in multiple lines
                     )?|
-                    (homepage|desc|sha1|sha256|head|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
-                    revision\ \d+                                                     # revision with a number
-                  )\n+                                                                # multiple empty lines
+                    (homepage|desc|sha1|sha256|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
+                    revision\ \d+                                                # revision with a number
+                  )\n+                                                           # multiple empty lines
                  )+
                /mx, '\0' + output + "\n")
             end

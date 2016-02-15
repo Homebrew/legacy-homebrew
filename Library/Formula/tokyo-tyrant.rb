@@ -5,53 +5,34 @@ class TokyoTyrant < Formula
   sha256 "42af70fb9f2795d4e05c3e37941ce392a9eaafc991e230c48115370f6d64b88f"
   revision 1
 
-  option "no-lua", "Disable Lua support"
+  bottle do
+    cellar :any
+    sha256 "57a41c1059c3b2d43f7fc8dfc1b3bae442ddf94a5cd2bb8e91015972ba45d483" => :el_capitan
+    sha256 "faeb9efd37fbb0d163f541a3436c3ede81ebcd049094e172a03a0fc7a00e986a" => :yosemite
+    sha256 "5d490b81052af030dcbdfd01b93bc6b8fdc37f52e9a561a62d631ce1fd67f902" => :mavericks
+  end
 
   depends_on "tokyo-cabinet"
-  depends_on "lua51" unless build.include? "no-lua"
-
-  unless build.include? "no-lua"
-    patch :DATA
-  end
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--enable-lua" unless build.include? "no-lua"
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{libexec}"
     system "make"
     system "make", "install"
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
+  end
+
+  test do
+    pid = fork do
+      exec "#{bin}/ttserver -port 8081"
+    end
+    sleep 2
+
+    begin
+      # "Not Found" here means we've not setup a database, but server is running.
+      assert_match "Not Found", shell_output("curl localhost:8081")
+    ensure
+      Process.kill "SIGINT", pid
+      Process.wait pid
+    end
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index cd249dc..6e12141 100755
---- a/configure
-+++ b/configure
-@@ -2153,17 +2153,16 @@ fi
- if test "$enable_lua" = "yes"
- then
-   enables="$enables (lua)"
--  luaver=`lua -e 'v = string.gsub(_VERSION, ".* ", ""); print(v)'`
--  MYCPPFLAGS="$MYCPPFLAGS -I/usr/include/lua$luaver -I/usr/local/include/lua$luaver"
--  MYCPPFLAGS="$MYCPPFLAGS -I/usr/include/lua -I/usr/local/include/lua -D_MYLUA"
--  MYLDFLAGS="$MYLDFLAGS -L/usr/include/lua$luaver -L/usr/local/include/lua$luaver"
--  MYLDFLAGS="$MYLDFLAGS -L/usr/include/lua -L/usr/local/include/lua"
--  CPATH="$CPATH:/usr/include/lua$luaver:/usr/local/include/lua$luaver"
--  CPATH="$CPATH:/usr/include/lua:/usr/local/include/lua"
--  LIBRARY_PATH="$LIBRARY_PATH:/usr/lib/lua$luaver:/usr/local/lib/lua$luaver"
--  LIBRARY_PATH="$LIBRARY_PATH:/usr/lib/lua:/usr/local/lib/lua"
--  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/include/lua$luaver:/usr/local/include/lua$luaver"
--  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/include/lua:/usr/local/include/lua"
-+  MYCPPFLAGS="$MYCPPFLAGS -I/usr/include/lua -I/usr/local/include/lua5.1"
-+  MYCPPFLAGS="$MYCPPFLAGS -I/usr/include/lua -I/usr/local/include/lua5.1"
-+  MYLDFLAGS="$MYLDFLAGS -L/usr/include/lua -L/usr/local/include/lua5.1"
-+  MYLDFLAGS="$MYLDFLAGS -L/usr/include/lua -L/usr/local/include/lua5.1"
-+  CPATH="$CPATH:/usr/include/lua:/usr/local/include/lua5.1"
-+  CPATH="$CPATH:/usr/include/lua:/usr/local/include/lua5.1"
-+  LIBRARY_PATH="$LIBRARY_PATH:/usr/lib/lua:/usr/local/lib/lua5.1"
-+  LIBRARY_PATH="$LIBRARY_PATH:/usr/lib/lua:/usr/local/lib/lua5.1"
-+  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/include/lua:/usr/local/include/lua5.1"
-+  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/include/lua:/usr/local/include/lua5.1"
- fi

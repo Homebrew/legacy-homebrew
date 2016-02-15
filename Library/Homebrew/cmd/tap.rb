@@ -1,17 +1,18 @@
 require "tap"
+require "core_formula_repository"
 
 module Homebrew
   def tap
-    if ARGV.empty?
-      puts Tap.names
-    elsif ARGV.first == "--repair"
+    if ARGV.include? "--repair"
       Tap.each(&:link_manpages)
       migrate_taps :force => true
-    elsif ARGV.first == "--list-official"
+    elsif ARGV.include? "--list-official"
       require "official_taps"
       puts OFFICIAL_TAPS.map { |t| "homebrew/#{t}" }
-    elsif ARGV.first == "--list-pinned"
+    elsif ARGV.include? "--list-pinned"
       puts Tap.select(&:pinned?).map(&:name)
+    elsif ARGV.named.empty?
+      puts Tap.names
     else
       tap = Tap.fetch(ARGV.named[0])
       begin

@@ -1,13 +1,13 @@
 class Lldpd < Formula
   desc "Implementation library for LLDP"
   homepage "https://vincentbernat.github.io/lldpd/"
-  url "http://media.luffy.cx/files/lldpd/lldpd-0.7.17.tar.gz"
-  sha256 "6b50b8aa47d1424a93ba3df55af26da41f7d5718db8d25e99291c4a6cd09c20e"
+  url "http://media.luffy.cx/files/lldpd/lldpd-0.9.0.tar.gz"
+  sha256 "300e4a590f7bf21c79d5ff94c2d6a69d0b2c34dbc21e17281496462a04ca80bc"
 
   bottle do
-    sha256 "16b4fdd519466b561ff5034ba379d6be062a2a6dd1487576d58f677150812543" => :el_capitan
-    sha256 "e96a160dc5279dd7a04081e6579641d0c767b74b49b5dafc1651f693082c484e" => :yosemite
-    sha256 "fc242d9b594d05c26e55fb64f3468273a50a0ed64b13530948667a68f01f5879" => :mavericks
+    sha256 "717fafc9f90bfdacec93668de504cec1b8a8a9fe521159250c8839272a97462c" => :el_capitan
+    sha256 "3c29352edb4ecc5471a6d9b315008d93c80fcc2e95e492a801d9af56b11bcc97" => :yosemite
+    sha256 "2224ad79d6e12c6b8527b1b84fc195a0d257485f2cf093c51451b4ee8b7a50e6" => :mavericks
   end
 
   option "with-snmp", "Build SNMP subagent support"
@@ -17,7 +17,7 @@ class Lldpd < Formula
   depends_on "readline"
   depends_on "libevent"
   depends_on "net-snmp" if build.with? "snmp"
-  depends_on "jansson"  if build.with? "json"
+  depends_on "jansson" if build.with? "json"
 
   def install
     readline = Formula["readline"]
@@ -40,6 +40,10 @@ class Lldpd < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+  end
+
+  def post_install
+    (var/"run").mkpath
   end
 
   plist_options :startup => true

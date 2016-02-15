@@ -6,21 +6,28 @@ class Dovecot < Formula
   sha256 "7ab7139e59e1f0353bf9c24251f13c893cf1a6ef4bcc47e2d44de437108d0b20"
 
   bottle do
-    sha256 "e21b7c37c57abddc4d85f64669e80ea0c0c09bc7abcb2a78aba04a9f79c490c2" => :el_capitan
-    sha256 "58587837e148f035bce2efbf7aeda42565a3857f478bf7b327740e5a30a88134" => :yosemite
-    sha256 "1cb51fc47506ddf25e4887d88f5aebbec894cdf4f26b3d903a561ec8d57eda1a" => :mavericks
+    revision 2
+    sha256 "280a50a51c3025c49cbb8682baa39c512451ec5c3d7ea4be119a1351b14e925b" => :el_capitan
+    sha256 "4c9e79a80a3f696f87e9ce4e94015cd3c131f43253d7f546792fefecca461fd9" => :yosemite
+    sha256 "84d4d5d7f6aa337c0ef0e79af8576fbda93d2c41e1940509dd6bcd8b34b58f80" => :mavericks
   end
 
   option "with-pam", "Build with PAM support"
   option "with-pigeonhole", "Add Sieve addon for Dovecot mailserver"
   option "with-pigeonhole-unfinished-features", "Build unfinished new Sieve addon features/extensions"
+  option "with-stemmer", "Build with libstemmer support"
 
   depends_on "openssl"
   depends_on "clucene" => :optional
 
   resource "pigeonhole" do
-    url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.9.tar.gz"
-    sha256 "82892f876d26008a076973dfddf1cffaf5a0451825fd44e06287e94b89078649"
+    url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.12.tar.gz"
+    sha256 "98a2fd79b0d9effd08c0caf04d483b1caa5e4503dae811e6d436948557bfb702"
+  end
+
+  resource "stemmer" do
+    url "https://github.com/snowballstem/snowball.git",
+      :revision => "3b1f4c2ac4b924bb429f929d9decd3f50662a6e0"
   end
 
   def install
@@ -38,6 +45,15 @@ class Dovecot < Formula
 
     args << "--with-lucene" if build.with? "clucene"
     args << "--with-pam" if build.with? "pam"
+
+    if build.with? "stemmer"
+      args << "--with-libstemmer"
+
+      resource("stemmer").stage do
+        system "make", "dist_libstemmer_c"
+        system "tar", "xzf", "dist/libstemmer_c.tgz", "-C", buildpath
+      end
+    end
 
     system "./configure", *args
     system "make", "install"
