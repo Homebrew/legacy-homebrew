@@ -1,4 +1,5 @@
 class CommandboxBe < Formula
+  desc "CommandBox (Bleeding Edge Release) is a CLI, package manager, embedded CFML server, which provides application scaffolding and much, much more."
   homepage "http://www.ortussolutions.com/products/commandbox"
   url "http://integration.stg.ortussolutions.com/artifacts/ortussolutions/commandbox/3.1.0/commandbox-bin-3.1.0.zip"
   sha1 "2e3bab8443b7965931cd7c2f4edefc14c6e4297c"

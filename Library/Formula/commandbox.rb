@@ -1,4 +1,5 @@
 class Commandbox < Formula
+  desc "CommandBox is a CLI, package manager, embedded CFML server, which provides application scaffolding and much, much more."
   homepage "http://www.ortussolutions.com/products/commandbox"
   url "http://downloads.ortussolutions.com/ortussolutions/commandbox/3.0.0/commandbox-bin-3.0.0.zip"
   sha1 "cb8d454b99d56c16e8501b4e1aa3c4eeb9b44451"
