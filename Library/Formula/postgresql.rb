@@ -84,7 +84,7 @@ class Postgresql < Formula
 
   def post_install
     (var/"postgres").mkpath
-    unless File.exist? "#{var}/postgres"
+    unless File.exist? "#{var}/postgres/PG_VERSION"
       system "#{bin}/initdb", "#{var}/postgres"
     end
   end
