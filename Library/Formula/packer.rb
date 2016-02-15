@@ -307,8 +307,14 @@ class Packer < Formula
   end
 
   def install
-    ENV["XC_OS"] = "darwin"
-    ENV["XC_ARCH"] = MacOS.prefer_64_bit? ? "amd64" : "386"
+    if OS.mac? then
+      ENV["XC_OS"] = "darwin"
+      ENV["XC_ARCH"] = MacOS.prefer_64_bit? ? "amd64" : "386"
+    else
+      ENV["XC_OS"] = "linux"
+      ENV["XC_ARCH"] = "amd64"
+    end
+
     ENV["GOPATH"] = buildpath
     # For the gox buildtool used by packer, which doesn't need to
     # get installed permanently
