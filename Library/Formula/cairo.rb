@@ -7,9 +7,9 @@ class Cairo < Formula
   revision 1
 
   bottle do
-    sha256 "0b6d60becf48ba6971ee9103e33ee8b9c96b394463483947657c9e45be28c566" => :el_capitan
-    sha256 "94d50f7d5c35559ba68f42049f3e4ac3eab1ff28c2adfad568495ec519acdbd3" => :yosemite
-    sha256 "d222f5a885755b21f56a8a141adf57f2e77b59f38529dcabbc04a57717ab692b" => :mavericks
+    sha256 "dd4dc801ee427ca2d2305403cacf747a51b58d80a2cd2ebf20a9623229830278" => :el_capitan
+    sha256 "3ac3b4af558425ff4c3a9799bfb24ab70e41210d63323195db4a5e6feb790497" => :yosemite
+    sha256 "15ec1a777186dc6af988c9d1de94449ce730ec64a1588d63f3a1b95222d75a8d" => :mavericks
   end
 
   keg_only :provided_pre_mountain_lion
