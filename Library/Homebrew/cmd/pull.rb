@@ -305,7 +305,7 @@ module Homebrew
       files << $1 if line =~ %r{^\+\+\+ b/(.*)}
     end
     files.each do |file|
-      if (tap.path/file).dirname == tap.formula_dir
+      if tap.formula_file?(file)
         formula_name = File.basename(file, ".rb")
         formulae << formula_name unless formulae.include?(formula_name)
       else
