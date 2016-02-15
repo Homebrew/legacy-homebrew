@@ -4,20 +4,20 @@ class Graphviz < Formula
   url "http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz"
   sha256 "81aa238d9d4a010afa73a9d2a704fc3221c731e1e06577c2ab3496bdef67859e"
 
-  head do
-    url "https://github.com/ellson/graphviz.git"
-
-    depends_on "automake" => :build
-    depends_on "autoconf" => :build
-    depends_on "libtool" => :build
-  end
-
   bottle do
     revision 1
     sha256 "cf69eac548a5c02aacc966706fc4a922176059414fbe453680aae4552fc019dc" => :el_capitan
     sha256 "6817a366691db684f2910dfbc7e20253915f82848ae09ef474a50ac67bf10582" => :yosemite
     sha256 "4361c01b46dc6061694e5f5a58c326efedad66ddeb7e1b063e53ff5ebb995d8a" => :mavericks
     sha256 "a8d9c8d59af854970bfffa16dc62cb584383887053a4ded39cfbbfdabac624bc" => :mountain_lion
+  end
+
+  head do
+    url "https://github.com/ellson/graphviz.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   # To find Ruby and Co.
