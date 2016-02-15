@@ -1,8 +1,8 @@
 class Pixman < Formula
   desc "Low-level library for pixel manipulation"
   homepage "http://cairographics.org/"
-  url "http://cairographics.org/releases/pixman-0.32.8.tar.gz"
-  sha256 "575ade17c40b47d391b02b4c0c63531c897b31e70046c96749514b7d8800d65d"
+  url "http://cairographics.org/releases/pixman-0.34.0.tar.gz"
+  sha256 "21b6b249b51c6800dc9553b65106e1e37d0e25df942c90531d4c3997aa20a88e"
 
   bottle do
     cellar :any
