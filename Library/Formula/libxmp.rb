@@ -1,14 +1,14 @@
 class Libxmp < Formula
   desc "C library for playback of module music (MOD, S3M, IT, etc)"
   homepage "http://xmp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.9/libxmp-4.3.9.tar.gz"
-  sha256 "8acdcc7c4b97558b36279ec26fd03d3c34b4fed20e06a84fa0ce667816c78a95"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.10/libxmp-4.3.10.tar.gz"
+  sha256 "c11c0bf27f3ba97051cd5e3e04d9b487febdc31cb2ce35e462d71fc580eaa5be"
 
   bottle do
     cellar :any
-    sha256 "157fc6129d524c09e4a579518ce188232c57289796bd12dbc2336903db96585e" => :yosemite
-    sha256 "1deb9f6fbcc61ed06c214689e28dd4eb928e0fc48d7b4f195957127c9a63f30f" => :mavericks
-    sha256 "404246eba6c82c4768baef86453a8317fb4ec911619cd74e391332675c62d45e" => :mountain_lion
+    sha256 "95a29a2efd115f4bebb9589c0e777f4cee8b0847ebceb4103f11f4f6bfa609d2" => :el_capitan
+    sha256 "22ee915a58a14bedf819c307533f1d67d471db3a07a7494ad6b8cfd65b7bd37e" => :yosemite
+    sha256 "11fb81b1cf895ef247d38313c0f1385e9d93a3b0d478a2186b83ad19816c8e7f" => :mavericks
   end
 
   # CC BY-NC-ND licensed set of five mods by Keith Baylis/Vim! for testing purposes

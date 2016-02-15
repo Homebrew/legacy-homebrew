@@ -1,26 +1,28 @@
 class ClangFormat < Formula
   desc "Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2015-09-01"
+  version "2016-01-05"
 
   stable do
-    url "http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_370/final/", :using => :svn
+    url "http://llvm.org/releases/3.7.1/llvm-3.7.1.src.tar.xz"
+    sha256 "be7794ed0cec42d6c682ca8e3517535b54555a3defabec83554dbc74db545ad5"
 
     resource "clang" do
-      url "http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_370/final/", :using => :svn
+      url "http://llvm.org/releases/3.7.1/cfe-3.7.1.src.tar.xz"
+      sha256 "56e2164c7c2a1772d5ed2a3e57485ff73ff06c97dff12edbeea1acc4412b0674"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.7.0/libcxx-3.7.0.src.tar.xz"
-      sha256 "c18f3c8333cd7e678c1424a57fe5e25efe740ca7caf62ac67152b4723f3ad08e"
+      url "http://llvm.org/releases/3.7.1/libcxx-3.7.1.src.tar.xz"
+      sha256 "357fbd4288ce99733ba06ae2bec6f503413d258aeebaab8b6a791201e6f7f144"
     end
   end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6d48fca1fda278f2c14fa0e0a4266ad495d88e848315db3ca4615f7d7b437e74" => :el_capitan
-    sha256 "7665ddb3a09455ed331d2aa99a3c51e3a9df2b71576fe1a46aa76523541c9b9b" => :yosemite
-    sha256 "b76c50d116f7e0a1f76ad89cfe3e43ac0ac36107f24179a45ab1b3b7afb7bbd8" => :mavericks
+    sha256 "54dbe7695d83c9dcc08cce26f400f5d348d94d91076d70f795c0e11fbfe8df36" => :el_capitan
+    sha256 "f908cd465f5d9dc1f1732986967480ffa15473d7c83bdfbbdb3e9e9442750f15" => :yosemite
+    sha256 "cb8537c2d51fb29caf8f11b35adcd14362fbf575dcb1c7fbab2879884e5ca1b3" => :mavericks
   end
 
   head do
@@ -31,8 +33,8 @@ class ClangFormat < Formula
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
-      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+      url "http://llvm.org/releases/3.7.1/libcxx-3.7.1.src.tar.xz"
+      sha256 "357fbd4288ce99733ba06ae2bec6f503413d258aeebaab8b6a791201e6f7f144"
     end
   end
 

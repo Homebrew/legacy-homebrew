@@ -162,13 +162,6 @@ _brew_bottle ()
 
 _brew_cleanup ()
 {
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    case "$cur" in
-    --*)
-        __brewcomp "--force"
-        return
-        ;;
-    esac
     __brew_complete_installed
 }
 
@@ -482,7 +475,7 @@ _brew_style ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--fix --homebrew-developer"
+        __brewcomp "--fix"
         return
         ;;
     esac

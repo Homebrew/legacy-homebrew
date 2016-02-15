@@ -5,41 +5,36 @@ class Saltstack < Formula
   # (URLs starting with https://github.com/saltstack/salt/releases/download)
   # github tag archives will report wrong version number
   # https://github.com/Homebrew/homebrew/issues/43493
-  url "https://github.com/saltstack/salt/releases/download/v2015.8.1/salt-2015.8.1.tar.gz"
-  sha256 "04133839b4632859ad696a40261d1d14b62902dbcaf7df2f9e5e926c89401c23"
+  url "https://github.com/saltstack/salt/releases/download/v2015.8.5/salt-2015.8.5.tar.gz"
+  sha256 "db395702f048ea384ccc440201c24d7044685977ae6a8588d0d0933246f0c673"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   bottle do
     cellar :any
-    sha256 "cd1f40175e7c95e044b0ece90ebd83ee637611c86c41813e48ffbadeadcc8116" => :el_capitan
-    sha256 "888570026198e1131493f7877df83fccdb71fa24ae04e027e7bb922468daa08f" => :yosemite
-    sha256 "78d6d500afbffbfced4e1d399e6cb81c14c1c6ab2b57ad0b4106e76362b83471" => :mavericks
+    sha256 "522c3968784dea001e8194c5e6a1156f0671c99e8cdf803d27c20eb9cec0b559" => :el_capitan
+    sha256 "8327b4ab5e1fdb07462915877babf16f34b9ee841f62d361751bbe60e2d2f5b0" => :yosemite
+    sha256 "20e5f30a0b5b76121341346e520742d297b17df5c679b310cf9815bf7ac84a77" => :mavericks
   end
 
+  depends_on "swig" => :build
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "zeromq"
   depends_on "libyaml"
   depends_on "openssl" # For M2Crypto
 
-  # For vendored Swig
-  depends_on "pcre" => :build
-
-  # Homebrew's swig breaks M2Crypto due to upstream's undermaintained status.
-  # https://github.com/swig/swig/issues/344
-  # https://github.com/martinpaljak/M2Crypto/issues/60
-  resource "swig304" do
-    url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.4/swig-3.0.4.tar.gz"
-    sha256 "410ffa80ef5535244b500933d70c1b65206333b546ca5a6c89373afb65413795"
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
   resource "m2crypto" do
-    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.3.tar.gz"
-    sha256 "6071bfc817d94723e9b458a010d565365104f84aa73f7fe11919871f7562ff72"
+    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.23.0.tar.gz"
+    sha256 "1ac3b6eafa5ff7e2a0796675316d7569b28aada45a7ab74042ad089d15a9567f"
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
-    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
   end
 
   resource "futures" do
@@ -68,8 +63,8 @@ class Saltstack < Formula
   end
 
   resource "pyzmq" do
-    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.7.0.tar.gz"
-    sha256 "77994f80360488e7153e64e5959dc5471531d1648e3a4bff14a714d074a38cc2"
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-15.2.0.tar.gz"
+    sha256 "2dafa322670a94e20283aba2a44b92134d425bd326419b68ad4db8d0831a26ec"
   end
 
   resource "msgpack-python" do
@@ -79,43 +74,42 @@ class Saltstack < Formula
 
   # Required by tornado
   resource "certifi" do
-    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.9.6.2.tar.gz"
-    sha256 "dc3a2b2d9d1033dbf27586366ae61b9d7c44d8c3a6f29694ffcbb0618ea7aea6"
+    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.11.20.1.tar.gz"
+    sha256 "30b0a7354a1b32caa8b4705d3f5fb2dadefac7ba4bf8af8a2176869f93e38f16"
   end
 
   # Required by tornado
   resource "backports.ssl_match_hostname" do
-    url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.4.0.2.tar.gz"
-    sha256 "07410e7fb09aab7bdaf5e618de66c3dac84e2e3d628352814dc4c37de321d6ae"
+    url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.5.0.1.tar.gz"
+    sha256 "502ad98707319f4a51fa2ca1c677bd659008d27ded9f6380c79e8932e38dcdf2"
+  end
+
+  # Required by tornado
+  resource "backports_abc" do
+    url "https://pypi.python.org/packages/source/b/backports_abc/backports_abc-0.4.tar.gz"
+    sha256 "8b3e4092ba3d541c7a2f9b7d0d9c0275b21c6a01c53a61c731eba6686939d0a5"
+  end
+
+  # Required by tornado
+  resource "singledispatch" do
+    url "https://pypi.python.org/packages/source/s/singledispatch/singledispatch-3.4.0.3.tar.gz"
+    sha256 "5b06af87df13818d14f08a028e42f566640aef80805c3b50c5056b086e3c2b9c"
   end
 
   resource "tornado" do
-    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.2.1.tar.gz"
-    sha256 "a16fcdc4f76b184cb82f4f9eaeeacef6113b524b26a2cb331222e4a7fa6f2969"
+    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.3.tar.gz"
+    sha256 "c9c2d32593d16eedf2cec1b6a41893626a2649b40b21ca9c4cac4243bde2efbf"
   end
 
   def install
-    resource("swig304").stage do
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{buildpath}/swig"
-      system "make"
-      system "make", "install"
-    end
-
-    ENV.prepend_path "PATH", buildpath/"swig/bin"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    rs = %w[requests futures pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python]
-    rs += %w[certifi backports.ssl_match_hostname tornado]
-    rs.each do |r|
-      resource(r).stage do
+    resources.each do |r|
+      r.stage do
+        # M2Crypto always has to be done individually as we have to inreplace OpenSSL path
+        inreplace "setup.py", "self.openssl = '/usr'", "self.openssl = '#{Formula["openssl"].opt_prefix}'" if r.name == "m2crypto"
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
-    end
-
-    # M2Crypto always has to be done individually as we have to inreplace OpenSSL path
-    resource("m2crypto").stage do
-      inreplace "setup.py", "self.openssl = '/usr'", "self.openssl = '#{Formula["openssl"].opt_prefix}'"
-      system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"

@@ -6,15 +6,18 @@ class Bro < Formula
   head "https://github.com/bro/bro.git"
 
   bottle do
-    sha256 "76bdc073c60c45112a9991eb38e21135f65270ba743e0c276cb7b6a8d2777c37" => :el_capitan
-    sha256 "0f83cada57fe774994035b1123adc8ddfbe3284f27cca3d4edc297bc4d179bdd" => :yosemite
-    sha256 "76f36a6ee0f9312c4111dda7c7fcce7c19dba514aef55f4fd6f593e50a157f5c" => :mavericks
+    revision 1
+    sha256 "a48cb079b41fe45aad9e4acf3f9d6ef774569cfa14b970a9e205c40882147848" => :el_capitan
+    sha256 "fb0a8b536d58745f837a3e5731e6c34c09dd4542ca33c523860c3c9aea6dea84" => :yosemite
+    sha256 "e0aab7ebf5af8aea92fadc1df19f2ad6d65a2a1a91f62ecd4a2c2146466b989c" => :mavericks
   end
 
   depends_on "cmake" => :build
   depends_on "swig" => :build
   depends_on "openssl"
   depends_on "geoip" => :recommended
+
+  conflicts_with "brotli", :because => "Both install a `bro` binary"
 
   def install
     system "./configure", "--prefix=#{prefix}",

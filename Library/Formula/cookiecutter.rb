@@ -1,15 +1,15 @@
 class Cookiecutter < Formula
   desc "Utility that creates projects from templates"
   homepage "https://github.com/audreyr/cookiecutter"
-  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-1.1.0.tar.gz"
-  sha256 "8a503098ae97825b51499b973849daecc34d4a2223a30b73bed0b7543a9f63dc"
+  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-1.3.0.tar.gz"
+  sha256 "80723bf1aeac1bec673df71c5372a9c470ba720592d3340a8c1285c3f5ecf669"
   head "https://github.com/audreyr/cookiecutter.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "14d0f7285d61dd830f75b49dc014c2de0ecf9d4d45d7fa6fed8f769c97dd2fac" => :el_capitan
-    sha256 "5cb2ed59a110c818146d767064a9bbc5c4eba222e55f433a50d9f7f2fe48e07a" => :yosemite
-    sha256 "25cf7a6487354a2a6c7d0a95d40992d4f8f187f1df3fbd93db43aec48a5f1888" => :mavericks
+    sha256 "b0bb020ba08b238feadc4c39c65319e80626eccd152c19744b30ee3232b3aeeb" => :el_capitan
+    sha256 "5fd3b8dcdd06f9e0cda10367bcafb2f3977df4a0f6602f45345b83e09afe0b80" => :yosemite
+    sha256 "73c7927254d144077df285fe7ca2212999ab92fd19cf997cbb4f08692fc21fa0" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -49,6 +49,21 @@ class Cookiecutter < Formula
     sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
+  resource "ruamel.yaml" do
+    url "https://pypi.python.org/packages/source/r/ruamel.yaml/ruamel.yaml-0.10.12.tar.gz"
+    sha256 "2bfd7d00c0ca859dbf1a7abca79969eedd25c76a976b7d40f94e1891a6e73f2c"
+  end
+
+  resource "ruamel.base" do
+      url "https://pypi.python.org/packages/source/r/ruamel.base/ruamel.base-1.0.0.tar.gz"
+      sha256 "c041333a0f0f00cd6593eb36aa83abb1a9e7544e83ba7a42aa7ac7476cee5cf3"
+  end
+
+  resource "ruamel.ordereddict" do
+      url "https://pypi.python.org/packages/source/r/ruamel.ordereddict/ruamel.ordereddict-0.4.9.tar.gz"
+      sha256 "7058c470f131487a3039fb9536dda9dd17004a7581bdeeafa836269a36a2b3f6"
+  end
+
   resource "whichcraft" do
     url "https://pypi.python.org/packages/source/w/whichcraft/whichcraft-0.1.1.tar.gz"
     sha256 "5df20674e0a90028b5633417510f0001b63bc0f345ab3cbb184dd4b221d125ec"
@@ -70,6 +85,6 @@ class Cookiecutter < Formula
   test do
     system "git", "clone", "https://github.com/audreyr/cookiecutter-pypackage.git"
     system bin/"cookiecutter", "--no-input", "cookiecutter-pypackage"
-    assert (testpath/"boilerplate").directory?
+    assert (testpath/"python_boilerplate").directory?
   end
 end

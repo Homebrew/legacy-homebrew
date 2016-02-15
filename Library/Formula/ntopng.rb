@@ -3,11 +3,12 @@ class Ntopng < Formula
   homepage "http://www.ntop.org/products/ntop/"
   url "https://downloads.sourceforge.net/project/ntop/ntopng/ntopng-2.2.tar.gz"
   sha256 "4fccfc9e9f333addcd3c957b4520c471117bc2df5655d6eabf328c7385fb255e"
+  revision 1
 
   bottle do
-    sha256 "e980bd3474e6ed3cf845e75e6ad5f7eabe9b30ed97ad3f3ddd0415a76b19f855" => :el_capitan
-    sha256 "7c99927ee3e313844d2f615bcf4632390a2328cb761384ae09410d14fe241edc" => :yosemite
-    sha256 "e6034a1029f47b440f7dd39c1ec41ab4b9e20cb5babae518456f3d1420d219e7" => :mavericks
+    sha256 "21c5efd12b1c2871d076bed943c23a337fa626503d793c570894da8c9a85a464" => :el_capitan
+    sha256 "6928cd197c059e95f481edb212dced7236cbc803dfef3c4284eed10191904b57" => :yosemite
+    sha256 "168c94b9f301f7103bc5e9493b62a158e314690960eb854e9b7305083f705406" => :mavericks
   end
 
   head do

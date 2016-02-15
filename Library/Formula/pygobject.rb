@@ -11,11 +11,11 @@ class Pygobject < Formula
     sha256 "0f9ac32001eae1ac15bca6cd81dcf3f27474bf3d16dd3dbcfccdd95e1a676349" => :mountain_lion
   end
 
+  option :universal
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on :python
-
-  option :universal
 
   # https://bugzilla.gnome.org/show_bug.cgi?id=668522
   patch do

@@ -22,9 +22,9 @@ class Uni2ascii < Formula
 
   test do
     # uni2ascii
-    assert_equal "0x00E9", shell_output("printf é | #{bin}/uni2ascii -q")
+    assert_equal "0x00E9", pipe_output("#{bin}/uni2ascii -q", "é")
 
     # ascii2uni
-    assert_equal "e\n", shell_output("printf 0x65 | #{bin}/ascii2uni -q")
+    assert_equal "e\n", pipe_output("#{bin}/ascii2uni -q", "0x65")
   end
 end

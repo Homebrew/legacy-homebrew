@@ -1,14 +1,13 @@
 class Mosquitto < Formula
   desc "Message broker implementing MQ telemetry transport protocol"
   homepage "https://mosquitto.org/"
-  url "https://mosquitto.org/files/source/mosquitto-1.4.5.tar.gz"
-  sha256 "b432e19fee0c549f4a0fb0e866d1b6a897b38dbf1ddfda92bb43e2a24f01df66"
+  url "https://mosquitto.org/files/source/mosquitto-1.4.8.tar.gz"
+  sha256 "d96eb5610e57cc3e273f4527d3f54358ab7711459941a9e64bc4d0a85c2acfda"
 
   bottle do
-    revision 1
-    sha256 "00390161ca1e2afc6dda57931c5f0adcc7c03bec8a706b3e6aab193c7e2ba0ee" => :el_capitan
-    sha256 "7aab82f99f359c047341e1c5e18ea00c81b4c58dff6de2754605dc2072a24a32" => :yosemite
-    sha256 "b2d6e9ba45f454b61d71929340e55c7851400264e42c94a77f82da34075af4d0" => :mavericks
+    sha256 "e675921d54e51a7cf9aca154d464cda5a65b64f9c68c18f5d028bc7305c0030c" => :el_capitan
+    sha256 "c2639beb4f71fa7520a017c888b7008bf3c3046343ef742f651dfa671157a132" => :yosemite
+    sha256 "5b86c30729f7d3fc6528564a8b92ac1765e50abb8b0fb59b6896bcf4505503f0" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -23,8 +22,9 @@ class Mosquitto < Formula
 
     system "cmake", ".", *args
     system "make", "install"
+  end
 
-    # Create the working directory
+  def post_install
     (var/"mosquitto").mkpath
   end
 

@@ -73,7 +73,7 @@ class DependencyExpansionTests < Homebrew::TestCase
   def test_merger_preserves_env_proc
     env_proc = stub
     dep = Dependency.new("foo", [], env_proc)
-    dep.stubs(:to_formula).returns(stub(:deps => []))
+    dep.stubs(:to_formula).returns(stub(:deps => [], :name => "foo"))
     @deps.replace [dep]
     assert_equal env_proc, Dependency.expand(@f).first.env_proc
   end
@@ -114,5 +114,21 @@ class DependencyExpansionTests < Homebrew::TestCase
   def test_deps_with_collection_argument
     assert_equal [@foo, @bar, @baz, @qux], @f.deps
     assert_equal [@bar, @baz], Dependency.expand(@f, [@bar, @baz])
+  end
+
+  def test_cyclic_dependency
+    foo = build_dep(:foo)
+    bar = build_dep(:bar, [], [foo])
+    foo.stubs(:to_formula).returns(stub(:deps => [bar], :name => "foo"))
+    f = stub(:name => "f", :deps => [foo, bar])
+    assert_nothing_raised { Dependency.expand(f) }
+  end
+
+  def test_clean_expand_stack
+    foo = build_dep(:foo)
+    foo.stubs(:to_formula).raises(FormulaUnavailableError, "foo")
+    f = stub(:name => "f", :deps => [foo])
+    assert_raises(FormulaUnavailableError) { Dependency.expand(f) }
+    assert_empty Dependency.instance_variable_get(:@expand_stack)
   end
 end

@@ -1,13 +1,13 @@
 class Goaccess < Formula
   desc "Log analyzer and interactive viewer for the Apache Webserver"
   homepage "http://goaccess.io/"
-  url "http://tar.goaccess.io/goaccess-0.9.6.tar.gz"
-  sha256 "e848064c8555f95e770aa1c0475c784c094b42e4ae53ff852975f6498d8f649a"
+  url "http://tar.goaccess.io/goaccess-0.9.7.tar.gz"
+  sha256 "9427e6425cb71638d08fcdc45d63190c45ea5a10e28a03def24a9b8bdd584e34"
 
   bottle do
-    sha256 "b662cc46389aa92c3faeb233c03ed34f262e4c23fb8485245b63b10d4e8debe6" => :el_capitan
-    sha256 "93be499907187b525b43c5c81846f011fd1a13807298730e14a0519909e68342" => :yosemite
-    sha256 "9d661644f8617be774cf6a9fca9d363756604f4abb2133761ee798dd8216a062" => :mavericks
+    sha256 "e5df396714dfff7947bb94d2f2c948d21e08330ca8f1722e357b21f70e88167d" => :el_capitan
+    sha256 "e4d052205467c653c2596e5dbec8582559e7da940fa7b611a41b6b157fece804" => :yosemite
+    sha256 "d1bcf0796d143f80ca19a1dc599ef91e1d29e9814e4216dea840f71d30f2c701" => :mavericks
   end
 
   head do
@@ -39,7 +39,7 @@ class Goaccess < Formula
   end
 
   test do
-    require "json"
+    require "utils/json"
 
     (testpath/"access.log").write <<-EOS.undent
       127.0.0.1 - - [04/May/2015:15:48:17 +0200] "GET / HTTP/1.1" 200 612 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36"
@@ -47,6 +47,6 @@ class Goaccess < Formula
 
     output = shell_output("#{bin}/goaccess --time-format=%T --date-format=%d/%b/%Y --log-format='%h %^[%d:%t %^] \"%r\" %s %b \"%R\" \"%u\"' -f access.log -o json 2>/dev/null")
 
-    assert_equal "Chrome", JSON.parse(output)["browsers"][0]["data"]
+    assert_equal "Chrome", Utils::JSON.load(output)["browsers"][0]["data"]
   end
 end

@@ -1,8 +1,8 @@
 class Pyenv < Formula
   desc "Python version management"
   homepage "https://github.com/yyuu/pyenv"
-  url "https://github.com/yyuu/pyenv/archive/v20151210.tar.gz"
-  sha256 "3d251d14579a9f8f60beb45fd36c376e75d3215c7614ec84ef24fda5614a9625"
+  url "https://github.com/yyuu/pyenv/archive/v20160202.tar.gz"
+  sha256 "6accdd2fd852663f543ba5d5c7b5884eb6185396fe5dd4665b2f3447d38573f3"
   head "https://github.com/yyuu/pyenv.git"
 
   bottle :unneeded
@@ -10,6 +10,7 @@ class Pyenv < Formula
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]
   depends_on "openssl" => :recommended
+  depends_on "readline" => [:recommended, :run]
 
   def install
     inreplace "libexec/pyenv", "/usr/local", HOMEBREW_PREFIX

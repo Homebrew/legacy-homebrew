@@ -4,16 +4,16 @@ class Nomad < Formula
   desc "Distributed, Highly Available, Datacenter-Aware Scheduler"
   homepage "https://www.nomadproject.io"
   url "https://github.com/hashicorp/nomad.git",
-    :tag => "v0.1.0",
-    :revision => "520763c0715ee88b6571db840e62fab186d7fe59"
+    :tag => "v0.2.3",
+    :revision => "2977583c78e622ab257ed323ec1bc6cd8b8120dd"
 
   head "https://github.com/hashicorp/nomad.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "59e7bc4a26dde1329cfa4a9f6402cda6581ebecf7df3ac272a3a8f0a7feafcf7" => :el_capitan
-    sha256 "82038862d6930db7cfebd3caddfc49d4d212670dc6e6f4bd9e3503ba17e86bc7" => :yosemite
-    sha256 "b7337b785c022cb651cd85d5cecdc16398a0bd2e8cc87edf42d5dc61ad6dbb63" => :mavericks
+    sha256 "59cdb99e953fef055974153941688fc53c0552dd6595d104904013f4e108f00b" => :el_capitan
+    sha256 "1958ec999a7ac82b9883b37ef667eaae9dff6c4ed22d5a1298605f8c5426c3d9" => :yosemite
+    sha256 "34d09de2484828cb72d53a98f8ea4f5fd7d77eb26ceacef9d21c1fffaf29ac1d" => :mavericks
   end
 
   depends_on "go" => :build
@@ -33,15 +33,9 @@ class Nomad < Formula
 
     Language::Go.stage_deps resources, gopath/"src"
 
-    # explicit install of shirou/gopsutil/cpu to work around error message:
-    #   cannot load DWARF output from $WORK/github.com/shirou/gopsutil/cpu/_obj//_cgo_.o:
-    #   decoding dwarf section info at offset 0x0: too short
-    cd gopath/"src/github.com/shirou/gopsutil/cpu" do
-      system "go", "install"
-    end
-
     cd gopath/"src/github.com/hashicorp/nomad" do
-      system "make"
+      system "make", "bootstrap"
+      system "make", "dev"
       bin.install "bin/nomad"
     end
   end
@@ -51,7 +45,7 @@ class Nomad < Formula
       pid = fork do
         exec "#{bin}/nomad", "agent", "-dev"
       end
-      sleep 5
+      sleep 10
       ENV.append "NOMAD_ADDR", "http://127.0.0.1:4646"
       system "#{bin}/nomad", "node-status"
     ensure

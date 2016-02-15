@@ -1,4 +1,7 @@
 require "testing_env"
+require "formula"
+require "formula_installer"
+require "bottles"
 
 class FormularyTest < Homebrew::TestCase
   def test_class_naming
@@ -19,7 +22,7 @@ class FormularyFactoryTest < Homebrew::TestCase
     @path.write <<-EOS.undent
       class #{Formulary.class_s(@name)} < Formula
         url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
-        sha256 "1dfb13ce0f6143fe675b525fc9e168adb2215c5d5965c9f57306bb993170914f"
+        sha256 TESTBALL_SHA256
 
         bottle do
           cellar :any_skip_relocation
@@ -69,7 +72,7 @@ class FormularyFactoryTest < Homebrew::TestCase
   end
 
   def test_factory_from_alias
-    alias_dir = HOMEBREW_LIBRARY/"Aliases"
+    alias_dir = CoreFormulaRepository.instance.alias_dir
     alias_dir.mkpath
     FileUtils.ln_s @path, alias_dir/"foo"
     assert_kind_of Formula, Formulary.factory("foo")

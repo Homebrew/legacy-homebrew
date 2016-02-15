@@ -3,15 +3,16 @@ require "language/go"
 class Vultr < Formula
   desc "Command-line tool for Vultr"
   homepage "https://jamesclonk.github.io/vultr"
-  url "https://github.com/JamesClonk/vultr/archive/v1.5.tar.gz"
-  sha256 "ca373d2748268b822e4ad5aeeb4ee8150f8c55c2d761e6c2c8913657469dcca5"
+  url "https://github.com/JamesClonk/vultr/archive/v1.6.tar.gz"
+  sha256 "b2dcd10704885687d84d118ebc5bdb75f2a6ab0aef654cc018929535ccf2f7ce"
+
   head "https://github.com/JamesClonk/vultr.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6ad75b4be6619e001a53b462cb1a0ecdb3fb7f973ec7d15259c453b7b4a1e5be" => :el_capitan
-    sha256 "ea65646bb2eb938867e4089b952029c19fa2fc5f57af73a66a5dabc0e5886d92" => :yosemite
-    sha256 "bad9639a37e7b95d6665bfed524b2e2c57389dbe1b20c67f7341494b4bc0a4a0" => :mavericks
+    sha256 "e6d2aa92591f913f038fa1a818259ad34512e1cdcda3f8a26daae937a4cf7ab1" => :el_capitan
+    sha256 "fbf03a9f495606e51fae2a9ff0ef8bfb0a625a90d218b291c1ad95fe0331f6a8" => :yosemite
+    sha256 "2dd4d7edd556af34ad5b5bdfa0b74c40a68d1fd3c3f4b25bee73417747e5d88d" => :mavericks
   end
 
   depends_on "go" => :build

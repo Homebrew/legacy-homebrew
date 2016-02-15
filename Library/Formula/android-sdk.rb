@@ -15,6 +15,8 @@ class AndroidSdk < Formula
     sha256 "4dacf5677233c1f227d22eccc09717e1b0fc16a7a9ec0f78a95e156441c459d7" => :mavericks
   end
 
+  depends_on :macos => :mountain_lion
+
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 

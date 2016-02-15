@@ -3,11 +3,12 @@ class Openconnect < Formula
   homepage "http://www.infradead.org/openconnect.html"
   url "ftp://ftp.infradead.org/pub/openconnect/openconnect-7.06.tar.gz"
   sha256 "facf695368dc4537a6a30e2147be90b1d77ee3cb2d269eaef070b6d9ddab70f2"
+  revision 1
 
   bottle do
-    sha256 "7d514ce407dee1972abf23a51ff2acfe7d72bfde9854639bd6097bb39e6ab058" => :yosemite
-    sha256 "1d83fa61da006086115e7d0b2e4ce04577c3812b10e553aa9b1b33b7d450f1de" => :mavericks
-    sha256 "3d59f71840eac1512237bcda0668c38f51fff38d7a905011fcea2db94f7b5cda" => :mountain_lion
+    sha256 "2ef2b744defa276e570e26670f0b68e4fa5082930120f72e2fc7df53ab0e8c21" => :el_capitan
+    sha256 "de85876d8ab21f85179117585c273d7fffa471532fea24f2b7080998175f3840" => :yosemite
+    sha256 "eeabad2f02c28d233fef47235e9518a293bc93eb911594936976fbd5181a5305" => :mavericks
   end
 
   head do

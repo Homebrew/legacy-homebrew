@@ -1,7 +1,8 @@
 class Libssh2 < Formula
   desc "C library implementing the SSH2 protocol"
   homepage "http://www.libssh2.org/"
-  url "http://www.libssh2.org/download/libssh2-1.6.0.tar.gz"
+  url "https://github.com/libssh2/libssh2/releases/download/libssh2-1.6.0/libssh2-1.6.0.tar.gz"
+  mirror "http://www.libssh2.org/download/libssh2-1.6.0.tar.gz"
   sha256 "5a202943a34a1d82a1c31f74094f2453c207bf9936093867f41414968c8e8215"
 
   option "with-libressl", "build with LibreSSL instead of OpenSSL"

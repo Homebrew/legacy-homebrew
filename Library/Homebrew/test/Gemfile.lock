@@ -1,24 +1,50 @@
-GEM
-  remote: https://rubygems.org/
+GIT
+  remote: https://github.com/Homebrew/simplecov.git
+  revision: 4c7642496e902ba9028a74500971e40b3e3aaa29
+  branch: tracked-files-root-fix
   specs:
-    docile (1.1.5)
-    json (1.8.3)
-    metaclass (0.0.4)
-    minitest (5.7.0)
-    mocha (1.1.0)
-      metaclass (~> 0.0.1)
-    rake (10.4.2)
-    simplecov (0.10.0)
+    simplecov (0.11.2)
       docile (~> 1.1.0)
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    coveralls (0.8.10)
+      json (~> 1.8)
+      rest-client (>= 1.6.8, < 2)
+      simplecov (~> 0.11.0)
+      term-ansicolor (~> 1.3)
+      thor (~> 0.19.1)
+      tins (~> 1.6.0)
+    docile (1.1.5)
+    json (1.8.3)
+    metaclass (0.0.4)
+    mime-types (1.25.1)
+    minitest (5.8.4)
+    mocha (1.1.0)
+      metaclass (~> 0.0.1)
+    rake (10.5.0)
+    rest-client (1.6.9)
+      mime-types (~> 1.16)
     simplecov-html (0.10.0)
+    term-ansicolor (1.3.2)
+      tins (~> 1.0)
+    thor (0.19.1)
+    tins (1.6.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  coveralls (= 0.8.10)
+  mime-types (~> 1.16)
   minitest (~> 5.3)
   mocha (~> 1.1)
   rake (~> 10.3)
-  simplecov (~> 0.10.0)
+  rest-client (= 1.6.9)
+  simplecov (= 0.11.2)!
+
+BUNDLED WITH
+   1.11.2

@@ -1,21 +1,20 @@
 class Mesos < Formula
   desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.25.0/mesos-0.25.0.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.25.0/mesos-0.25.0.tar.gz"
-  sha256 "81ee9e722b66f52d8f3270a76eecea60fdcab48d6f7dba51ecce592293124b75"
-  revision 1
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.27.0/mesos-0.27.0.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.27.0/mesos-0.27.0.tar.gz"
+  sha256 "d5f356ad30ba661bc65af34de3cc54176b0ac90f2c58ad02b802a10e1bab0d55"
 
   bottle do
-    sha256 "9cc964e98ca0e3f2a1a0a9dcc34019aa8beb14e68b626fdab9940e8b73c0dc2d" => :el_capitan
-    sha256 "9db0716715872af1372e178a782dba74fb593719589aec71b16e11d5fec43490" => :yosemite
-    sha256 "7837ef77b17f87ba10bccf659c35fd161271e308af33fadd36ef103806a73a30" => :mavericks
+    sha256 "fb2e299f30fab28ae9c0d4e39cfa87bf20082ed3e70b0a49781ae5403e18d93d" => :el_capitan
+    sha256 "bfb24dabfe7c8c5594e7af76ae1a203968eb52a4cb0c8c2dd025fd840537fb67" => :yosemite
+    sha256 "e22ce22447decf39889e567ab2ad80eca9322e387c6bbc0ea3f937bd82167151" => :mavericks
   end
 
   depends_on :java => "1.7+"
   depends_on :macos => :mountain_lion
-  depends_on "maven" => :build
   depends_on :apr => :build
+  depends_on "maven" => :build
   depends_on "subversion"
 
   resource "boto" do
@@ -93,12 +92,13 @@ class Mesos < Formula
               "<url>http://mesos.apache.org</url>",
               maven_javadoc_patch
 
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--with-svn=#{Formula["subversion"].opt_prefix}",
-           ]
+    args = %W[
+      --prefix=#{prefix}
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --with-svn=#{Formula["subversion"].opt_prefix}
+    ]
 
     unless MacOS::CLT.installed?
       args << "--with-apr=#{Formula["apr"].opt_prefix}/libexec"

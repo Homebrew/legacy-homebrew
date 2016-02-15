@@ -1,7 +1,7 @@
 class GstValidate < Formula
   desc "Tools to validate GstElements from GStreamer"
-  homepage "http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-validate/html/"
-  url "http://gstreamer.freedesktop.org/src/gst-validate/gst-validate-1.6.0.tar.xz"
+  homepage "https://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-validate/html/"
+  url "https://gstreamer.freedesktop.org/src/gst-validate/gst-validate-1.6.0.tar.xz"
   sha256 "3baef8c7b5363293c20314a30afd54629849fc597669991fdcf92303602dafee"
 
   bottle do
@@ -11,7 +11,7 @@ class GstValidate < Formula
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gst-devtools"
+    url "https://anongit.freedesktop.org/git/gstreamer/gst-devtools.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

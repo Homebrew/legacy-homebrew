@@ -6,14 +6,23 @@ class Scrypt < Formula
 
   bottle do
     cellar :any
-    sha256 "2be3e6d53234791bcb7e22b5c7824425259238607ec94c20537a3e8d77865113" => :yosemite
-    sha256 "fffd73cea8ac255b12dfc2ed1a5445f0053e5d8ec0d1f9da55e3a5c64b9f27fd" => :mavericks
-    sha256 "451f8217e0d27b265b6aa7f9752488b7c4986d5dce77e394aeae35361e839bd7" => :mountain_lion
+    revision 1
+    sha256 "a81147625da927a61035f18d320a56d4b7e0055cc3ff0640dde0e6f2c0cada9d" => :el_capitan
+    sha256 "ad6fee3523c53b2f323b896d60de404c1358459ceffdf8a9014967b045863051" => :yosemite
+    sha256 "fc7272e275fd43e3c5a63bf00294564823a944639ab60ed10aaae40cf2a67f8a" => :mavericks
+  end
+
+  head do
+    url "https://github.com/Tarsnap/scrypt.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
   end
 
   depends_on "openssl"
 
   def install
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end

@@ -107,6 +107,12 @@ class DependencyCollectorTests < Homebrew::TestCase
     assert_instance_of GitRequirement, @d.add(resource)
   end
 
+  def test_resource_dep_7z_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.7z")
+    assert_equal Dependency.new("p7zip", [:build]), @d.add(resource)
+  end
+
   def test_resource_dep_gzip_url
     resource = Resource.new
     resource.url("http://example.com/foo.tar.gz")
@@ -117,6 +123,30 @@ class DependencyCollectorTests < Homebrew::TestCase
     resource = Resource.new
     resource.url("http://example.com/foo.tar.xz")
     assert_equal Dependency.new("xz", [:build]), @d.add(resource)
+  end
+
+  def test_resource_dep_lz_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.lz")
+    assert_equal Dependency.new("lzip", [:build]), @d.add(resource)
+  end
+
+  def test_resource_dep_lha_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.lha")
+    assert_equal Dependency.new("lha", [:build]), @d.add(resource)
+  end
+
+  def test_resource_dep_lzh_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.lzh")
+    assert_equal Dependency.new("lha", [:build]), @d.add(resource)
+  end
+
+  def test_resource_dep_rar_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.rar")
+    assert_equal Dependency.new("unrar", [:build]), @d.add(resource)
   end
 
   def test_resource_dep_raises_for_unknown_classes

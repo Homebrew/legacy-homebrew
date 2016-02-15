@@ -1,4 +1,5 @@
 require "formula"
+require "options"
 
 module Homebrew
   def options
@@ -23,13 +24,5 @@ module Homebrew
         puts
       end
     end
-  end
-
-  def dump_options_for_formula(f)
-    f.options.sort_by(&:flag).each do |opt|
-      puts "#{opt.flag}\n\t#{opt.description}"
-    end
-    puts "--devel\n\tInstall development version #{f.devel.version}" if f.devel
-    puts "--HEAD\n\tInstall HEAD version" if f.head
   end
 end

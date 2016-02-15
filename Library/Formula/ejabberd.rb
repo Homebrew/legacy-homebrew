@@ -132,7 +132,8 @@ class Ejabberd < Formula
     depends_on "autoconf" => :build
 
     resource "cache_tab" do
-      url "https://github.com/processone/cache_tab.git"
+      url "https://github.com/processone/cache_tab.git",
+        :tag => "1.0.1", :revision => "26caea06c72c2117ca54d04beedb5b49a45af1a8"
     end
 
     resource "p1_tls" do
@@ -192,7 +193,7 @@ class Ejabberd < Formula
     end
 
     resource "rebar_elixir_plugin" do
-      url "https://github.com/yrashk/rebar_elixir_plugin.git"
+      url "https://github.com/processone/rebar_elixir_plugin.git"
     end
 
     resource "elixir" do
@@ -245,9 +246,18 @@ class Ejabberd < Formula
       ENV.append %w[CFLAGS LDFLAGS], "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
+    deps_file = build.head? ? "rebar.config" : "rebar.config.script"
+
     resources.each do |r|
       r.fetch
-      inreplace "rebar.config.script", /#{r.url.sub(".git", "")}\.?g?i?t?/, r.cached_download
+      r.url =~ %r{github\.com/([^/]+)/(.+?)\.git$}
+      user = $1
+      repo = $2
+
+      inreplace deps_file,
+        # match https://github.com, git://github.com, and git@github
+        %r{(?:https://|git(?:://|@))github\.com[:/]#{user}/#{repo}(?:\.git)?},
+        r.cached_download
     end
 
     args = ["--prefix=#{prefix}",

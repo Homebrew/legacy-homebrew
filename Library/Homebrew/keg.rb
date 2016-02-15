@@ -134,12 +134,32 @@ class Keg
     path.abv
   end
 
+  def disk_usage
+    path.disk_usage
+  end
+
+  def file_count
+    path.file_count
+  end
+
   def directory?
     path.directory?
   end
 
   def exist?
     path.exist?
+  end
+
+  def empty_installation?
+    Pathname.glob("#{path}/**/*") do |file|
+      next if file.directory?
+      basename = file.basename.to_s
+      next if Metafiles.copy?(basename)
+      next if %w[.DS_Store INSTALL_RECEIPT.json].include?(basename)
+      return false
+    end
+
+    true
   end
 
   def /(other)
@@ -302,6 +322,8 @@ class Keg
       when /^icons\// then :mkpath
       when /^zsh/ then :mkpath
       when /^fish/ then :mkpath
+      # Lua, Lua51, Lua53 all need the same handling.
+      when /^lua\// then :mkpath
       else :link
       end
     end

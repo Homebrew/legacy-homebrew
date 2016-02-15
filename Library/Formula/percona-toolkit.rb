@@ -1,20 +1,13 @@
 class PerconaToolkit < Formula
   desc "Percona Toolkit for MySQL"
   homepage "https://www.percona.com/software/percona-toolkit/"
-  url "https://www.percona.com/downloads/percona-toolkit/2.2.14/tarball/percona-toolkit-2.2.14.tar.gz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/p/percona-toolkit/percona-toolkit_2.2.14.orig.tar.gz"
-  sha256 "dd02bedef65536321af6ad3fc6fd8f088e60830267daa613189a14c10ad3a0d0"
-  revision 1
+  url "https://www.percona.com/downloads/percona-toolkit/2.2.16/tarball/percona-toolkit-2.2.16.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/p/percona-toolkit/percona-toolkit_2.2.16.orig.tar.gz"
+  sha256 "8bfff438078a8d8b939d99104f8faa349d5cfaed46a47f3913e902df73ee654a"
 
   head "lp:percona-toolkit", :using => :bzr
 
-  bottle do
-    cellar :any
-    revision 1
-    sha256 "d371749d14ea3cac95262bbbe0566081b801573b7778039d62778b5273d4ed81" => :el_capitan
-    sha256 "ae886b3bf78c6bcb37724e1bc569d76a6f9159701848c050619f96c29f45bb9c" => :yosemite
-    sha256 "735e791e9f13df2a8f800dbf95fab147f0de458e9c32337ada5f01420ae05daf" => :mavericks
-  end
+  bottle :disable, "To use the user's database of choice."
 
   depends_on :mysql
   depends_on "openssl"

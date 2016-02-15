@@ -19,21 +19,23 @@ class Gdb < Formula
   sha256 "25c72f3d41c7c8554d61cacbeacd5f40993276d2ccdec43279ac546e3993d6d5"
 
   bottle do
-    sha256 "380d33fdf8f3c0716e3b9307e60cde1d1a66d2cfebdd5306949c483c870f8a30" => :el_capitan
-    sha256 "2953ed51376554c7147dc4a01fba9f76ed3c8e6fa45bf9ab006159429d3b7780" => :yosemite
-    sha256 "1c48758042eed1ba9357fdb98b49b5b819555d664f9bb876e35c8bbaad58b0ec" => :mavericks
+    revision 1
+    sha256 "c465704eadcac21448ca0308bf5236ac85621dc88c293262433e0779b97d8e1d" => :el_capitan
+    sha256 "d90d5fd1152b6552887acae5a096d1caa76097069862dbb75c69af813b4900f0" => :yosemite
+    sha256 "5d9bd02c50846d289629d8ec503a41d84aeb4bc9df638c6c66d98e16263d089e" => :mavericks
   end
 
-  option "with-brewed-python", "Use the Homebrew version of Python"
+  deprecated_option "with-brewed-python" => "with-python"
+
+  option "with-python", "Use the Homebrew version of Python; by default system Python is used"
   option "with-version-suffix", "Add a version suffix to program"
   option "with-all-targets", "Build with support for all targets"
 
   depends_on "pkg-config" => :build
-  depends_on "readline"
-  depends_on "xz"
+  depends_on "python" => :optional
   depends_on "guile" => :optional
 
-  if build.with? "brewed-python"
+  if build.with? "python"
     depends_on UniversalBrewedPython
   end
 
@@ -42,14 +44,12 @@ class Gdb < Formula
       "--prefix=#{prefix}",
       "--disable-debug",
       "--disable-dependency-tracking",
-      "--with-system-readline",
-      "--with-lzma",
     ]
 
     args << "--with-guile" if build.with? "guile"
     args << "--enable-targets=all" if build.with? "all-targets"
 
-    if build.with? "brewed-python"
+    if build.with? "python"
       args << "--with-python=#{HOMEBREW_PREFIX}"
     else
       args << "--with-python=/usr"

@@ -6,13 +6,14 @@ class Pldebugger < Formula
       :revision => "85d7b3b2821301e182d5974d9e6f353d7a241eff"
   bottle do
     cellar :any_skip_relocation
-    sha256 "2f2b2a88b1501f0285350d4034b02ee799bb0ca2b20f81e8063098c134504ff0" => :el_capitan
-    sha256 "86a9c396d0d5e3efbf55b2071e25a0c35e0d35177d3d0c2077f686fc42dad27e" => :yosemite
-    sha256 "cb047f3816d9643777ed5adedf38a68f4924ea29c0d29c2866185eb3aae5937f" => :mavericks
+    sha256 "49d3001cc9b9f4c755d1753dcc7c94a3eaede8fb45fb14adbedee31737ca0c39" => :el_capitan
+    sha256 "e58d5c816c431a633c72f20cb2499e8acf8864a86ec61f7166e95fd3ff2e5ec3" => :yosemite
+    sha256 "8f0608c035891f52c8d12e26d21147b0e4ee9c97f838fd8640b3348dbfa272cb" => :mavericks
   end
 
   version "1.0" # See default_version field in pldbgapi.control
   sha256 "2bb8e27aa8f8434a4861fdbc70adb9cb4b47e1dfe472910d62d6042cb80a2ee1"
+  revision 1
 
   head "http://git.postgresql.org/git/pldebugger.git"
 

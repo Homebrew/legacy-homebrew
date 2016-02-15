@@ -1,15 +1,14 @@
 class LibjsonRpcCpp < Formula
   desc "C++ framework for json-rpc"
   homepage "https://github.com/cinemast/libjson-rpc-cpp"
-  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v0.5.0.tar.gz"
-  sha256 "e6d8d6c20517bb38eba9dba7f372e0a95432c4cbf55ec9b136ba841faa0a6d99"
+  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v0.6.0.tar.gz"
+  sha256 "98baf15e51514339be54c01296f0a51820d2d4f17f8c9d586f1747be1df3290b"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "2aca5b29db5d3e191213780a6c8d811c78f5581bc8b4a9e28afe21170063d4a4" => :el_capitan
-    sha256 "ada489878d1c4773d8c18cd491e978efebe5c609a46a7c09372490122bde4cba" => :yosemite
-    sha256 "ae843e663ba29a0a2a26a1b2bee813816624781a2fe667a2df5e31883e4d7d02" => :mavericks
+    sha256 "b80a2f4618128083bbb25df7eb6b541eca7ae740ddbd931cd5e2067cc4366d6b" => :el_capitan
+    sha256 "fd3c31a721cdb7bae7390e063f90a7979a3e0021ac1df1a2ed16957f2971ff00" => :yosemite
+    sha256 "6daf0f22b4917f78226424660e28da52a6aec83183b604ebe94e35bc2a593e95" => :mavericks
   end
 
   depends_on "cmake" => :build

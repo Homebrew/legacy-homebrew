@@ -1,9 +1,9 @@
 class Riak < Formula
   desc "Distributed database"
   homepage "http://basho.com/riak/"
-  url "https://s3.amazonaws.com/downloads.basho.com/riak/2.1/2.1.2/osx/10.8/riak-2.1.2-OSX-x86_64.tar.gz"
-  version "2.1.2"
-  sha256 "790435ad2293fd31c06f925098568f7ea7d16f6475f9cbc873dffc9a65a4725a"
+  url "https://s3.amazonaws.com/downloads.basho.com/riak/2.1/2.1.3/osx/10.8/riak-2.1.3-OSX-x86_64.tar.gz"
+  version "2.1.3"
+  sha256 "a0408d83c89504ef987bd8b34e7b3bb14459c35359ebf1adfb2a1634306c2e80"
 
   bottle :unneeded
 

@@ -1,4 +1,5 @@
 require "formula"
+require "formula_versions"
 require "utils"
 require "extend/ENV"
 require "formula_cellar_checks"
@@ -185,6 +186,7 @@ class FormulaAuditor
       [/^  keg_only/,                      "keg_only"],
       [/^  option/,                        "option"],
       [/^  depends_on/,                    "depends_on"],
+      [/^  (go_)?resource/,                "resource"],
       [/^  def install/,                   "install method"],
       [/^  def caveats/,                   "caveats method"],
       [/^  test do/,                       "test block"],
@@ -201,6 +203,13 @@ class FormulaAuditor
       end
     end
     present.map!(&:last)
+    if present.include?("stable block")
+      %w[url checksum mirror].each do |component|
+        if present.include?(component)
+          problem "`#{component}` should be put inside `stable block`"
+        end
+      end
+    end
     if present.include?("head") && present.include?("head block")
       problem "Should not have both `head` and `head do`"
     end
@@ -216,17 +225,12 @@ class FormulaAuditor
       end
     end
 
-    if Object.const_defined?("GithubGistFormula") && formula.class < GithubGistFormula
-      problem "GithubGistFormula is deprecated, use Formula instead"
+    classes = %w[GithubGistFormula ScriptFileFormula AmazonWebServicesFormula]
+    klass = classes.find do |c|
+      Object.const_defined?(c) && formula.class < Object.const_get(c)
     end
 
-    if Object.const_defined?("ScriptFileFormula") && formula.class < ScriptFileFormula
-      problem "ScriptFileFormula is deprecated, use Formula instead"
-    end
-
-    if Object.const_defined?("AmazonWebServicesFormula") && formula.class < AmazonWebServicesFormula
-      problem "AmazonWebServicesFormula is deprecated, use Formula instead"
-    end
+    problem "#{klass} is deprecated, use Formula instead" if klass
   end
 
   # core aliases + tap alias names + tap alias full name
@@ -302,7 +306,7 @@ class FormulaAuditor
         end
 
         if dep_f.oldname && dep.name.split("/").last == dep_f.oldname
-          problem "Dependency '#{dep.name}' was renamed; use newname '#{dep_f.name}'."
+          problem "Dependency '#{dep.name}' was renamed; use new name '#{dep_f.name}'."
         end
 
         if @@aliases.include?(dep.name)
@@ -407,7 +411,7 @@ class FormulaAuditor
       problem "Description shouldn't start with an indefinite article (#{$1})"
     end
 
-    if desc =~ /^#{formula.name}\s/i
+    if desc.downcase.start_with? "#{formula.name} "
       problem "Description shouldn't include the formula name"
     end
   end
@@ -508,9 +512,9 @@ class FormulaAuditor
     end
 
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
-    if (metadata["forks_count"] < 10) && (metadata["subscribers_count"] < 10) &&
-       (metadata["stargazers_count"] < 20)
-      problem "GitHub repository not notable enough (<10 forks, <10 watchers and <20 stars)"
+    if (metadata["forks_count"] < 20) && (metadata["subscribers_count"] < 20) &&
+       (metadata["stargazers_count"] < 50)
+      problem "GitHub repository not notable enough (<20 forks, <20 watchers and <50 stars)"
     end
 
     if Date.parse(metadata["created_at"]) > (Date.today - 30)
@@ -572,6 +576,25 @@ class FormulaAuditor
     end
   end
 
+  def audit_revision
+    return unless formula.tap # skip formula not from core or any taps
+    return unless formula.tap.git? # git log is required
+
+    fv = FormulaVersions.new(formula, :max_depth => 10)
+    revision_map = fv.revision_map("origin/master")
+    if (revisions = revision_map[formula.version]).any?
+      problem "revision should not decrease" if formula.revision < revisions.max
+    elsif formula.revision != 0
+      if formula.stable
+        if revision_map[formula.stable.version].empty? # check stable spec
+          problem "revision should be removed"
+        end
+      else # head/devel-only formula
+        problem "revision should be removed"
+      end
+    end
+  end
+
   def audit_legacy_patches
     return unless formula.respond_to?(:patches)
     legacy_patches = Patch.normalize_legacy_patches(formula.patches).grep(LegacyPatch)
@@ -614,7 +637,7 @@ class FormulaAuditor
       problem "\"Formula.factory(name)\" is deprecated in favor of \"Formula[name]\""
     end
 
-    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec\}/npm/bin]
+    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec\}/npm/bin] && formula.name !~ /^kibana(\d{2})?$/
       need_npm = "\#{Formula[\"node\"].opt_libexec\}/npm/bin"
       problem <<-EOS.undent
        Please add ENV.prepend_path \"PATH\", \"#{need_npm}"\ to def install
@@ -790,9 +813,10 @@ class FormulaAuditor
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
-    if line =~ /MACOS_FULL_VERSION/
-      problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
-    end
+    # TODO: comment out this after core code and formulae separation.
+    # if line =~ /MACOS_FULL_VERSION/
+    #   problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
+    # end
 
     cats = %w[leopard snow_leopard lion mountain_lion].join("|")
     if line =~ /MacOS\.(?:#{cats})\?/
@@ -854,6 +878,14 @@ class FormulaAuditor
       if line =~ /(require ["']formula["'])/
         problem "`#{$1}` is now unnecessary"
       end
+
+      if line =~ %r{#\{share\}/#{Regexp.escape(formula.name)}[/'"]}
+        problem "Use \#{pkgshare} instead of \#{share}/#{formula.name}"
+      end
+
+      if line =~ %r{share/"#{Regexp.escape(formula.name)}[/'"]}
+        problem "Use pkgshare instead of (share/\"#{formula.name}\")"
+      end
     end
   end
 
@@ -882,19 +914,13 @@ class FormulaAuditor
   def audit_prefix_has_contents
     return unless formula.prefix.directory?
 
-    Pathname.glob("#{formula.prefix}/**/*") do |file|
-      next if file.directory?
-      basename = file.basename.to_s
-      next if Metafiles.copy?(basename)
-      next if %w[.DS_Store INSTALL_RECEIPT.json].include?(basename)
-      return
+    if Keg.new(formula.prefix).empty_installation?
+      problem <<-EOS.undent
+        The installation seems to be empty. Please ensure the prefix
+        is set correctly and expected files are installed.
+        The prefix configure/make argument may be case-sensitive.
+      EOS
     end
-
-    problem <<-EOS.undent
-      The installation seems to be empty. Please ensure the prefix
-      is set correctly and expected files are installed.
-      The prefix configure/make argument may be case-sensitive.
-    EOS
   end
 
   def audit_conditional_dep(dep, condition, line)
@@ -922,6 +948,7 @@ class FormulaAuditor
     audit_formula_name
     audit_class
     audit_specs
+    audit_revision
     audit_desc
     audit_homepage
     audit_bottle_spec
@@ -1099,6 +1126,7 @@ class ResourceAuditor
            %r{^http://www\.mirrorservice\.org/},
            %r{^http://launchpad\.net/},
            %r{^http://bitbucket\.org/},
+           %r{^http://hackage\.haskell\.org/},
            %r{^http://(?:[^/]*\.)?archive\.org}
         problem "Please use https:// for #{p}"
       when %r{^http://search\.mcpan\.org/CPAN/(.*)}i

@@ -1,15 +1,15 @@
 class Mbedtls < Formula
   desc "Cryptographic & SSL/TLS library"
   homepage "https://tls.mbed.org/"
-  url "https://tls.mbed.org/download/mbedtls-2.1.1-apache.tgz"
-  sha256 "8f25b6f156ae5081e91bcc58b02455926d9324035fe5f7028a6bb5bc0139a757"
+  url "https://tls.mbed.org/download/mbedtls-2.2.1-apache.tgz"
+  sha256 "6ddd5ca2e7dfb43d2fd750400856246fc1c98344dabf01b1594eb2f9880ef7ce"
   head "https://github.com/ARMmbed/mbedtls.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "deaf1fbfeb8b53d1b9438cee02d7a8231356f37cdb5ef0b2f57e39c9fff0e65e" => :el_capitan
-    sha256 "2eb2f138b0650f92709264eb8601756b9f64f852f428454dea3051feca271877" => :yosemite
-    sha256 "1deb8eecc649326f45658b8ff884cfa022d21853b9b699d91920de35819a24a2" => :mavericks
+    sha256 "154cf41b17b358385fe502306695022a32bb8ae014c9f549281684475ba827bb" => :el_capitan
+    sha256 "6e4ae0210116bae3d4b9d516d48213f894b24e6d8d6ba9cb97d681fa435d241a" => :yosemite
+    sha256 "61e46dded8bda3817a6d61701b9095b2eca26fabd5dbccb2c125a24f989c66eb" => :mavericks
   end
 
   depends_on "cmake" => :build

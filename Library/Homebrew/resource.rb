@@ -8,7 +8,7 @@ require "version"
 class Resource
   include FileUtils
 
-  attr_reader :mirrors, :specs, :using
+  attr_reader :mirrors, :specs, :using, :source_modified_time
   attr_writer :version
   attr_accessor :download_strategy, :checksum
 
@@ -87,6 +87,7 @@ class Resource
   def unpack(target = nil)
     mktemp(download_name) do
       downloader.stage
+      @source_modified_time = downloader.source_modified_time
       if block_given?
         yield self
       elsif target
@@ -162,6 +163,21 @@ class Resource
   class Go < Resource
     def stage(target)
       super(target/name)
+    end
+  end
+
+  class Patch < Resource
+    attr_reader :patch_files
+
+    def initialize(&block)
+      @patch_files = []
+      super "patch", &block
+    end
+
+    def apply(*paths)
+      paths.flatten!
+      @patch_files.concat(paths)
+      @patch_files.uniq!
     end
   end
 end

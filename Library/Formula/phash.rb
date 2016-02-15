@@ -7,20 +7,24 @@ class Phash < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "daf5e13548267562355eb4a08c8a51b90ea3b6ecafb33a1c12a68ebd999d1ee2" => :yosemite
-    sha256 "d2aa89a1102afe704c88fe0250cca0de618b264f819a2229daa31a5bfe6f7419" => :mavericks
-    sha256 "caba9909717b1286db3be662f975928ee470f9ebe5bdcd3ac9fc2955180be04b" => :mountain_lion
+    revision 2
+    sha256 "04330b396a9e60bf8df72aa9074fe8b1d9cd5a14605c6ea19b3d948155d399f1" => :el_capitan
+    sha256 "6ef0c1a1f65955e55481268c3918df4b74014aedf4607056b6b66a81b233b307" => :yosemite
+    sha256 "58fbfeaabbdcdc588698dd3f5d9d7c7699cfcc66a580ee0bd925d9b804e9fad7" => :mavericks
   end
 
-  option "disable-image-hash", "Disable image hash"
-  option "disable-video-hash", "Disable video hash"
-  option "disable-audio-hash", "Disable audio hash"
+  option "without-image-hash", "Disable image hash"
+  option "without-video-hash", "Disable video hash"
+  option "without-audio-hash", "Disable audio hash"
 
-  depends_on "cimg" unless build.include?("disable-image-hash") && build.include?("disable-video-hash")
-  depends_on "ffmpeg" unless build.include? "disable-video-hash"
+  deprecated_option "disable-image-hash" => "without-image-hash"
+  deprecated_option "disable-video-hash" => "without-video-hash"
+  deprecated_option "disable-audio-hash" => "without-audio-hash"
 
-  unless build.include? "disable-audio-hash"
+  depends_on "cimg" if build.with?("image-hash") || build.with?("video-hash")
+  depends_on "ffmpeg" if build.with? "video-hash"
+
+  if build.with? "audio-hash"
     depends_on "libsndfile"
     depends_on "libsamplerate"
     depends_on "mpg123"
@@ -41,9 +45,9 @@ class Phash < Formula
       --enable-shared
     ]
 
-    args << "--disable-image-hash" if build.include? "disable-image-hash"
-    args << "--disable-video-hash" if build.include? "disable-video-hash"
-    args << "--disable-audio-hash" if build.include? "disable-audio-hash"
+    args << "--disable-image-hash" if build.without? "image-hash"
+    args << "--disable-video-hash" if build.without? "video-hash"
+    args << "--disable-audio-hash" if build.without? "audio-hash"
 
     system "./configure", *args
     system "make", "install"

@@ -1,15 +1,15 @@
 class Saldl < Formula
   desc "CLI downloader optimized for speed and early preview."
   homepage "https://saldl.github.io"
-  url "https://github.com/saldl/saldl/archive/v32.tar.gz"
-  sha256 "93a6f289d9520b986a4b5a6b4ab45ec97f890ae659cc06a2e391d35059cdfe8a"
+  url "https://github.com/saldl/saldl/archive/v34.tar.gz"
+  sha256 "12053f306306023e5bbdc6bb8594cc83f8793da0ce99dab1981179cdeccea4da"
   head "https://github.com/saldl/saldl.git", :shallow => false
 
   bottle do
     cellar :any
-    sha256 "4d2194d3a116534926d43ccdea43fe149141d819d0b7c886105aac08c85f0612" => :el_capitan
-    sha256 "d80529b36cf6e88b590bda4b9a8688c0ff7bcc6c986f5f92f341c6e38f61f8d9" => :yosemite
-    sha256 "b31ea335b9192a7af9610df915a6bed9f482f9c3d635a7946b5eaf44991230f1" => :mavericks
+    sha256 "c8c9a107655b63a0562c026a8e336f1d197088ccc67e1205cd1ada57dace7c14" => :el_capitan
+    sha256 "25587806a9e2d1c375501a9bb1523e7f911e49d4b7b8ecc7dc9bed3ecccacc67" => :yosemite
+    sha256 "bfd3c6f4f0210db4c300c5d8e0214e5cd6ddb39691893daee4678d6737c5d638" => :mavericks
   end
 
   depends_on "pkg-config" => :build

@@ -27,18 +27,30 @@ module Homebrew
   end
 
   def internal_commands
-    (HOMEBREW_LIBRARY_PATH/"cmd").children.select(&:file?).map { |f| f.basename(".rb").to_s }
+    find_internal_commands HOMEBREW_LIBRARY_PATH/"cmd"
   end
 
   def internal_development_commands
-    (HOMEBREW_LIBRARY_PATH/"dev-cmd").children.select(&:file?).map { |f| f.basename(".rb").to_s }
+    find_internal_commands HOMEBREW_LIBRARY_PATH/"dev-cmd"
   end
 
   def external_commands
-    paths.flat_map { |p| Dir["#{p}/brew-*"] }.
-      select { |f| File.executable?(f) }.
-      map { |f| File.basename(f, ".rb")[5..-1] }.
-      reject { |f| f =~ /\./ }.
-      sort
+    paths.reduce([]) do |cmds, path|
+      Dir["#{path}/brew-*"].each do |file|
+        next unless File.executable?(file)
+        cmd = File.basename(file, ".rb")[5..-1]
+        cmds << cmd unless cmd.include?(".")
+      end
+      cmds
+    end.sort
+  end
+
+  private
+
+  def find_internal_commands(directory)
+    directory.children.reduce([]) do |cmds, f|
+      cmds << f.basename.to_s.sub(/\.(?:rb|sh)$/, "") if f.file?
+      cmds
+    end
   end
 end

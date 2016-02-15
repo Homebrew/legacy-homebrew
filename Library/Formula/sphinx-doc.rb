@@ -1,31 +1,31 @@
 class SphinxDoc < Formula
   desc "Tool to create intelligent and beautiful documentation"
   homepage "http://sphinx-doc.org"
-  url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.1.tar.gz"
-  sha256 "1a6e5130c2b42d2de301693c299f78cc4bd3501e78b610c08e45efc70e2b5114"
+  url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.4.tar.gz"
+  sha256 "8aacc3f34aa758751fdb44ab9238eab024c66b57d67200f9a35efebf0e368057"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ef7eadc82631f678426bcd7810697833b1ade955e87d078a57ba8fd3804eb6c1" => :el_capitan
-    sha256 "bddc4767fc0e7f8c13cbdad6d31820d4c17a7425aa4eab258eeb90928482e392" => :yosemite
-    sha256 "1909df10b3644145eff9bd1770ec6110427133704f4044176d90470b444becfe" => :mavericks
+    sha256 "820ce4f976e674c5cc9d81502951653cbfd317136ce4e859137f08d7d8f4af53" => :el_capitan
+    sha256 "2a4d32e89f808ad2569f8ab9ecbfdc90dc71065b4b7a97be1aa0e2259067437b" => :yosemite
+    sha256 "4500a7bbfdeb1748646988b515487265d602f6b1b5104936c5d70f993a33dfae" => :mavericks
   end
-
-  depends_on :python if MacOS.version <= :snow_leopard
 
   keg_only <<-EOS.undent
     This formula is mainly used internally by other formulae.
     Users are advised to use `pip` to install sphinx-doc.
   EOS
 
+  depends_on :python if MacOS.version <= :snow_leopard
+
   resource "alabaster" do
-    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.6.tar.gz"
-    sha256 "309d33e0282c8209f792f3527f41ec04e508ff837c61fc1906dde988a256deeb"
+    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.7.tar.gz"
+    sha256 "f416a84e0d0ddbc288f6b8f2c276d10b40ca1238562cd9ed5a751292ec647b71"
   end
 
   resource "Babel" do
-    url "https://pypi.python.org/packages/source/B/Babel/Babel-2.1.1.tar.gz"
-    sha256 "7fb6d50effe88a087feb2036cb972fd7a893bf338361516f1a55a820bf7b5248"
+    url "https://pypi.python.org/packages/source/B/Babel/Babel-2.2.0.tar.gz"
+    sha256 "d8cb4c0e78148aee89560f9fe21587aa57739c975bb89ff66b1e842cc697428f"
   end
 
   resource "docutils" do
@@ -44,8 +44,8 @@ class SphinxDoc < Formula
   end
 
   resource "Pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
-    sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.1.tar.gz"
+    sha256 "13a0ef5fafd7b16cf995bc28fe7aab0780dab1b2fda0fc89e033709af8b8a47b"
   end
 
   resource "pytz" do
@@ -59,8 +59,8 @@ class SphinxDoc < Formula
   end
 
   resource "snowballstemmer" do
-    url "https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-1.2.0.tar.gz"
-    sha256 "6d54f350e7a0e48903a4e3b6b2cabd1b43e23765fbc975065402893692954191"
+    url "https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-1.2.1.tar.gz"
+    sha256 "919f26a68b2c17a7634da993d91339e288964f93c274f1343e3bbbe2096e1128"
   end
 
   resource "sphinx_rtd_theme" do

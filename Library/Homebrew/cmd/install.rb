@@ -1,8 +1,9 @@
 require "blacklist"
-require "cmd/doctor"
+require "diagnostic"
 require "cmd/search"
-require "cmd/tap"
 require "formula_installer"
+require "tap"
+require "core_formula_repository"
 require "hardware"
 
 module Homebrew
@@ -158,7 +159,7 @@ module Homebrew
   end
 
   def check_xcode
-    checks = Checks.new
+    checks = Diagnostic::Checks.new
     %w[
       check_for_unsupported_osx
       check_for_bad_install_name_tool

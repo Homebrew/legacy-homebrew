@@ -1,8 +1,8 @@
 class SeleniumServerStandalone < Formula
   desc "Browser automation for testing purposes"
   homepage "http://seleniumhq.org/"
-  url "https://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar"
-  sha256 "dd68dcfcd687b732683cf56722c599a8e36e510c0906ac476c2083cb5df0bb4e"
+  url "https://selenium-release.storage.googleapis.com/2.51/selenium-server-standalone-2.51.0.jar"
+  sha256 "919752369eae7ae8fd391eb5d50c88830cf21c0ea2e01cd50e7beb7fceb48991"
 
   bottle :unneeded
 

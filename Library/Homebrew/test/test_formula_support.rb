@@ -1,4 +1,5 @@
 require "testing_env"
+require "formula_support"
 
 class KegOnlyReasonTests < Homebrew::TestCase
   def test_to_s_explanation

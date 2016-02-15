@@ -1,14 +1,15 @@
 class Redis < Formula
   desc "Persistent key-value database, with built-in net interface"
   homepage "http://redis.io/"
-  url "http://download.redis.io/releases/redis-3.0.5.tar.gz"
-  sha256 "4c176826eee909fbdc63db1c15adc22aab42d758043829e556f4331e6a5bd480"
+  url "http://download.redis.io/releases/redis-3.0.7.tar.gz"
+  sha256 "b2a791c4ea3bb7268795c45c6321ea5abcc24457178373e6a6e3be6372737f23"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8595573ce79c47a893458ef8edc7e1cea851e86f46bd3b3c8c02884bd04c74ef" => :el_capitan
-    sha256 "a3d223d04faaa36fc518c647a67e7ddd3f69c61ce475fbdb21385e0a42301ee2" => :yosemite
-    sha256 "f6a87a3679ef660cd129bbc337434a190b9c75411006701737eeb0ede80ac6c0" => :mavericks
+    revision 1
+    sha256 "56aa3ed148606d6f4d0fa7a4f2efec2263f4d166949d5732836a133be589493b" => :el_capitan
+    sha256 "931dbc56104eced22a13c9f6ac314fd808132295984bcf9973c9f6dafda0f245" => :yosemite
+    sha256 "4be758b78e35b4a30b3d6e97255774f928de19332520447429afc64b7ec8cf41" => :mavericks
   end
 
   option "with-jemalloc", "Select jemalloc as memory allocator when building Redis"

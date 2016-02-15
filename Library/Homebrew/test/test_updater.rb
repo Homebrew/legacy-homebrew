@@ -1,5 +1,5 @@
 require "testing_env"
-require "cmd/update"
+require "cmd/update-ruby"
 require "formula_versions"
 require "yaml"
 

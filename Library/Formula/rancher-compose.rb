@@ -1,14 +1,14 @@
 class RancherCompose < Formula
-  desc "Docker compose compatible client to deploy to Rancher"
+  desc "Docker Compose compatible client to deploy to Rancher"
   homepage "https://github.com/rancher/rancher-compose"
-  url "https://github.com/rancher/rancher-compose/archive/v0.6.2.tar.gz"
-  sha256 "c4df1cb0a669e6825035ca9a26da04b723531656ef1ec3e076c1bbd2bb80fe97"
+  url "https://github.com/rancher/rancher-compose/archive/v0.7.2.tar.gz"
+  sha256 "17378457a4abb1ceec2cac3001783990b17c53606df40908498537bec458cce2"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "777f575af6c57321ff330778d726f5ee962faffded23c4cdbdb172b52c58a2d6" => :el_capitan
-    sha256 "21038072075c7fc9c30e139d9cacbb61109a3636b49ca7abf68d76f5ca12aaed" => :yosemite
-    sha256 "f52a0fd8601804b90ab50cc30243f5a1a73897ab776dd625de0bb9e2c0b043c7" => :mavericks
+    sha256 "e7b09f34ca7701bb860e579d5501ee4aacd5d1c0affbf1feefd5747ff68d64e9" => :el_capitan
+    sha256 "705a15cf034d762fcd68040e3dee9201214dbffc09dbf68ead1e26b969c57c00" => :yosemite
+    sha256 "39453b69120eeaf947f3ccff9213ca50727575ef3485610fff186e875cca4119" => :mavericks
   end
 
   depends_on "go" => :build
