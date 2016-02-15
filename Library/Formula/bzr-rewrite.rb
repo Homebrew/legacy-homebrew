@@ -12,8 +12,8 @@ class BzrRewrite < Formula
   end
 
   test do
-    edit_file1 = "echo \"change\" >> file1.txt"
-    edit_file2 = "echo \"change\" >> file2.txt"
+    file_path1 = (testpath/"foo/trunk/file1.txt").to_s
+    file_path2 = (testpath/"foo/b1/file2.txt").to_s
 
     # Create repo
     system "bzr", "whoami", "Homebrew"
@@ -23,7 +23,7 @@ class BzrRewrite < Formula
       # Create trunk branch with inital commit
       system "bzr", "init", "trunk"
       cd "trunk" do
-        system edit_file1
+        open(file_path1, "w") { |f| f.puts "change" }
         system "bzr", "add"
         system "bzr", "commit", "-m", "trunk 1"
       end
@@ -31,20 +31,20 @@ class BzrRewrite < Formula
       # Create b1 branch from trunk, adding two commits
       system "bzr", "branch", "trunk", "b1"
       cd "b1" do
-        system edit_file2
+        open(file_path2, "w") { |f| f.puts "change" }
         system "bzr", "add"
         system "bzr", "commit", "-m", "branch 1"
 
-        system edit_file2
+        open(file_path2, "a") { |f| f.puts "change" }
         system "bzr", "commit", "-m", "branch 2"
       end
 
       # Switch to trunk and add two additional commits causing branches to diverge
       cd "trunk" do
-        system edit_file1
+        open(file_path1, "a") { |f| f.puts "change" }
         system "bzr", "commit", "-m", "trunk 2"
 
-        system edit_file1
+        open(file_path1, "a") { |f| f.puts "change" }
         system "bzr", "commit", "-m", "trunk 3"
       end
 
