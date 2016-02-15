@@ -2,6 +2,7 @@ require "digest/md5"
 require "formula_renames"
 require "tap"
 require "core_formula_repository"
+require "formula_resolver"
 
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
@@ -148,7 +149,8 @@ class Formulary
     def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
       @tap = Tap.fetch user, repo
-      name = @tap.formula_renames.fetch(name, name)
+      user, repo, name = FormulaResolver.resolve_for_name(tapped_name).split("/")
+      puts "name is #{name}"
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
 
       unless path
@@ -291,17 +293,43 @@ class Formulary
       return FormulaLoader.new(name, path)
     end
 
-    if newref = CoreFormulaRepository.instance.formula_renames[ref]
+    # resolve installed formula newname if there is one
+    if newref = FormulaResolver.resolve_for_name(ref)
+      puts "loader_for's newref is #{newref}"
       formula_with_that_oldname = core_path(newref)
       if formula_with_that_oldname.file?
         return FormulaLoader.new(newref, formula_with_that_oldname)
       end
     end
 
+  # TODO remove this part
+  #  if newref = CoreFormulaRepository.instance.formula_renames[ref]
+  #    formula_with_that_oldname = core_path(newref)
+  #    if formula_with_that_oldname.file?
+  #      return FormulaLoader.new(newref, formula_with_that_oldname)
+  #    end
+  #  end
+
+    # TODO add FormulaResolver here
+    # probably need to rename FormulaResolver to FormulaNameResolver
+    # We'll try to resolve it firstly among core formulae
+    # NOTE: resolution depends on what commit we want to resolve
+    # the formula from. do we need to use the commit sha right here or leave
+    # it for FormulaResolver as it is now?
+
+    # TODO the same as for core formula renames.
+    # try to resolve as tap formula renames.
+    #
+    # When we tap a tap repository we download not the whole commit
+    # history unless we pass --depth option. However, the renames file
+    # can have some of the commits that were before the last one and
+    # we should handle this case i.e. we should treat these commits
+    # as if they are before the last one.
+
     possible_tap_newname_formulae = []
     Tap.each do |tap|
-      if newref = tap.formula_renames[ref]
-        possible_tap_newname_formulae << "#{tap.name}/#{newref}"
+      if newref = FormulaResolver.resolve_for_name("#{tap}/#{ref}").resolved_name != ref
+        possible_tap_newname_formulae << newref
       end
     end
 

@@ -73,17 +73,20 @@ module Homebrew
           raise "No devel block is defined for #{f.full_name}"
         end
 
+        # NOTE installed formula can be different from f, but we still
+        # can't install f
         if f.installed?
           msg = "#{f.full_name}-#{f.installed_version} already installed"
           msg << ", it's just not linked" unless f.linked_keg.symlink? || f.keg_only?
           opoo msg
-        elsif f.oldname && (dir = HOMEBREW_CELLAR/f.oldname).directory? && !dir.subdirs.empty? \
-            && f.tap == Tab.for_keg(dir.subdirs.first).tap && !ARGV.force?
-          # Check if the formula we try to install is the same as installed
-          # but not migrated one. If --force passed then install anyway.
-          opoo "#{f.oldname} already installed, it's just not migrated"
-          puts "You can migrate formula with `brew migrate #{f}`"
-          puts "Or you can force install it with `brew install #{f} --force`"
+        # TODO --check option checks all installed packages and find oldnames
+        # elsif f.oldname && (dir = HOMEBREW_CELLAR/f.oldname).directory? && !dir.subdirs.empty? \
+        #     && f.tap == Tab.for_keg(dir.subdirs.first).tap && !ARGV.force?
+        #   # Check if the formula we try to install is the same as installed
+        #   # but not migrated one. If --force passed then install anyway.
+        #   opoo "#{f.oldname} already installed, it's just not migrated"
+        #   puts "You can migrate formula with `brew migrate #{f}`"
+        #   puts "Or you can force install it with `brew install #{f} --force`"
         else
           formulae << f
         end

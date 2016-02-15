@@ -294,22 +294,24 @@ class Formula
     PkgVersion.new(version, revision)
   end
 
+  # TODO what if default branch is not master
+  def last_commit
+    puts "in last commit"
+    # TODO raise if can't use git
+    # NOTE works differently if shallow copy is used
+    if tap && tap.git?
+      @commit ||= path.parent.cd do
+        Utils.popen_read("git", "rev-list", "-1", "HEAD", "#{path}").chomp
+      end
+    end
+  end
+
   # A named Resource for the currently active {SoftwareSpec}.
   # Additional downloads can be defined as {#resource}s.
   # {Resource#stage} will create a temporary directory and yield to a block.
   # <pre>resource("additional_files").stage { bin.install "my/extra/tool" }</pre>
   def resource(name)
     active_spec.resource(name)
-  end
-
-  # An old name for the formula
-  def oldname
-    @oldname ||= if tap
-      formula_renames = tap.formula_renames
-      if formula_renames.value?(name)
-        formula_renames.to_a.rassoc(name).first
-      end
-    end
   end
 
   # All of aliases for the formula
@@ -934,28 +936,29 @@ class Formula
   def lock
     @lock = FormulaLock.new(name)
     @lock.lock
-    if oldname && (oldname_rack = HOMEBREW_CELLAR/oldname).exist? && oldname_rack.resolved_path == rack
-      @oldname_lock = FormulaLock.new(oldname)
-      @oldname_lock.lock
-    end
+    # if oldname && (oldname_rack = HOMEBREW_CELLAR/oldname).exist? && oldname_rack.resolved_path == rack
+    #   @oldname_lock = FormulaLock.new(oldname)
+    #   @oldname_lock.lock
+    # end
   end
 
   # @private
   def unlock
     @lock.unlock unless @lock.nil?
-    @oldname_lock.unlock unless @oldname_lock.nil?
+    # @oldname_lock.unlock unless @oldname_lock.nil?
   end
 
   # @private
+  # TODO fix according to new renames structure
   def outdated_versions
     @outdated_versions ||= begin
       all_versions = []
       older_or_same_tap_versions = []
 
-      if oldname && !rack.exist? && (dir = HOMEBREW_CELLAR/oldname).directory? &&
-        !dir.subdirs.empty? && tap == Tab.for_keg(dir.subdirs.first).tap
-        raise Migrator::MigrationNeededError.new(self)
-      end
+      # if oldname && !rack.exist? && (dir = HOMEBREW_CELLAR/oldname).directory? &&
+      #   !dir.subdirs.empty? && tap == Tab.for_keg(dir.subdirs.first).tap
+      #   raise Migrator::MigrationNeededError.new(self)
+      # end
 
       installed_kegs.each do |keg|
         version = keg.version
@@ -1229,7 +1232,6 @@ class Formula
       "full_name" => full_name,
       "desc" => desc,
       "homepage" => homepage,
-      "oldname" => oldname,
       "aliases" => aliases,
       "versions" => {
         "stable" => (stable.version.to_s if stable),

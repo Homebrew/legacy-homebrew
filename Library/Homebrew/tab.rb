@@ -15,7 +15,10 @@ class Tab < OpenStruct
     CACHE.clear
   end
 
+  # TODO fix last_commit for the case when formula is from path
   def self.create(formula, compiler, stdlib, build, source_modified_time)
+    puts "IN CREATE, formula is #{formula}"
+    puts "last commit is #{formula.last_commit}"
     attributes = {
       "used_options" => build.used_options.as_flags,
       "unused_options" => build.unused_options.as_flags,
@@ -27,6 +30,7 @@ class Tab < OpenStruct
       "HEAD" => Homebrew.git_head,
       "compiler" => compiler,
       "stdlib" => stdlib,
+      "last_commit" => formula.last_commit,
       "source" => {
         "path" => formula.path.to_s,
         "tap" => formula.tap ? formula.tap.name : nil,
@@ -139,6 +143,7 @@ class Tab < OpenStruct
       "HEAD" => nil,
       "stdlib" => nil,
       "compiler" => "clang",
+      "last_commit" => nil,
       "source" => {
         "path" => nil,
         "tap" => nil,
@@ -232,7 +237,9 @@ class Tab < OpenStruct
       "HEAD" => self.HEAD,
       "stdlib" => (stdlib.to_s if stdlib),
       "compiler" => (compiler.to_s if compiler),
+      "last_commit" => last_commit,
       "source" => source
+
     }
 
     Utils::JSON.dump(attributes)

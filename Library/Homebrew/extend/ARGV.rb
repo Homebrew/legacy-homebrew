@@ -39,6 +39,23 @@ module HomebrewArgvExtension
     end
   end
 
+  # TODO handle taps
+  # TODO fix two similar names
+  # TODO fix formula without oldnmaes
+  # TODO fix tap formula in else
+  def renamed_formulae_with_oldnames
+    require "formula"
+    @resolved_formulae ||= (downcased_unique_named - casks).map do |name|
+      rack = HOMEBREW_CELLAR.join(name)
+      dirs = rack.directory? ? rack.subdirs : []
+
+      raise NoSuchKegError.new(rack.basename) if dirs.empty?
+
+      newname = FormulaResolver.new(name, Tab.for_keg(dirs.first).last_commit).resolved_name
+      [Formulary.factory(newname), name]
+    end
+  end
+
   def casks
     @casks ||= downcased_unique_named.grep HOMEBREW_CASK_TAP_FORMULA_REGEX
   end
