@@ -1,15 +1,15 @@
 class AppscaleTools < Formula
   desc "Command-line tools for working with AppScale"
   homepage "https://github.com/AppScale/appscale-tools"
-  url "https://github.com/AppScale/appscale-tools/archive/2.6.0.tar.gz"
-  sha256 "8d3f6c3e17c75f8f6fef6994901811cd7200e432cc3a1da06198ba2bdf0d7bd2"
+  url "https://github.com/AppScale/appscale-tools/archive/2.7.0.tar.gz"
+  sha256 "7b3b6ad39ea28bf0bc7f74fdd30b574cbed9fe28cb455dda49fcedd5a4aa6922"
   head "https://github.com/AppScale/appscale-tools.git"
 
   bottle do
     cellar :any
-    sha256 "75bc3731432361d10a202ecd0b203774566926b6dcbcd0ba172f33c735978b78" => :el_capitan
-    sha256 "e5872c7d54ace0d6cd48f22d206472d6942b11e3a7ba16358218890bce8bd339" => :yosemite
-    sha256 "771ef5d634b909812b80fb9461c6a509bd197a17802eb155032ad8af8086fe2e" => :mavericks
+    sha256 "c754e172ef73b28bfd2a7d6b64b0c0ab685ca0a096b18224845382da89c63d6b" => :el_capitan
+    sha256 "fdb7db9bf70180224c8643138ee62009deaf972aef7472185968a91ce81ce56d" => :yosemite
+    sha256 "51c5a0b7dc551b86ad64ab4bf0cc567fe6891c5bb14db05ba935f87bf9aea3b3" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

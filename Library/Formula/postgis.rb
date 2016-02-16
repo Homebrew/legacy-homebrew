@@ -6,9 +6,10 @@ class Postgis < Formula
 
   bottle do
     cellar :any
-    sha256 "cc9dbfb85f80eb2370343e17e578dc9cf1defb0ed35228fe9407ecf45b5139ea" => :el_capitan
-    sha256 "781e86fad5263f8b85e795b877816e1a5cfad1a9b34c32aa72c902152604b1e1" => :yosemite
-    sha256 "8c086c1c1c93f5ce67930ad1d4f4dd9253f77fbe7d1815a5a78378fdb39facb6" => :mavericks
+    revision 1
+    sha256 "6e18d0615e27b1afcbf0280185a31cc63259401c6042d82177609fa48d4a6f39" => :el_capitan
+    sha256 "b127be9f51766193b4a0713e313047316f7f89532258345174f29a9a27553b9d" => :yosemite
+    sha256 "5bf42a43897e9358f0a9ee0b9aa290717c2b74fede7488df66b9c0c344c5adb0" => :mavericks
   end
 
   head do
@@ -35,6 +36,7 @@ class Postgis < Formula
   # For GeoJSON and raster handling
   depends_on "json-c"
   depends_on "gdal" => :recommended
+  depends_on "pcre" => :build if build.with? "gdal"
 
   # For advanced 2D/3D functions
   depends_on "sfcgal" => :recommended

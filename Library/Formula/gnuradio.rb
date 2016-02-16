@@ -1,7 +1,7 @@
 class Gnuradio < Formula
   desc "SDK providing the signal processing runtime and processing blocks"
-  homepage "http://gnuradio.squarespace.com/"
-  url "http://gnuradio.org/releases/gnuradio/gnuradio-3.7.9.1.tar.gz"
+  homepage "https://gnuradio.squarespace.com/"
+  url "https://gnuradio.org/releases/gnuradio/gnuradio-3.7.9.1.tar.gz"
   sha256 "9c06f0f1ec14113203e0486fd526dd46ecef216dfe42f12d78d9b781b1ef967e"
 
   bottle do

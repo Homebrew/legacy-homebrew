@@ -17,7 +17,7 @@ class Hub < Formula
   depends_on "go" => :build
 
   def install
-    system "script/build"
+    system "script/build", "-o", "hub"
     bin.install "hub"
     man1.install Dir["man/*"]
 

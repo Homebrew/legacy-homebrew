@@ -189,7 +189,7 @@ pull() {
     export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$CURRENT_REVISION"
     if ! git merge-base --is-ancestor "$INITIAL_REVISION" "$CURRENT_REVISION"
     then
-      odie "Your HEAD is not a descendant of $UPSTREAM_BRANCH!"
+      odie "Your $DIR HEAD is not a descendant of $UPSTREAM_BRANCH!"
     fi
     return
   fi
@@ -250,7 +250,7 @@ pull() {
   trap - SIGINT
 }
 
-homebrew-update-bash() {
+homebrew-update() {
   local option
   local DIR
   local UPSTREAM_BRANCH
@@ -303,6 +303,9 @@ EOS
       odie "Git must be installed and in your PATH!"
     fi
   fi
+  export GIT_TERMINAL_PROMPT="0"
+  export GIT_ASKPASS="false"
+  export GIT_SSH_COMMAND="ssh -oBatchMode=yes"
 
   if [[ -z "$HOMEBREW_VERBOSE" ]]
   then
@@ -330,8 +333,11 @@ EOS
     cd "$DIR" || continue
     UPSTREAM_BRANCH="$(upstream_branch)"
     # the refspec ensures that the default upstream branch gets updated
-    git fetch "${QUIET_ARGS[@]}" origin \
-      "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" &
+    (
+      git fetch "${QUIET_ARGS[@]}" origin \
+        "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" || \
+          odie "Fetching $DIR failed!"
+    ) &
   done
 
   wait

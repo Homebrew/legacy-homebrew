@@ -247,6 +247,15 @@ class Tap
     end
   end
 
+  # return true if given path would present a {Formula} file in this {Tap}.
+  # accepts both absolute path and relative path (relative to this {Tap}'s path)
+  # @private
+  def formula_file?(file)
+    file = Pathname.new(file) unless file.is_a? Pathname
+    file = file.expand_path(path)
+    file.extname == ".rb" && file.parent == formula_dir
+  end
+
   # an array of all {Formula} names of this {Tap}.
   def formula_names
     @formula_names ||= formula_files.map { |f| formula_file_to_name(f) }

@@ -1,19 +1,18 @@
 class Kibana < Formula
   desc "Analytics and search dashboard for Elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
-  url "https://github.com/elastic/kibana.git", :tag => "v4.4.0", :revision => "07cb4d6aecddbc9dea1a26f55778b32edcef49df"
+  url "https://github.com/elastic/kibana.git", :tag => "v4.4.1", :revision => "57474ae1b8647bccc5057792af7ab3f962f7521f"
   head "https://github.com/elastic/kibana.git"
-  revision 1
 
   bottle do
-    sha256 "f6fd5b4923cc1f8ca41ec27048c5ac4a13d379315a5920ee0e1a938d6489868d" => :el_capitan
-    sha256 "f83fdee5a0218092c9592ee1c47aae4588d9cd49ab49946323a15c542c5d2f38" => :yosemite
-    sha256 "234466f181d855643864d2bfd400226c4bde8c7a0976cabbfbfb878c9fe0115e" => :mavericks
+    sha256 "b1574e0304b8ef6dda8bc05d5a9a60b67eceb44c0a3e4af14234a42f4fbe427f" => :el_capitan
+    sha256 "8ff1628b114f30af4e407ba7710e3eda76323ddd857ff71f09f89e6c01eda2f3" => :yosemite
+    sha256 "8467ffb8a12a06fef5d2414f874f0c557f8457f1fab0f8ab0e07bd2aff344a97" => :mavericks
   end
 
   resource "node" do
-    url "https://nodejs.org/dist/v0.12.9/node-v0.12.9.tar.gz"
-    sha256 "35daad301191e5f8dd7e5d2fbb711d081b82d1837d59837b8ee224c256cfe5e4"
+    url "https://nodejs.org/dist/v0.12.10/node-v0.12.10.tar.gz"
+    sha256 "edbd3710512ec7518a3de4cabf9bfee6d12f278eef2e4b53422c7b063f6b976d"
   end
 
   def install
