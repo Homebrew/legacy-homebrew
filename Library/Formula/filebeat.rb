@@ -17,6 +17,6 @@ class Filebeat < Formula
   end
 
   test do
-    system "filebeat", "-version"
+    system bin/"filebeat", "-version"
   end
 end
