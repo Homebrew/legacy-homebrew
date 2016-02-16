@@ -78,9 +78,7 @@ class Trafficserver < Formula
     return unless File.exist?(config)
     return if File.read(config).include?("proxy.config.admin.user_id STRING #{ENV["USER"]}")
 
-    File.open("#{config}", "a") do |f|
-      f.puts "CONFIG proxy.config.admin.user_id STRING #{ENV["USER"]}"
-    end
+    config.append_lines "CONFIG proxy.config.admin.user_id STRING #{ENV["USER"]}"
   end
 
   test do
