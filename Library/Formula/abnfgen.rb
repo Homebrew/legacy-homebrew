@@ -5,10 +5,10 @@ class Abnfgen < Formula
   sha256 "c256712a97415c86e1aa1847e2eac00019ca724d56b8ee921d21b258090d333a"
 
   bottle do
-    cellar :any
-    sha256 "dbeb98b3292f61f3fcb2dab6ff49c676a71a102deae81c5de2d94c6bd1e2760d" => :yosemite
-    sha256 "a6ee5ffd408c8359664f46817718dc41fb287cb61968659a4e7637a094160025" => :mavericks
-    sha256 "cfd7d1f79d6b8ea5fb333405043e45b7f9b403de59420bcb3dba3770cea444b7" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "270beb4ef879e95db6fb923779cc33952bc669df60a1ecb35060c987ec5a5b06" => :el_capitan
+    sha256 "abf32ccd9622fbcde577f80b7202ff2c75cb59475db560861dfd59bcdd867ed4" => :yosemite
+    sha256 "d056030b0bdd266ab43fdbe91bd898af763f5be1a04170cd8db900134c50c7da" => :mavericks
   end
 
   def install
