@@ -1,9 +1,9 @@
 class Ffms2 < Formula
   desc "Libav/ffmpeg based source library and Avisynth plugin"
   homepage "https://github.com/FFMS/ffms2"
-  url "https://github.com/FFMS/ffms2/archive/2.21.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/f/ffms2/ffms2_2.21.orig.tar.gz"
-  sha256 "c2c23ce2254e293376f786aafc20a345f4dc970f5b2efef3fa38e40d7d510202"
+  url "https://github.com/FFMS/ffms2/archive/2.22.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/f/ffms2/ffms2_2.22.orig.tar.gz"
+  sha256 "7c5202fa2e49186fb3bb815e5b12ca71f05ec09cb707ffd9465852e21a06fdad"
 
   bottle do
     cellar :any
