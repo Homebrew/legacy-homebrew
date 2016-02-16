@@ -62,7 +62,7 @@ class Kafka < Formula
 
   def caveats; <<-EOS.undent
     To start Kafka, ensure that ZooKeeper is running and then execute:
-      kafka-server-start.sh --daemon #{etc}/kafka/server.properties
+      kafka-server-start.sh -daemon #{etc}/kafka/server.properties
     EOS
   end
 
