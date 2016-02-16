@@ -12,7 +12,7 @@ class Movgrab < Formula
     # Makefile itself doesn't declare INSTALL as a phony target, we
     # just remove the INSTALL instructions file so we can actually
     # just make install
-    system "rm INSTALL"
+    rm "INSTALL"
     system "make", "install"
   end
 end
