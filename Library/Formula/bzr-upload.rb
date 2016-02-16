@@ -4,7 +4,6 @@ class BzrUpload < Formula
   url "https://launchpad.net/bzr-upload/1.1/1.1.0/+download/bzr-upload-1.1.0.tar.gz"
   sha256 "a48fc56d83114d9ab946cc358a5b33cb05e134787be135eb0a499317d6dec7fc"
 
-
   bottle :unneeded
   depends_on "bazaar"
 
