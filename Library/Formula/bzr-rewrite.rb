@@ -15,12 +15,10 @@ class BzrRewrite < Formula
     file_path1 = (testpath/"foo/trunk/file1.txt").to_s
     file_path2 = (testpath/"foo/b1/file2.txt").to_s
 
-    # Create repo
     system "bzr", "whoami", "Homebrew"
     system "bzr", "init-repo", "foo"
 
     cd "foo" do
-      # Create trunk branch with inital commit
       system "bzr", "init", "trunk"
       cd "trunk" do
         open(file_path1, "w") { |f| f.puts "change" }
@@ -28,7 +26,6 @@ class BzrRewrite < Formula
         system "bzr", "commit", "-m", "trunk 1"
       end
 
-      # Create b1 branch from trunk, adding two commits
       system "bzr", "branch", "trunk", "b1"
       cd "b1" do
         open(file_path2, "w") { |f| f.puts "change" }
@@ -39,7 +36,6 @@ class BzrRewrite < Formula
         system "bzr", "commit", "-m", "branch 2"
       end
 
-      # Switch to trunk and add two additional commits causing branches to diverge
       cd "trunk" do
         open(file_path1, "a") { |f| f.puts "change" }
         system "bzr", "commit", "-m", "trunk 2"
@@ -48,7 +44,6 @@ class BzrRewrite < Formula
         system "bzr", "commit", "-m", "trunk 3"
       end
 
-      # Rebase b1 onto tip of trunk
       cd "b1" do
         system "bzr", "rebase", "../trunk"
 
