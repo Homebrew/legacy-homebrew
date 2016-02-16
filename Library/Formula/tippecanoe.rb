@@ -1,8 +1,8 @@
 class Tippecanoe < Formula
   desc "Build vector tilesets from collections of GeoJSON features"
   homepage "https://github.com/mapbox/tippecanoe"
-  url "https://github.com/mapbox/tippecanoe/archive/1.6.4.tar.gz"
-  sha256 "a95e7f054671b24c0a8ac61b40a1cc379f58e9a4273172671409631e136da9d3"
+  url "https://github.com/mapbox/tippecanoe/archive/v1.8.1.tar.gz"
+  sha256 "f75c48a61a0517675a52bb9b152d33c742b5df1d774734d9c216299788cb2a6f"
 
   bottle do
     cellar :any
@@ -19,12 +19,10 @@ class Tippecanoe < Formula
   end
 
   test do
-    path = testpath/"test.json"
-    path.write <<-EOS.undent
+    (testpath/"test.json").write <<-EOS.undent
       {"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0,0]}}
     EOS
-    output = `#{bin}/tippecanoe -o test.mbtiles #{path}`.strip
-    assert_equal 0, $?.exitstatus
-    assert_equal "using layer 0 name test", output
+    safe_system "#{bin}/tippecanoe", "-o", "test.mbtiles", "test.json"
+    assert File.exist?("#{testpath}/test.mbtiles"), "tippecanoe generated no output!"
   end
 end
