@@ -24,7 +24,7 @@ class BzrUpload < Formula
       system "bzr", "upload", "../destination"
     end
 
-    assert_match(/readme\.txt/, shell_output("ls -la destination"))
-    assert_match(/\.bzr-upload\.revid/, shell_output("ls -la destination"))
+    assert_match("readme.txt", shell_output("ls -la destination"))
+    assert_match("bzr-upload.revid", shell_output("ls -la destination"))
   end
 end
