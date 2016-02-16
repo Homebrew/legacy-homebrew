@@ -1,19 +1,28 @@
 class Filebeat < Formula
   desc "Log data shipper based on Logstash-Forwarder"
   homepage "https://www.elastic.co/guide/en/beats/filebeat/current/index.html"
-  url "https://download.elastic.co/beats/filebeat/filebeat-1.1.1-darwin.tgz"
-  sha256 "145b3ca979e7890aec1d403d9b27312efd9849720bfaebdf74d249eafbf88830"
+  url "https://github.com/elastic/beats/archive/v1.1.1.tar.gz"
+  sha256 "5cf4751e6cd5199e6cef5b9d86ef62923901e659f4f15c70a4a9e007c32c4eb5"
+
+  depends_on "go"
 
   def install
+    ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/elastic/"
+    ln_sf buildpath, buildpath/"src/github.com/elastic/beats"
+
+    cd "src/github.com/elastic/beats/filebeat" do
+      system "make", "build"
+      libexec.install "filebeat"
+      prefix.install "etc/filebeat.template.json"
+      etc.install "etc/filebeat.yml"
+    end
+
     (bin/"filebeat").write <<-EOS.undent
     #!/usr/bin/env bash
     #{libexec}/filebeat -c #{etc}/filebeat.yml $@
     EOS
     chmod 0755, bin/"filebeat"
-
-    libexec.install "filebeat"
-    prefix.install "filebeat.template.json"
-    etc.install "filebeat.yml"
   end
 
   test do
