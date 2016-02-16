@@ -131,6 +131,12 @@ class Pathname
     open("w", *open_args) { |f| f.write(content) }
   end
 
+  # Only appends to a file that is already created.
+  def append_lines(content, *open_args)
+    raise "Cannot append file that doesn't exist: #{self}" unless exist?
+    open("a", *open_args) { |f| f.puts(content) }
+  end
+
   def binwrite(contents, *open_args)
     open("wb", *open_args) { |f| f.write(contents) }
   end unless method_defined?(:binwrite)
