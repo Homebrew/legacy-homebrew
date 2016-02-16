@@ -11,6 +11,12 @@ class Tor < Formula
     sha256 "595d64e121de2417e647d5c8a1d0051d5a3e3de9c0e15429134c5dd494459573" => :mavericks
   end
 
+  devel do
+    url "https://dist.torproject.org/tor-0.2.8.1-alpha.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.8.1-alpha.tar.gz"
+    sha256 "6e41c12ce13ad9997b42a15ed2350de86682694bfd9d4c98dae874395bbe3ea3"
+  end
+
   depends_on "libevent"
   depends_on "openssl"
   depends_on "libnatpmp" => :optional
