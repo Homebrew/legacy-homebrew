@@ -4,6 +4,8 @@ class DiffSoFancy < Formula
   url "https://github.com/so-fancy/diff-so-fancy/archive/v0.3.0.tar.gz"
   sha256 "caecbdcdc1f49e863f51605e8fd37ad65d7c0cf45143985c7556cbe1b6188d83"
 
+  bottle :unneeded
+
   depends_on "gnu-sed"
 
   def install
