@@ -5,6 +5,7 @@ class BzrRewrite < Formula
   sha256 "f4d0032a41a549a0bc3ac4248cd4599da859174ea33e56befcb095dd2c930794"
 
   bottle :unneeded
+
   depends_on "bazaar"
 
   def install
