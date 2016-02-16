@@ -5,7 +5,7 @@ class StormpathCli < Formula
   sha256 "50e334cb48cd0f9c0abdf77c1aa577c1d900547d8be39155d2248b995c044b0e"
   head "https://github.com/stormpath/stormpath-cli.git"
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
 
   resource "docopt" do
     url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
