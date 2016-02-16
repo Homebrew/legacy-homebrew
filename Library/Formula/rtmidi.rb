@@ -1,8 +1,8 @@
 class Rtmidi < Formula
   desc "C++ classes that provide a common API for realtime MIDI input/output"
   homepage "https://www.music.mcgill.ca/~gary/rtmidi/"
-  url "https://github.com/thestk/rtmidi/archive/2.1.0.tar.gz"
-  sha256 "52e6822fc413d5d3963c5b7bfe412ed69233bb81a7f04d6097f5b56aafa28934"
+  url "https://github.com/thestk/rtmidi/archive/2.1.1.tar.gz"
+  sha256 "a015fbed67c777c7bc7bbcb96c07386ba3a8ff21006b411331e6f0b9f3f14d11"
 
   bottle do
     cellar :any
@@ -12,12 +12,14 @@ class Rtmidi < Formula
   end
 
   depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
-    system "autoconf"
+    system "./autogen.sh", "--no-configure"
     system "./configure", "--prefix=#{prefix}"
-    system "make", "librtmidi.a"
-    lib.install Dir["*.a", "*.dylib"]
+    system "make"
+    lib.install Dir[".libs/*.a", ".libs/*.dylib"]
     include.install Dir["*.h"]
   end
 
