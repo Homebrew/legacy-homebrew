@@ -6,10 +6,10 @@ class Adns < Formula
   head "git://git.chiark.greenend.org.uk/~ianmdlvl/adns.git"
 
   bottle do
-    cellar :any
-    sha256 "164485aab044141ce1a0234be59024888ce4ffcaff3a6fee610e1ff46ab7a43d" => :yosemite
-    sha256 "a7340ab0e7f90f369e7e6feb470475e551c38d0d257c49ee090bc5fc19b93861" => :mavericks
-    sha256 "e3ff55e6fc0d0297a2e96ea0f4004fbb05330d0ce3a8932073f020a26f79961d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "b2534e08973313ece99276f31d01384fff14568a078949614ea2d67189e4c0b1" => :el_capitan
+    sha256 "9b9728bd1f4d0c491ab8b2a2343cc0bd8f9817e60944e3dcca01915cf5b9d55c" => :yosemite
+    sha256 "5d0c4286ace0fa748e02052a865f36bc16fc2e57787701c47240c06567a2fd13" => :mavericks
   end
 
   def install

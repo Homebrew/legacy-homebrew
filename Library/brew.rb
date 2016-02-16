@@ -44,8 +44,6 @@ begin
     end
   end
 
-  cmd = HOMEBREW_INTERNAL_COMMAND_ALIASES.fetch(cmd, cmd)
-
   # Add contributed commands to PATH before checking.
   Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/cmd"].each do |tap_cmd_dir|
     ENV["PATH"] += "#{File::PATH_SEPARATOR}#{tap_cmd_dir}"
