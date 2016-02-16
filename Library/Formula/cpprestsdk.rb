@@ -8,9 +8,10 @@ class Cpprestsdk < Formula
 
   bottle do
     cellar :any
-    sha256 "f3d0e1fa77b872b9f0bf58ea363d5a6dce656e6f68e90cdb584d090f419d27e4" => :el_capitan
-    sha256 "85ecc71b5bb39cd4b29d0d4510b51bdbf0e2dad0e38022b221439b20cf472a7d" => :yosemite
-    sha256 "19b2c820dcc1671778bacad7b33f9f58b97c707f6f536c97b3e2518def239e4d" => :mavericks
+    revision 1
+    sha256 "26397fa3c036611fbbfd5aa896e0233161f458be8c5faa0bb903efc593f98a57" => :el_capitan
+    sha256 "258d36b25b0551f326d595dd57648a9b12236eda4b55a632bf1fe76782beb901" => :yosemite
+    sha256 "8c91f02c7155086c33dbb452217b43fdfee54fca7c7e0970b097676735545bdc" => :mavericks
   end
 
   depends_on "boost"
