@@ -14,7 +14,7 @@ class Filebeat < Formula
     cd "src/github.com/elastic/beats/filebeat" do
       system "make", "build"
       libexec.install "filebeat"
-      prefix.install "etc/filebeat.template.json"
+      pkgshare.install "etc/filebeat.template.json"
       etc.install "etc/filebeat.yml"
     end
 
