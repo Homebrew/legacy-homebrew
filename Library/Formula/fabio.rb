@@ -26,24 +26,20 @@ class Fabio < Formula
   end
 
   test do
-    # check if Consul is reachable
     CONSUL_DEFAULT_PORT=8500
     FABIO_DEFAULT_PORT=9999
     LOCALHOST_IP="127.0.0.1".freeze
 
     if Fabio.port_open?(LOCALHOST_IP, CONSUL_DEFAULT_PORT) && !Fabio.port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
-      # Consul is there..
       fork do
         exec "#{bin}/fabio &>fabio-start.out&"
       end
       sleep 10
-      assert_equal Fabio.port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT), true
+      assert_equal true, Fabio.port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
       exec "killall fabio" # fabio forks off from the fork...
     else
-      # consul not running or fabio already running (or something else on that port), fallback to version test
-      puts "Falling back to version test, Consul is not running or Fabio is already running or something occupies the port #{FABIO_DEFAULT_PORT}"
-      output = shell_output("#{bin}/fabio -v")
-      assert_match version.to_s, output
+      puts "Fabio already running or Consul not available or starting fabio failed."
+      false
     end
   end
 
