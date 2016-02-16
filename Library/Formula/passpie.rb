@@ -1,8 +1,8 @@
 class Passpie < Formula
   desc "Manage login credentials from the terminal"
   homepage "https://github.com/marcwebbie/passpie"
-  url "https://pypi.python.org/packages/source/p/passpie/passpie-1.3.1.tar.gz"
-  sha256 "90106e09b1d2609bcf6476157cafd42cfd639cd718a26a55674d87ccb9303b29"
+  url "https://pypi.python.org/packages/source/p/passpie/passpie-1.4.1.tar.gz"
+  sha256 "531957f343948dcc73883418377a0902cec4f1c3690e80b664b5a9eccb36a393"
   head "https://github.com/marcwebbie/passpie.git"
 
   bottle do
