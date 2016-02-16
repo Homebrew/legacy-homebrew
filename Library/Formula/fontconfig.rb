@@ -14,10 +14,11 @@ class Fontconfig < Formula
     sha256 "36104e396d373ff8c593ee61053534007f4436bf5c2d9ebbf29843aaccc51064" => :mavericks
   end
 
-  def pour_bottle?
+  pour_bottle? do
+    reason "The bottle needs to be installed into /usr/local."
     # c.f. the identical hack in lua
     # https://github.com/Homebrew/homebrew/issues/47173
-    HOMEBREW_PREFIX.to_s == "/usr/local"
+    satisfy { HOMEBREW_PREFIX.to_s == "/usr/local" }
   end
 
   keg_only :provided_pre_mountain_lion
