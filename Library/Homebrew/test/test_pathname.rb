@@ -51,6 +51,18 @@ class PathnameTests < Homebrew::TestCase
     assert_raises(RuntimeError) { @file.write("CONTENT") }
   end
 
+  def test_append_lines
+    touch @file
+    @file.append_lines("CONTENT")
+    assert_equal "CONTENT\n", File.read(@file)
+    @file.append_lines("CONTENTS")
+    assert_equal "CONTENT\nCONTENTS\n", File.read(@file)
+  end
+
+  def test_append_lines_does_not_create
+    assert_raises(RuntimeError) { @file.append_lines("CONTENT") }
+  end
+
   def test_atomic_write
     touch @file
     @file.atomic_write("CONTENT")
