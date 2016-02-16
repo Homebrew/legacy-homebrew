@@ -1,17 +1,10 @@
 class Ffmpeg2theora < Formula
   desc "Convert video files to Ogg Theora format"
   homepage "https://v2v.cc/~j/ffmpeg2theora/"
-  revision 1
 
   stable do
-    url "https://v2v.cc/~j/ffmpeg2theora/downloads/ffmpeg2theora-0.29.tar.bz2"
-    sha256 "214110e2a5afdd8ff8e0be18152e893dbff5dabc1ae1d1124e64d9f93eae946d"
-
-    # Fixes build with ffmpeg 2.x by removing use of deprecated constant
-    patch do
-      url "https://git.xiph.org/?p=ffmpeg2theora.git;a=commitdiff_plain;h=d3435a6a83dc656379de9e6523ecf8d565da6ca6"
-      sha256 "0655ed219b438d1eefd8ad31fad3c1b8da77f13b911eb6247466ac46ce060f3c"
-    end
+    url "https://v2v.cc/~j/ffmpeg2theora/downloads/ffmpeg2theora-0.30.tar.bz2"
+    sha256 "4f6464b444acab5d778e0a3359d836e0867a3dcec4ad8f1cdcf87cb711ccc6df"
 
     depends_on "libkate" => :optional
   end
