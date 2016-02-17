@@ -30,34 +30,41 @@ class Fabio < Formula
     FABIO_DEFAULT_PORT=9999
     LOCALHOST_IP="127.0.0.1".freeze
 
-    if !Fabio.port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
-      if !Fabio.port_open?(LOCALHOST_IP, CONSUL_DEFAULT_PORT) 
-        exec "consul agent"
-        sleep 5
+    def port_open?(ip, port, seconds = 1)
+      Timeout.timeout(seconds) do
+        begin
+          TCPSocket.new(ip, port).close
+          true
+        rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+          false
+        end
+      end
+    rescue Timeout::Error
+      false
+    end
+
+    if !port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
+      if !port_open?(LOCALHOST_IP, CONSUL_DEFAULT_PORT) 
+        fork do
+          exec "consul agent -dev -bind 127.0.0.1"
+          puts "consul started"
+        end
+        sleep 15
+      else
+        puts "Consul already running"
       end
       fork do
         exec "#{bin}/fabio &>fabio-start.out&"
+        puts "fabio started"
       end
-      sleep 10
-      assert_equal true, Fabio.port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
-      exec "killall fabio" # fabio forks off from the fork...
-      exec "consul leave"
+      sleep 5
+      assert_equal true, port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
+      system "killall", "fabio" # fabio forks off from the fork...
+      system "consul", "leave"
     else
       puts "Fabio already running or Consul not available or starting fabio failed."
       false
     end
   end
 
-  def self.port_open?(ip, port, seconds = 1)
-    Timeout.timeout(seconds) do
-      begin
-        TCPSocket.new(ip, port).close
-        true
-      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
-        false
-      end
-    end
-  rescue Timeout::Error
-    false
-  end
 end
