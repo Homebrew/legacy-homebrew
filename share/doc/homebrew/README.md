@@ -21,7 +21,7 @@ However! Fixing build issues is easier than you think: try
 `brew edit $FORMULA` and see how you fare.
 
 ## Contributing
-Read [CONTRIBUTING.md](/CONTRIBUTING.md).
+Read [CONTRIBUTING.md](/.github/CONTRIBUTING.md).
 
 ### Community Forums
 -  [@MacHomebrew](https://twitter.com/MacHomebrew)
