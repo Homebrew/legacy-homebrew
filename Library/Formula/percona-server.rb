@@ -6,9 +6,9 @@ class PerconaServer < Formula
   sha256 "ab8ab794a58a82132645ae84b74de91c7f9a5bcf81f2162628ce8976a00a4fd4"
 
   devel do
-    url "https://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-5.7.10-1rc1/source/tarball/percona-server-5.7.10-1rc1.tar.gz"
-    version "5.7.10-1rc1"
-    sha256 "68de79af4a761522f436b89eeb5bbb43a56dccc2bc352d38c79b6e6be0c4106c"
+    url "https://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-5.7.10-2rc2/source/tarball/percona-server-5.7.10-2rc2.tar.gz"
+    version "5.7.10-2rc2"
+    sha256 "5f920eb8a80c4125f43ac084f51ddc7b004efb2b02a9d2d0ba76fb3c11889019"
 
     resource "boost" do
       url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
