@@ -1,6 +1,6 @@
 class Graphite2 < Formula
   desc "Smart font renderer for non-Roman scripts"
-  homepage "https://scripts.sil.org/cms/scripts/page.php?site_id=projects&item_id=graphite_home"
+  homepage "http://graphite.sil.org"
   url "https://github.com/silnrsi/graphite/archive/1.3.5.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/g/graphite2/graphite2_1.3.5.orig.tar.gz"
   sha256 "1c9064c4eb2b3ca03e7fdcfff47125c2304378f6cd4d76c5eba7d4f84d59324b"
@@ -13,6 +13,8 @@ class Graphite2 < Formula
     sha256 "d8661a659dba4300d5dcccfad1e572930b257dde0b2393fd846139ae72f4da7a" => :mavericks
   end
 
+  option :universal
+
   depends_on "cmake" => :build
 
   resource "testfont" do
@@ -21,6 +23,8 @@ class Graphite2 < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "cmake", *std_cmake_args
     system "make", "install"
   end
