@@ -14,12 +14,6 @@ class Go < Formula
     sha256 "ccce62ff1470060646749876b79d33d3092f60de8409bb5fd02e7412aa4aff72" => :mavericks
   end
 
-  devel do
-    url "https://storage.googleapis.com/golang/go1.6rc2.src.tar.gz"
-    version "1.6rc2"
-    sha256 "92914a23cde7e34e1d017175d785e5850fbb28f323a145028e2e26053ef1a598"
-  end
-
   option "without-cgo", "Build without cgo"
   option "without-godoc", "godoc will not be installed for you"
   option "without-vet", "vet will not be installed for you"
