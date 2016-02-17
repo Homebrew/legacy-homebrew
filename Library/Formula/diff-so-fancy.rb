@@ -1,12 +1,10 @@
 class DiffSoFancy < Formula
   desc "Good-lookin' diffs with diff-highlight and more"
   homepage "https://github.com/so-fancy/diff-so-fancy"
-  url "https://github.com/so-fancy/diff-so-fancy/archive/v0.3.0.tar.gz"
-  sha256 "caecbdcdc1f49e863f51605e8fd37ad65d7c0cf45143985c7556cbe1b6188d83"
+  url "https://github.com/so-fancy/diff-so-fancy/archive/v0.4.0.tar.gz"
+  sha256 "990d6fded1acf940d7c854944bbea3d7de7430608867238f26290844d610981b"
 
   bottle :unneeded
-
-  depends_on "gnu-sed"
 
   def install
     bin.install "third_party/diff-highlight/diff-highlight"

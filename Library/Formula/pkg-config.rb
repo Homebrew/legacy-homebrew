@@ -1,6 +1,6 @@
 class PkgConfig < Formula
   desc "Manage compile and link flags for libraries"
-  homepage "https://wiki.freedesktop.org/www/Software/pkg-config/"
+  homepage "https://freedesktop.org/wiki/Software/pkg-config/"
   url "https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.tar.gz"
   mirror "https://fossies.org/linux/misc/pkg-config-0.29.tar.gz"
   sha256 "c8507705d2a10c67f385d66ca2aae31e81770cc0734b4191eb8c489e864a006b"
