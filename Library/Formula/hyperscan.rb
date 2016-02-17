@@ -1,8 +1,8 @@
 class Hyperscan < Formula
   desc "High-performance regular expression matching library"
   homepage "https://01.org/hyperscan"
-  url "https://github.com/01org/hyperscan/archive/v4.0.1.tar.gz"
-  sha256 "ae6619baa3da78361b09d22c155b1406b17890009d93ed60445381eb03016b76"
+  url "https://github.com/01org/hyperscan/archive/v4.1.0.tar.gz"
+  sha256 "b8de3f59c2bd1a8765a5aca5dfdd062766cef67218aedf63df2c92766524b3c1"
 
   bottle do
     cellar :any_skip_relocation
