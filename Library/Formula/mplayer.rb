@@ -5,9 +5,9 @@ class Mplayer < Formula
   sha256 "3ad0846c92d89ab2e4e6fb83bf991ea677e7aa2ea775845814cbceb608b09843"
 
   bottle do
-    sha256 "aaece9087e83b8ead9644510288513f27978d920f9917ef1b013b0c566b24cb0" => :el_capitan
-    sha256 "c21fe0781fb99f2ec0f304d8dbc9582dba27af6b60d266cc0917d6c0ccf906e2" => :yosemite
-    sha256 "dda6a502ded3e942191d24252677f118becbf34799326e201e6151247649e5c1" => :mavericks
+    sha256 "6cee95b050e52a0f09e2807d6feda1f798d3f43166fbad1e3fb2ec5fe2c11f99" => :el_capitan
+    sha256 "8bb05f0875afca69802634411d8e67af5f42e4461b66c640de3c152e049c7843" => :yosemite
+    sha256 "d3833fa49709d2857337eebcbd956002f20309cbd676b27070940f84888ebb65" => :mavericks
   end
 
   head do
