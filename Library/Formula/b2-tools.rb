@@ -6,6 +6,7 @@ class B2Tools < Formula
 
   def install
     bin.install "b2"
+    bash_completion.install "contrib/b2" => "b2-tools-completion.bash"
   end
 
   test do
