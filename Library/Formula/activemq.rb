@@ -12,10 +12,9 @@ class Activemq < Formula
     rm_rf Dir["bin/linux-x86-*"]
     libexec.install Dir["*"]
     (bin/"activemq").write_env_script libexec/"bin/activemq", Language::Java.java_home_env("1.6+")
-    (bin/"activemq-admin").write_env_script libexec/"bin/activemq-admin", Language::Java.java_home_env("1.6+")
   end
 
   test do
-    system "#{bin}/activemq-admin", "browse", "-h"
+    system "#{bin}/activemq", "browse", "-h"
   end
 end
