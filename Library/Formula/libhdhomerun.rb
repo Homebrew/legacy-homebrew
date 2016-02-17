@@ -21,7 +21,6 @@ class Libhdhomerun < Formula
   test do
     # Devices may be found or not found, with differing return codes
     discover = pipe_output("#{bin}/hdhomerun_config discover")
-    outputs = ["no devices found", "hdhomerun device", "found at"]
-    assert outputs.any? { |x| discover.include? x }
+    assert_match /no devices found|hdhomerun device|found at/, discover
   end
 end
