@@ -1,9 +1,8 @@
 class Verilator < Formula
   desc "Verilog simulator"
   homepage "http://www.veripool.org/wiki/verilator"
-  url "http://www.veripool.org/ftp/verilator-3.874.tgz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/v/verilator/verilator_3.874.orig.tar.gz"
-  sha256 "d20086626fdf6346d309e435881600c2d8bc8da8b3106e22d4ca4a70b98d0b1c"
+  url "http://www.veripool.org/ftp/verilator-3.880.tgz"
+  sha256 "2839178cf291ccfcfbadc556bccfe0e7f56a2bfb4ee1f24feb20c52b2632d02f"
 
   bottle do
     sha256 "d2259dedaf99925c3290121c41344534af65ff1ba525796f132f43afdef02d4b" => :yosemite
