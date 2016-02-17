@@ -108,10 +108,6 @@ module HomebrewArgvExtension
     flag? "--quieter"
   end
 
-  def interactive?
-    flag? "--interactive"
-  end
-
   def one?
     flag? "--1"
   end
@@ -126,6 +122,10 @@ module HomebrewArgvExtension
 
   def homebrew_developer?
     !ENV["HOMEBREW_DEVELOPER"].nil?
+  end
+
+  def interactive?
+    include?("--interactive")
   end
 
   def sandbox?
