@@ -80,7 +80,7 @@ including how to set this across reboots. If you’re pre-Mountain Lion,
 alternative](https://developer.apple.com/legacy/library/qa/qa1067/_index.html).
 
 ### How do I contribute to Homebrew?
-Read [CONTRIBUTING.md](/CONTRIBUTING.md).
+Read [CONTRIBUTING.md](/.github/CONTRIBUTING.md).
 
 ### Why do you compile everything?
 Homebrew provides pre-compiled versions for some formulae. These
