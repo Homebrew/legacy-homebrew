@@ -44,7 +44,7 @@ class Fabio < Formula
     end
 
     if !port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
-      if !port_open?(LOCALHOST_IP, CONSUL_DEFAULT_PORT) 
+      if !port_open?(LOCALHOST_IP, CONSUL_DEFAULT_PORT)
         fork do
           exec "consul agent -dev -bind 127.0.0.1"
           puts "consul started"
@@ -66,5 +66,4 @@ class Fabio < Formula
       false
     end
   end
-
 end
