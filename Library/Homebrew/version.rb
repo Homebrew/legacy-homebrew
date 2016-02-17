@@ -368,7 +368,8 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. http://mirrors.jenkins-ci.org/war/1.486/jenkins.war
-    m = /\/(\d\.\d+(\.\d)?)\//.match(spec_s)
+    # e.g. https://github.com/foo/bar/releases/download/0.10.11/bar.phar
+    m = /\/(\d\.\d+(\.\d+)?)\//.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. http://www.ijg.org/files/jpegsrc.v8d.tar.gz
