@@ -11,9 +11,9 @@ class BzrExplorer < Formula
     sha256 "70df82f8ac0c72265b2be43d3663e83ad5d34b839dc10706a6fd21806eb4539d" => :mavericks
   end
 
+  depends_on "gettext" => :build
   depends_on "bazaar"
   depends_on "qbzr"
-  depends_on "gettext" => :build
 
   def install
     system "make", "pot"
@@ -24,7 +24,6 @@ class BzrExplorer < Formula
   def caveats; <<-EOS.undent
     In order to use this plugin you must set your PYTHONPATH in your ~/.bashrc:
     export PYTHONPATH="#{HOMEBREW_PREFIX}/lib/python2.7/site-packages:$PYTHONPATH"
-
   EOS
   end
 
