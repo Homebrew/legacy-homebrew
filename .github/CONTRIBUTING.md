@@ -34,8 +34,4 @@ First time contributing to Homebrew? Read our [Code of Conduct](https://github.c
 * `git commit` with message formatted `foo: fix <insert details>`
 * [open a pull request](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/How-To-Open-a-Homebrew-Pull-Request-(and-get-it-merged).md#how-to-open-a-homebrew-pull-request-and-get-it-merged) and fix any failing tests
 
-### Report a security vulnerability
-
-* [Email security@brew.sh](mailto:security@brew.sh) (a private mailing list) with detailed reproduction instructions using [our PGP key](https://keybase.io/homebrew/key.asc)
-
 Thanks!

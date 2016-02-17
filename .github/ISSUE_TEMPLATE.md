@@ -17,3 +17,6 @@ _Please replace this line with a brief summary of your issue **AND** if reportin
 
 We will consider your request but it may be closed if it's something we're not actively planning to work on.
 
+### Report a security vulnerability
+
+* [Email security@brew.sh](mailto:security@brew.sh) (a private mailing list) with detailed reproduction instructions optionally using [our PGP key](https://keybase.io/homebrew/key.asc)
