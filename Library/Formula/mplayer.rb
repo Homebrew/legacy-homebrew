@@ -1,8 +1,8 @@
 class Mplayer < Formula
   desc "UNIX movie player"
   homepage "https://www.mplayerhq.hu/"
-  url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.2.1.tar.xz"
-  sha256 "831baf097d899bdfcdad0cb80f33cc8dff77fa52cb306bee5dee6843b5c52b5f"
+  url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.3.0.tar.xz"
+  sha256 "3ad0846c92d89ab2e4e6fb83bf991ea677e7aa2ea775845814cbceb608b09843"
 
   bottle do
     sha256 "aaece9087e83b8ead9644510288513f27978d920f9917ef1b013b0c566b24cb0" => :el_capitan
