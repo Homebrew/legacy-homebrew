@@ -34,7 +34,7 @@ Before submitting a new formula make sure your package:
 *   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release versions belong.
 *   passes all `brew audit --strict --online $FORMULA` tests.
 
-Before submitting a new formula make sure you read over our [contribution guidelines](https://github.com/Homebrew/homebrew/blob/master/CONTRIBUTING.md).
+Before submitting a new formula make sure you read over our [contribution guidelines](https://github.com/Homebrew/homebrew/blob/master/.github/CONTRIBUTING.md).
 
 ## Grab the URL
 
