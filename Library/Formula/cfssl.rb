@@ -18,18 +18,18 @@ class Cfssl < Formula
   depends_on "libtool" => :run
 
   go_resource "golang.org/x/crypto" do
-    url "https://github.com/golang/crypto.git",
+    url "https://go.googlesource.com/crypto.git",
       :revision => "3760e016850398b85094c4c99e955b8c3dea5711"
   end
 
   go_resource "github.com/GeertJohan/go.rice" do
     url "https://github.com/GeertJohan/go.rice.git",
-      :revision => "0f3f5fde32fd1f755632a3d31ba2ec6d449e387b"
+      :revision => "ada95a01c963696fb73320ee662195af68be81ae"
   end
 
   go_resource "github.com/cloudflare/cf-tls" do
     url "https://github.com/cloudflare/cf-tls.git",
-      :revision => "358b61f346ff4384bd2b051a8d1a24c48444e388"
+      :revision => "28cbf4e4c1f859789a26b308eb8b684f34f38312"
   end
 
   go_resource "github.com/daaku/go.zipexe" do
@@ -37,24 +37,68 @@ class Cfssl < Formula
       :revision => "a5fe2436ffcb3236e175e5149162b41cd28bd27d"
   end
 
+  go_resource "github.com/miekg/pkcs11" do
+    url "https://github.com/miekg/pkcs11.git",
+      :revision => "80f102b5cac759de406949c47f0928b99bd64cdf"
+  end
+
+  go_resource "github.com/kardianos/osext" do
+    url "https://github.com/kardianos/osext.git",
+      :revision => "6e7f843663477789fac7c02def0d0909e969b4e5"
+  end
+
+  # These two aren't needed anymore after the vendored Godeps were added.
+  # Can't hurt to have them anyway, though.
+  go_resource "github.com/coreos/go-systemd" do
+    url "github.com/coreos/go-systemd.git",
+    :revision => "2ed5b5012ccde5f057c197890a2c801295941149"
+  end
+
   go_resource "github.com/dgryski/go-rc2" do
     url "https://github.com/dgryski/go-rc2.git",
       :revision => "8a9021637152186df738b1ec376caf2100fef194"
   end
 
-  go_resource "github.com/miekg/pkcs11" do
-    url "https://github.com/miekg/pkcs11.git",
-      :revision => "4b4363b37cd397baa396bcde75f4b09f40441bd8"
-  end
+  head do
+    go_resource "github.com/cloudflare/go-metrics" do
+      url "https://github.com/cloudflare/go-metrics.git",
+        :revision => "f009caf6e47cccc4641d4252277f4af0196d89c4"
+    end
 
-  go_resource "github.com/kardianos/osext" do
-    url "https://github.com/kardianos/osext.git",
-      :revision => "29ae4ffbc9a6fe9fb2bc5029050ce6996ea1d3bc"
-  end
+    go_resource "github.com/cloudflare/redoctober" do
+      url "https://github.com/cloudflare/redoctober.git",
+        :revision => "1bfa291c370c137cee14ddee7029554ae0d4fc88"
+    end
 
-  go_resource "github.com/coreos/go-systemd" do
-    url "github.com/coreos/go-systemd.git",
-    :revision => "2ed5b5012ccde5f057c197890a2c801295941149"
+    go_resource "github.com/google/certificate-transparency" do
+      url "https://github.com/google/certificate-transparency.git",
+        :revision => "3f987269ebe76f2bf3bbf88e10d21a45f4bffb04"
+    end
+
+    go_resource "github.com/jmhodges/clock" do
+      url "https://github.com/jmhodges/clock.git",
+        :revision => "3c4ebd218625c9364c33db6d39c276d80c3090c6"
+    end
+
+    go_resource "github.com/kisielk/sqlstruct" do
+      url "https://github.com/kisielk/sqlstruct.git",
+        :revision => "648daed35d49dac24a4bff253b190a80da3ab6a5"
+    end
+
+    go_resource "github.com/lib/pq" do
+      url "https://github.com/lib/pq.git",
+        :revision => "83c4f410d0aed80a0f44bac6a576a7f2435791f3"
+    end
+
+    go_resource "github.com/mattn/go-sqlite3" do
+      url "https://github.com/mattn/go-sqlite3.git",
+        :revision => "2513631704612107a1c8b1803fb8e6b3dda2230e"
+    end
+
+    go_resource "github.com/mreiferson/go-httpclient" do
+      url "https://github.com/mreiferson/go-httpclient.git",
+        :revision => "63fe23f7434723dc904c901043af07931f293c47"
+    end
   end
 
   def install
@@ -65,8 +109,13 @@ class Cfssl < Formula
     cd "src/github.com/cloudflare/cfssl" do
       system "go", "build", "-o", "#{bin}/cfssl", "cmd/cfssl/cfssl.go"
       system "go", "build", "-o", "#{bin}/cfssljson", "cmd/cfssljson/cfssljson.go"
-      system "go", "build", "-o", "#{bin}/mkbundle", "cmd/mkbundle/mkbundle.go"
+      system "go", "build", "-o", "#{bin}/cfssl-mkbundle", "cmd/mkbundle/mkbundle.go" # prefixing with 'cfssl-'; mono (et al.) also has a `mkbundle`
     end
+  end
+
+  def caveats; <<-EOS.undent
+    The `mkbundle` utility has been installed as `cfssl-mkbundle` to prevent conflicts with other formulae.
+    EOS
   end
 
   test do
