@@ -7,26 +7,8 @@ class Blackbox < Formula
   depends_on :gpg
 
   def install
-    bin.install "bin/_blackbox_common.sh"
-    bin.install "bin/_blackbox_common_test.sh"
-    bin.install "bin/_stack_lib.sh"
-    bin.install "bin/blackbox_addadmin"
-    bin.install "bin/blackbox_cat"
-    bin.install "bin/blackbox_decrypt_all_files"
-    bin.install "bin/blackbox_deregister_file"
-    bin.install "bin/blackbox_diff"
-    bin.install "bin/blackbox_edit"
-    bin.install "bin/blackbox_edit_end"
-    bin.install "bin/blackbox_edit_start"
-    bin.install "bin/blackbox_initialize"
-    bin.install "bin/blackbox_list_files"
-    bin.install "bin/blackbox_postdeploy"
-    bin.install "bin/blackbox_recurse"
-    bin.install "bin/blackbox_register_new_file"
-    bin.install "bin/blackbox_removeadmin"
-    bin.install "bin/blackbox_shred_all_files"
-    bin.install "bin/blackbox_update_all_files"
-    bin.install "bin/blackbox_whatsnew"
+    libexec.install Dir["bin/*"]
+    bin.write_exec_script Dir[libexec/"*"].select { |f| File.executable? f }
   end
 
   test do
