@@ -30,7 +30,11 @@ class Fabio < Formula
     FABIO_DEFAULT_PORT=9999
     LOCALHOST_IP="127.0.0.1".freeze
 
-    if Fabio.port_open?(LOCALHOST_IP, CONSUL_DEFAULT_PORT) && !Fabio.port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
+    if !Fabio.port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
+      if !Fabio.port_open?(LOCALHOST_IP, CONSUL_DEFAULT_PORT) 
+        exec "consul agent"
+        sleep 5
+      end
       fork do
         exec "#{bin}/fabio &>fabio-start.out&"
       end
