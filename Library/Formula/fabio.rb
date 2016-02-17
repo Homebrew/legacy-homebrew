@@ -41,6 +41,7 @@ class Fabio < Formula
       sleep 10
       assert_equal true, Fabio.port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
       exec "killall fabio" # fabio forks off from the fork...
+      exec "consul leave"
     else
       puts "Fabio already running or Consul not available or starting fabio failed."
       false
