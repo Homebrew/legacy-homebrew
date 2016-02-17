@@ -30,6 +30,7 @@
 /share/doc
 
 # Unignore our documentation.
+!/.github
 !/share/doc/homebrew
 !/share/man/man1/brew.1
 
@@ -38,7 +39,6 @@
 !/.travis.yml
 !/.yardopts
 !/CODEOFCONDUCT.md
-!/CONTRIBUTING.md
 !/LICENSE.txt
 !/README.md
 !/SUPPORTERS.md
