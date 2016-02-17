@@ -167,6 +167,7 @@ TAP_MIGRATIONS = {
   "pdftoipe" => "homebrew/head-only",
   "pebble-sdk" => "pebble/pebble-sdk",
   "pgplot" => "homebrew/x11",
+  "phash" => "homebrew/boneyard",
   "pixie" => "homebrew/x11",
   "pjsip" => "homebrew/boneyard",
   "pocl" => "homebrew/science",
