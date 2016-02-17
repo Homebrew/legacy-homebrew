@@ -15,7 +15,6 @@ TAP_MIGRATIONS = {
   "bbcp" => "homebrew/head-only",
   "bcwipe" => "homebrew/boneyard",
   "bindfs" => "homebrew/fuse",
-  "blackbox" => "homebrew/boneyard",
   "bochs" => "homebrew/x11",
   "boost149" => "homebrew/versions",
   "cantera" => "homebrew/science",
