@@ -19,6 +19,7 @@ class Harfbuzz < Formula
     depends_on "libtool" => :build
   end
 
+  option :universal
   option "with-cairo", "Build command-line utilities that depend on Cairo"
 
   depends_on "pkg-config" => :build
@@ -35,6 +36,8 @@ class Harfbuzz < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
