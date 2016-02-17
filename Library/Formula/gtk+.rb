@@ -22,6 +22,7 @@ class Gtkx < Formula
     depends_on "gtk-doc" => :build
   end
 
+  option :universal
   option "with-quartz-relocation", "Build with quartz relocation support"
 
   depends_on "pkg-config" => :build
@@ -47,13 +48,15 @@ class Gtkx < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = ["--disable-dependency-tracking",
             "--disable-silent-rules",
             "--prefix=#{prefix}",
             "--disable-glibtest",
             "--enable-introspection=yes",
             "--with-gdktarget=quartz",
-            "--disable-visibility",]
+            "--disable-visibility"]
 
     args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
 
