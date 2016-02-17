@@ -1,9 +1,8 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.1.tar.bz2"
-  sha256 "7919ecde15962bab2e26d01d5f5f4ead6696bbcacb504b8560f2e3a152bfe492"
-  revision 1
+  url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.2.tar.bz2"
+  sha256 "8846e7e69a203db8f50af90fa037f0ba47e3f32e4c9ccdae2db22898fd4d1f59"
 
   bottle do
     sha256 "4d88289344121d4e27764d9f11ac3daf16229bc17680534e251622af2631adf7" => :el_capitan
@@ -54,7 +53,9 @@ class OpenMpi < Formula
 
     # If Fortran bindings were built, there will be stray `.mod` files
     # (Fortran header) in `lib` that need to be moved to `include`.
-    include.install Dir["#{lib}/*.mod"]
+    if build.with? "fortran"
+      include.install Dir["#{lib}/*.mod"]
+    end
 
     if build.stable?
       # Move vtsetup.jar from bin to libexec.
