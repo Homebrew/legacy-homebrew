@@ -3,6 +3,7 @@ class LibjsonRpcCpp < Formula
   homepage "https://github.com/cinemast/libjson-rpc-cpp"
   url "https://github.com/cinemast/libjson-rpc-cpp/archive/v0.6.0.tar.gz"
   sha256 "98baf15e51514339be54c01296f0a51820d2d4f17f8c9d586f1747be1df3290b"
+  head "https://github.com/cinemast/libjson-rpc-cpp.git"
 
   bottle do
     cellar :any
@@ -17,6 +18,7 @@ class LibjsonRpcCpp < Formula
   depends_on "libmicrohttpd"
 
   def install
+    ENV.deparallelize
     system "cmake", ".", *std_cmake_args
     system "make"
     system "make", "install"
