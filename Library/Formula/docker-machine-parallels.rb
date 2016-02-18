@@ -38,6 +38,7 @@ class DockerMachineParallels < Formula
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO15VENDOREXPERIMENT"] = "0"
 
     mkdir_p buildpath/"src/github.com/Parallels/"
     ln_sf buildpath, buildpath/"src/github.com/Parallels/docker-machine-parallels"

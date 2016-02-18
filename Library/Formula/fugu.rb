@@ -24,6 +24,7 @@ class Fugu < Formula
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO15VENDOREXPERIMENT"] = "0"
     mkdir_p buildpath/"src/github.com/mattes/"
     ln_s buildpath, buildpath/"src/github.com/mattes/fugu"
     Language::Go.stage_deps resources, buildpath/"src"
