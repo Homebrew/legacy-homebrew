@@ -3,7 +3,7 @@ class Weechat < Formula
   homepage "https://www.weechat.org"
   url "https://weechat.org/files/src/weechat-1.4.tar.gz"
   sha256 "51859bf3b26ffeed95c0a3399167e6670e8240542c52772439fb9cade06857a5"
-  revision 1
+  revision 2
 
   head "https://github.com/weechat/weechat.git"
 
@@ -19,6 +19,7 @@ class Weechat < Formula
   option "with-debug", "Build with debug information"
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "gnutls"
   depends_on "libgcrypt"
   depends_on "gettext"
