@@ -1,5 +1,5 @@
 class BzrBisect < Formula
-  desc "External merge tool support for Bazaar"
+  desc "Bisection support for Bazaar"
   homepage "https://launchpad.net/bzr-bisect"
   url "lp:bzr-bisect", :using => :bzr, :revision => "jelmer@samba.org-20120803130348-l0ydx0dn94f1xrjr"
   version "jelmer@samba.org-20120803130348-l0ydx0dn94f1xrjr"
