@@ -5,13 +5,13 @@ class Mongodb < Formula
   homepage "https://www.mongodb.org/"
 
   stable do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.2.1.tar.gz"
-    sha256 "50431a3ba5ab68bd0bed4a157a8528ca27753a63cf101f13135255e4e9d42f15"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.2.3.tar.gz"
+    sha256 "82030ada190095b5d95c0b59e9cf74efe9db602b49d2b8857b06f2683a5227fa"
 
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.2.1",
-        :revision => "17a5573551a0c3e33603f98375f144f1dd20b745"
+        :tag => "r3.2.3",
+        :revision => "6c05043c5d40471b27abe06f64c9cfddecac1110"
     end
   end
 
