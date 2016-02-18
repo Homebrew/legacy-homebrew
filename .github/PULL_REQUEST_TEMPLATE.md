@@ -1,6 +1,6 @@
 ### All Submissions:
 
-- [ ] Have you followed the guidelines in our [Contributing](CONTRIBUTING.md) document?
+- [ ] Have you followed the guidelines in our [Contributing](https://github.com/Homebrew/homebrew/blob/master/.github/CONTRIBUTING.md) document?
 
 ### New Formulae Submissions:
 

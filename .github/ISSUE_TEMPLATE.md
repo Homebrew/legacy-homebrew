@@ -13,7 +13,7 @@ _Please replace this line with a brief summary of your issue **AND** if reportin
 
 ### Feature/Formula Requests:
 
-**Please note by far the quickest way to get a new feature or formula into Homebrew is to file a [Pull Request](CONTRIBUTING.md).**
+**Please note by far the quickest way to get a new feature or formula into Homebrew is to file a [Pull Request](https://github.com/Homebrew/homebrew/blob/master/.github/CONTRIBUTING.md).**
 
 We will consider your request but it may be closed if it's something we're not actively planning to work on.
 
