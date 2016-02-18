@@ -203,6 +203,7 @@ pull() {
       echo "Stashing uncommitted changes to $DIR."
       git status --short --untracked-files=all
     fi
+    git merge --abort &>/dev/null
     git -c "user.email=brew-update@localhost" \
         -c "user.name=brew update" \
         stash save --include-untracked "${QUIET_ARGS[@]}"
@@ -232,7 +233,10 @@ pull() {
   then
     git rebase "${QUIET_ARGS[@]}" "origin/$UPSTREAM_BRANCH"
   else
-    git merge --no-edit --ff "${QUIET_ARGS[@]}" "origin/$UPSTREAM_BRANCH"
+    git merge --no-edit --ff "${QUIET_ARGS[@]}" "origin/$UPSTREAM_BRANCH" \
+      --strategy=recursive \
+      --strategy-option=ours \
+      --strategy-option=ignore-all-space
   fi
 
   export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$(read_current_revision)"
