@@ -3,8 +3,9 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.8.3.tar.gz"
-  sha256 "ec8f7c97f84733bc051d18c10fe6e0e12b2e08cd25400e75702c061be01870c0"
+  url "https://github.com/Masterminds/glide/archive/0.9.0.tar.gz"
+  sha256 "cad71acb42ff1415eea30c0c6a875665e5fc7efb2ed222b3a66286521b1c5b05"
+  head "https://github.com/Masterminds/glide.git"
 
   bottle do
     cellar :any_skip_relocation
@@ -20,33 +21,29 @@ class Glide < Formula
       :revision => "f7716cbe52baa25d2e9b0d0da546fcf909fc16b4"
   end
 
-  go_resource "github.com/Masterminds/cookoo" do
-    url "https://github.com/Masterminds/cookoo.git",
-      :revision => "78aa11ce75e257c51be7ea945edb84cf19c4a6de"
-  end
-
   go_resource "github.com/Masterminds/vcs" do
     url "https://github.com/Masterminds/vcs.git",
-      :revision => "eaee272c8fa4514e1572e182faecff5be20e792a"
+      :revision => "9c0db6583837118d5df7c2ae38ab1c194e434b35"
   end
 
   go_resource "github.com/codegangsta/cli" do
     url "https://github.com/codegangsta/cli.git",
-      :revision => "b5232bb2934f606f9f27a1305f1eea224e8e8b88"
+      :revision => "c31a7975863e7810c92e2e288a9ab074f9a88f29"
   end
 
   go_resource "github.com/Masterminds/semver" do
     url "https://github.com/Masterminds/semver.git",
-      :revision => "6333b7bd29aad1d79898ff568fd90a8aa533ae82"
+      :revision => "513f3dcb3ecfb1248831fb5cb06a23a3cd5935dc"
   end
 
   def install
-    (buildpath + "src/github.com/Masterminds/glide").install "glide.go", "cfg", "cmd", "dependency", "gb", "msg", "util"
 
     ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/Masterminds/"
+    ln_s buildpath, buildpath/"src/github.com/Masterminds/glide"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "glide", "-ldflags", "-X main.version #{version}", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
+    system "go", "build", "-o", "glide", "-ldflags", "-X main.version #{version}"
     bin.install "glide"
   end
 
