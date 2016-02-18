@@ -31,6 +31,7 @@ class Ipfs < Formula
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO15VENDOREXPERIMENT"] = "0"
     mkdir_p buildpath/"src/github.com/ipfs/"
     ln_sf buildpath, buildpath/"src/github.com/ipfs/go-ipfs"
     Language::Go.stage_deps resources, buildpath/"src"
