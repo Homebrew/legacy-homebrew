@@ -830,7 +830,7 @@ module MachO
     SIZEOF = 24
 
     # @api private
-    def initialize(raw_data, offset, cmd, cmdsize, cryptoff, cryptsize, cryptid)
+    def initialize(raw_data, offset, cmd, cmdsize, cryptoff, cryptsize, cryptid, pad)
       super(raw_data, offset, cmd, cmdsize)
       @cryptoff = cryptoff
       @cryptsize = cryptsize
