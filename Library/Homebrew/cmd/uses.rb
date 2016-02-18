@@ -9,7 +9,8 @@ module Homebrew
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
     used_formulae = ARGV.formulae
-    formulae = (ARGV.include? "--installed") ? Formula.installed : Formula
+    installed = ARGV.include? "--installed"
+    formulae = installed ? Formula.installed : Formula
     recursive = ARGV.flag? "--recursive"
     ignores = []
     ignores << "build?" if ARGV.include? "--skip-build"
@@ -20,6 +21,9 @@ module Homebrew
         begin
           if recursive
             deps = f.recursive_dependencies do |dependent, dep|
+              if installed
+                Dependency.prune if not dep.to_formula.installed?
+              end
               Dependency.prune if ignores.any? { |ignore| dep.send(ignore) } && !dependent.build.with?(dep)
             end
             reqs = f.recursive_requirements do |dependent, req|
