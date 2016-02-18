@@ -1,10 +1,10 @@
 class Go < Formula
-  desc "Go programming environment"
+  desc "Golang programming environment"
   homepage "https://golang.org"
-  url "https://storage.googleapis.com/golang/go1.5.3.src.tar.gz"
-  mirror "https://fossies.org/linux/misc/go1.5.3.src.tar.gz"
-  version "1.5.3"
-  sha256 "754e06dab1c31ab168fc9db9e32596734015ea9e24bc44cae7f237f417ce4efe"
+  url "https://storage.googleapis.com/golang/go1.6.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.6.src.tar.gz"
+  version "1.6"
+  sha256 "a96cce8ce43a9bf9b2a4c7d470bc7ee0cb00410da815980681c8353218dcf146"
 
   head "https://github.com/golang/go.git"
 
@@ -12,12 +12,6 @@ class Go < Formula
     sha256 "b09e84e2e63314ab38d76c366ff13afa53106ec2e53987c2e75d9e591848121e" => :el_capitan
     sha256 "9553fcf68bcd70e75ab755785f5dd6285f3608e2e71324c3ba1a4f736c84a8c9" => :yosemite
     sha256 "ccce62ff1470060646749876b79d33d3092f60de8409bb5fd02e7412aa4aff72" => :mavericks
-  end
-
-  devel do
-    url "https://storage.googleapis.com/golang/go1.6rc2.src.tar.gz"
-    version "1.6rc2"
-    sha256 "92914a23cde7e34e1d017175d785e5850fbb28f323a145028e2e26053ef1a598"
   end
 
   option "without-cgo", "Build without cgo"
