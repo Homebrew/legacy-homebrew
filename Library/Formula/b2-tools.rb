@@ -10,6 +10,7 @@ class B2Tools < Formula
   end
 
   test do
-    system "b2 authorize_account BOGUSACCTID BOGUSAPPKEY | grep bad_auth_token"
+    assert_match "bad_auth_token",
+      shell_output("#{bin}/b2 authorize_account BOGUSACCTID BOGUSAPPKEY", 1)
   end
 end
