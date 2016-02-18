@@ -20,7 +20,6 @@ class Scw < Formula
   def install
     ENV["GOPATH"] = buildpath
     ENV["GOBIN"] = buildpath
-    ENV["GO15VENDOREXPERIMENT"] = "1"
     (buildpath/"src/github.com/scaleway/scaleway-cli").install Dir["*"]
 
     system "go", "build", "-o", "#{bin}/scw", "-v", "-ldflags", "-X  github.com/scaleway/scaleway-cli/pkg/scwversion.GITCOMMIT=homebrew", "github.com/scaleway/scaleway-cli/cmd/scw/"
