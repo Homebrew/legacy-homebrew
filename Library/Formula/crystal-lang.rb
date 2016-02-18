@@ -21,6 +21,7 @@ class CrystalLang < Formula
 
   resource "boot" do
     url "https://github.com/manastech/crystal/releases/download/0.11.1/crystal-0.11.1-1-darwin-x86_64.tar.gz"
+    version "0.11.1"
     sha256 "117af7bc7a5031ff77dba443d65e885c5f99189eac9fed7b35ca4e99f2a3b51f"
   end
 
