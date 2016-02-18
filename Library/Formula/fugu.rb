@@ -8,10 +8,10 @@ class Fugu < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "319b2c0dbb6a216501fa4bd22deb7981fcb66cc43c05887c617f76466ccabc77" => :el_capitan
-    sha256 "7eb31174fe5f1ed36f3026e5002d610468b38b1a968ae7fe58edb77439b6bc9b" => :yosemite
-    sha256 "0ff5162567bcba3ab4673942708b3c6de207b2e01aec45faed761f8832942817" => :mavericks
+    revision 2
+    sha256 "51b5d051688093ffd7f44ab20599e01d236903d7c92f9d1765bd8ebce26a9dcb" => :el_capitan
+    sha256 "76925e369d03b49158a9a55fe71d513b2f01c11c317ccc3ff3a166cd3790096c" => :yosemite
+    sha256 "afaf8a3af2fa2cd5a7482fedd449abc9bd13a4d88d805c99c4f9b797a6329887" => :mavericks
   end
 
   depends_on "go" => :build
