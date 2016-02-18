@@ -12,10 +12,12 @@ class Aria2 < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "libssh2" => :optional
 
   needs :cxx11
 
   def install
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -26,6 +28,8 @@ class Aria2 < Formula
       --without-libnettle
       --without-libgcrypt
     ]
+
+    args << "--with-libssh2" if build.with? "libssh2"
 
     system "./configure", *args
     system "make", "install"
