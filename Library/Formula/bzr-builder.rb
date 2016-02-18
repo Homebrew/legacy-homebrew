@@ -25,7 +25,11 @@ class BzrBuilder < Formula
         system "bzr", "commit", "-m", "initial import"
       end
 
-      (testpath/"repo/my.recipe").write "# bzr-builder format 0.3 deb-version 1.0+{revno}-{revno:packaging}\ntrunk"
+      (testpath/"repo/my.recipe").write <<-EOS.undent
+        # bzr-builder format 0.3 deb-version 1.0+{revno}-{revno:packaging}
+        trunk
+      EOS
+
       system "bzr", "build", "my.recipe", "branch"
 
       cd "branch" do
