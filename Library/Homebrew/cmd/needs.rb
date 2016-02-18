@@ -5,7 +5,7 @@ module Homebrew
     if ARGV.named.empty?
       puts "Usage: brew needs <formula>"
     else
-      ARGV.named.each_with_index do |f, i|
+      ARGV.named.each do |f|
         print_needs f
       end
     end
