@@ -9,9 +9,9 @@ class Keybase < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f844504b5290d471138c7a08b93a4d0fe5180c77e5b999050d978219b3957a9f" => :el_capitan
-    sha256 "fb2b1d96525f10f606c9abae24f7b958ce8ea86a276858da4000de2a50164d45" => :yosemite
-    sha256 "c1f06efd87c24ce6ebdda5420dabc354daa269e6f8f002ebf648483fa44467df" => :mavericks
+    sha256 "8f3fd71983fb22b6e1e1c5fc89150ab5e2702f1348c25cef60b5e2e8c02cf8e6" => :el_capitan
+    sha256 "03cd7695ff8a2f31eaf8ce2d6083b645ca0f235edb29dea80a38169e128666c5" => :yosemite
+    sha256 "6257e1ccb1b87708e0fbd78b7fbebc5e9b77804e46e889cd18f9b64c6efed926" => :mavericks
   end
 
   depends_on "go" => :build
