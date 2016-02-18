@@ -1,8 +1,8 @@
 class Mlt < Formula
   desc "Author, manage, and run multitrack audio/video compositions"
   homepage "http://www.mltframework.org/"
-  url "https://downloads.sourceforge.net/mlt/mlt/mlt-0.9.6.tar.gz"
-  sha256 "ab999992828a03dadbf62f6a131aada776cfd7afe63a94d994877fdba31a3000"
+  url "https://github.com/mltframework/mlt/archive/v6.0.0.tar.gz"
+  sha256 "34f0cb60eb2e7400e9964de5ee439851b3e51a942206cccc2961fd41b42ee5d2"
 
   bottle do
     sha256 "46779015d1ce48aa85d887da98e0144cd7b9a43b8166dc587c2b91aad89b52d0" => :yosemite
