@@ -1,11 +1,15 @@
 require "language/go"
 
+# Please don't update this formula until the release is official via
+# mailing list or blog post. There's a history of GitHub tags moving around.
+# https://github.com/hashicorp/vault/issues/1051
 class Vault < Formula
   desc "Secures, stores, and tightly controls access to secrets"
   homepage "https://vaultproject.io/"
   url "https://github.com/hashicorp/vault.git",
       :tag => "v0.5.0",
-      :revision => "47309289ae8f53ff97be17a4ab21b4a5afa317ef"
+      :revision => "a7b0aadc9ea6a33875dd6bdd9d11d3146b29beb1"
+  revision 1
 
   head "https://github.com/hashicorp/vault.git"
 
