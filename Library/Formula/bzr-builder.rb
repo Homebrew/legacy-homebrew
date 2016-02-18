@@ -25,12 +25,12 @@ class BzrBuilder < Formula
         system "bzr", "commit", "-m", "initial import"
       end
 
-      open("my.recipe", "w") { |f| f.puts "# bzr-builder format 0.3 deb-version 1.0+{revno}-{revno:packaging}\ntrunk" }
+      (testpath/"repo/my.recipe").write "# bzr-builder format 0.3 deb-version 1.0+{revno}-{revno:packaging}\ntrunk"
       system "bzr", "build", "my.recipe", "branch"
 
       cd "branch" do
-        assert_match("bzr-builder.manifest", shell_output("ls -la"))
-        assert_match("readme.txt", shell_output("ls -la"))
+        assert (testpath/"repo/branch/bzr-builder.manifest").exist?
+        assert (testpath/"repo/branch/readme.txt").exist?
       end
     end
   end
