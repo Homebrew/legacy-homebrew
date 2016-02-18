@@ -43,7 +43,6 @@ class Terraform < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["GO15VENDOREXPERIMENT"] = "1"
     # For the gox buildtool used by terraform, which doesn't need to
     # get installed permanently
     ENV.append_path "PATH", buildpath
