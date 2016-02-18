@@ -19,7 +19,7 @@ class Hyperscan < Formula
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
-      system "make", "install", "-j", "8"
+      system "make", "install"
     end
   end
 
