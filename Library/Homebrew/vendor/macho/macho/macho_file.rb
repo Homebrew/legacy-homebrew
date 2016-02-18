@@ -215,7 +215,11 @@ module MachO
     # All shared libraries linked to the Mach-O.
     # @return [Array<String>] an array of all shared libraries
     def linked_dylibs
-      dylib_load_commands.map(&:name).map(&:to_s)
+      # Some linkers produce multiple `LC_LOAD_DYLIB` load commands for the same
+      # library, but at this point we're really only interested in a list of
+      # unique libraries this Mach-O file links to, thus: `uniq`. (This is also
+      # for consistency with `FatFile` that merges this list across all archs.)
+      dylib_load_commands.map(&:name).map(&:to_s).uniq
     end
 
     # Changes the shared library `old_name` to `new_name`
@@ -293,7 +297,6 @@ module MachO
     end
 
     # Write all Mach-O data to the file used to initialize the instance.
-    # @raise [MachOError] if the instance was created from a binary string
     # @return [void]
     # @raise [MachO::MachOError] if the instance was initialized without a file
     # @note Overwrites all data in the file!
@@ -310,30 +313,29 @@ module MachO
     # The file's Mach-O header structure.
     # @return [MachO::MachHeader] if the Mach-O is 32-bit
     # @return [MachO::MachHeader64] if the Mach-O is 64-bit
+    # @raise [MachO::TruncatedFileError] if the file is too small to have a valid header
     # @private
     def get_mach_header
-      magic = get_magic
-      cputype = get_cputype
-      cpusubtype = get_cpusubtype
-      filetype = get_filetype
-      ncmds = get_ncmds
-      sizeofcmds = get_sizeofcmds
-      flags = get_flags
+      # the smallest Mach-O header is 28 bytes
+      raise TruncatedFileError.new if @raw_data.size < 28
 
-      if MachO.magic32?(magic)
-        MachHeader.new(magic, cputype, cpusubtype, filetype, ncmds, sizeofcmds, flags)
-      else
-        # the reserved field is...reserved, so just fill it with 0
-        MachHeader64.new(magic, cputype, cpusubtype, filetype, ncmds, sizeofcmds, flags, 0)
-      end
+      magic = get_and_check_magic
+      mh_klass = MachO.magic32?(magic) ? MachHeader : MachHeader64
+      mh = mh_klass.new_from_bin(@raw_data[0, mh_klass.bytesize])
+
+      check_cputype(mh.cputype)
+      check_cpusubtype(mh.cpusubtype)
+      check_filetype(mh.filetype)
+
+      mh
     end
 
-    # The file's magic number.
+    # Read just the file's magic number and check its validity.
     # @return [Fixnum] the magic
     # @raise [MachO::MagicError] if the magic is not valid Mach-O magic
     # @raise [MachO::FatBinaryError] if the magic is for a Fat file
     # @private
-    def get_magic
+    def get_and_check_magic
       magic = @raw_data[0..3].unpack("N").first
 
       raise MagicError.new(magic) unless MachO.magic?(magic)
@@ -342,62 +344,29 @@ module MachO
       magic
     end
 
-    # The file's CPU type.
-    # @return [Fixnum] the CPU type
+    # Check the file's CPU type.
+    # @param cputype [Fixnum] the CPU type
     # @raise [MachO::CPUTypeError] if the CPU type is unknown
     # @private
-    def get_cputype
-      cputype = @raw_data[4..7].unpack("V").first
-
+    def check_cputype(cputype)
       raise CPUTypeError.new(cputype) unless CPU_TYPES.key?(cputype)
-
-      cputype
     end
 
-    # The file's CPU subtype.
-    # @return [Fixnum] the CPU subtype
-    # @raise [MachO::CPUSubtypeError] if the CPU subtype is unknown
+    # Check the file's CPU sub-type.
+    # @param cpusubtype [Fixnum] the CPU subtype
+    # @raise [MachO::CPUSubtypeError] if the CPU sub-type is unknown
     # @private
-    def get_cpusubtype
-      cpusubtype = @raw_data[8..11].unpack("V").first
-      cpusubtype &= ~CPU_SUBTYPE_LIB64 # this mask isn't documented!
-
+    def check_cpusubtype(cpusubtype)
+      # Only check sub-type w/o capability bits (see `get_mach_header`).
       raise CPUSubtypeError.new(cpusubtype) unless CPU_SUBTYPES.key?(cpusubtype)
-
-      cpusubtype
     end
 
-    # The file's type.
-    # @return [Fixnum] the file type
+    # Check the file's type.
+    # @param filetype [Fixnum] the file type
     # @raise [MachO::FiletypeError] if the file type is unknown
     # @private
-    def get_filetype
-      filetype = @raw_data[12..15].unpack("V").first
-
+    def check_filetype(filetype)
       raise FiletypeError.new(filetype) unless MH_FILETYPES.key?(filetype)
-
-      filetype
-    end
-
-    # The number of load commands in the file.
-    # @return [Fixnum] the number of load commands
-    # @private
-    def get_ncmds
-      @raw_data[16..19].unpack("V").first
-    end
-
-    # The size of all load commands, in bytes.
-    # return [Fixnum] the size of all load commands
-    # @private
-    def get_sizeofcmds
-      @raw_data[20..23].unpack("V").first
-    end
-
-    # The Mach-O header's flags.
-    # @return [Fixnum] the flags
-    # @private
-    def get_flags
-      @raw_data[24..27].unpack("V").first
     end
 
     # All load commands in the file.
@@ -484,17 +453,17 @@ module MachO
       new_size = cmd.class.bytesize + new_str.size
       new_sizeofcmds += new_size - cmd.cmdsize
 
-      low_fileoff = 2**64 # ULLONGMAX
+      low_fileoff = @raw_data.size
 
       # calculate the low file offset (offset to first section data)
       segments.each do |seg|
         sections(seg).each do |sect|
-          if sect.size != 0 && !sect.flag?(:S_ZEROFILL) &&
-              !sect.flag?(:S_THREAD_LOCAL_ZEROFILL) &&
-              sect.offset < low_fileoff
+          next if sect.size == 0
+          next if sect.flag?(:S_ZEROFILL)
+          next if sect.flag?(:S_THREAD_LOCAL_ZEROFILL)
+          next unless sect.offset < low_fileoff
 
-            low_fileoff = sect.offset
-          end
+          low_fileoff = sect.offset
         end
       end
 

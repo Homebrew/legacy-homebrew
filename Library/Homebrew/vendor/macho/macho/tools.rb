@@ -41,7 +41,7 @@ module MachO
     # @return [void]
     # @todo unstub
     def self.change_rpath(filename, old_path, new_path)
-      raise "stub"
+      raise UnimplementedError.new("changing rpaths in a Mach-O")
     end
 
     # Add a runtime path to a Mach-O or Fat binary, overwriting the source file.
@@ -50,7 +50,7 @@ module MachO
     # @return [void]
     # @todo unstub
     def self.add_rpath(filename, new_path)
-      raise "stub"
+      raise UnimplementedError.new("adding rpaths to a Mach-O")
     end
 
     # Delete a runtime path from a Mach-O or Fat binary, overwriting the source file.
@@ -59,7 +59,7 @@ module MachO
     # @return [void]
     # @todo unstub
     def self.delete_rpath(filename, old_path)
-      raise "stub"
+      raise UnimplementedError.new("removing rpaths from a Mach-O")
     end
   end
 end

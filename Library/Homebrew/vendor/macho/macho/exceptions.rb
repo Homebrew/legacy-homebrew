@@ -3,11 +3,33 @@ module MachO
   class MachOError < RuntimeError
   end
 
+  # Raised when a file is not a Mach-O.
+  class NotAMachOError < MachOError
+    # @param error [String] the error in question
+    def initialize(error)
+      super error
+    end
+  end
+
+  # Raised when a file is too short to be a valid Mach-O file.
+  class TruncatedFileError < NotAMachOError
+    def initialize
+      super "File is too short to be a valid Mach-O"
+    end
+  end
+
   # Raised when a file's magic bytes are not valid Mach-O magic.
-  class MagicError < MachOError
+  class MagicError < NotAMachOError
     # @param num [Fixnum] the unknown number
     def initialize(num)
       super "Unrecognized Mach-O magic: 0x#{"%02x" % num}"
+    end
+  end
+
+  # Raised when a file is a Java classfile instead of a fat Mach-O.
+  class JavaClassFileError < NotAMachOError
+    def initialize
+      super "File is a Java class file"
     end
   end
 
@@ -80,6 +102,14 @@ module MachO
     # @param path [String] the unknown runtime path
     def initialize(path)
       super "No such runtime path: #{path}"
+    end
+  end
+
+  # Raised whenever unfinished code is called.
+  class UnimplementedError < MachOError
+    # @param thing [String] the thing that is unimplemented
+    def initialize(thing)
+      super "Unimplemented: #{thing}"
     end
   end
 end
