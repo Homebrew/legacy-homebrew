@@ -1,14 +1,16 @@
 class Ffmpegthumbnailer < Formula
   desc "Create thumbnails for your video files"
   homepage "https://github.com/dirkvdb/ffmpegthumbnailer"
-  url "https://github.com/dirkvdb/ffmpegthumbnailer/archive/2.1.1.tar.gz"
-  sha256 "e43d8aae7e80771dc700b3d960a0717d5d28156684a8ddc485572cbcbc4365e9"
+  url "https://github.com/dirkvdb/ffmpegthumbnailer/releases/download/2.1.1/ffmpegthumbnailer-2.1.1.tar.bz2"
+  sha256 "f1f1b54b7903d726a118d7b2a2992cacef561517567f3a547964ad48cb5c89bd"
+  head "https://github.com/dirkvdb/ffmpegthumbnailer.git"
 
   bottle do
     cellar :any
-    sha256 "1af9077b6ce1748399965fdb5b626def8f5cd23b4c867b4af6739aded3ef88b7" => :el_capitan
-    sha256 "75d88ac9cd1b220e64215064a5949fe0f1785867e81b8be2b422f82b25cb4794" => :yosemite
-    sha256 "908c358ea02baf6a7b10a0239fdb5e4aac238ae4268b2e4e36d4d7721a9c3c94" => :mavericks
+    revision 1
+    sha256 "3d8ab9f72ae234c9ef9bc8006c3d207f4c113d54fe4847aa63e13211fa9eeafd" => :el_capitan
+    sha256 "784e2a31b78ae51bb29dd5007e78091e61fb7d1d13065a4754ba42d5b8bbfc49" => :yosemite
+    sha256 "7ee9048a68c5e75ca90ffe418a96e0bd8af4c4b038c093b3cb75358d3a7d0587" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -18,7 +20,13 @@ class Ffmpegthumbnailer < Formula
   depends_on "ffmpeg"
 
   def install
-    system "cmake", *std_cmake_args
+    ENV.cxx11 if MacOS.version < :mavericks
+
+    args = std_cmake_args
+    args << "-DENABLE_GIO=ON"
+    args << "-DENABLE_THUMBNAILER=ON"
+
+    system "cmake", *args
     system "make"
     system "make", "install"
   end

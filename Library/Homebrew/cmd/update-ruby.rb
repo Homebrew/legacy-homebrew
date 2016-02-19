@@ -278,12 +278,7 @@ class Updater
 
     @current_revision = read_current_revision
 
-    if @initial_branch != @upstream_branch && !@initial_branch.empty?
-      safe_system "git", "checkout", @initial_branch, *@quiet_args
-      pop_stash
-    else
-      pop_stash_message
-    end
+    pop_stash_message
   end
 
   def pop_stash

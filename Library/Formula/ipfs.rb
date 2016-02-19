@@ -10,9 +10,10 @@ class Ipfs < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3172c0c1a493bea027b89de415cd3341e85f15a0f049756df81870a347771150" => :el_capitan
-    sha256 "5efaddf23bc86c918f50c3f3d5a345e157813dd326331afca13b8b9be8ca8dfd" => :yosemite
-    sha256 "d08f479fdce8b136181d8c26e50fdd0d9fba759c2c464efc610ffea0353fc81a" => :mavericks
+    revision 1
+    sha256 "6744fb99a312598513e260adbd3b5895db82c0f0b6f447a58b0cc9084bf4b5cc" => :el_capitan
+    sha256 "3b641f107ec102859819afcea8ed5b8265e7b295fba1913af6b1b55593d5956e" => :yosemite
+    sha256 "dd9de372d81abb5e624b320fa4fb00f175c991bf3b6705b12423973b4cafaa97" => :mavericks
   end
 
   depends_on "go" => :build
@@ -31,6 +32,7 @@ class Ipfs < Formula
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO15VENDOREXPERIMENT"] = "0"
     mkdir_p buildpath/"src/github.com/ipfs/"
     ln_sf buildpath, buildpath/"src/github.com/ipfs/go-ipfs"
     Language::Go.stage_deps resources, buildpath/"src"

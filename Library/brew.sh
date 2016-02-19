@@ -120,6 +120,7 @@ fi
 HOMEBREW_COMMAND="$1"
 shift
 case "$HOMEBREW_COMMAND" in
+  '')          HOMEBREW_COMMAND="help";;
   ls)          HOMEBREW_COMMAND="list";;
   homepage)    HOMEBREW_COMMAND="home";;
   -S)          HOMEBREW_COMMAND="search";;

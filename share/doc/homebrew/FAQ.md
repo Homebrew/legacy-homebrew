@@ -80,10 +80,10 @@ including how to set this across reboots. If you’re pre-Mountain Lion,
 alternative](https://developer.apple.com/legacy/library/qa/qa1067/_index.html).
 
 ### How do I contribute to Homebrew?
-Read [CONTRIBUTING.md](/CONTRIBUTING.md).
+Read [CONTRIBUTING.md](/.github/CONTRIBUTING.md).
 
 ### Why do you compile everything?
-Homebrew provides pre-compiled versions for some formulae. These
+Homebrew provides pre-compiled versions for many formulae. These
 pre-compiled versions are referred to as **bottles** and are available
 at:
 [https://bintray.com/homebrew/bottles](https://bintray.com/homebrew/bottles).
@@ -96,8 +96,8 @@ will use a bottled version of $FORMULA, but
 `brew install $FORMULA --enable-bar` will trigger a source build.
 * The `--build-from-source` option is invoked.
 * The environment variable `HOMEBREW_BUILD_FROM_SOURCE` is set.
-* The machine is not running OS X 10.8+ as all bottled builds are
-generated on Mountain Lion or later.
+* The machine is not running OS X 10.9+ as all bottled builds are
+generated on Mavericks or later.
 * Homebrew is installed to a prefix other than the standard
 `/usr/local` (although some bottles support this)
 
@@ -122,7 +122,7 @@ Or:
 
 `brew pull https://github.com/Homebrew/homebrew/pull/1234`
 
-### Why does Homebrew insist I install to `/usr/local`?
+### Why does Homebrew prefer I install to `/usr/local`?
 <a name="usrlocal"></a>
 
 1.  **It’s easier**<br>`/usr/local/bin` is already in your

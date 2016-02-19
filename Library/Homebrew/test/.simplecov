@@ -18,6 +18,19 @@ SimpleCov.start do
   unless ENV["HOMEBREW_INTEGRATION_TEST"]
     track_files "#{SimpleCov.root}/**/*.rb"
   end
+
+  # Add groups and the proper project name to the output.
+  project_name "Homebrew"
+  add_group "Commands", %w[/Homebrew/cmd/ /Homebrew/dev-cmd/]
+  add_group "Extensions", "/Homebrew/extend/"
+  add_group "OS", "/Homebrew/os/"
+  add_group "Requirements", "/Homebrew/requirements/"
+  add_group "Scripts", %w[
+    /brew.rb
+    /Homebrew/build.rb
+    /Homebrew/postinstall.rb
+    /Homebrew/test.rb
+  ]
 end
 
 if ENV["HOMEBREW_INTEGRATION_TEST"]

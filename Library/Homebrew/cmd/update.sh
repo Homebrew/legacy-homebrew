@@ -239,13 +239,7 @@ pull() {
 
   trap '' SIGINT
 
-  if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
-  then
-    git checkout "$INITIAL_BRANCH" "${QUIET_ARGS[@]}"
-    pop_stash
-  else
-    pop_stash_message
-  fi
+  pop_stash_message
 
   trap - SIGINT
 }
@@ -258,7 +252,8 @@ homebrew-update() {
   for option in "$@"
   do
     case "$option" in
-      --help) brew update --help; exit $? ;;
+      # TODO: - `brew update --help` should display update subcommand help
+      --help) brew --help; exit $? ;;
       --verbose) HOMEBREW_VERBOSE=1 ;;
       --debug) HOMEBREW_DEBUG=1;;
       --rebase) HOMEBREW_REBASE=1 ;;
@@ -334,6 +329,22 @@ EOS
     UPSTREAM_BRANCH="$(upstream_branch)"
     # the refspec ensures that the default upstream branch gets updated
     (
+      UPSTREAM_REPOSITORY_URL="$(git config remote.origin.url)"
+      if [[ "$UPSTREAM_REPOSITORY_URL" = "https://github.com/"* ]]
+      then
+        UPSTREAM_REPOSITORY="${UPSTREAM_REPOSITORY_URL#https://github.com/}"
+        UPSTREAM_REPOSITORY="${UPSTREAM_REPOSITORY%.git}"
+        UPSTREAM_BRANCH_LOCAL_SHA="$(git rev-parse "refs/remotes/origin/$UPSTREAM_BRANCH")"
+        # Only try to `git fetch` when the upstream branch is at a different SHA
+        # (so the API does not return 304: unmodified).
+        UPSTREAM_SHA_HTTP_CODE="$(curl --silent '--max-time' 3 \
+           --output /dev/null --write-out "%{http_code}" \
+           -H "Accept: application/vnd.github.chitauri-preview+sha" \
+           -H "If-None-Match: \"$UPSTREAM_BRANCH_LOCAL_SHA\"" \
+           "https://api.github.com/repos/$UPSTREAM_REPOSITORY/commits/$UPSTREAM_BRANCH")"
+        [[ "$UPSTREAM_SHA_HTTP_CODE" = "304" ]] && exit
+      fi
+
       git fetch "${QUIET_ARGS[@]}" origin \
         "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" || \
           odie "Fetching $DIR failed!"

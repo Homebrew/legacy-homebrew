@@ -34,7 +34,7 @@ Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/ho
 Documentation is under the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/).
 
 ## Sponsors
-Our CI infrastructure was paid for by [our Kickstarter supporters](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).
+Our CI infrastructure was paid for by [our Kickstarter supporters](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Kickstarter-Supporters.md).
 
 Our CI infrastructure is hosted by [The Positive Internet Company](http://www.positive-internet.com).
 
