@@ -3,7 +3,7 @@ class Puddletag < Formula
   homepage "http://puddletag.sf.net"
   url "https://github.com/keithgg/puddletag/archive/1.1.1.tar.gz"
   sha256 "550680abf9c2cf082861dfb3b61fd308f87f9ed304065582cddadcc8bdd947cc"
-  revision 1
+  revision 2
 
   head "https://github.com/keithgg/puddletag.git"
 
