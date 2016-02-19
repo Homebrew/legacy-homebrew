@@ -24,7 +24,7 @@ class Tippecanoe < Formula
       {"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0,0]}}
     EOS
 
-    `#{bin}/tippecanoe -o test.mbtiles #{path}`
+    system("#{bin}/tippecanoe -o #{testpath}/test.mbtiles #{path}")
 
     assert_equal 0, $?.exitstatus
     assert File.exist?(File.join(testpath, "test.mbtiles"))
