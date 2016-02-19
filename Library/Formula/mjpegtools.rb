@@ -3,6 +3,7 @@ class Mjpegtools < Formula
   homepage "http://mjpeg.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/mjpeg/mjpegtools/2.1.0/mjpegtools-2.1.0.tar.gz"
   sha256 "864f143d7686377f8ab94d91283c696ebd906bf256b2eacc7e9fb4dddcedc407"
+  revision 1
 
   depends_on :x11 => :optional
 
