@@ -31,7 +31,11 @@ class Ffmpeg2theora < Formula
   depends_on "theora"
 
   def install
-    args = ["prefix=#{prefix}", "mandir=PREFIX/share/man"]
+    args = [
+      "prefix=#{prefix}",
+      "mandir=PREFIX/share/man",
+      "APPEND_LINKFLAGS=-headerpad_max_install_names",
+    ]
     scons "install", *args
   end
 
