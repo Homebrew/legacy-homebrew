@@ -11,6 +11,13 @@ class Wine < Formula
     url "https://dl.winehq.org/wine/source/1.8/wine-1.8.tar.bz2"
     mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.8.tar.bz2"
     sha256 "f33b45c18112b2071fbf9edee0e8c575407f9e2a9855ca4ee918ed33efa7c6f4"
+
+    # Patch to fix MSI creation issues.
+    # https://bugs.winehq.org/show_bug.cgi?id=40129
+    patch do
+      url "https://bugs.winehq.org/attachment.cgi?id=53632"
+      sha256 "b9f98711cfe62228f5d84ab394394008ee10127bebcea7ef966d24127b466e0a"
+    end
   end
 
   bottle do
@@ -21,9 +28,9 @@ class Wine < Formula
   end
 
   devel do
-    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.3.tar.bz2"
-    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.3.tar.bz2"
-    sha256 "475f54855534c8ec45bb4be70d84fb98e7fe8467fb1a35f66b3c0e92f4ea090d"
+    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.4.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.4.tar.bz2"
+    sha256 "75c1eab6b980870b367a73db6e57eb0dc9242c2be8546f94084577a0ed0bbbb8"
   end
 
   # note that all wine dependencies should declare a --universal option in their formula,
@@ -59,13 +66,6 @@ class Wine < Formula
   patch do
     url "https://bugs.winehq.org/attachment.cgi?id=52384"
     sha256 "30766403f5064a115f61de8cacba1defddffe2dd898b59557956400470adc699"
-  end
-
-  # Patch to fix MSI creation issues.
-  # https://bugs.winehq.org/show_bug.cgi?id=40129
-  patch do
-    url "https://bugs.winehq.org/attachment.cgi?id=53632"
-    sha256 "b9f98711cfe62228f5d84ab394394008ee10127bebcea7ef966d24127b466e0a"
   end
 
   # This option is currently disabled because Apple clang currently doesn't
