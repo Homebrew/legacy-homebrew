@@ -5,6 +5,13 @@ class GitVendor < Formula
   sha256 "1a4db75631af559152f19b41867c23c0fe6c4ff30117afa6ab2d02a5802b89e6"
   head "https://github.com/brettlangdon/git-vendor.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "1c62ec5598b0a429a2913ce154db1f84f893b99cbe52596a9261a1870ab6402c" => :el_capitan
+    sha256 "c3e835f79e5adb83ac8e636942456572dbad94f9274ce59624809dbec6b407fd" => :yosemite
+    sha256 "a755a70a1c0233f788c70af7cec544396b57b89b7a571100e0afdc3b8e6a1fec" => :mavericks
+  end
+
   def install
     system "make", "PREFIX=#{prefix}", "install"
   end
