@@ -1,8 +1,8 @@
 class Weboob < Formula
   desc "Web Outside of Browsers"
   homepage "http://weboob.org/"
-  url "https://symlink.me/attachments/download/289/weboob-1.0.tar.gz"
-  sha256 "2500823b6de62161d4da11382181f5def0d91823b23cebd9a470479714844068"
+  url "https://symlink.me/attachments/download/324/weboob-1.1.tar.gz"
+  sha256 "cbc0d8a88e402ec71a79f0cf09594fd3a969122111f5cd695f4a4ca67961661c"
   head "git://git.symlink.me/pub/weboob/stable.git"
 
   bottle do
