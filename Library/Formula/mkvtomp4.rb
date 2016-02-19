@@ -3,6 +3,7 @@ class Mkvtomp4 < Formula
   homepage "https://github.com/gavinbeatty/mkvtomp4/"
   url "https://github.com/gavinbeatty/mkvtomp4/archive/mkvtomp4-v1.3.tar.gz"
   sha256 "cc644b9c0947cf948c1b0f7bbf132514c6f809074ceed9edf6277a8a1b81c87a"
+  revision 1
 
   depends_on "gpac"
   depends_on "ffmpeg" => :recommended
