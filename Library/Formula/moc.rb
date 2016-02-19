@@ -1,7 +1,7 @@
 class Moc < Formula
   desc "Terminal-based music player"
   homepage "http://moc.daper.net"
-  revision 1
+  revision 2
   head "svn://daper.net/moc/trunk"
 
   stable do
