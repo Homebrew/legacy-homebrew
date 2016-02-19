@@ -11,10 +11,9 @@ class Ffmpeg2theora < Formula
 
   bottle do
     cellar :any
-    revision 3
-    sha256 "2f53a6eee671251c96d62f4e73b8aecf4d5fc6abc6379633031edc8d6fe1b46c" => :el_capitan
-    sha256 "1144caff1384628e84aafe3c90d74cb08d90bb1f98b2e1cfe0a2eecdebbc5692" => :yosemite
-    sha256 "f5da61547028805ff495616a97328832a21ea798aaa9eb9363e220ed9fa2ef4d" => :mavericks
+    sha256 "a36254df54c3de32283defd45659985edcc27dc20f21a5c867d4b188b1fd9a12" => :el_capitan
+    sha256 "7240f49471e1cc6b76d4c947826302eab338431a3fefbbfdc9ccdd00fe95b99e" => :yosemite
+    sha256 "a5d8069a8307d480554e72c76ecb390ab37544d75ab3d9116854df8c4276a100" => :mavericks
   end
 
   head do
