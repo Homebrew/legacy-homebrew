@@ -17,7 +17,7 @@ class Psutils < Formula
     system "make", "-f", "Makefile.unix",
                          "PERL=/usr/bin/perl",
                          "BINDIR=#{bin}",
-                         "INCLUDEDIR=#{share}/psutils",
+                         "INCLUDEDIR=#{pkgshare}",
                          "MANDIR=#{man1}",
                          "install"
   end
