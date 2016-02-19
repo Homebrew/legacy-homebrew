@@ -3,7 +3,7 @@ class Pianobar < Formula
   homepage "https://github.com/PromyLOPh/pianobar/"
   url "https://6xq.net/pianobar/pianobar-2015.11.22.tar.bz2"
   sha256 "23fbc9e6f55b3277dba7a0f68ff721bad7f1eeea504c616ba008841686de322b"
-  revision 1
+  revision 2
 
   head "https://github.com/PromyLOPh/pianobar.git"
 
