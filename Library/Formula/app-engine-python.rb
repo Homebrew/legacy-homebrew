@@ -12,8 +12,7 @@ class AppEnginePython < Formula
     :because => "both install the same binaries"
 
   def install
-    cd ".."
-    share.install "google_appengine" => name
+    pkgshare.install Dir["*"]
     %w[
       _python_runtime.py
       _php_runtime.py
