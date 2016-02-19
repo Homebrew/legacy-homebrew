@@ -1,8 +1,12 @@
 class Libvoikko < Formula
   desc "Linguistic software and and Finnish dictionary"
   homepage "http://voikko.puimula.org/"
-  url "http://www.puimula.org/voikko-sources/libvoikko/libvoikko-4.0.1.tar.gz"
-  sha256 "4fdc12dec38c0e074f0728652b8bc52595e3d63b2c8c87e8a05cd55b808d32a1"
+  url "http://www.puimula.org/voikko-sources/libvoikko/libvoikko-4.0.2.tar.gz"
+  sha256 "0bfaaabd039024920713020671daff828434fcf4c89bce4601b94a377567f2a3"
+
+  # Standard compatibility fixes for Clang, upstream pull request at
+  # https://github.com/voikko/corevoikko/pull/22
+  patch :p2, :DATA
 
   bottle do
     cellar :any
@@ -43,3 +47,46 @@ class Libvoikko < Formula
     pipe_output("#{bin}/voikkospell -m", "onkohan\n")
   end
 end
+
+__END__
+diff --git a/libvoikko/src/grammar/FinnishRuleEngine/VfstAutocorrectCheck.cpp b/libvoikko/src/grammar/FinnishRuleEngine/VfstAutocorrectCheck.cpp
+index 30cc973..434f15b 100644
+--- a/libvoikko/src/grammar/FinnishRuleEngine/VfstAutocorrectCheck.cpp
++++ b/libvoikko/src/grammar/FinnishRuleEngine/VfstAutocorrectCheck.cpp
+@@ -100,7 +100,7 @@ bool VfstAutocorrectCheck::check(voikko_options_t * options, const Sentence * se
+ 				return false; // sentence is unreasonably long
+ 			}
+ 			for (size_t i = 0; i < token->tokenlen; i++) {
+-				if (wcschr(L"\u00AD", tokenStr[i])) {
++				if (::wcschr(L"\u00AD", tokenStr[i])) {
+ 					skippedChars++;
+ 				}
+ 				else {
+diff --git a/libvoikko/src/morphology/Analysis.cpp b/libvoikko/src/morphology/Analysis.cpp
+index bc6560c..da0fc00 100644
+--- a/libvoikko/src/morphology/Analysis.cpp
++++ b/libvoikko/src/morphology/Analysis.cpp
+@@ -28,12 +28,13 @@
+ 
+ #include "morphology/Analysis.hpp"
+ #include "utils/StringUtils.hpp"
++#include <array>
+ 
+ using namespace libvoikko::utils;
+ 
+ namespace libvoikko { namespace morphology {
+ 
+-static constexpr std::array<const char *,21> KEY_TO_STRING {
++static constexpr std::array<const char *,21> KEY_TO_STRING { {
+ 	"BASEFORM",
+ 	"CLASS",
+ 	"COMPARISON",
+@@ -55,7 +56,7 @@ static constexpr std::array<const char *,21> KEY_TO_STRING {
+ 	"WEIGHT",
+ 	"WORDBASES",
+ 	"WORDIDS"
+-};
++} };
+ 
+ static const std::map<std::string, Analysis::Key> STRING_TO_KEY = {
+ 	{"BASEFORM", Analysis::Key::BASEFORM},
