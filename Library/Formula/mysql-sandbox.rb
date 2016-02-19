@@ -13,7 +13,6 @@ class MysqlSandbox < Formula
   end
 
   def install
-    ENV.delete "PERL_MM_OPT"
     ENV["PERL_LIBDIR"] = libexec/"lib/perl5"
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5/site_perl/"
 
