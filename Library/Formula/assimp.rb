@@ -1,9 +1,8 @@
 class Assimp < Formula
   desc "Portable library for importing many well-known 3D model formats"
-  homepage "http://assimp.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/assimp/assimp-3.1/assimp-3.1.1_no_test_models.zip"
-  version "3.1.1"
-  sha256 "da9827876f10a8b447270368753392cfd502e70a2e9d1361554e5dfcb1fede9e"
+  homepage "http://www.assimp.org"
+  url "https://github.com/assimp/assimp/archive/v3.2.tar.gz"
+  sha256 "187f825c563e84b1b17527a4da0351aa3d575dfd696a9d204ae4bb19ee7df94a"
 
   head "https://github.com/assimp/assimp.git"
 
@@ -21,7 +20,9 @@ class Assimp < Formula
   depends_on "boost" => [:recommended, :build]
 
   def install
-    system "cmake", ".", *std_cmake_args
+    args = std_cmake_args
+    args << "-DASSIMP_BUILD_TESTS=OFF"
+    system "cmake", *args
     system "make", "install"
   end
 
