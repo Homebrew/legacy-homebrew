@@ -13,9 +13,9 @@ class Libvoikko < Formula
 
   bottle do
     cellar :any
-    sha256 "d22047d2e96418f4f00a23dc8be15f597791d2afe73707584eb06e9482f3f83a" => :el_capitan
-    sha256 "9f8ada3163060f6fe71adf9849fbd019fd1f8b1d26d0770abc7267b706342965" => :yosemite
-    sha256 "f0dce2aef19383349b4fac06db0cb6f75cce8122d6279e65925103caf5fd3158" => :mavericks
+    sha256 "2eb82a48b1859e90f72cb932def86f46437b68c06237f7bc03a3c62a512da73a" => :el_capitan
+    sha256 "951b89e8c6e372b8a950f646eba4a3dc0cfff6f0fa0939507baecdaa82afda4a" => :yosemite
+    sha256 "7584eb257d6e626a16bf9e562dc96bb801c23074ec8741f350ab3801093f893d" => :mavericks
   end
 
   depends_on "pkg-config" => :build
