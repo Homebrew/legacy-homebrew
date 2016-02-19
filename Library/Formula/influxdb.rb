@@ -22,6 +22,15 @@ class Influxdb < Formula
     end
   end
 
+  head do
+    url "https://github.com/influxdata/influxdb.git"
+
+    go_resource "github.com/influxdata/usage-client" do
+      url "https://github.com/influxdata/usage-client.git",
+      :revision => "475977e68d79883d9c8d67131c84e4241523f452"
+    end
+  end
+
   depends_on "go" => :build
 
   go_resource "collectd.org" do
