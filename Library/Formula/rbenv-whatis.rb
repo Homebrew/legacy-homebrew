@@ -7,6 +7,7 @@ class RbenvWhatis < Formula
   bottle :unneeded
 
   depends_on :rbenv
+  depends_on :ack
 
   def install
     prefix.install Dir["*"]
