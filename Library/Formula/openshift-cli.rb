@@ -2,8 +2,8 @@ class OpenshiftCli < Formula
   desc "OpenShift command-line interface tools"
   homepage "https://www.openshift.com/"
   url "https://github.com/openshift/origin.git",
-    :tag => "v1.1.2",
-    :revision => "2711160b6c02fedb4829481255b0e5e9679704cf"
+    :tag => "v1.1.3",
+    :revision => "cffae0523cfa80ddf917aba69f08508b91f603d5"
 
   head "https://github.com/openshift/origin.git"
 
@@ -18,16 +18,26 @@ class OpenshiftCli < Formula
 
   def install
     # this is necessary to avoid having the version marked as dirty
-    (buildpath/".git/info/exclude").atomic_write "/.brew_home"
+    (buildpath/".git/info/exclude").atomic_write <<-EOF.undent
+      /.brew_home
+      /src
+    EOF
 
-    system "make", "all", "WHAT=cmd/openshift", "GOFLAGS=-v"
+    # this is a terrible hack that's necessary because the build script assumes
+    # that the source code was checked out via `go get` and overrides $GOPATH,
+    # and also because make will change into the target of folder symlinks
+    # rather than the folder symlinks themselves
+    real_buildpath = buildpath/"src/github.com/openshift/origin"
+    real_buildpath.install (Dir["*", ".*"] - [".", "..", "src"])
+
+    system "make", "-C", "src/github.com/openshift/origin", "all", "WHAT=cmd/openshift", "GOFLAGS=-v"
 
     arch = MacOS.prefer_64_bit? ? "amd64" : "x86"
-    bin.install "_output/local/bin/darwin/#{arch}/openshift"
+    bin.install real_buildpath/"_output/local/bin/darwin/#{arch}/openshift"
     bin.install_symlink "openshift" => "oc"
     bin.install_symlink "openshift" => "oadm"
 
-    bash_completion.install Dir["contrib/completions/bash/*"]
+    bash_completion.install Dir[real_buildpath/"contrib/completions/bash/*"]
   end
 
   test do
