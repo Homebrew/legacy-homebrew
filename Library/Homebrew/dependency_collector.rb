@@ -31,13 +31,19 @@ class DependencyCollector
 
   def initialize
     @deps = Dependencies.new
+    @@collected_dependencies ||= Set.new
     @requirements = Requirements.new
+  end
+
+  def self.collected_dependencies
+    @@collected_dependencies ||= Set.new
   end
 
   def add(spec)
     case dep = fetch(spec)
     when Dependency
       @deps << dep
+      @@collected_dependencies << dep
     when Requirement
       @requirements << dep
     end

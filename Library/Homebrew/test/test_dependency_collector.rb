@@ -154,4 +154,15 @@ class DependencyCollectorTests < Homebrew::TestCase
     resource.download_strategy = Class.new
     assert_raises(TypeError) { @d.add(resource) }
   end
+
+  def test_collected_dependencies
+    @d.add "foo"
+    @d.add "bar"
+    @d2 = DependencyCollector.new
+    @d2.add "baz"
+    assert_includes DependencyCollector.collected_dependencies, Dependency.new("foo")
+    assert_includes DependencyCollector.collected_dependencies, Dependency.new("bar")
+    assert_includes DependencyCollector.collected_dependencies, Dependency.new("baz")
+    assert !(DependencyCollector.collected_dependencies.include? Dependency.new("qux"))
+  end
 end
