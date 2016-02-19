@@ -1,7 +1,8 @@
 class Mkvdts2ac3 < Formula
   desc "Convert DTS audio to AC3 within a matroska file"
   homepage "https://github.com/JakeWharton/mkvdts2ac3"
-  revision 2
+  revision 3
+  head "https://github.com/JakeWharton/mkvdts2ac3.git"
 
   stable do
     url "https://github.com/JakeWharton/mkvdts2ac3/archive/1.6.0.tar.gz"
@@ -17,8 +18,6 @@ class Mkvdts2ac3 < Formula
     sha256 "2dd48305bd115dbbb8a40319440b238540d5fe307b49c0300c7fcd64a875cb5e" => :mavericks
     sha256 "47235c60299b61c5ba6fcb5e63a5d0004d0d877b441b6a64e78d432d3e7cfbce" => :mountain_lion
   end
-
-  head "https://github.com/JakeWharton/mkvdts2ac3.git"
 
   depends_on "mkvtoolnix"
   depends_on "ffmpeg"
