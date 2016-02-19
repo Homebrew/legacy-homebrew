@@ -252,7 +252,8 @@ homebrew-update() {
   for option in "$@"
   do
     case "$option" in
-      --help) brew update --help; exit $? ;;
+      # TODO: - `brew update --help` should display update subcommand help
+      --help) brew --help; exit $? ;;
       --verbose) HOMEBREW_VERBOSE=1 ;;
       --debug) HOMEBREW_DEBUG=1;;
       --rebase) HOMEBREW_REBASE=1 ;;
