@@ -21,9 +21,7 @@ module Homebrew
         begin
           if recursive
             deps = f.recursive_dependencies do |dependent, dep|
-              if installed
-                Dependency.prune if not dep.to_formula.installed?
-              end
+              Dependency.prune if installed && !dep.to_formula.installed?
               Dependency.prune if ignores.any? { |ignore| dep.send(ignore) } && !dependent.build.with?(dep)
             end
             reqs = f.recursive_requirements do |dependent, req|
