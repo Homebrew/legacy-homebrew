@@ -4,9 +4,6 @@ class Arpwatch < Formula
   url "ftp://ftp.ee.lbl.gov/arpwatch-2.1a15.tar.gz"
   sha256 "c1df9737e208a96a61fa92ddad83f4b4d9be66f8992f3c917e9edf4b05ff5898"
 
-  # needs libpcap
-  depends_on "libpcap"
-
   def install
     # patch makefile to avoid permission errors
     chmod 0644, %w[Makefile.in]
@@ -33,9 +30,7 @@ class Arpwatch < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make", "install"
-  end
 
-  def post_install
     (prefix/"arpwatch").mkdir
     touch prefix/"arpwatch/arp.dat"
   end
