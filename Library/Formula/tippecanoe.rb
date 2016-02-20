@@ -19,14 +19,10 @@ class Tippecanoe < Formula
   end
 
   test do
-    path = testpath/"test.json"
-    path.write <<-EOS.undent
+    (testpath/"test.json").write <<-EOS.undent
       {"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0,0]}}
     EOS
-
-    system("#{bin}/tippecanoe -o #{testpath}/test.mbtiles #{path}")
-
-    assert_equal 0, $?.exitstatus
-    assert File.exist?(File.join(testpath, "test.mbtiles"))
+    safe_system "#{bin}/tippecanoe", "-o", "test.mbtiles", "test.json"
+    assert File.exist?("#{testpath}/test.mbtiles"), "tippecanoe generated no output!"
   end
 end
