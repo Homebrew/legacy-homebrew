@@ -28,6 +28,8 @@ class Emacs < Formula
   option "with-cocoa", "Build a Cocoa version of emacs"
   option "with-ctags", "Don't remove the ctags executable that emacs provides"
   option "without-libxml2", "Don't build with libxml2 support"
+  option "with-modern-icon", "Using a modern style Emacs icon by @tpanum"
+  option "with-spacemacs-icon", "Using the spacemacs Emacs icon by Nasser Alshammari"
 
   deprecated_option "cocoa" => "with-cocoa"
   deprecated_option "keep-ctags" => "with-ctags"
@@ -98,6 +100,19 @@ class Emacs < Formula
                        nextstep/Emacs.app/Contents/Resources/document.icns
                        nextstep/Emacs.app/Contents/Resources/Emacs.icns]
       end
+
+      # icons
+      icon_file = "nextstep/Emacs.app/Contents/Resources/Emacs.icns"
+      modern_icons = "https://s3.amazonaws.com/emacs-mac-port/Emacs.icns.modern"
+      spacemacs_icons = "https://github.com/nashamri/spacemacs-logo/blob/master/spacemacs.icns?raw=true"
+      if build.with? "modern-icon"
+        rm "#{icon_file}"
+        curl "#{modern_icons}", "-o", "#{icon_file}"
+      elsif build.with? "spacemacs-icon"
+        rm "#{icon_file}"
+        curl "-L", "#{spacemacs_icons}", "-o", "#{icon_file}"
+      end
+      
       prefix.install "nextstep/Emacs.app"
 
       # Replace the symlink with one that avoids starting Cocoa.
