@@ -190,11 +190,10 @@ class Subversion < Formula
           "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I#{perl_core}"
       end
       system "make", "swig-pl"
-      system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+      system "make", "install-swig-pl"
 
       # Some of the libraries get installed into the wrong place, they end up having the
       # prefix in the directory name twice.
-
       lib.install Dir["#{prefix}/#{lib}/*"]
     end
 
