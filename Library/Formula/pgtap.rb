@@ -5,6 +5,13 @@ class Pgtap < Formula
   sha256 "a39093e451ce23ab4f67a3ce25543fe59471148f65d5e83ef514df2f90656dc5"
   head "https://github.com/theory/pgtap.git"
 
+  bottle do
+    cellar :any
+    sha256 "c9c4c819d05e6ac101c7eaac480a996628d753da4abbfe25d71cfbc4ddf1b8d0" => :el_capitan
+    sha256 "7ca4d604b381e088ac4f56a95187fcf72f7bd2a9c58a8bcbba291152c32975a5" => :yosemite
+    sha256 "a318678a664c57e19ba245cb45f4e8c56a754f542b20837f8caf506754d990a3" => :mavericks
+  end
+
   # Not :postgresql, because we need to install into its share directory.
   depends_on "postgresql"
 
