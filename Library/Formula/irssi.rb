@@ -60,10 +60,6 @@ class Irssi < Formula
       args << "--with-perl=no"
     end
 
-    # confuses Perl library path configuration
-    # https://github.com/Homebrew/homebrew/issues/34685
-    ENV.delete "PERL_MM_OPT"
-
     args << "--disable-ssl" if build.without? "openssl"
 
     if build.head?
