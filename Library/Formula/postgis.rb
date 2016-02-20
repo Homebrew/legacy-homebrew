@@ -94,7 +94,7 @@ class Postgis < Formula
     bin.install Dir["stage/**/bin/*"]
     lib.install Dir["stage/**/lib/*"]
     include.install Dir["stage/**/include/*"]
-    (doc/"postgresql/extentsion").install Dir["stage/**/share/doc/postgresql/extension/*"]
+    (doc/"postgresql/extension").install Dir["stage/**/share/doc/postgresql/extension/*"]
     (share/"postgresql/extension").install Dir["stage/**/share/postgresql/extension/*"]
     (share/"postgis").install Dir["stage/**/contrib/postgis-*/*"]
     (share/"postgis_topology").install Dir["stage/**/contrib/postgis_topology-*/*"]
