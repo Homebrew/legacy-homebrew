@@ -58,8 +58,6 @@ class Imagemagick < Formula
   skip_clean :la
 
   def install
-    ENV.delete "PERL_MM_OPT"
-
     args = %W[
       --disable-osx-universal-binary
       --prefix=#{prefix}
