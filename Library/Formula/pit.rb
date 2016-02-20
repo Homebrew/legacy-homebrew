@@ -27,10 +27,11 @@ class Pit < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "b019c645e6e75a2d62c5aa59deb1232f195da25ae620409c3eade912739f981b" => :yosemite
-    sha256 "c6f76895ea5cb711a29223c034eb028af81321d33c6c184550134fd166143a79" => :mavericks
-    sha256 "549ecc5ef0be59559d121fd558b02c0d42e149a205fed55b31e9d92b133a1dd2" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "20064d0b1496360f820f55aae90b0e4adf00a70cb4f607668a6beadd0ae11c08" => :el_capitan
+    sha256 "20d5d870a4a2cb926cfcdbf4ad8066281c0bc8c4318e7a74d316077c71fdf175" => :yosemite
+    sha256 "f7211a93b715fc54ebe2fde4aba9c6696eafef7133e551ec5b8f9899ba2b5b75" => :mavericks
   end
 
   def install
