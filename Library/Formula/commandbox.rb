@@ -35,9 +35,6 @@ class Commandbox < Formula
   end
 
   test do
-    # This test is currently failing in the sandbox, but runs on the CLI with --no-sandbox
-    # The errors are coming from an incorrect context root by the Lucee servlet
-    # Will need to investigate a way to set this ENV variable upstream for the sandbox
     system "box", "--commandbox_home=~/", "version"
     system "box", "--commandbox_home=~/", "help"
   end
