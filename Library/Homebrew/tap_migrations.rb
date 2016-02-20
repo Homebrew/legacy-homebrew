@@ -204,6 +204,7 @@ TAP_MIGRATIONS = {
   "sundials" => "homebrew/science",
   "swi-prolog" => "homebrew/x11",
   "sxiv" => "homebrew/x11",
+  "synfigstudio" => "homebrew/boneyard",
   "syslog-ng" => "homebrew/boneyard",
   "tabbed" => "homebrew/x11",
   "telepathy-gabble" => "homebrew/boneyard",
