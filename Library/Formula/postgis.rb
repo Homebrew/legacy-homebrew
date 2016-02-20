@@ -62,7 +62,7 @@ class Postgis < Formula
       # PostGIS gets all of its compiler flags from the PGXS makefiles. This
       # makes it nigh impossible to tell the buildsystem where our keg-only
       # gettext installations are.
-      "--disable-nls"
+      "--disable-nls",
     ]
 
     args << "--with-gui" if build.with? "gui"
@@ -96,7 +96,7 @@ class Postgis < Formula
     include.install Dir["stage/**/include/*"]
     (doc/"postgresql/extension").install Dir["stage/**/share/doc/postgresql/extension/*"]
     (share/"postgresql/extension").install Dir["stage/**/share/postgresql/extension/*"]
-    (share/"postgis").install Dir["stage/**/contrib/postgis-*/*"]
+    pkgshare.install Dir["stage/**/contrib/postgis-*/*"]
     (share/"postgis_topology").install Dir["stage/**/contrib/postgis_topology-*/*"]
 
     # Extension scripts
@@ -124,7 +124,7 @@ class Postgis < Formula
         http://postgis.net/docs/manual-2.2/postgis_installation.html#upgrading
 
       PostGIS SQL scripts installed to:
-        #{HOMEBREW_PREFIX}/share/postgis
+        #{HOMEBREW_PREFIX}/#{opt_pkgshare}
       PostGIS plugin libraries installed to:
         #{HOMEBREW_PREFIX}/lib
       PostGIS extension modules installed to:
