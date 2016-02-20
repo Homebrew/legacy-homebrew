@@ -4,6 +4,13 @@ class Rtv < Formula
   url "https://github.com/michael-lazar/rtv/archive/v1.8.0.tar.gz"
   sha256 "90828ad016d669dfc162ff958124700abcce7f2cf1aedcf5be90fe97f4552764"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "8c13018e72a86444366d7b943db2e8dd35945df3b4e12dd1509d9eda1df53269" => :el_capitan
+    sha256 "53996bb8ee219673b167c11a8eec3e4675089787bf9e9028af1293a2c3ce00b6" => :yosemite
+    sha256 "386e1969d5ee871f94d68d929c2b93e7f14e0b68849522ce404b9ef50da9cacd" => :mavericks
+  end
+
   depends_on :python3
 
   resource "decorator" do
