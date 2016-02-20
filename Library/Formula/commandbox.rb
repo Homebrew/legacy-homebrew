@@ -8,7 +8,6 @@ class Commandbox < Formula
     sha256 "0ba0bb96114a73961ee4a8e3a656c72b98cd2f3cd561b92d159bebcfef240418"
   end
 
-  depends_on :arch => :x86_64
   depends_on :java => "1.7+"
 
   resource "apidocs" do
@@ -39,7 +38,7 @@ class Commandbox < Formula
     # This test is currently failing in the sandbox, but runs on the CLI with --no-sandbox
     # The errors are coming from an incorrect context root by the Lucee servlet
     # Will need to investigate a way to set this ENV variable upstream for the sandbox
-    system "box", "version"
-    system "box", "help"
+    system "box", "--commandbox_home=~/", "version"
+    system "box", "--commandbox_home=~/", "help"
   end
 end
