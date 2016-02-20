@@ -62,7 +62,7 @@ class Pgtap < Formula
     system "make", "PG_CONFIG=#{pg_config}"
 
     system "make", "install", "DESTDIR=#{buildpath}/stage"
-    (doc/"postgresql/extentsion").install Dir["stage/**/share/doc/postgresql/extension/*"]
+    (doc/"postgresql/extension").install Dir["stage/**/share/doc/postgresql/extension/*"]
     (share/"postgresql/extension").install Dir["stage/**/share/postgresql/extension/*"]
     bin.env_script_all_files(libexec/"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
