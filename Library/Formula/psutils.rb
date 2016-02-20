@@ -6,9 +6,11 @@ class Psutils < Formula
   sha256 "3853eb79584ba8fbe27a815425b65a9f7f15b258e0d43a05a856bdb75d588ae4"
 
   bottle do
-    sha256 "44a9141909d2590f8e6b7ffcd48451ad3bce52bcfb7d2bf0f0c5a567c9f1705b" => :yosemite
-    sha256 "4be42891f539aa49bdbc1fc75d07defecbd9ca990bf39d5ec7a4a8187fc3efc5" => :mavericks
-    sha256 "73d8ddfe85026f715b8f3ade892b4eacca594f48921625b937d6091c32ed6628" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "def5b3fc8cef9b4c532cc26ae216d1c6b0dae54da5a39acbdb818d53a04bf697" => :el_capitan
+    sha256 "8fedc8290fdcbd5cb5f8042cc83e4c10c6c2a29888c2a89f72280d3b5b53946d" => :yosemite
+    sha256 "032a98149e12af8c223532b01aa74a2ab57ab3c1b5b6d3f0762d2cd2b51d62ee" => :mavericks
   end
 
   def install
