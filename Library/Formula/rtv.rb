@@ -42,7 +42,6 @@ class Rtv < Formula
   end
 
   def install
-
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python3.5/site-packages"
     %w[update_checker decorator tornado praw six requests kitchen].each do |r|
       resource(r).stage do
@@ -55,11 +54,9 @@ class Rtv < Formula
 
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-
   end
 
   test do
     system "#{bin}/rtv", "--version"
   end
-
 end
