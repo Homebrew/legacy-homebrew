@@ -3,6 +3,7 @@ class Commandbox < Formula
   homepage "http://www.ortussolutions.com/products/commandbox"
   url "http://downloads.ortussolutions.com/ortussolutions/commandbox/3.0.0/commandbox-bin-3.0.0.zip"
   sha256 "194738f683cbbbaa63f7a2ae5d1fe6c0d09ef8370c4ac0b6c9aa087f6013abc1"
+
   devel do
     url "http://integration.stg.ortussolutions.com/artifacts/ortussolutions/commandbox/3.1.0/commandbox-bin-3.1.0.zip"
     sha256 "b2b9b74f7bd1f3b547d72e08e4b59c8c8163e6ba4504b2f46e8cf10884918351"
@@ -18,20 +19,6 @@ class Commandbox < Formula
   def install
     bin.install "box"
     doc.install resource("apidocs")
-  end
-
-  def caveats; <<-EOS.undent
-    CommandBox is licensed as open source software under the GNU Lesser General Public License v3
-
-    License information at:
-    http://www.gnu.org/licenses/lgpl-3.0.en.html
-
-    For full CommandBox documentation visit:
-    https://ortus.gitbooks.io/commandbox-documentation/
-
-    Source Code:
-    https://github.com/Ortus-Solutions/commandbox
-    EOS
   end
 
   test do
