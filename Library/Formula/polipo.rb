@@ -19,7 +19,7 @@ class Polipo < Formula
     cache_root = (var + "cache/polipo")
     cache_root.mkpath
     args = %W[PREFIX=#{prefix}
-              LOCAL_ROOT=#{share}/polipo/www
+              LOCAL_ROOT=#{pkgshare}/www
               DISK_CACHE_ROOT=#{cache_root}
               MANDIR=#{man}
               INFODIR=#{info}
