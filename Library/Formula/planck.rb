@@ -1,9 +1,9 @@
 class Planck < Formula
-  desc "A command-line ClojureScript REPL for OS X."
+  desc "Stand-alone ClojureScript REPL for OS X"
   homepage "http://planck-repl.org/"
-  head "https://github.com/mfikes/planck.git"
   url "https://github.com/mfikes/planck/archive/1.9.tar.gz"
   sha256 "3a12e740feda792ccad85e9d1f33798e1af4a6bf2131b41f3be27d3f3489f4be"
+  head "https://github.com/mfikes/planck.git"
 
   bottle do
     cellar :any_skip_relocation
@@ -13,7 +13,6 @@ class Planck < Formula
   end
 
   depends_on "leiningen" => :build
-
   depends_on :xcode => :build
   depends_on :macos => :lion
 
