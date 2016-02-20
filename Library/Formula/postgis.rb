@@ -124,7 +124,7 @@ class Postgis < Formula
         http://postgis.net/docs/manual-2.2/postgis_installation.html#upgrading
 
       PostGIS SQL scripts installed to:
-        #{HOMEBREW_PREFIX}/#{opt_pkgshare}
+        #{opt_pkgshare}
       PostGIS plugin libraries installed to:
         #{HOMEBREW_PREFIX}/lib
       PostGIS extension modules installed to:
