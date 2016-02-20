@@ -38,9 +38,6 @@ class Trafficserver < Formula
     ENV.enable_warnings
     # Needed for OpenSSL headers on Lion.
     ENV.append_to_cflags "-Wno-deprecated-declarations"
-    # Fix lib/perl/Makefile.pl failing with:
-    # Only one of PREFIX or INSTALL_BASE can be given.  Not both.
-    ENV.delete "PERL_MM_OPT"
 
     (var/"log/trafficserver").mkpath
     (var/"trafficserver").mkpath
