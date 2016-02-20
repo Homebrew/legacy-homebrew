@@ -76,7 +76,7 @@ class Proj < Formula
       if r.name == "datumgrid"
         (buildpath/"nad").install r
       elsif build.with? "vdatum"
-        (share/"proj").install r
+        pkgshare.install r
       end
     end
 
