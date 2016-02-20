@@ -11,11 +11,11 @@ class Pixman < Formula
     sha256 "810b4e5d428e6be2987e96767adf8bca06dd026fbcc5246f96d8d5ec4f64962c" => :mavericks
   end
 
+  keg_only :provided_pre_mountain_lion
+
   option :universal
 
   depends_on "pkg-config" => :build
-
-  keg_only :provided_pre_mountain_lion
 
   fails_with :llvm do
     build 2336
