@@ -154,10 +154,9 @@ class Ejabberd < Formula
   end
 
   bottle do
-    revision 2
-    sha256 "196a2408b3ffda1d3f3c50e2056d55520599b047150ff0e4c0d63dd6375d69a5" => :el_capitan
-    sha256 "613df8f7d8462ab98274a11df53188e6f4d3eaf5d2a5a124d3b6ee09b932fc2f" => :yosemite
-    sha256 "edd506722dea5e792e0d6b35c56a83a95bbe9f2ecef92cfe01c6c15304293e64" => :mavericks
+    sha256 "8770ba2056ecc794a5aa8265784c9febe1ae0e95ad0c160649ff46fe625e3d82" => :el_capitan
+    sha256 "c5210d8b0481ed205b9525e09aec741c037c99cf755586bfcfbb326f1ecbacb5" => :yosemite
+    sha256 "b669c053987205cb897d18f3b0640c20f54e511aa54d37666e69582dbb6f90b6" => :mavericks
   end
 
   head do
