@@ -1,16 +1,15 @@
 ### All Submissions:
 
 - [ ] Have you followed the guidelines in our [Contributing](https://github.com/Homebrew/homebrew/blob/master/.github/CONTRIBUTING.md) document?
+- [ ] Have you checked to ensure there aren't other open [Pull Requests](https://github.com/Homebrew/homebrew/pulls) for the same update/change?
+
+_You can erase any parts of this template not applicable to your Pull Request._
 
 ### New Formulae Submissions:
 
 - [ ] Does your submission pass
 `brew audit --strict --online <formula>` (where `<formula>` is the name of the formula you're submitting)?
 - [ ] Have you built your formula locally prior to submission with `brew install <formula>`?
-
-### Formulae Updates/Changes:
-
-- [ ] If your changes include a new `patch` have you submitted the patch upstream & included a brief explanation/link to the upstream submission in the formula?
 
 ### Changes to Homebrew's Core:
 

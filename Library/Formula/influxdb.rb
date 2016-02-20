@@ -3,16 +3,23 @@ require "language/go"
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
-  url "https://github.com/influxdata/influxdb/archive/v0.10.0.tar.gz"
-  sha256 "42a8410766047955084a25a98da0a914124081c7ab8b3d994e824063b3914f4a"
-
-  head "https://github.com/influxdata/influxdb.git"
+  url "https://github.com/influxdata/influxdb/archive/v0.10.1.tar.gz"
+  sha256 "6a66373006a249cb6ab2a2f33b924694486ee07b1d9096c3f770376d0351b703"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7d902c71ad9d8119797da73561bd5b08a04e3195161a5e6be4bf0d839ca9229f" => :el_capitan
-    sha256 "3d1184f3728a366caf6d6dbcec982cb0c9d84ab1175446740def209f0ee46904" => :yosemite
-    sha256 "a116f0ec373391a63d8b3e4e4160cbf732835570128ceb835f086b51a19f95c4" => :mavericks
+    sha256 "4ea28e218a7805755ac516094c691f3799257f182abc06c86f6eb5caf1702d6e" => :el_capitan
+    sha256 "0ed3eec3c34d166e063375e4583ca4b9c16fb345d72f60e122749a1c057cb052" => :yosemite
+    sha256 "eff6e107c1e1ad6272464771945855d08c9bf700bafafbabd25f9e90a918a380" => :mavericks
+  end
+
+  head do
+    url "https://github.com/influxdata/influxdb.git"
+
+    go_resource "github.com/influxdata/usage-client" do
+      url "https://github.com/influxdata/usage-client.git",
+      :revision => "475977e68d79883d9c8d67131c84e4241523f452"
+    end
   end
 
   depends_on "go" => :build
@@ -24,7 +31,7 @@ class Influxdb < Formula
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
-    :revision => "5c4df71dfe9ac89ef6287afc05e4c1b16ae65a1e"
+    :revision => "312db06c6c6dbfa9899e58564bacfaa584f18ab7"
   end
 
   go_resource "github.com/armon/go-metrics" do
@@ -34,12 +41,12 @@ class Influxdb < Formula
 
   go_resource "github.com/bmizerany/pat" do
     url "https://github.com/bmizerany/pat.git",
-    :revision => "b8a35001b773c267eb260a691f4e5499a3531600"
+    :revision => "c068ca2f0aacee5ac3681d68e4d0a003b7d1fd2c"
   end
 
   go_resource "github.com/boltdb/bolt" do
     url "https://github.com/boltdb/bolt.git",
-    :revision => "ee4a0888a9abe7eefe5a0992ca4cb06864839873"
+    :revision => "2f846c3551b76d7710f159be840d66c3d064abbe"
   end
 
   go_resource "github.com/davecgh/go-spew" do
@@ -64,7 +71,7 @@ class Influxdb < Formula
 
   go_resource "github.com/golang/snappy" do
     url "https://github.com/golang/snappy.git",
-    :revision => "1963d058044b19e16595f80d5050fa54e2070438"
+    :revision => "d1d908a252c22fd7afd36190d5cffb144aa8f777"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
@@ -124,16 +131,20 @@ class Influxdb < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    influxdb_path = buildpath/"src/github.com/influxdb/influxdb"
+    if build.head?
+      influxdb_path = buildpath/"src/github.com/influxdata/influxdb"
+    else
+      influxdb_path = buildpath/"src/github.com/influxdb/influxdb"
+    end
     influxdb_path.install Dir["*"]
 
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version=0.10.1-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.11.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version=0.10.0 -X main.branch=0.10.0 -X main.commit=b8bb32ecad9808ef00219e7d2469514890a0987a", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.10.1 -X main.branch=0.10.0 -X main.commit=b8bb32ecad9808ef00219e7d2469514890a0987a", "./..."
       end
     end
 
@@ -189,15 +200,6 @@ class Influxdb < Formula
         </dict>
       </dict>
     </plist>
-    EOS
-  end
-
-  def caveats; <<-EOS.undent
-    Config files from old InfluxDB versions are incompatible with version 0.9.
-    If upgrading from a pre-0.9 version, the new configuration file will be named:
-        #{etc}/influxdb.conf.default
-    To generate a new config file:
-        influxd config > influxdb.conf.generated
     EOS
   end
 
