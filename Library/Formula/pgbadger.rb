@@ -14,10 +14,10 @@ class Pgbadger < Formula
   end
 
   def install
-    ENV.delete "PERL_MM_OPT"
     system "perl", "Makefile.PL", "DESTDIR=#{buildpath}"
     system "make"
     system "make", "install"
+
     bin.install "usr/local/bin/pgbadger"
     man1.install "usr/local/share/man/man1/pgbadger.1p"
     chmod 0755, bin+"pgbadger" # has 555 by default
@@ -49,6 +49,6 @@ class Pgbadger < Formula
       LOG:  database system is ready to accept connections
     EOS
     system bin/"pgbadger", "-f", "syslog", "server.log"
-    File.exist? "out.html"
+    assert File.exist? "out.html"
   end
 end
