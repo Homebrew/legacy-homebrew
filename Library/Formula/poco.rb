@@ -1,5 +1,5 @@
 class Poco < Formula
-  desc "POCO C++ Libraries"
+  desc "C++ class libraries for building network and internet-based applications"
   homepage "http://pocoproject.org/"
   url "http://pocoproject.org/releases/poco-1.6.1/poco-1.6.1-all.tar.gz"
   sha256 "88c88ff0916228d3a011b86c486033dab75e62a27429b5d35736d43527cf5b44"
