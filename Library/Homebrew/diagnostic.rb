@@ -175,6 +175,7 @@ module Homebrew
           "libmacfuse_i64.2.dylib", # OSXFuse MacFuse compatibility layer
           "libosxfuse_i32.2.dylib", # OSXFuse
           "libosxfuse_i64.2.dylib", # OSXFuse
+          "libosxfuse.2.dylib", # OSXFuse
           "libTrAPI.dylib", # TrAPI / Endpoint Security VPN
           "libntfs-3g.*.dylib", # NTFS-3G
           "libntfs.*.dylib", # NTFS-3G
@@ -238,6 +239,7 @@ module Homebrew
           "libfuse_ino64.la", # MacFuse
           "libosxfuse_i32.la", # OSXFuse
           "libosxfuse_i64.la", # OSXFuse
+          "libosxfuse.la", # OSXFuse
           "libntfs-3g.la", # NTFS-3G
           "libntfs.la", # NTFS-3G
           "libublio.la", # NTFS-3G
