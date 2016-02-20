@@ -7,9 +7,10 @@ class Pgtap < Formula
 
   bottle do
     cellar :any
-    sha256 "c9c4c819d05e6ac101c7eaac480a996628d753da4abbfe25d71cfbc4ddf1b8d0" => :el_capitan
-    sha256 "7ca4d604b381e088ac4f56a95187fcf72f7bd2a9c58a8bcbba291152c32975a5" => :yosemite
-    sha256 "a318678a664c57e19ba245cb45f4e8c56a754f542b20837f8caf506754d990a3" => :mavericks
+    revision 1
+    sha256 "1c3606c85bd39711477ed41f5649978fbabf84abdc97d1e3ac89ab23738d8d42" => :el_capitan
+    sha256 "f97876efe309956ae947a647402f283f44cb98049f4099ca727124def9449bb5" => :yosemite
+    sha256 "31172fee9e4e593f992c6e0038835a1b575fca61ee9465486d352610fd311c38" => :mavericks
   end
 
   # Not :postgresql, because we need to install into its share directory.
