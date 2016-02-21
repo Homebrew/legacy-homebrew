@@ -9,6 +9,7 @@ module Language
       def cabal_sandbox(options = {})
         pwd = Pathname.pwd
         home = options[:home] || pwd
+        config = options[:config]
 
         # pretend HOME is elsewhere, so that ~/.cabal is kept as untouched
         # as possible (except for ~/.cabal/setup-exe-cache)
@@ -24,13 +25,33 @@ module Language
         saved_path = ENV["PATH"]
         ENV.prepend_path "PATH", cabal_sandbox_bin
 
+        unless config.nil? || (File.exist? config)
+          config = if config == "lts"
+            "cabal.config"
+          elsif config =~ /^lts-(\d+)\.(\d+)$/
+            "stackage-#{$~}-cabal.config"
+          else
+            config
+          end
+          config = HOMEBREW_CABAL_CONFIG_PATH/config
+          raise "The cabal config file for :config => \"#{options[:config]}\" doesn't exist" unless File.exist? config
+        end
+
+        unless config.nil?
+          if File.exist? (pwd/"cabal.config")
+            raise "Refusing to replace the existing cabal.config in #{pwd}"
+          else
+            cp config, pwd/"cabal.config"
+          end
+        end
+
         # avoid updating the cabal package database more than once
         system "cabal", "update" unless (home/".cabal/packages").exist?
 
         yield
 
         # remove the sandbox and all build products
-        rm_rf [".cabal-sandbox", "cabal.sandbox.config", "dist"]
+        rm_rf [".cabal-sandbox", "cabal.sandbox.config", "dist", "cabal.config"]
 
         # avoid installing any Haskell libraries, as a matter of policy
         rm_rf lib unless options[:keep_lib]
@@ -60,7 +81,7 @@ module Language
       def install_cabal_package(*args)
         options = if args[-1].kind_of?(Hash) then args.pop else {} end
 
-        cabal_sandbox do
+        cabal_sandbox options do
           cabal_install_tools(*options[:using]) if options[:using]
 
           # install dependencies in the sandbox
