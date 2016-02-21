@@ -1,8 +1,8 @@
 class I2p < Formula
   desc "I2P is an anonymous overlay network - a network within a network"
   homepage "https://geti2p.net"
-  url "https://download.i2p2.de/releases/0.9.21/i2pinstall_0.9.21.jar"
-  sha256 "0238ffc6ea44099ef4fe6c20913cb4eec675c2760aea07dfe7d499addcc89cf2"
+  url "https://download.i2p2.de/releases/0.9.24/i2pinstall_0.9.24.jar"
+  sha256 "f5a06c4ed7e3c22048eef18901b85baa1f9bed3e507c212700723701036e2bb3"
 
   depends_on :java => "1.6+"
 
