@@ -3,6 +3,7 @@ class Physfs < Formula
   homepage "https://icculus.org/physfs/"
   url "https://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2"
   sha256 "ca862097c0fb451f2cacd286194d071289342c107b6fe69079c079883ff66b69"
+  head "https://hg.icculus.org/icculus/physfs/", :using => :hg
 
   bottle do
     cellar :any
@@ -12,11 +13,9 @@ class Physfs < Formula
     sha256 "c4d372b4db8a7b0ed8019562cebce7ac59b1778c8a88d27a0d6cd508607826b9" => :mavericks
   end
 
-  head "https://hg.icculus.org/icculus/physfs/", :using => :hg
+  option :universal
 
   depends_on "cmake" => :build
-
-  option :universal
 
   def install
     ENV.universal_binary if build.universal?
