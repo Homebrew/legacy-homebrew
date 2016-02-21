@@ -19,7 +19,9 @@ class LibjsonRpcCpp < Formula
   depends_on "libmicrohttpd"
 
   def install
+    # https://github.com/cinemast/libjson-rpc-cpp/issues/153
     ENV.deparallelize
+
     system "cmake", ".", *std_cmake_args
     system "make"
     system "make", "install"
