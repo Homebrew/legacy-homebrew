@@ -3,6 +3,7 @@ class Mlt < Formula
   homepage "http://www.mltframework.org/"
   url "https://github.com/mltframework/mlt/archive/v6.0.0.tar.gz"
   sha256 "34f0cb60eb2e7400e9964de5ee439851b3e51a942206cccc2961fd41b42ee5d2"
+  revision 1
 
   bottle do
     sha256 "a680addede577230dbf5c3d342f6efef2fa15186e844f85855345a7a8687b60f" => :el_capitan

@@ -3,6 +3,7 @@ class Mpd < Formula
   homepage "http://www.musicpd.org/"
   url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.12.tar.xz"
   sha256 "7b6fe6c7ce72f5f80a276d680072b524ecb395e546e252b8f3a0756377e1e875"
+  revision 1
 
   bottle do
     cellar :any

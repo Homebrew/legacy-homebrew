@@ -3,6 +3,7 @@ class Cmus < Formula
   homepage "https://cmus.github.io/"
   url "https://github.com/cmus/cmus/archive/v2.7.1.tar.gz"
   sha256 "8179a7a843d257ddb585f4c65599844bc0e516fe85e97f6f87a7ceade4eb5165"
+  revision 1
   head "https://github.com/cmus/cmus.git"
 
   bottle do

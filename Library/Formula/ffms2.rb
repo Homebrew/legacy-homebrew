@@ -4,6 +4,7 @@ class Ffms2 < Formula
   url "https://github.com/FFMS/ffms2/archive/2.22.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/f/ffms2/ffms2_2.22.orig.tar.gz"
   sha256 "7c5202fa2e49186fb3bb815e5b12ca71f05ec09cb707ffd9465852e21a06fdad"
+  revision 1
 
   bottle do
     cellar :any

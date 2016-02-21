@@ -3,6 +3,7 @@ class Libgroove < Formula
   homepage "https://github.com/andrewrk/libgroove"
   url "https://github.com/andrewrk/libgroove/archive/4.3.0.tar.gz"
   sha256 "76f68896f078a9613d420339ef887ca8293884ad2cd0fbc031d89a6af2993636"
+  revision 1
 
   bottle do
     cellar :any

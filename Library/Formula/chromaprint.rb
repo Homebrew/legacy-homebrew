@@ -3,6 +3,7 @@ class Chromaprint < Formula
   homepage "https://acoustid.org/chromaprint"
   url "https://bitbucket.org/acoustid/chromaprint/downloads/chromaprint-1.3.tar.gz"
   sha256 "3dc3ff97abdce63abc1f52d5f5f8e72c22f9a690dd6625271aa96d3a585b695a"
+  revision 1
 
   bottle do
     cellar :any

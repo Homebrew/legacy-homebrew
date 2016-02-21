@@ -3,6 +3,7 @@ class Minidlna < Formula
   homepage "https://sourceforge.net/projects/minidlna/"
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.5/minidlna-1.1.5.tar.gz"
   sha256 "8477ad0416bb2af5cd8da6dde6c07ffe1a413492b7fe40a362bc8587be15ab9b"
+  revision 1
 
   bottle do
     cellar :any
