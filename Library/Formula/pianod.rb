@@ -1,14 +1,8 @@
 class Pianod < Formula
   desc "Pandora client with multiple control interfaces"
   homepage "http://deviousfish.com/pianod/"
-  url "http://deviousfish.com/Downloads/pianod/pianod-173.tar.gz"
-  sha256 "d91a890561037ee3faf5d4d1d4de546c8ff8c828eced91eea6be026c4fcf16fd"
-  revision 1
-
-  devel do
-    url "http://deviousfish.com/Downloads/pianod/pianod-174.tar.gz"
-    sha256 "8b46cf57a785256bb9d5543022c1b630a5d45580800b6eb6c170712c6c78d879"
-  end
+  url "http://deviousfish.com/Downloads/pianod/pianod-175.tar.gz"
+  sha256 "19733d4937b48707eebcde75775d865d6bf925efa86d8989f0efb2392ab4cdf9"
 
   bottle do
     sha256 "575f57442be94b8a182549015d58ea8066dde351f15ac91116647d5f6ef9425d" => :el_capitan
@@ -16,7 +10,13 @@ class Pianod < Formula
     sha256 "fd027eecd50b1ba82e048b2eb289219cddf068a93b849950fe690e44151c9540" => :mavericks
   end
 
+  devel do
+    url "http://deviousfish.com/Downloads/pianod2/Devel/pianod2-189.tar.gz"
+    sha256 "dad7a1a5b18a712178d3835ef2cd898f0f92a8d608987bdfc807ce2226fab863"
+  end
+
   depends_on "pkg-config" => :build
+  depends_on "ffmpeg" => :build if build.devel?
 
   depends_on "libao"
   depends_on "libgcrypt"
