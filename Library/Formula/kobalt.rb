@@ -5,18 +5,10 @@ class Kobalt < Formula
   sha256 "bb468a7b8761de20c4700e18a6de55ee0712edd0e9d04748e53592c91389c94e"
 
   def install
-    prefix.install "kobaltw"
-    prefix.install "kobalt"
-
-    # kobaltw expects the jar file to be in ./kobalt/wrapper so
-    # install it to /usr/local/bin manually and correct the
-    # jar location
-    kobaltw = "/usr/local/bin/kobaltw"
-
-    rm kobaltw
-    ln_s "#{prefix}/kobaltw", kobaltw
-    chmod 0755, prefix/"kobaltw"
-    inreplace "#{prefix}/kobaltw", "$(dirname $0)", prefix
+    libexec.install %w[kobaltw kobalt]
+    kobaltw = libexec/"kobaltw"
+    kobaltw.chmod 0755
+    bin.write_exec_script kobaltw
   end
 
   test do
@@ -39,7 +31,7 @@ class Kobalt < Formula
     }
     EOS
 
-    system "kobaltw assemble"
+    system "#{bin}/kobaltw", "assemble"
     output = "kobaltBuild/libs/test-1.0.jar"
     assert File.exists?(output), "Couldn't find #{output}"
   end
