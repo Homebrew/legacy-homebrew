@@ -1,9 +1,7 @@
-
 class Kobalt < Formula
-  desc "A build system"
+  desc "Build system"
   homepage "http://beust.com/kobalt"
   url "https://github.com/cbeust/kobalt/releases/download/0.633/kobalt-0.633.zip"
-  version "0.633"
   sha256 "bb468a7b8761de20c4700e18a6de55ee0712edd0e9d04748e53592c91389c94e"
 
   def install
@@ -15,7 +13,7 @@ class Kobalt < Formula
     # jar location
     kobaltw = "/usr/local/bin/kobaltw"
 
-    rm "#{kobaltw}"
+    rm kobaltw
     ln_s "#{prefix}/kobaltw", kobaltw
     chmod 0755, prefix/"kobaltw"
     inreplace "#{prefix}/kobaltw", "$(dirname $0)", prefix
