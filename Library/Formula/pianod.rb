@@ -5,9 +5,9 @@ class Pianod < Formula
   sha256 "19733d4937b48707eebcde75775d865d6bf925efa86d8989f0efb2392ab4cdf9"
 
   bottle do
-    sha256 "575f57442be94b8a182549015d58ea8066dde351f15ac91116647d5f6ef9425d" => :el_capitan
-    sha256 "5537abdb08e7b78dce2d5b1d3cfa93bb2e525c9878214102cb34adea61f12ad8" => :yosemite
-    sha256 "fd027eecd50b1ba82e048b2eb289219cddf068a93b849950fe690e44151c9540" => :mavericks
+    sha256 "2ee0ba99862d32947b418b00ea3d1f6bab6bbbfbe5a9cd190558e3baf4c0586b" => :el_capitan
+    sha256 "535664f3192932537dc9656380e44fa8c1e835ba361e6f92418cd379e6970d0d" => :yosemite
+    sha256 "33d938cf80c04f224f72bca2592a20b28707246c5c5450baaf1974e4114e8bfc" => :mavericks
   end
 
   devel do
