@@ -24,6 +24,11 @@ class Gource < Formula
   depends_on "pkg-config" => :build
   depends_on "glm" => :build
   depends_on "freetype"
+  depends_on "glew"
+  depends_on "jpeg"
+  depends_on "pcre"
+  depends_on "sdl2"
+  depends_on "sdl2_image"
 
   # boost failing on lion
   depends_on :macos => :mountain_lion
@@ -33,12 +38,6 @@ class Gource < Formula
   else
     depends_on "boost"
   end
-
-  depends_on "glew"
-  depends_on "jpeg"
-  depends_on "pcre"
-  depends_on "sdl2"
-  depends_on "sdl2_image"
 
   needs :cxx11
 
