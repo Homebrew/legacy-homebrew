@@ -6,10 +6,8 @@ class CucumberCpp < Formula
   sha256 "1c0f9949627e7528017bf00cbe49693ba9cbc3e11087f70aa33b21df93f341d6"
 
   depends_on "cmake" => :build
-  depends_on "ruby"
 
   def install
-    system "gem", "install", "bundler"
     system "cmake", "-DCUKE_DISABLE_GTEST=on",
                     "-DCUKE_DISABLE_CPPSPEC=on",
                     "."
