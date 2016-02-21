@@ -6,9 +6,9 @@ class Zurl < Formula
 
   bottle do
     cellar :any
-    sha256 "2cc3af9cd0e76666eb808bf01958b04966b6e31147e521c6d8bcce07dd121ce5" => :el_capitan
-    sha256 "ec243ccf738d5ad8b2c0e38158d5ac5ebf04b97706917582c7fa0d8742e9ef0b" => :yosemite
-    sha256 "75ec782dec541e3e190519a546ff58ff27d8afca60bec01d90654e81e893a36c" => :mavericks
+    sha256 "c9d48e5eff5ff9cc57cd99eecadea25047216c9bc3510f813bd5324525f0b866" => :el_capitan
+    sha256 "9d5b6ce92eb76bde188915070d383a98812274140f20c9315b89f7af7f737f69" => :yosemite
+    sha256 "a2bb8f6471dbc757b8a46e0a60e743a7a3e43f5b8ca4f3128eb8c6902922e243" => :mavericks
   end
 
   depends_on "pkg-config" => :build
