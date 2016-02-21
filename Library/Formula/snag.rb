@@ -9,9 +9,9 @@ class Snag < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0440b77998204934baafcd3d607c1fee407a3116b4b0b23dd3b91dd0a29ebe04" => :el_capitan
-    sha256 "b2c058bcdab37bc890e03b843fcb07f500d0ccce5157c94cb75ab0bc0f629f71" => :yosemite
-    sha256 "a65fc487274d29dc68d8dba8cc85318606dae4c55aa64446fc61e76c5d82ed60" => :mavericks
+    sha256 "18a6d589a0b416ee502a8dacd6f919959d25cc08d9bbaad152fdade4c72634dc" => :el_capitan
+    sha256 "00edba081c3a56f6cda3a4fc5bb1125d8ce93a8239c3cae89346b1893df12025" => :yosemite
+    sha256 "df63529c6ec2ff4f38f0fb7900687b9362ce710a13013d4bac4bb9cdea5190da" => :mavericks
   end
 
   depends_on "go" => :build
