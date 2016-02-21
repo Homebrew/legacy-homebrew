@@ -1,8 +1,8 @@
 class GeocodeGlib < Formula
   desc "GNOME library for gecoding and reverse geocoding"
   homepage "https://developer.gnome.org/geocode-glib"
-  url "https://download.gnome.org/sources/geocode-glib/3.18/geocode-glib-3.18.1.tar.xz"
-  sha256 "75d12bf82575449b8290b7463e8b6cf1b99f2c9942db6391a3d5b0bbb600c365"
+  url "https://download.gnome.org/sources/geocode-glib/3.18/geocode-glib-3.18.2.tar.xz"
+  sha256 "95b11ef2697ac5dbb2f397e7117e08e157b2168624c71507656928095012494e"
 
   bottle do
     sha256 "377efb2d206d87c65b9266d4c9d207c48252b04c9d38a19602e2898b3b9d4421" => :el_capitan
