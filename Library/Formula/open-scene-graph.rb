@@ -16,6 +16,8 @@ class OpenSceneGraph < Formula
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
 
+  depends_on MaximumMacOSRequirement => :mavericks
+
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "jpeg"
