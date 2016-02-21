@@ -13,28 +13,32 @@ class PureFtpd < Formula
   end
 
   depends_on "openssl"
+  depends_on :postgresql => :optional
+  depends_on :mysql => :optional
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--mandir=#{man}",
-            "--sysconfdir=#{etc}",
-            "--with-pam",
-            "--with-altlog",
-            "--with-puredb",
-            "--with-throttling",
-            "--with-ratios",
-            "--with-quotas",
-            "--with-ftpwho",
-            "--with-virtualhosts",
-            "--with-virtualchroot",
-            "--with-diraliases",
-            "--with-peruserlimits",
-            "--with-tls",
-            "--with-bonjour"]
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --sysconfdir=#{etc}
+      --with-pam
+      --with-altlog
+      --with-puredb
+      --with-throttling
+      --with-ratios
+      --with-quotas
+      --with-ftpwho
+      --with-virtualhosts
+      --with-virtualchroot
+      --with-diraliases
+      --with-peruserlimits
+      --with-tls
+      --with-bonjour
+    ]
 
-    args << "--with-pgsql" if which "pg_config"
-    args << "--with-mysql" if which "mysql"
+    args << "--with-pgsql" if build.with? "postgresql"
+    args << "--with-mysql" if build.with? "mysql"
 
     system "./configure", *args
     system "make", "install"
