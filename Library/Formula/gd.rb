@@ -1,9 +1,8 @@
 class Gd < Formula
   desc "Graphics library to dynamically manipulate images"
   homepage "https://libgd.github.io/"
-  url "https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.1.tar.xz"
-  sha256 "9ada1ed45594abc998ebc942cef12b032fbad672e73efc22bc9ff54f5df2b285"
-  revision 2
+  url "https://github.com/konqui/libgd/releases/download/gd-2.1.1-rc1/libgd-2.1.1-rc1.tar.xz"
+  sha256 "7fdb817edbc22452d04bf3cf7ad52a1e4a1304f69006e0efc9b623edaea24df7"
 
   head do
     url "https://bitbucket.org/libgd/gd-libgd.git"
