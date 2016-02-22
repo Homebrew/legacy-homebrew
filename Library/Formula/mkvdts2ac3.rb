@@ -14,9 +14,10 @@ class Mkvdts2ac3 < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "2dd48305bd115dbbb8a40319440b238540d5fe307b49c0300c7fcd64a875cb5e" => :mavericks
-    sha256 "47235c60299b61c5ba6fcb5e63a5d0004d0d877b441b6a64e78d432d3e7cfbce" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d3eaf28d8c9718a73c2309eb8d9fc7c0a8db2ea6517324a80092ca02ac7842d4" => :el_capitan
+    sha256 "4b4c9bf979e7ecd9efa254a9e5fdfe13a5549a209958f86e1233b8cc87a38e4b" => :yosemite
+    sha256 "336cc7357b741d3e045a2c9a32f19f8daba41cfd3d00d2d3422d7b31c91ad538" => :mavericks
   end
 
   depends_on "mkvtoolnix"
