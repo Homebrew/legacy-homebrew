@@ -52,7 +52,8 @@ class Mplayer < Formula
 
     args << "--enable-caca" if build.with? "libcaca"
 
-    # to get OSD to work on El Capitan we seen to need x11
+    # to get OSD to work on El Capitan we seem to need x11.
+    # if you don't enable x11, explicitly disable it.
     if build.with? "x11"
       args << "--enable-x11"
       args << "--extra-libs=-lX11"
