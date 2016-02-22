@@ -6,9 +6,10 @@ class Caudec < Formula
   revision 2
 
   bottle do
-    sha256 "146d7d8a5d2a9ed8b0c40bb6183fd0431c952205fdbc21fb3eb6ff6d363bc4d5" => :yosemite
-    sha256 "d04893008261cbde17cc6e658c376b122a901030cb640795b4867357a9739f46" => :mavericks
-    sha256 "a1c38c8d6962089cfa617b90205d73d57f0dbb32d5ae6d6b2ba08f0052dc76b2" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "4a559f4dcbed1881ad445e4b0710f1d831eb6e68d9c2ad04088d94cd0919580c" => :el_capitan
+    sha256 "1b5c7cf4d5db8b361ed5fa4a9009773cd9f92533c5e5fd32472fdb69f03b3d4c" => :yosemite
+    sha256 "69b97ad57eff1b7a58ce4857e7b83550fac6bb5d70c0a766f1ff8f66cbb926c3" => :mavericks
   end
 
   depends_on "gnu-sed"
