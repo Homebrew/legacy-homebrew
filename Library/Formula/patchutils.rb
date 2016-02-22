@@ -11,6 +11,8 @@ class Patchutils < Formula
     depends_on "autoconf" => :build
   end
 
+  depends_on "xmlto" => :build
+
   bottle do
     cellar :any_skip_relocation
     sha256 "90200a612c126f69319f01d17b43365e5c6aacceb86fd256d81e85d4ee5c1421" => :el_capitan
