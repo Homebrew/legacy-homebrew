@@ -34,7 +34,7 @@ class Ffmpeg < Formula
   option "with-snappy", "Enable Snappy library"
   option "with-dcadec", "Enable dcadec library"
   option "with-rubberband", "Enable rubberband library"
-  option "with-zimg", "Enable z.lib library"
+  option "with-zimg", "Enable z.lib zimg library"
 
   depends_on "pkg-config" => :build
 
