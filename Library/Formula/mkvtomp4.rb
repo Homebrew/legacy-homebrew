@@ -5,6 +5,13 @@ class Mkvtomp4 < Formula
   sha256 "cc644b9c0947cf948c1b0f7bbf132514c6f809074ceed9edf6277a8a1b81c87a"
   revision 1
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "f7610334538d3e3df8cfeab0a5cd7d9a44acfb141212b4852e340064657e50a8" => :el_capitan
+    sha256 "7ae6b5351e551f6f04811cc5b963fd67adc18132f9b4dc91fc07886f05b0d10f" => :yosemite
+    sha256 "3346ab8be87d01200616db3887ed05d0d6693d2003ca4c3d5530c439ef732544" => :mavericks
+  end
+
   depends_on "gpac"
   depends_on "ffmpeg" => :recommended
   depends_on "mkvtoolnix"
