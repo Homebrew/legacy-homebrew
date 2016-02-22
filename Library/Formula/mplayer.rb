@@ -54,10 +54,12 @@ class Mplayer < Formula
 
     # to get OSD to work on El Capitan we seen to need x11
     if build.with? "x11"
-      args << "--enable-x11" 
+      args << "--enable-x11"
       args << "--extra-libs=-lX11"
       args << "--extra-libs-mplayer=-lXext"
       args << "--enable-menu"
+    else
+      args << "--disable-x11"
     end
 
     system "./configure", *args
