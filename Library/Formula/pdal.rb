@@ -1,10 +1,9 @@
 class Pdal < Formula
   desc "Point data abstraction library"
   homepage "http://www.pdal.io/"
-  url "https://github.com/PDAL/PDAL/archive/0.9.9.tar.gz"
-  sha256 "d4f91478ca55b6b775980c5c2e4c23f43b6bb4e1908ae739b1605a30b57b8a83"
+  url "https://github.com/PDAL/PDAL/archive/1.1.0.tar.gz"
+  sha256 "70e0c84035b3fdc75c4eb72dde62a7a2138171d249f2a607170f79d5cafe589d"
   head "https://github.com/PDAL/PDAL.git"
-  revision 2
 
   bottle do
     sha256 "84c4c25aaffc330d2f994b4f7aafd28d5d5a4f727eb354a84bfbd5313c04155a" => :el_capitan
