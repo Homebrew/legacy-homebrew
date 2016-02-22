@@ -81,7 +81,7 @@ module Language
           end
 
           args_and_flags = args
-          args_and_flags << flags
+          args_and_flags << flags unless flags.empty?
 
           # install dependencies in the sandbox
           cabal_install "--only-dependencies", *args_and_flags
