@@ -4,6 +4,7 @@ class Sqlite < Formula
   url "https://sqlite.org/2016/sqlite-autoconf-3110000.tar.gz"
   version "3.11.0"
   sha256 "508d4dcbcf7a7181e95c717a1dc4ae3c0880b3d593be0c4b40abb6c3a0e201fb"
+  revision 1
 
   bottle do
     cellar :any
@@ -43,6 +44,9 @@ class Sqlite < Formula
 
   def install
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA=1"
+    # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
+    # applications. Set to 250000 (Same value used in Debian and Ubuntu).
+    ENV.append "CPPFLAGS", "-DSQLITE_MAX_VARIABLE_NUMBER=250000"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_RTREE=1" if build.with? "rtree"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1" if build.with? "fts"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS5=1" if build.with? "fts5"
