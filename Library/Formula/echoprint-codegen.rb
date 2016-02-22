@@ -8,10 +8,9 @@ class EchoprintCodegen < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "b3fce2ef476e9b62a1f90a795ba142d0587eea87a2bef5bd010609f933cb93ba" => :yosemite
-    sha256 "02e03a969cc7efba2a8d43a7783d9d3354df14f3148730f47170681167dec99c" => :mavericks
-    sha256 "9538866db7e68b664c9aebc22241bf00acec9b19629b08c1cedf6f87f5ec5dc6" => :mountain_lion
+    sha256 "047111c6a160f827a000aa4184f78d579b7fb8ecbb13db6b11d3a6f79c243783" => :el_capitan
+    sha256 "2de00aaf98a53d77f0d3d4b0af5e8457a2fdb708769524c60c8fea94d0b5f7cc" => :yosemite
+    sha256 "7dfecc154ab9c57918073f46095484616e049ed365b95015432e2416bc425bea" => :mavericks
   end
 
   depends_on "ffmpeg"
