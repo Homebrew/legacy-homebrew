@@ -7,8 +7,9 @@ class Libgroove < Formula
 
   bottle do
     cellar :any
-    sha256 "0aed4c4465b5db098f23fc8ce8c4e9e09987c98ccdfced38499f2f0d81013455" => :yosemite
-    sha256 "bf744cb535945d763a3870e4b618ba61419bd6093b406ad803e9b03f836285be" => :mavericks
+    sha256 "65ae845d6431bdf04c15c20b262b2a7b3b686d0baec1bffb8e1308af722bf0ae" => :el_capitan
+    sha256 "0a6e648e6ef0d01b99577144ebdc8ff283eec60111e33c779ad2ca941ee30f91" => :yosemite
+    sha256 "6034bb8923952e2b914d5649e7c2e5bb4b0eccbe3503096744d244f1866e0358" => :mavericks
   end
 
   depends_on :macos => :mavericks
