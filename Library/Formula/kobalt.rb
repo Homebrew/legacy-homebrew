@@ -12,6 +12,8 @@ class Kobalt < Formula
   end
 
   test do
+    ENV.java_cache
+
     (testpath/"src/main/kotlin/com/A.kt").write <<-EOS.undent
       package com
       class A
@@ -33,6 +35,6 @@ class Kobalt < Formula
 
     system "#{bin}/kobaltw", "assemble"
     output = "kobaltBuild/libs/test-1.0.jar"
-    assert File.exists?(output), "Couldn't find #{output}"
+    assert File.exist?(output), "Couldn't find #{output}"
   end
 end
