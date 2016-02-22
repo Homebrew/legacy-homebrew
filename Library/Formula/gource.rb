@@ -6,10 +6,9 @@ class Gource < Formula
   revision 3
 
   bottle do
-    revision 1
-    sha256 "e1621696357348d047ce7df64bcf60ffff09270baafdd9a505839b7db3bfac34" => :el_capitan
-    sha256 "4443129a6a16a4895f497ce6ea4b27a0ae42e9040be8510b55009acfc174ba9f" => :yosemite
-    sha256 "0f78f00141327eed1e62c6c15436960b156d0a841380f8140a63a019ab35ceaf" => :mavericks
+    sha256 "cb581cb4c8afafd98dc4fd96f3c87a26ad57519d5ab65267de14b3da5790934a" => :el_capitan
+    sha256 "d47030c8dc55a2721257b26cfa2de90f2efa5b3e7d0f3d9ae92c0a1a183846af" => :yosemite
+    sha256 "f65a495853061d4515445d1a07d2931a06ce0bb9e6782743d63763d00c2dd878" => :mavericks
   end
 
   head do
