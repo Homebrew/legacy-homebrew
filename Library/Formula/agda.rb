@@ -15,6 +15,16 @@ class Agda < Formula
           :tag => "v0.11",
           :revision => "8602c29a7627eb001344cf50e6b74f880fb6bf18"
     end
+
+    # Remove when 2.5.1 is released
+    # https://github.com/agda/agda/issues/1779
+    # This is the last config that has
+    #   - unordered-containers ==0.2.5.1
+    #   - transformers-compat-0.4.0.4
+    resource "cabal_config" do
+      url "https://www.stackage.org/nightly-2016-02-08/cabal.config"
+      sha256 "d4f4a0fcdfe486d0604d3e9810e8671793f4bb64d610bcd81fafa2aaa14c60c8"
+    end
   end
 
   bottle do
@@ -45,6 +55,10 @@ class Agda < Formula
   depends_on :emacs => ["21.1", :recommended]
 
   def install
+    # Remove when 2.5.1 is released
+    # https://github.com/agda/agda/issues/1779
+    resource("cabal_config").stage(buildpath) if build.stable?
+
     # install Agda core
     install_cabal_package :using => ["alex", "happy", "cpphs"]
 
