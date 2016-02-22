@@ -6,6 +6,13 @@ class Emp < Formula
   url "https://github.com/remind101/empire/archive/v0.10.0.tar.gz"
   sha256 "0f49543e25d44a05522f8e2cbb4afbb5b08153767620e304e371e13b8f574508"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "b7d8024e8a08a77c422b616b371a89c52f90770e84a0722365518dbb011d8650" => :el_capitan
+    sha256 "f934afd2e28b70d8c2fd7adcd04dd52375547e43017509e87527818c40ee1314" => :yosemite
+    sha256 "bc4729e750ef40429f3881c25f9cd120c0ddf8d7949f52ecf5bad7cabcb8caad" => :mavericks
+  end
+
   depends_on "go" => :build
 
   def install
