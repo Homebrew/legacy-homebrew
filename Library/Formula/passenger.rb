@@ -12,11 +12,11 @@ class Passenger < Formula
     sha256 "1c43504c4794082e0b50d60585e7d1daa82b78d93c8b6b09a50bf16907c759b6" => :mavericks
   end
 
+  option "without-apache2-module", "Disable Apache2 module"
+
   depends_on "pcre"
   depends_on "openssl"
   depends_on :macos => :lion
-
-  option "without-apache2-module", "Disable Apache2 module"
 
   def install
     rake "apache2" if build.with? "apache2-module"
