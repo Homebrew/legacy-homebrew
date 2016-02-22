@@ -33,6 +33,8 @@ class Ffmpeg < Formula
   option "with-zeromq", "Enable using libzeromq to receive commands sent through a libzeromq client"
   option "with-snappy", "Enable Snappy library"
   option "with-dcadec", "Enable dcadec library"
+  option "with-rubberband", "Enable rubberband library"
+  option "with-zimg", "Enable z.lib library"
 
   depends_on "pkg-config" => :build
 
@@ -72,6 +74,8 @@ class Ffmpeg < Formula
   depends_on "zeromq" => :optional
   depends_on "libbs2b" => :optional
   depends_on "dcadec" => :optional
+  depends_on "rubberband" => :optional
+  depends_on "zimg" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -118,6 +122,8 @@ class Ffmpeg < Formula
     args << "--enable-libzmq" if build.with? "zeromq"
     args << "--enable-libbs2b" if build.with? "libbs2b"
     args << "--enable-libdcadec" if build.with? "dcadec"
+    args << "--enable-librubberband" if build.with? "rubberband"
+    args << "--enable-libzimg" if build.with? "zimg"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"
