@@ -20,7 +20,6 @@ class AmmoniteRepl < Formula
     system "sbt", "repl/assembly"
 
     bin.install "repl/target/scala-2.11/ammonite-repl-#{version}-2.11.7" => "amm"
-
   end
 
   test do
