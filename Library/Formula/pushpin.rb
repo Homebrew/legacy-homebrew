@@ -1,8 +1,8 @@
 class Pushpin < Formula
   desc "Reverse proxy for realtime web services"
   homepage "http://pushpin.org"
-  url "https://dl.bintray.com/fanout/source/pushpin-1.7.0.tar.bz2"
-  sha256 "8702df894acbcc035c2faf23377b83c2dd2ec5a183091c50774e5e76d7a94a45"
+  url "https://dl.bintray.com/fanout/source/pushpin-1.8.0.tar.bz2"
+  sha256 "3559a3f0cfd993156948f575dca21be5819808e4338254ab95fb6876391958b5"
 
   head "https://github.com/fanout/pushpin.git"
 
@@ -15,10 +15,8 @@ class Pushpin < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "qt"
+  depends_on "qt5"
   depends_on "zeromq"
-  depends_on "qca"
-  depends_on "qjson"
   depends_on "mongrel2"
   depends_on "zurl"
 
@@ -38,14 +36,14 @@ class Pushpin < Formula
     sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
-  resource "pyzmq" do
-    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-15.2.0.tar.gz"
-    sha256 "2dafa322670a94e20283aba2a44b92134d425bd326419b68ad4db8d0831a26ec"
-  end
-
   resource "setproctitle" do
     url "https://pypi.python.org/packages/source/s/setproctitle/setproctitle-1.1.9.tar.gz"
     sha256 "1c3414d18f9cacdab78b0ffd8e886d56ad45f22e55001a72aaa0b2aeb56a0ad7"
+  end
+
+  resource "pyzmq" do
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-15.2.0.tar.gz"
+    sha256 "2dafa322670a94e20283aba2a44b92134d425bd326419b68ad4db8d0831a26ec"
   end
 
   resource "tnetstring" do
@@ -56,17 +54,18 @@ class Pushpin < Formula
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    resources.each do |r|
-      r.stage do
+    %w[setuptools MarkupSafe Jinja2 setproctitle].each do |r|
+      resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
 
-    system "make", "prefix=#{prefix}", "varprefix=#{var}"
-    system "make", "install", "prefix=#{prefix}", "varprefix=#{var}"
+    system "./configure", "--prefix=#{prefix}", "--configdir=#{etc}", "--rundir=#{var}/run", "--logdir=#{var}/log", "--extraconf=QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
+    system "make"
+    system "make install"
 
     pyenv = { :PYTHONPATH => ENV["PYTHONPATH"] }
-    %w[pushpin pushpin-publish].each do |f|
+    %w[pushpin].each do |f|
       (libexec/"bin").install bin/f
       (bin/f).write_env_script libexec/"bin/#{f}", pyenv
     end
@@ -77,9 +76,14 @@ class Pushpin < Formula
     routesfile = testpath/"routes"
     runfile = testpath/"test.py"
 
-    cp prefix/"etc/pushpin/pushpin.conf", conffile
-    cp prefix/"etc/pushpin/internal.conf", testpath/"internal.conf"
-    cp prefix/"etc/pushpin/routes", routesfile
+    cp HOMEBREW_PREFIX/"etc/pushpin/pushpin.conf", conffile
+    cp HOMEBREW_PREFIX/"etc/pushpin/routes", routesfile
+
+    %w[pyzmq tnetstring].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(testpath/"vendor")
+      end
+    end
 
     inreplace conffile do |s|
       s.gsub! "rundir=#{HOMEBREW_PREFIX}/var/run/pushpin", "rundir=#{testpath}/var/run/pushpin"
@@ -126,6 +130,7 @@ class Pushpin < Formula
     begin
       sleep 3 # make sure pushpin processes have started
       ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", testpath/"vendor/lib/python2.7/site-packages"
       system "python", runfile
     ensure
       Process.kill("TERM", pid)
