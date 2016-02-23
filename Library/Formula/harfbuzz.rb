@@ -1,8 +1,8 @@
 class Harfbuzz < Formula
   desc "OpenType text shaping engine"
   homepage "https://wiki.freedesktop.org/www/Software/HarfBuzz/"
-  url "https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.1.3.tar.bz2"
-  sha256 "d93d7cb7979c32672e902fdfa884599e63f07f2fa5b06c66147d20c516d4b8f7"
+  url "https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.2.1.tar.bz2"
+  sha256 "0c189aa386c5ea8d7c315adf273f56f48f412081a367b3f92abc2d0855fa2226"
 
   bottle do
     sha256 "e429b2ba600e9d1057209f925ecf65f3e639faeda26d09907079c601512605e4" => :el_capitan
