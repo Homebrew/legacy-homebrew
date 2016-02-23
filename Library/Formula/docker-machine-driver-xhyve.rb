@@ -22,13 +22,21 @@ class DockerMachineDriverXhyve < Formula
     (buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve").install Dir["{*,.git,.gitignore}"]
 
     ENV["GOPATH"] = "#{buildpath}/gopath"
-
-    cd buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve" do
+    build_root = buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve"
+    cd build_root do
       if build.head?
         git_hash = `git rev-parse --short HEAD --quiet`.chomp
-        git_hash = " HEAD-#{git_hash}"
+        git_hash = "HEAD-#{git_hash}"
+        ENV["CGO_LDFLAGS"] = "#{build_root}/vendor/build/lib9p/lib9p.a -L#{build_root}/vendor/lib9p"
+        ENV["CGO_CFLAGS"] = "-I#{build_root}/vendor/lib9p"
+        mkdir "vendor/build"
+        mkdir "vendor/build/lib9p"
+        mkdir "vendor/build/lib9p/sbuf"
+        mkdir "vendor/build/lib9p/transport"
+        mkdir "vendor/build/lib9p/backend"
+        system "make", "lib9p"
       end
-      system "go", "build", "-o", bin/"docker-machine-driver-xhyve",
+      system "go", "build", "-x", "-o", bin/"docker-machine-driver-xhyve",
       "-ldflags",
       "'-w -s'",
       "-ldflags",
