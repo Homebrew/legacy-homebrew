@@ -3,14 +3,14 @@ class Synfig < Formula
   homepage "http://synfig.org"
   url "https://downloads.sourceforge.net/project/synfig/releases/1.0/source/synfig-1.0.tar.gz"
   sha256 "1f2f9b209d49dff838049e9817b0458ac6987e912a56c061aa2f9c2faeb40720"
-  revision 1
+  revision 2
 
   head "git://synfig.git.sourceforge.net/gitroot/synfig/synfig"
 
   bottle do
-    sha256 "34e7398018ac84204c8b7916f025d462bbc88eef9ebcf6cd94bfd4d5d21ac7ed" => :el_capitan
-    sha256 "9cbb64b0a25df4bb893c5e2804676f4d4ceeb9ed917b04cfea045ee5dc8847d8" => :yosemite
-    sha256 "b1c408fedc529361b9b43215420efe42b519e57b97305729374bba5b1962204c" => :mavericks
+    sha256 "d109db84521cd3d8d4092de86bdeda50e96f726616f3c1a50f0bf0912a3a91e3" => :el_capitan
+    sha256 "45df75ac729cc20877f89542d25f466d48c62d7aa51a17ca5535469c59973670" => :yosemite
+    sha256 "a30a492c69ef50aec2f1e22482d3c4eaef7c5899a43805afe72918c59cff994c" => :mavericks
   end
 
   depends_on "pkg-config" => :build

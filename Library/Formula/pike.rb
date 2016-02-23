@@ -11,6 +11,18 @@ class Pike < Formula
     sha256 "c3710a19d5c15fe84b99b1f92c93b39e297ca27af5f844d8ea5b0bf91082de9c" => :mavericks
   end
 
+  option "with-gettext", "Include Gettext support"
+  option "with-gdbm", "Include Gdbm support"
+  option "with-gtk2", "Include GTK2 support"
+  option "with-mysql", "Include Mysql support"
+  option "with-pcre", "Include Regexp.PCRE support"
+  option "with-sdl", "Include SDL support"
+  option "with-sane", "Include Sane support"
+  option "with-pdf", "Include PDF support"
+  option "with-gl", "Include GL support"
+  option "with-all", "Include all features"
+  option "with-machine-code", "Enables machine code"
+
   depends_on "nettle"
   depends_on "gmp"
   depends_on "pcre"
@@ -26,18 +38,6 @@ class Pike < Formula
   depends_on "sane-backends" if build.with?("sane")    || build.with?("all")
   depends_on "pdflib-lite"   if build.with?("pdf")     || build.with?("all")
   depends_on "mesalib-glw"   if build.with?("gl")      || build.with?("all")
-
-  option "with-gettext", "Include Gettext support"
-  option "with-gdbm", "Include Gdbm support"
-  option "with-gtk2", "Include GTK2 support"
-  option "with-mysql", "Include Mysql support"
-  option "with-pcre", "Include Regexp.PCRE support"
-  option "with-sdl", "Include SDL support"
-  option "with-sane", "Include Sane support"
-  option "with-pdf", "Include PDF support"
-  option "with-gl", "Include GL support"
-  option "with-all", "Include all features"
-  option "with-machine-code", "Enables machine code"
 
   fails_with :llvm do
     build 2335

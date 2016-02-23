@@ -531,7 +531,7 @@ module GitHub
   end
 
   def handle_api_error(e)
-    if e.io.meta["x-ratelimit-remaining"].to_i <= 0
+    if e.io.meta.fetch("x-ratelimit-remaining", 1).to_i <= 0
       reset = e.io.meta.fetch("x-ratelimit-reset").to_i
       error = Utils::JSON.load(e.io.read)["message"]
       raise RateLimitExceededError.new(reset, error)
@@ -543,7 +543,8 @@ module GitHub
     when "404"
       raise HTTPNotFoundError, e.message, e.backtrace
     else
-      raise Error, e.message, e.backtrace
+      error = Utils::JSON.load(e.io.read)["message"] rescue nil
+      raise Error, [e.message, error].compact.join("\n"), e.backtrace
     end
   end
 

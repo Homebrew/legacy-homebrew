@@ -1,20 +1,23 @@
 class Nettle < Formula
   desc "Low-level cryptographic library"
   homepage "https://www.lysator.liu.se/~nisse/nettle/"
-  url "https://www.lysator.liu.se/~nisse/archive/nettle-3.1.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/nettle/nettle-3.1.tar.gz"
-  sha256 "f6859d4ec88e70805590af9862b4b8c43a2d1fc7991df0a7a711b1e7ca9fc9d3"
+  url "https://www.lysator.liu.se/~nisse/archive/nettle-3.2.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/nettle/nettle-3.2.tar.gz"
+  sha256 "ea4283def236413edab5a4cf9cf32adf540c8df1b9b67641cfc2302fca849d97"
 
   bottle do
     cellar :any
-    sha256 "c16f1f4ecbca92d491fbf215c8b6bafc4e7bfa3f632247dea04b40fd2bea0741" => :el_capitan
-    sha256 "cbf6e6de707b1bf396cba2014f7ff73d079013cb877ecdc96f5ea29a3da66ec4" => :yosemite
-    sha256 "9e93805f902033bb1c70bda4900c35b1a530409ac2743a810e21fdc14820e3a8" => :mavericks
+    sha256 "149db1957c10656b05dd887d70ec699dc5e3776790fd2208a37b3a6fafa47f66" => :el_capitan
+    sha256 "9d26a23ec1699a09d84dba677eba18944f9c7480e2061b36bb4c8ec2bca13a9e" => :yosemite
+    sha256 "f86d2cf88360585545fb7309c8d631717801d90ecdfd9fdaf094aff32f4829f5" => :mavericks
   end
 
   depends_on "gmp"
 
   def install
+    # OS X doesn't use .so libs. Emailed upstream 04/02/2016.
+    inreplace "testsuite/dlopen-test.c", "libnettle.so", "libnettle.dylib"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-shared"

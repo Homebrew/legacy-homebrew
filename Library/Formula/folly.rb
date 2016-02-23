@@ -7,9 +7,10 @@ class Folly < Formula
 
   bottle do
     cellar :any
-    sha256 "57631c3297f2c64f311406fe1d322cbf4e7d52bc4796b145e0c802110d56bced" => :el_capitan
-    sha256 "18887b38af4e91f357991455b4c1b22136ca5559e08d95491102e3658d953810" => :yosemite
-    sha256 "254760684e085f7ddc96475b3f24d5c7cfc288d9dd24e3838c57b06dae66aba8" => :mavericks
+    revision 1
+    sha256 "085000e4af6e1d62c902b6da76fcff7598324856c8c129f8dd8844c9d19e099e" => :el_capitan
+    sha256 "458df2aa0cad8420b702875999bc4b75ecbb842faa85d1ebcc0d6a731da9ed60" => :yosemite
+    sha256 "8dd2b333ea7c77e92eccdc7df93cd46917d7048c8834c9ec30330a91c90c91a8" => :mavericks
   end
 
   depends_on "autoconf" => :build
@@ -21,6 +22,11 @@ class Folly < Formula
   depends_on "gflags"
   depends_on "boost"
   depends_on "libevent"
+  depends_on "xz"
+  depends_on "snappy"
+  depends_on "lz4"
+  depends_on "jemalloc"
+  depends_on "openssl"
 
   needs :cxx11
   depends_on :macos => :mavericks

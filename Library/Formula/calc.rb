@@ -26,7 +26,7 @@ class Calc < Formula
       s.change_make_var! "LIBDIR", lib
       s.change_make_var! "MANDIR", man1
       s.change_make_var! "CALC_INCDIR", "#{include}/calc"
-      s.change_make_var! "CALC_SHAREDIR", "#{share}/calc"
+      s.change_make_var! "CALC_SHAREDIR", pkgshare
       s.change_make_var! "USE_READLINE", "-DUSE_READLINE"
       s.change_make_var! "READLINE_LIB", "-L#{readline.lib} -lreadline"
       s.change_make_var! "READLINE_EXTRAS", "-lhistory -lncurses"

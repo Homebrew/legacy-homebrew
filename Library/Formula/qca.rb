@@ -16,6 +16,7 @@ class Qca < Formula
 
   bottle do
     revision 2
+    sha256 "11790127f8db171aa22c1a2aa3ff1df1759ece3b2d7ff0d6d6a907a74656e8d3" => :el_capitan
     sha256 "556b8c9ce8b5e9a965bdd8a2059e0760a511d73d44f89458c02383a0870b44bc" => :yosemite
     sha256 "0e205cfd42678597f2c346d6a4025a81e5dae49dc2e675f5528b6862333eacfc" => :mavericks
     sha256 "4f4ebcfb9719b4a7d58c8f39e54b4680132c32c88cab7adf7bef9a252823189d" => :mountain_lion

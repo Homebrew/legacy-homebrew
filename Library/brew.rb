@@ -1,8 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
-
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
-
-HOMEBREW_BREW_FILE = ENV["HOMEBREW_BREW_FILE"]
 
 require "pathname"
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent.join("Homebrew")
@@ -48,8 +44,6 @@ begin
     end
   end
 
-  cmd = HOMEBREW_INTERNAL_COMMAND_ALIASES.fetch(cmd, cmd)
-
   # Add contributed commands to PATH before checking.
   Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/cmd"].each do |tap_cmd_dir|
     ENV["PATH"] += "#{File::PATH_SEPARATOR}#{tap_cmd_dir}"
@@ -77,14 +71,18 @@ begin
   if empty_argv || (help_flag && (cmd.nil? || internal_cmd))
     # TODO: - `brew help cmd` should display subcommand help
     require "cmd/help"
-    puts ARGV.usage
+    if empty_argv
+      $stderr.puts ARGV.usage
+    else
+      puts ARGV.usage
+    end
     exit ARGV.any? ? 0 : 1
   end
 
   if internal_cmd
     Homebrew.send cmd.to_s.tr("-", "_").downcase
   elsif which "brew-#{cmd}"
-    %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
+    %w[CACHE LIBRARY_PATH].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
     end
     exec "brew-#{cmd}", *ARGV
@@ -102,7 +100,7 @@ begin
     end
 
     if possible_tap && !possible_tap.installed?
-      brew_uid = File.stat(HOMEBREW_BREW_FILE).uid
+      brew_uid = HOMEBREW_BREW_FILE.stat.uid
       tap_commands = []
       if Process.uid.zero? && !brew_uid.zero?
         tap_commands += %W[/usr/bin/sudo -u ##{brew_uid}]
@@ -125,10 +123,10 @@ rescue UsageError
   abort ARGV.usage
 rescue SystemExit => e
   onoe "Kernel.exit" if ARGV.verbose? && !e.success?
-  puts e.backtrace if ARGV.debug?
+  $stderr.puts e.backtrace if ARGV.debug?
   raise
 rescue Interrupt => e
-  puts # seemingly a newline is typical
+  $stderr.puts # seemingly a newline is typical
   exit 130
 rescue BuildError => e
   e.dump
@@ -136,15 +134,15 @@ rescue BuildError => e
 rescue RuntimeError, SystemCallError => e
   raise if e.message.empty?
   onoe e
-  puts e.backtrace if ARGV.debug?
+  $stderr.puts e.backtrace if ARGV.debug?
   exit 1
 rescue Exception => e
   onoe e
   if internal_cmd
-    puts "#{Tty.white}Please report this bug:"
-    puts "    #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
+    $stderr.puts "#{Tty.white}Please report this bug:"
+    $stderr.puts "    #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
   end
-  puts e.backtrace
+  $stderr.puts e.backtrace
   exit 1
 else
   exit 1 if Homebrew.failed?

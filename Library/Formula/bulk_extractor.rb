@@ -7,9 +7,10 @@ class BulkExtractor < Formula
 
   bottle do
     cellar :any
-    sha256 "ed6cd0603df49a8158e02fa3e4e3edc10998314fc914e6441e33dd578451996e" => :yosemite
-    sha256 "07dfbefa2dda0b17f587febe7da274c1f8eb62b7c3c5c9655b85debb1f282d71" => :mavericks
-    sha256 "32545b00c77303269a7488641005aeac27145f6e1eb8f6182fe91e14347be228" => :mountain_lion
+    revision 1
+    sha256 "42eaa763988659fbb7e52a16fb700439a16a229be1d828d425717b3aabf121c5" => :el_capitan
+    sha256 "9fca86e7c8248902b09f05b5ed046c3a0347afcabe2afc5a72de1619d211cc41" => :yosemite
+    sha256 "b4928062ab8c39d082a9dbba713f4e0e3e460d2c111af0c39981eeba3d1d7638" => :mavericks
   end
 
   depends_on "afflib" => :optional
@@ -25,7 +26,7 @@ class BulkExtractor < Formula
     system "make", "install"
 
     # Install documentation
-    (share/"bulk_extractor/doc").install Dir["doc/*.{html,txt,pdf}"]
+    (pkgshare/"doc").install Dir["doc/*.{html,txt,pdf}"]
 
     (lib/"python2.7/site-packages").install Dir["python/*.py"]
 

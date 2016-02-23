@@ -1,4 +1,15 @@
-#!/usr/bin/ruby -W0
+#!/bin/sh
+# Make sure this shim uses the same Ruby interpreter that is used by Homebrew.
+unset RUBYLIB
+unset RUBYOPT
+if [ -z "$HOMEBREW_RUBY_PATH" ]
+then
+  echo "${0##*/}: The build tool has reset ENV; --env=std required." >&2
+  exit 1
+fi
+exec "$HOMEBREW_RUBY_PATH" -x "$0" "$@"
+#!/usr/bin/env ruby -W0
+
 # This script because we support $GIT, $HOMEBREW_SVN, etc. and Xcode-only
 # configurations. Order is careful to be what the user would want.
 

@@ -11,8 +11,11 @@ class Cabocha < Formula
     sha256 "b1aaf6623ac7332459c795ebd992ed92224b0d0b9e20fb57dd0313fbeea7647c" => :mountain_lion
   end
 
-  option "charset=", "choose default charset: EUC-JP, CP932, UTF8"
-  option "posset=", "choose default posset: IPA, JUMAN, UNIDIC"
+  option "with-charset=", "choose default charset: EUC-JP, CP932, UTF8"
+  option "with-posset=", "choose default posset: IPA, JUMAN, UNIDIC"
+
+  deprecated_option "charset=" => "with-charset="
+  deprecated_option "posset=" => "with-posset="
 
   depends_on "crf++"
   depends_on "mecab"
@@ -31,8 +34,9 @@ class Cabocha < Formula
       s.change_make_var! "CXXFLAGS", ENV.cflags
     end
 
-    charset = ARGV.value("charset") || "UTF8"
-    posset = ARGV.value("posset") || "IPA"
+    charset = ARGV.value("with-charset") || "UTF8"
+    posset = ARGV.value("with-posset") || "IPA"
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}

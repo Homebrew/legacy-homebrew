@@ -4,6 +4,13 @@ class AbiComplianceChecker < Formula
   url "https://github.com/lvc/abi-compliance-checker/archive/1.99.9.tar.gz"
   sha256 "52b0daca89fcda73cde126497c8015ca823417074ba02fcff68b7acf2f45e516"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "ef2fbf8ea0c8aa09b2423fc780c640c4355cddbd4d53f51fd91e1adb92d84bbf" => :el_capitan
+    sha256 "a29fe7fcd7447ee760d921558656ce0960f3d7b55a004cd121f21453d0c772f4" => :yosemite
+    sha256 "9c46d9948a2905be8cb65d730c26208f4d09225a005ea0743f425065f6eb88f9" => :mavericks
+  end
+
   depends_on "ctags"
   depends_on "gcc" => :run
 

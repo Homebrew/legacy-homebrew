@@ -1,17 +1,13 @@
 class Mplayer < Formula
   desc "UNIX movie player"
   homepage "https://www.mplayerhq.hu/"
-  revision 1
-
-  stable do
-    url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.2.tar.xz"
-    sha256 "ffe7f6f10adf2920707e8d6c04f0d3ed34c307efc6cd90ac46593ee8fba2e2b6"
-  end
+  url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.3.0.tar.xz"
+  sha256 "3ad0846c92d89ab2e4e6fb83bf991ea677e7aa2ea775845814cbceb608b09843"
 
   bottle do
-    sha256 "13be908b635ef84ab9a121f7e6787c20e6405bf645417e2f82f98192ea07c92e" => :el_capitan
-    sha256 "c6d4cc95a347807eacf219ed68c6dffae61b5abffae65e938f8e2d959a84c1fb" => :yosemite
-    sha256 "f9c8305916c2eb5363edc7715e499191e18eb39d6f8efd921d3a4d2881326ad9" => :mavericks
+    sha256 "6cee95b050e52a0f09e2807d6feda1f798d3f43166fbad1e3fb2ec5fe2c11f99" => :el_capitan
+    sha256 "8bb05f0875afca69802634411d8e67af5f42e4461b66c640de3c152e049c7843" => :yosemite
+    sha256 "d3833fa49709d2857337eebcbd956002f20309cbd676b27070940f84888ebb65" => :mavericks
   end
 
   head do
@@ -26,10 +22,12 @@ class Mplayer < Formula
   depends_on "yasm" => :build
   depends_on "libcaca" => :optional
 
-  fails_with :clang do
-    build 211
-    cause "Inline asm errors during compile on 32bit Snow Leopard."
-  end unless MacOS.prefer_64_bit?
+  unless MacOS.prefer_64_bit?
+    fails_with :clang do
+      build 211
+      cause "Inline asm errors during compile on 32bit Snow Leopard."
+    end
+  end
 
   # ld fails with: Unknown instruction for architecture x86_64
   fails_with :llvm
@@ -63,9 +61,11 @@ class Mplayer < Formula
 end
 
 __END__
+diff --git a/configure b/configure
+index addc461..3b871aa 100755
 --- a/configure
 +++ b/configure
-@@ -1532,8 +1532,6 @@
+@@ -1517,8 +1517,6 @@ if test -e ffmpeg/mp_auto_pull ; then
  fi
  
  if test "$ffmpeg_a" != "no" && ! test -e ffmpeg ; then

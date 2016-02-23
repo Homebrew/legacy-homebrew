@@ -6,9 +6,10 @@ class Postgis < Formula
 
   bottle do
     cellar :any
-    sha256 "cc9dbfb85f80eb2370343e17e578dc9cf1defb0ed35228fe9407ecf45b5139ea" => :el_capitan
-    sha256 "781e86fad5263f8b85e795b877816e1a5cfad1a9b34c32aa72c902152604b1e1" => :yosemite
-    sha256 "8c086c1c1c93f5ce67930ad1d4f4dd9253f77fbe7d1815a5a78378fdb39facb6" => :mavericks
+    revision 2
+    sha256 "2dd01d3e7b0a5a8c7b69bdbd8389ab8d857de755e393e213dc818828fb0dd540" => :el_capitan
+    sha256 "6aed14810aea9784c4dc2a00ec825bb6032f200e7512c9611a41a82fba1e6d55" => :yosemite
+    sha256 "2d4df95d9aa6609d8bf7409be18a4173b7ba7d364a3df1e0a8445d330ae8fbb2" => :mavericks
   end
 
   head do
@@ -35,6 +36,7 @@ class Postgis < Formula
   # For GeoJSON and raster handling
   depends_on "json-c"
   depends_on "gdal" => :recommended
+  depends_on "pcre" => :build if build.with? "gdal"
 
   # For advanced 2D/3D functions
   depends_on "sfcgal" => :recommended
@@ -60,7 +62,7 @@ class Postgis < Formula
       # PostGIS gets all of its compiler flags from the PGXS makefiles. This
       # makes it nigh impossible to tell the buildsystem where our keg-only
       # gettext installations are.
-      "--disable-nls"
+      "--disable-nls",
     ]
 
     args << "--with-gui" if build.with? "gui"
@@ -92,9 +94,9 @@ class Postgis < Formula
     bin.install Dir["stage/**/bin/*"]
     lib.install Dir["stage/**/lib/*"]
     include.install Dir["stage/**/include/*"]
-    (doc/"postgresql/extentsion").install Dir["stage/**/share/doc/postgresql/extension/*"]
+    (doc/"postgresql/extension").install Dir["stage/**/share/doc/postgresql/extension/*"]
     (share/"postgresql/extension").install Dir["stage/**/share/postgresql/extension/*"]
-    (share/"postgis").install Dir["stage/**/contrib/postgis-*/*"]
+    pkgshare.install Dir["stage/**/contrib/postgis-*/*"]
     (share/"postgis_topology").install Dir["stage/**/contrib/postgis_topology-*/*"]
 
     # Extension scripts
@@ -122,7 +124,7 @@ class Postgis < Formula
         http://postgis.net/docs/manual-2.2/postgis_installation.html#upgrading
 
       PostGIS SQL scripts installed to:
-        #{HOMEBREW_PREFIX}/share/postgis
+        #{opt_pkgshare}
       PostGIS plugin libraries installed to:
         #{HOMEBREW_PREFIX}/lib
       PostGIS extension modules installed to:

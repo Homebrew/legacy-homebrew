@@ -59,6 +59,13 @@ class Libav < Formula
   depends_on "speex" => :optional
   depends_on "theora" => :optional
 
+  # Fixes the use of a removed identifier in libvpx;
+  # will be fixed in the next release.
+  patch do
+    url "https://github.com/libav/libav/commit/4d05e9392f84702e3c833efa86e84c7f1cf5f612.patch"
+    sha256 "78f02e231f3931a6630ec4293994fc6933c6a1c3d1dd501989155236843c47f9"
+  end
+
   def install
     args = [
       "--disable-debug",

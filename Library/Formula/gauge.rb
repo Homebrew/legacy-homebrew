@@ -3,34 +3,23 @@ require "language/go"
 class Gauge < Formula
   desc "Test automation tool that supports executable documentation"
   homepage "http://getgauge.io"
-  url "https://github.com/getgauge/gauge/archive/v0.3.0.tar.gz"
-  sha256 "83257f2e71385ff7cf4480f2ea83af4d99cbc08a52af1c0ccaa043852f4dcd78"
-
-  stable do
-    go_resource "github.com/getgauge/common" do
-      url "https://github.com/getgauge/common.git",
-          :revision => "6d719362535ada9a07d655b65f8bd5dfd818fe33"
-    end
-  end
+  url "https://github.com/getgauge/gauge/archive/v0.3.2.tar.gz"
+  sha256 "6ac9f0c5cea6fcce33a6e69f98dc23d70128ae9144759a0695078c93015a80aa"
+  head "https://github.com/getgauge/gauge.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3587e6306ee011c4f6ee01ba76664b3b673aca88ae5cb2f2f6b793980cffba1b" => :el_capitan
-    sha256 "862fc41efac1237c57d6b159fdc78c36801c37365baacc00c6d154122b3c7df8" => :yosemite
-    sha256 "47c8ef203126bee57144594c0dc3b1a8e271407ecf92ef4114af70501eaa691f" => :mavericks
-  end
-
-  head do
-    url "https://github.com/getgauge/gauge.git"
-
-    go_resource "github.com/getgauge/common" do
-      url "https://github.com/getgauge/common.git",
-          :revision => "6d719362535ada9a07d655b65f8bd5dfd818fe33"
-    end
-
+    sha256 "a49f272891725f85573f70c87ce11dedd2bbe9b868e1c27c9ae9213f9074cbfc" => :el_capitan
+    sha256 "35ad85d7b6aeec27adad5b3aa5ea745c9bfd597c912513089a5665fee926e5e7" => :yosemite
+    sha256 "35d4318b170ddf1659101a525d5b0e91ac04510584432be7f5d3dd20a18188fa" => :mavericks
   end
 
   depends_on "go" => :build
+
+  go_resource "github.com/getgauge/common" do
+    url "https://github.com/getgauge/common.git",
+        :revision => "2c28867db53c862e386b12fb6ac7829e469758ea"
+  end
 
   go_resource "github.com/daviddengcn/go-colortext" do
     url "https://github.com/daviddengcn/go-colortext.git",

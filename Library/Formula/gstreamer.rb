@@ -1,17 +1,17 @@
 class Gstreamer < Formula
   desc "GStreamer is a development framework for multimedia applications"
-  homepage "http://gstreamer.freedesktop.org/"
-  url "https://download.gnome.org/sources/gstreamer/1.6/gstreamer-1.6.2.tar.xz"
-  sha256 "5896716bd8e089dba452932a2eff2bb6f6c9d58ff64a96635d157f1ffaf8feb2"
+  homepage "https://gstreamer.freedesktop.org/"
+  url "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.6.3.tar.xz"
+  sha256 "22f9568d67b87cf700a111f381144bd37cb93790a77e4e331db01fe854a37f24"
 
   bottle do
-    sha256 "685890cb9c1b4e4063d9ba9bd77f4a73dd22d97d5b7dca0bc416000dab80964b" => :el_capitan
-    sha256 "b43979ee2f9b68a1cc95dd9a1bf32ae11e36c5324543f5d26d2b63ecf5b6327f" => :yosemite
-    sha256 "3a650e5b242c7d33bb2c0fd66e9ab5954587769986bc455d0a3a3455402547ec" => :mavericks
+    sha256 "cd910a2124e7b240c9c8087ed37629f0f443ff6b6c026d0aa1496ace732f43ea" => :el_capitan
+    sha256 "5b591159f6ec42693316c8a0e5bede93c2754adbbcf94c0e367a74f4b1a64206" => :yosemite
+    sha256 "7299e4fbcc7227ceb2ff3ce5e4f7398fa8ef9a4462706ea22b41e805aecf55f1" => :mavericks
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gstreamer"
+    url "https://anongit.freedesktop.org/git/gstreamer/gstreamer.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

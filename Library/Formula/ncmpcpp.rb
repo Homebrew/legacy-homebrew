@@ -1,14 +1,14 @@
 class Ncmpcpp < Formula
   desc "Ncurses-based client for the Music Player Daemon"
   homepage "http://rybczak.net/ncmpcpp/"
-  url "http://rybczak.net/ncmpcpp/stable/ncmpcpp-0.7.2.tar.bz2"
-  sha256 "6392f5eb98c4f130639e198200ef3db0b873b9594b65fe807ee73293ceb4093b"
+  url "http://rybczak.net/ncmpcpp/stable/ncmpcpp-0.7.3.tar.bz2"
+  sha256 "2c8b29435ca4fd845400cee7c9fd50a731bee215e92fd7e98a7446c84136b212"
 
   bottle do
     cellar :any
-    sha256 "1082eaddb0c56271b4a4bf0ccb68be466f15ec2846911b0424d391ebf19deef1" => :el_capitan
-    sha256 "5f9826f910a38feb8750e5edca2b8d7cf3990ee7d9c9751c6e4bdac2db99cb7d" => :yosemite
-    sha256 "ba81b9acf4813c5458cccbd2948dfe02bb833901a44e1175935adf7def914b44" => :mavericks
+    sha256 "39665b843ca20d18a587dc7fdfce58be49891d659d3c2321245f97496be53c40" => :el_capitan
+    sha256 "fe37b6c0ecce4bda5dc334d18cdf50feebec058243ad169425cf68d4113d2342" => :yosemite
+    sha256 "4ddc2ca6db56b7fa86c5d80c7236dccc26b5f79efb785a46a8974cc92e69a4cb" => :mavericks
   end
 
   head do

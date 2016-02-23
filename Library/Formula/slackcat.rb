@@ -3,21 +3,21 @@ require "language/go"
 class Slackcat < Formula
   desc "Command-line utility for posting snippets to Slack"
   homepage "https://github.com/vektorlab/slackcat"
-  url "https://github.com/vektorlab/slackcat/archive/v0.8.tar.gz"
-  sha256 "90a9b8255dbc8a2cb97061688b3034627e59111904c07c04552c6f0e6021badc"
+  url "https://github.com/vektorlab/slackcat/archive/v0.9.tar.gz"
+  sha256 "f537373080e184209e7e44288d0b10bcd827dc96b03acb0f3ec6fb94bb6fd851"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "190dd307f186f4b8a457eadc575e795a88fdb01781e75b8cf4dae9a261825ead" => :el_capitan
-    sha256 "ab5390db98946544443512529ccb2c65534a1ae7ffbbb9ff35720e05815a45e4" => :yosemite
-    sha256 "9ff91d19442e47bd8f46223a87cf9cf173dff9158fc57b83fa82717c474b03cf" => :mavericks
+    sha256 "f3f53517f7bfb732a460517f6cc72e602ea3eac6f3f0602492c7340dd4b15341" => :el_capitan
+    sha256 "cefe6ec588114404f715c964969f47dcd8cdbbcd088958c3019a3cc0631da014" => :yosemite
+    sha256 "1d2451eb61b5bc2d79ed265abf208a56b9423d8c7a4c4676f32ef076ac7b548c" => :mavericks
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/bluele/slack" do
     url "https://github.com/bluele/slack.git",
-      :revision => "fe9384fb313d98f2b9c5bba293074416c52fcc6c"
+      :revision => "6d00f93158acefc3a0f605c171d1baa80ba86b73"
   end
 
   go_resource "github.com/codegangsta/cli" do

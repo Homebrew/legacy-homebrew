@@ -1,14 +1,13 @@
 class Mysql < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.7/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.10.tar.gz"
-  sha256 "1ea1644884d086a23eafd8ccb04d517fbd43da3a6a06036f23c5c3a111e25c74"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-boost-5.7.11.tar.gz"
+  sha256 "ab21347ba004a5aa349b911d829a14e79b1e36e4bcd007d39d75212071414e28"
 
   bottle do
-    revision 2
-    sha256 "a0f1de24e7e2e9531d0565085cd1b7007a6919765cad07d7fc17f1c7fd7837dd" => :el_capitan
-    sha256 "d128052dd7625362e2f74e8da7469aab072d84dfa999d8ba5086f4afb73ec771" => :yosemite
-    sha256 "d26ee1f6fac724b2fb780e5e3161eb7fd2d9126144d801a410bae6ebcecba439" => :mavericks
+    sha256 "2399c32ad0271b150c06e442f10460edf83b2af218b97f44131d58bec1e35195" => :el_capitan
+    sha256 "e6e6139bdf4043ac432bb4f7a28e473dbdcbaa8ea3ac91532935173338468f83" => :yosemite
+    sha256 "03f1395d2a117788571a3e84b7c8c76263f4ed0ee9017170b12d363a93da4ef3" => :mavericks
   end
 
   option :universal
@@ -33,15 +32,12 @@ class Mysql < Formula
     :because => "mysql, mariadb, and percona install the same binaries."
   conflicts_with "mysql-connector-c",
     :because => "both install MySQL client libraries"
+  conflicts_with "mariadb-connector-c",
+    :because => "both install plugins"
 
   fails_with :llvm do
     build 2326
     cause "https://github.com/Homebrew/homebrew/issues/issue/144"
-  end
-
-  resource "boost" do
-    url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
-    sha256 "727a932322d94287b62abb1bd2d41723eec4356a7728909e38adb65ca25241ca"
   end
 
   def datadir
@@ -78,13 +74,8 @@ class Mysql < Formula
       -DSYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
       -DWITH_EDITLINE=system
+      -DWITH_BOOST=boost
     ]
-
-    # MySQL >5.7.x mandates Boost as a requirement to build & has a strict
-    # version check in place to ensure it only builds against expected release.
-    # This is problematic when Boost releases don't align with MySQL releases.
-    (buildpath/"boost_1_59_0").install resource("boost")
-    args << "-DWITH_BOOST=#{buildpath}/boost_1_59_0"
 
     # To enable unit testing at build, we need to download the unit testing suite
     if build.with? "test"

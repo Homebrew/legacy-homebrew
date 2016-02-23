@@ -1,7 +1,7 @@
 class DbusGlib < Formula
   desc "GLib bindings for the D-Bus message bus system"
   homepage "https://wiki.freedesktop.org/www/Software/DBusBindings/"
-  url "http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.106.tar.gz"
+  url "https://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.106.tar.gz"
   sha256 "b38952706dcf68bad9c302999ef0f420b8cf1a2428227123f0ac4764b689c046"
 
   bottle do

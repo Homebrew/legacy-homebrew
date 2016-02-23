@@ -41,6 +41,6 @@ class Freeling < Formula
       Hello hello NN 1
       world world NN 1
     EOS
-    assert_equal expected, pipe_output("#{bin}/analyze -f #{share}/freeling/config/en.cfg", "Hello world").chomp
+    assert_equal expected, pipe_output("#{bin}/analyze -f #{pkgshare}/config/en.cfg", "Hello world").chomp
   end
 end

@@ -6,7 +6,8 @@ class Abcmidi < Formula
   sha256 "6ada64028344b5d778714bca02e41ed98a97c656aa45ea0e4a21de926502304e"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "aa5e2f014d6b0cfccc6170c01db070dde3e55b8c620792d64f94da49d59d32d4" => :el_capitan
     sha256 "e427b95a6b3a7d1ee12b5cd2d30bdd87f41bc77a8834fc9f15bfe4d77f22e1db" => :yosemite
     sha256 "211c580f9941f3e3c6189c57ebb902e33bcfc54d24292de4e08f7a146d2c85e1" => :mavericks
     sha256 "09c43c49c3a7dae429429acc2a31b0942ba540636fa598a648576e007cde988f" => :mountain_lion

@@ -5,21 +5,21 @@ class Mongodb < Formula
   homepage "https://www.mongodb.org/"
 
   stable do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.2.1.tar.gz"
-    sha256 "50431a3ba5ab68bd0bed4a157a8528ca27753a63cf101f13135255e4e9d42f15"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.2.3.tar.gz"
+    sha256 "82030ada190095b5d95c0b59e9cf74efe9db602b49d2b8857b06f2683a5227fa"
 
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.2.1",
-        :revision => "17a5573551a0c3e33603f98375f144f1dd20b745"
+        :tag => "r3.2.3",
+        :revision => "6c05043c5d40471b27abe06f64c9cfddecac1110"
     end
   end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "866047c02de90d1503bf24fae612d6f417c5df3f363325acdf955349959c604e" => :el_capitan
-    sha256 "f0c14840f03fb3cf57a23b4367c4453b57ec4672b115adcaaf914d843b09d560" => :yosemite
-    sha256 "de3bf6a5ae313b6ebfdbbb64c4169120ea6b8733fb7878e062f9a4e0b3f35b3d" => :mavericks
+    sha256 "aad35688741565fa9322f21ab3388aa75442cb5ba3ffcaba73091edfe6135e8b" => :el_capitan
+    sha256 "919a2e1b6c2721550bea5454c604f8649acb19db3dc1b34b81f2c3550c2c569d" => :yosemite
+    sha256 "ffb3c11925d232aca53b0ea7b9d1af3619ecf8f9da1cc70c0e668b7c2ea62181" => :mavericks
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"

@@ -1,14 +1,14 @@
 class Snort < Formula
   desc "Flexible Network Intrusion Detection System"
   homepage "https://www.snort.org"
-  url "https://www.snort.org/downloads/snort/snort-2.9.7.6.tar.gz"
-  sha256 "842e8575e26d919a9e74b9ad0c10d1098f7b5ff2189a8422eb51a9a5b6ebbf63"
+  url "https://www.snort.org/downloads/snort/snort-2.9.8.0.tar.gz"
+  sha256 "bddd5d01d10d20c182836fa0199cd3549239b7a9d0fd5bbb10226feb8b42d231"
 
   bottle do
     cellar :any
-    sha256 "2271c4264c66d4a5376bda7db193979e5de2b97bc741abd79d6da4e50dca930d" => :el_capitan
-    sha256 "ddc48d580c953039711653b8038e0e387f416aa33bc476e425316e0666999752" => :yosemite
-    sha256 "9230a9e0716c5665ff5af9e4c2ab105e6f6a56228342c5e5db3e6088ed85f453" => :mavericks
+    sha256 "488b341548299f7506e074bda07cd250110f68693a51552a801cb513d3c06912" => :el_capitan
+    sha256 "c5de68e295f5ecfdbc6019a2fc307023c7b1a163850be7e4347fa30329cc6599" => :yosemite
+    sha256 "17a3390ad63726fa4505f60bb6d6b8acb112d70e4dd1db7889ecbfe05c96d629" => :mavericks
   end
 
   option "with-debug", "Compile Snort with debug options enabled"

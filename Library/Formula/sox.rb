@@ -8,6 +8,7 @@ class Sox < Formula
   depends_on "libpng"
   depends_on "mad"
   depends_on "opencore-amr" => :optional
+  depends_on "opusfile" => :optional
   depends_on "libvorbis" => :optional
   depends_on "flac" => :optional
   depends_on "libsndfile" => :optional
@@ -17,8 +18,7 @@ class Sox < Formula
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-gomp"
+                          "--prefix=#{prefix}"
     system "make", "install"
   end
 end

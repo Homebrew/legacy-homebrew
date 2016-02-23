@@ -122,4 +122,34 @@ class ExternalPatchTests < Homebrew::TestCase
   def test_inspect
     assert_equal %(#<ExternalPatch: :p1 "file:///my.patch">), @p.inspect
   end
+
+  def test_cached_download
+    @p.resource.stubs(:cached_download).returns "/tmp/foo.tar.gz"
+    assert_equal "/tmp/foo.tar.gz", @p.cached_download
+  end
+end
+
+class ApplyPatchTests < Homebrew::TestCase
+  def test_empty_patch_files
+    patch = Patch.create(:p2, nil)
+    resource = patch.resource
+    patch_files = patch.patch_files
+    assert_kind_of Resource::Patch, resource
+    assert_equal patch_files, resource.patch_files
+    assert_equal patch_files, []
+  end
+
+  def test_resource_patch_apply_method
+    patch = Patch.create(:p2, nil)
+    resource = patch.resource
+    patch_files = patch.patch_files
+    resource.apply("patch1.diff")
+    assert_equal patch_files, ["patch1.diff"]
+    resource.apply("patch2.diff", "patch3.diff")
+    assert_equal patch_files, ["patch1.diff", "patch2.diff", "patch3.diff"]
+    resource.apply(["patch4.diff", "patch5.diff"])
+    assert_equal patch_files.count, 5
+    resource.apply("patch4.diff", ["patch5.diff", "patch6.diff"], "patch7.diff")
+    assert_equal patch_files.count, 7
+  end
 end

@@ -5,14 +5,17 @@ class HtopOsx < Formula
   sha256 "3d8614a3be5f5ba76a96b22c14a456dc66242c5ef1ef8660a60bb6b766543458"
 
   bottle do
-    sha256 "cbb0df837038f53f489d00cb89ed676463e341a9f1520735137f42a5bbd3c799" => :el_capitan
-    sha256 "3e2c9c3bbbd360e1418e516cf06df2989289fa4a4d36616b7357af21d4943f36" => :yosemite
-    sha256 "d205c9e82989e05bcbfca10c0aa2fea7c44a9468bb130b30437236589781e222" => :mavericks
+    revision 1
+    sha256 "9eea952eb4849a3c7e60772df5701b826e9b7cb2751dfe5d434baf83bad56b0d" => :el_capitan
+    sha256 "d0e2cc8d452bde53d949a6d498346678b7b00c6d9c61471cd0a33e6dcbbe5399" => :yosemite
+    sha256 "355a26860f7eb39a10915a15ccc9e84593d29f63137562910302c497df447963" => :mavericks
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
+
+  conflicts_with "htop", :because => "both install an `htop` binary"
 
   def install
     # Otherwise htop will segfault when resizing the terminal
@@ -24,7 +27,7 @@ class HtopOsx < Formula
   end
 
   def caveats; <<-EOS.undent
-    htop-osx requires root privileges to correctly display all running processes.
+    htop-osx requires root privileges to correctly display all running processes,
     so you will need to run `sudo htop`.
     You should be certain that you trust any software you grant root privileges.
     EOS
@@ -32,7 +35,6 @@ class HtopOsx < Formula
 
   test do
     ENV["TERM"] = "xterm"
-    pipe_output("#{bin}/htop", "q")
-    assert $?.success?
+    pipe_output("#{bin}/htop", "q", 0)
   end
 end

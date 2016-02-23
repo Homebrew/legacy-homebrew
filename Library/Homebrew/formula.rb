@@ -799,8 +799,14 @@ class Formula
   # Can be overridden to selectively disable bottles from formulae.
   # Defaults to true so overridden version does not have to check if bottles
   # are supported.
+  # Replaced by {.pour_bottle}'s `satisfy` method if it is specified.
   def pour_bottle?
     true
+  end
+
+  # @private
+  def pour_bottle_check_unsatisfied_reason
+    self.class.pour_bottle_check_unsatisfied_reason
   end
 
   # Can be overridden to run commands on both source and bottle installation.
@@ -871,7 +877,7 @@ class Formula
   # @private
   def link_overwrite?(path)
     # Don't overwrite files not created by Homebrew.
-    return false unless path.stat.uid == File.stat(HOMEBREW_BREW_FILE).uid
+    return false unless path.stat.uid == HOMEBREW_BREW_FILE.stat.uid
     # Don't overwrite files belong to other keg except when that
     # keg's formula is deleted.
     begin
@@ -1361,7 +1367,7 @@ class Formula
     user_site_packages.mkpath
     (user_site_packages/"homebrew.pth").write <<-EOS.undent
       import site; site.addsitedir("#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
-      import sys; sys.path.insert(0, "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
+      import sys, os; sys.path = (os.environ["PYTHONPATH"].split(os.pathsep) if "PYTHONPATH" in os.environ else []) + ["#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"] + sys.path
     EOS
   end
 
@@ -1613,6 +1619,11 @@ class Formula
     # The `:manual` attribute set by {.plist_options}.
     # @private
     attr_reader :plist_manual
+
+    # If `pour_bottle?` returns `false` the user-visible reason to display for
+    # why they cannot use the bottle.
+    # @private
+    attr_accessor :pour_bottle_check_unsatisfied_reason
 
     # @!attribute [w] revision
     # Used for creating new Homebrew versions of software without new upstream
@@ -2023,9 +2034,25 @@ class Formula
     #
     # The test will fail if it returns false, or if an exception is raised.
     # Failed assertions and failed `system` commands will raise exceptions.
-
     def test(&block)
       define_method(:test, &block)
+    end
+
+    # Defines whether the {Formula}'s bottle can be used on the given Homebrew
+    # installation.
+    #
+    # For example, if the bottle requires the Xcode CLT to be installed a
+    # {Formula} would declare:
+    # <pre>pour_bottle? do
+    #   reason "The bottle needs the Xcode CLT to be installed."
+    #   satisfy { MacOS::CLT.installed? }
+    # end</pre>
+    #
+    # If `satisfy` returns `false` then a bottle will not be used and instead
+    # the {Formula} will be built from source and `reason` will be printed.
+    def pour_bottle?(&block)
+      @pour_bottle_check = PourBottleCheck.new(self)
+      @pour_bottle_check.instance_eval(&block)
     end
 
     # @private

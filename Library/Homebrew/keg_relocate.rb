@@ -70,16 +70,6 @@ class Keg
     end
   end
 
-  def change_dylib_id(id, file)
-    puts "Changing dylib ID of #{file}\n  from #{file.dylib_id}\n    to #{id}" if ARGV.debug?
-    install_name_tool("-id", id, file)
-  end
-
-  def change_install_name(old, new, file)
-    puts "Changing install name in #{file}\n  from #{old}\n    to #{new}" if ARGV.debug?
-    install_name_tool("-change", old, new, file)
-  end
-
   # Detects the C++ dynamic libraries in place, scanning the dynamic links
   # of the files within the keg.
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
@@ -108,16 +98,6 @@ class Keg
         yield file if hardlinks.add? file.stat.ino
       end
     end
-  end
-
-  def install_name_tool(*args)
-    @require_install_name_tool = true
-    tool = MacOS.install_name_tool
-    system(tool, *args) || raise(ErrorDuringExecution.new(tool, args))
-  end
-
-  def require_install_name_tool?
-    !!@require_install_name_tool
   end
 
   # If file is a dylib or bundle itself, look for the dylib named by

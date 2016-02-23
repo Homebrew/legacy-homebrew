@@ -1,22 +1,23 @@
 class Gupnp < Formula
   desc "Framework for creating UPnP devices and control points"
   homepage "https://wiki.gnome.org/Projects/GUPnP"
-  url "https://download.gnome.org/sources/gupnp/0.20/gupnp-0.20.15.tar.xz"
-  sha256 "0446b42d0d5b8adfcdca78832f2ce6173ab33793fca055afc97aec1fcc579fe2"
+  url "https://download.gnome.org/sources/gupnp/0.20/gupnp-0.20.16.tar.xz"
+  sha256 "ff1119eff12529c46837e03c742f69dc4fae48d59097d79582d38a383b832602"
+
+  bottle do
+    sha256 "1795f4230bf9473c0efbb6b8e2a2623d94d3df0f2517c3da3d6a712ecd016594" => :el_capitan
+    sha256 "9155fdd46f4a19b558a74007eb10eec648c91c24dbe51c14b9146e7c19d45be7" => :yosemite
+    sha256 "38f16ce2e0d5a52a00444f4c45b99537fe45764ed9bfa33c321fa40820119476" => :mavericks
+  end
 
   head do
     url "https://github.com/GNOME/gupnp.git"
+
     depends_on "automake" => :build
     depends_on "autoconf" => :build
     depends_on "gnome-common" => :build
     depends_on "gtk-doc" => :build
     depends_on "libtool" => :build
-  end
-
-  bottle do
-    sha256 "b0788f609fc704c4e8c4b43a08a47f3d91fbc039e8957b61fcf8e0420e92a56f" => :el_capitan
-    sha256 "5fe19250a1d5da1674cbbd88a940910c9b24ade3bd7e49f9bfa23a32779e256e" => :yosemite
-    sha256 "d2211b56feaa7c0ece990c42079b62145328eb4debf7bdd95a5f106ce72c4fc5" => :mavericks
   end
 
   depends_on "pkg-config" => :build
