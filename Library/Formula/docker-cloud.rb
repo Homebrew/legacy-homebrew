@@ -6,9 +6,9 @@ class DockerCloud < Formula
 
   bottle do
     cellar :any
-    sha256 "fb95c84be9381c2127a5ad087cb1b5883c00643d20983f784410ef4c3fbda2c0" => :el_capitan
-    sha256 "8291bcedcfc58c050dfb4ea0091d16c907ae7ecbaca1325fd112dc3e6e68093b" => :yosemite
-    sha256 "7ed4ae91d2185c181fc9ad6a8b38931db8c42610864d96a245a5049cae168fbf" => :mavericks
+    sha256 "183404a67b00ed3d59387cb3cac161332aa0fd987cbb384f91775503c18adced" => :el_capitan
+    sha256 "6a5b327ef177867d3f01ab75b676b0365ffac5ad68d8e2a10c7dc92466cb2493" => :yosemite
+    sha256 "30948a50e5c5d389bcff2914f6572961cb2440b7dcb63fbb8ecb09a4c37c30cb" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
