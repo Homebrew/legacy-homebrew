@@ -7,7 +7,8 @@ class Cereal < Formula
   head "https://github.com/USCiLab/cereal.git", :branch => "develop"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "6f845cc133b95ef4ba7cf90412a26033aa643dba905bbdf859c453d0438b5773" => :el_capitan
     sha256 "08c130ea94d5b20e3314f93deda318f1b2d6177d2be9a490167adb2b021dec81" => :yosemite
     sha256 "f0504c9cc90d6358fdc10d1f075463905d7e581d80e5a45e374976e7bc797b63" => :mavericks
     sha256 "00ef7732975fb675326d0dc1f1a8732b995626075cb5f0a3f2740f28c3fcdda6" => :mountain_lion
