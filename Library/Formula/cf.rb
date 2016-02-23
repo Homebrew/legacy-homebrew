@@ -5,7 +5,8 @@ class Cf < Formula
   sha256 "ef65e9eb57c56456dfd897fec12da8617c775e986c23c0b9cbfab173b34e5509"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "658dbcf6f4868922582db207b8713c8a9009bc99d3d976866ecfacbb9f95dfd5" => :el_capitan
     sha256 "4b4d294a9bd632f4daa07e643f7e33e3ffcf419d4df76c6656d2c688795f0d3c" => :yosemite
     sha256 "ea165ebb43cf7e6d55e34b43df6dc31bc3b8a3d5d3441cb4106630b168e8c90b" => :mavericks
     sha256 "600d033a2a3c1cbfc1be26fb4185779805b4b44b3fc08b32b28c7c36c0ffdddd" => :mountain_lion
