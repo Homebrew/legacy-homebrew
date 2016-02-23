@@ -7,10 +7,9 @@ class Ploticus < Formula
   revision 1
 
   bottle do
-    cellar :any
-    sha256 "4692b3e6ac406608edda1a7e3a7a209e79b535ad15e5592ed58354d5c06c8da8" => :el_capitan
-    sha256 "394fd11e14746155110865f98f3dbab9b54bd6de166ffdbe31e380b20d58c5f1" => :yosemite
-    sha256 "1e9f32e1e439d234a0597a33a2a28399995f9a05e1c91901c590b44697c4cbee" => :mavericks
+    sha256 "088f4ba0eea75ed4b401f94331b70dd64e23f02fa0d95731fbaccf6904c8cea5" => :el_capitan
+    sha256 "b15be72d80abf16b348c625945de811bf1fb411b1cb329adc701bc04cfb41dd8" => :yosemite
+    sha256 "c2b4982907f4a9de66973cf55729fed03f17c42704593d6dbcce955ce53cd9bb" => :mavericks
   end
 
   depends_on "libpng"
