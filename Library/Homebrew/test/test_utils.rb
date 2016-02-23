@@ -206,4 +206,12 @@ class UtilTests < Homebrew::TestCase
     assert_equal "1,000", number_readable(1_000)
     assert_equal "1,000,000", number_readable(1_000_000)
   end
+
+  def test_user_agent
+    ENV.delete "CI"
+    refute_includes homebrew_user_agent, "CI"
+    ENV["CI"] = "true"
+    assert_includes homebrew_user_agent, "CI"
+    assert_includes homebrew_user_agent, HOMEBREW_VERSION
+  end
 end
