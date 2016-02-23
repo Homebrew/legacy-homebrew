@@ -19,6 +19,8 @@ class ArgyllCms < Formula
 
   conflicts_with "num-utils", :because => "both install `average` binaries"
 
+  # Fix build on case-sensitive filesystems.
+  # Submitted to graeme@argyllcms.com on 23rd Feb 2016.
   patch :DATA
 
   def install
