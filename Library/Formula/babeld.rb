@@ -6,7 +6,8 @@ class Babeld < Formula
   head "https://github.com/jech/babeld.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "7cb902685dea1e9a14fbce621faf5a1d1bed0680fbaa964bb3a64eb595360a89" => :el_capitan
     sha256 "980282deb71194aa092f3e0b706bc4305a8e9224943e0adeeadb4d06278b6af8" => :yosemite
     sha256 "b69f241357333d7cfb90d419cc5305c08d92a87110971e8ad164716a92ad3129" => :mavericks
     sha256 "e4baaabd8690aa60b4874eb606ce62f5de0d7c378e8c0eccc409724b898fb212" => :mountain_lion
