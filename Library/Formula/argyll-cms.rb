@@ -18,6 +18,8 @@ class ArgyllCms < Formula
 
   conflicts_with "num-utils", :because => "both install `average` binaries"
 
+  patch :DATA
+
   def install
     system "sh", "makeall.sh"
     system "./makeinstall.sh"
@@ -31,3 +33,18 @@ class ArgyllCms < Formula
     %w[test.ti1.ps test.ti1.ti1 test.ti1.ti2].each { |f| File.exist? f }
   end
 end
+
+__END__
+diff --git a/spectro/dispwin.c b/spectro/dispwin.c
+index fffbaee..18343db 100755
+--- a/spectro/dispwin.c
++++ b/spectro/dispwin.c
+@@ -113,7 +113,7 @@ typedef float CGFloat;
+ #endif
+ #endif	/* !NSINTEGER_DEFINED */
+
+-#include <IOKit/Graphics/IOGraphicsLib.h>
++#include <IOKit/graphics/IOGraphicsLib.h>
+
+ #if __MAC_OS_X_VERSION_MAX_ALLOWED <= 1060
+ /* This wasn't declared in 10.6, although it is needed */
