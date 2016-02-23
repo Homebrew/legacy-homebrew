@@ -16,6 +16,7 @@ class Ccextractor < Formula
   depends_on "libpng"
 
   def install
+    ENV.append "LDFLAGS", "-lpng"
     system "cmake", "src", *std_cmake_args
     system "make"
     system "make", "install"
