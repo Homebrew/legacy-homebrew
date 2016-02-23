@@ -10,6 +10,6 @@ class Imgcat < Formula
   end
 
   test do
-    system "/usr/bin/curl", "-sSL", "http://imgs.xkcd.com/comics/security.png | imgcat"
+    system "#{bin}/imgcat", test_fixtures("test.png")
   end
 end
