@@ -12,7 +12,7 @@ require "rbconfig"
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = "0.9.5"
+HOMEBREW_VERSION = "0.9.6"
 HOMEBREW_WWW = "http://brew.sh"
 
 require "config"
