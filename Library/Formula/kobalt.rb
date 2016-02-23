@@ -4,6 +4,8 @@ class Kobalt < Formula
   url "https://github.com/cbeust/kobalt/releases/download/0.633/kobalt-0.633.zip"
   sha256 "bb468a7b8761de20c4700e18a6de55ee0712edd0e9d04748e53592c91389c94e"
 
+  bottle :unneeded
+
   def install
     libexec.install %w[kobaltw kobalt]
     kobaltw = libexec/"kobaltw"
