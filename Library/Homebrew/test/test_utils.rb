@@ -209,6 +209,7 @@ class UtilTests < Homebrew::TestCase
 
   def test_user_agent
     ENV.delete "CI"
+    ENV.delete "JENKINS_URL"
     refute_includes homebrew_user_agent, "CI"
     ENV["CI"] = "true"
     assert_includes homebrew_user_agent, "CI"
