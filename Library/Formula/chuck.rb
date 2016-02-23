@@ -5,8 +5,9 @@ class Chuck < Formula
   sha256 "d141ca61547131edd2b29bdb88183835e4133ef09807674bfa33a4e6e09d1f53"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
+    sha256 "7b51eee3ac7ac860b2cc4f99c00508250bdbf14c4a72e6e7cc2cade99690c26f" => :el_capitan
     sha256 "e90d7190c6f06ba2107d4f3bf85ca798840642f00c6bb1f3872cc0a05efa3b83" => :yosemite
     sha256 "ae23a194badab407ea3489991314f295f2ec7c6942dd60f0e81925eb94333dec" => :mavericks
     sha256 "87d6cc4e3a3b868ee1a98f2e148060ed4a69d2cd593944ebed83fe887c7cd080" => :mountain_lion
