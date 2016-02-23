@@ -9,9 +9,9 @@ class Packer < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "453cd39450e9d0306c6d0c4b37d3736d3b9e83833d5b1409a38024dab438004a" => :el_capitan
-    sha256 "7ea89b7e2d68bf3e35c87961b3e87ad4c6a04227a5cd83349402b86fa878ba88" => :yosemite
-    sha256 "5517da3ca33378e5848ae0208639553b8f7c50fd1a7b06b1d5022d87697b26f6" => :mavericks
+    sha256 "b7a14830cf403c63e03dec83bb09210c917b4e2d76a7bfb999149881aad7fb6b" => :el_capitan
+    sha256 "659e417c8d87a3d403a62ab61335e0d51c16fbf3a3a3dfb32b344fd2635bb4e1" => :yosemite
+    sha256 "001260faf5dca802111df1da59e26244c60f8de4379c85b3692f4c660b32dc4c" => :mavericks
   end
 
   depends_on :hg => :build
