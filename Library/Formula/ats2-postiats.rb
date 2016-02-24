@@ -1,8 +1,8 @@
 class Ats2Postiats < Formula
   desc "ATS programming language implementation"
   homepage "http://www.ats-lang.org/"
-  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.2.4/ATS2-Postiats-0.2.4.tgz"
-  sha256 "33365e1cab4f897ab24176a0988980dc4830bf8b35bf16daa8fb745006abb6a8"
+  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.2.6/ATS2-Postiats-0.2.6.tgz"
+  sha256 "3179a33eb059992bbab0a172fc0daecc562d9d255797bfda4cabe69e2be2ca41"
 
   bottle do
     cellar :any
@@ -17,6 +17,13 @@ class Ats2Postiats < Formula
     cause "Trying to compile this with Clang is failure-galore."
   end
 
+  # error: expected declaration specifiers or '...' before '__builtin_object_size'
+  # Already fixed upstream. Can remove this on next release.
+  patch do
+    url "https://github.com/githwxi/ATS-Postiats/commit/5b3d6a8ac7.diff"
+    sha256 "9e7ceea54d9e02323711e0ede3b64528f008f084007a0bea43ce2be9b31d916a"
+  end
+
   def install
     ENV.deparallelize
 
@@ -24,8 +31,7 @@ class Ats2Postiats < Formula
 
     # Disable GC support for patsopt
     # https://github.com/githwxi/ATS-Postiats/issues/76
-    system "make", "GCFLAG=-D_ATS_NGC", "all"
-    system "make", "install"
+    system "make", "GCFLAG=-D_ATS_NGC", "all", "install"
   end
 
   test do
