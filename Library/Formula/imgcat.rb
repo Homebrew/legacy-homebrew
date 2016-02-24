@@ -5,8 +5,8 @@ class Imgcat < Formula
   version "2.9"
   sha256 "036ee8aec2487a02b40d62d72918090ae022fc018589337dfd8403e08ffdd0c0"
 
-  head do 
-    url "https://raw.githubusercontent.com/gnachman/iTerm2/HEAD/tests/imgcat", :using => :curl
+  head do
+    url "https://raw.githubusercontent.com/gnachman/iTerm2/HEAD/tests/imgcat"
   end
 
   def install
