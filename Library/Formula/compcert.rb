@@ -1,8 +1,20 @@
+class Camlp5TransitionalModeRequirement < Requirement
+  fatal true
+
+  satisfy(:build_env => false) { !Tab.for_name("camlp5").with?("strict") }
+
+  def message; <<-EOS.undent
+    camlp5 must be compiled in transitional mode (instead of --strict mode):
+      brew install camlp5
+    EOS
+  end
+end
+
 class Compcert < Formula
   desc "Formally verified C compiler"
   homepage "http://compcert.inria.fr"
-  url "https://github.com/AbsInt/CompCert/archive/v2.5.tar.gz"
-  sha256 "36847b00fa5436ac8e052489b728adef2bc68064fe22dbdc18bf22256856fd95"
+  url "https://github.com/AbsInt/CompCert/archive/v2.6.tar.gz"
+  sha256 "a1f21365c41c2462fce52a4a25e1c7e4b7fea7a0cd60b6bae1d31f2edeeb4d17"
 
   bottle do
     cellar :any_skip_relocation
@@ -13,10 +25,29 @@ class Compcert < Formula
   end
 
   depends_on "ocaml" => :build
-  depends_on "coq" => :build
   depends_on "menhir" => :build
+  depends_on "camlp5" => :build # needed for building Coq 8.4
+  depends_on Camlp5TransitionalModeRequirement # same requirement as in Coq formula
+
+  # Should be removed as soon as CompCert gets Coq 8.5 support
+  resource "coq84" do
+    url "https://coq.inria.fr/distrib/V8.4pl6/files/coq-8.4pl6.tar.gz"
+    sha256 "a540a231a9970a49353ca039f3544616ff86a208966ab1c593779ae13c91ebd6"
+  end
 
   def install
+    resource("coq84").stage do
+      system "./configure", "-prefix", buildpath/"coq84",
+                            "-camlp5dir", Formula["camlp5"].opt_lib/"ocaml/camlp5",
+                            "-coqide", "no",
+                            "-with-doc", "no"
+      ENV.deparallelize do
+        system "make", "world"
+        system "make", "install"
+      end
+    end
+
+    ENV.prepend_path "PATH", buildpath/"coq84/bin"
     ENV.permit_arch_flags
 
     # Compcert's configure script hard-codes gcc. On Lion and under, this
