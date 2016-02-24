@@ -5,7 +5,6 @@ class Nsq < Formula
   homepage "http://nsq.io"
   url "https://github.com/nsqio/nsq/archive/v0.3.7.tar.gz"
   sha256 "fb71e28c757dd485b43b9bc75d90eb44ff9166ccb3d8a928c5e655b483da316e"
-  revision 1
 
   head "https://github.com/nsqio/nsq.git"
 
