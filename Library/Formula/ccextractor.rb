@@ -26,7 +26,7 @@ class Ccextractor < Formula
 
   test do
     touch testpath/"test"
-    system "ccextractor", "test"
-    assert File.exist? "test.srt"
+    system bin/"ccextractor", "test"
+    assert File.exist?("test.srt")
   end
 end
