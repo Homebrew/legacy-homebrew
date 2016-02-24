@@ -15,6 +15,10 @@ class Hbase < Formula
     bin.write_exec_script Dir["#{libexec}/bin/*"]
 
     inreplace "#{libexec}/conf/hbase-env.sh",
+      "export HBASE_OPTS=\"-XX:+UseConcMarkSweepGC\"",
+      "export HBASE_OPTS=\"-Djava.net.preferIPv4Stack=true -XX:+UseConcMarkSweepGC\""
+
+    inreplace "#{libexec}/conf/hbase-env.sh",
       "# export JAVA_HOME=/usr/java/jdk1.6.0/",
       "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
