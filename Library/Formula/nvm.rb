@@ -31,11 +31,6 @@ class Nvm < Formula
     #{prefix} will destroy any nvm-installed Node installations
     upon upgrade/reinstall.
 
-    If upgrading from a previous version, please remember to activate the
-    new version by restarting your shell or by executing the command below:
-
-      . $(brew --prefix nvm)/nvm.sh
-
     Type `nvm help` for further information.
   EOS
   end
@@ -44,6 +39,6 @@ class Nvm < Formula
     output = pipe_output("NODE_VERSION=stable #{prefix}/nvm-exec 2>&1")
     assert_no_match /No such file or directory/, output
     assert_no_match /nvm: command not found/, output
-    assert_empty output
+    assert_match /N\/A: version \"stable\" is not yet installed/, output
   end
 end
