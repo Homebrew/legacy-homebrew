@@ -7,9 +7,10 @@ class Ccextractor < Formula
 
   bottle do
     cellar :any
-    sha256 "1e596a6366ac48c9d42b880516b574a81bb35f331e511e2c01cf0b5a39906c9a" => :el_capitan
-    sha256 "ad7639a5c96bd1e7f94234dce0fbea2685e81d1ea2a853c6e09b7de5059d0c52" => :yosemite
-    sha256 "1d13697115f36df12c3eb5633527369f65324b30cb89ba4e13c1bddd3d196011" => :mavericks
+    revision 1
+    sha256 "08ca272b7c1ab7ee1945654a896282ed6c5f19651bbc5dc02e6ad7d71039456c" => :el_capitan
+    sha256 "10ad588c435ec6b4a0c1f6f8dea8603024100f404727b30c01e939fdc16f88ad" => :yosemite
+    sha256 "f353febd41be9199e791aedf219fb15d506a10928a86782c7afeab766d470a2f" => :mavericks
   end
 
   depends_on "cmake" => :build
