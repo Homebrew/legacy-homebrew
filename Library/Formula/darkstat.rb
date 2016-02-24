@@ -1,22 +1,25 @@
 class Darkstat < Formula
   desc "Network traffic analyzer"
   homepage "https://unix4lyfe.org/darkstat/"
-  url "https://unix4lyfe.org/darkstat/darkstat-3.0.718.tar.bz2"
-  sha256 "682f3e53f4e89ea6ad08236b4225a5e0859428299765d8d995374cd7fa22adff"
+  url "https://unix4lyfe.org/darkstat/darkstat-3.0.719.tar.bz2"
+  sha256 "aeaf909585f7f43dc032a75328fdb62114e58405b06a92a13c0d3653236dedd7"
 
   bottle do
-    cellar :any
-    sha256 "149200f26467aa269ddea52f85a59af1439a73f923f7282ec2b5e7185116bfe3" => :yosemite
-    sha256 "d82fe76abca04e5928ea0923e8a4927262091ed40f86cf0f2822cb7ac72ced0d" => :mavericks
-    sha256 "a1532b5219ce54e9a6609f3b717fa83b23de163d033553d7d784573143385138" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8cfff973e95ff4c31248690df0ae28e05ddbef97f926ed4f075b919274c59116" => :el_capitan
+    sha256 "290629ecfb0a650104bd6560bb352af9b54e2d0c1e1e0de0d7113dab13167133" => :yosemite
+    sha256 "c613e70eb9f84aa7acaef6f1791495762537ab0fe12368ddec009a66fb91d3f8" => :mavericks
+    sha256 "fba985f30c240602c9b5ebccda87fcea7c52caba69c4c8cc5375e090a773ce19" => :mountain_lion
   end
 
-  devel do
-    url "https://unix4lyfe.org/darkstat/darkstat-3.0.719rc1.tar.bz2"
-    sha256 "827e91aa9261d3f6783cf3f8affa80590800cc5740dcac5f42c88e2bc781390b"
+  head do
+    url "https://www.unix4lyfe.org/git/darkstat", :using => :git
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
   end
 
   def install
+    system "autoreconf", "-iv" if build.head?
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make", "install"
   end

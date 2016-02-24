@@ -1,16 +1,17 @@
 class Aubio < Formula
   desc "Extract annotations from audio signals"
-  homepage "http://aubio.org/"
-  url "http://aubio.org/pub/aubio-0.4.1.tar.bz2"
-  sha256 "25d7df0a9cd6366fda764a803424caddf5fb819fc75b42a7a03e1e6f8eb3c695"
+  homepage "https://aubio.org/"
+  url "https://aubio.org/pub/aubio-0.4.2.tar.bz2"
+  sha256 "1cc58e0fed2b9468305b198ad06b889f228b797a082c2ede716dc30fcb4f8f1f"
 
   head "https://github.com/piem/aubio.git", :branch => "develop"
 
   bottle do
     cellar :any
-    sha1 "959a1e4eb7bf72573f565af2ebe2c51eb7a6eef4" => :mavericks
-    sha1 "d530d90d8e39ed5888bd492a3e3a888e21de2dc3" => :mountain_lion
-    sha1 "5dc7cb95da354f22e32f8b754093e82d729cbe9f" => :lion
+    sha256 "ccc98e1d32cd07973ae559abc1db492c3307d6fa08b206dda54391a10b43f007" => :el_capitan
+    sha256 "4b9b7780d8523f46b4de9da1da42de9a81af06bbe87b1c36125860b8eb014533" => :yosemite
+    sha256 "f23c2aeef3734dadeaa2369da75e20a50269650ab18e9a1a5639df9de8eb43d2" => :mavericks
+    sha256 "770f58a1601edce01bcdd4fffcb6bc7a75c81c3119eab6592cd51c911fe0bc24" => :mountain_lion
   end
 
   option :universal
@@ -43,8 +44,7 @@ class Aubio < Formula
 
     if build.with? "python"
       cd "python" do
-        system "python", "./setup.py", "build"
-        system "python", "./setup.py", "install", "--prefix", prefix
+        system "python", *Language::Python.setup_install_args(prefix)
         bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
       end
     end

@@ -6,9 +6,9 @@ class Mysqlxx < Formula
 
   bottle do
     cellar :any
-    sha1 "51f59174988a858aabde99fbb4bee90da14b3f05" => :yosemite
-    sha1 "8efb125df0553a8c7e764c02846e258f8de73ebd" => :mavericks
-    sha1 "9fedd7c2ae4b463a0ff730e29a0e493274896d2b" => :mountain_lion
+    sha256 "c08d5308c6b973026e75f2504755eeca5a348569860d215fc24e31f52e4510cd" => :yosemite
+    sha256 "2b097aed1f7d0ba9bb22b521e011464daa30ce08714d5fca7445a437cda50f3a" => :mavericks
+    sha256 "154e219e9cac151437d47b281ca35aa35eaf3d510b04f5e9886a0257a983a760" => :mountain_lion
   end
 
   depends_on "mysql-connector-c"

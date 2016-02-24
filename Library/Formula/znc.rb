@@ -1,8 +1,15 @@
 class Znc < Formula
   desc "Advanced IRC bouncer"
   homepage "http://wiki.znc.in/ZNC"
-  url "http://znc.in/releases/archive/znc-1.6.0.tar.gz"
-  sha256 "df622aeae34d26193c738dff6499e56ad669ec654484e19623738d84cc80aba7"
+  url "http://znc.in/releases/archive/znc-1.6.2.tar.gz"
+  mirror "https://github.com/znc/znc/archive/znc-1.6.2.tar.gz"
+  sha256 "eef17727c0c6433fed1affba0ea76ec7fd60198d2f3c234d8529bd5fb26f0593"
+
+  bottle do
+    sha256 "2b770669b64933116179b7fe2debfebc9f2fbca7be1883e5e0c3183e45e52ccc" => :el_capitan
+    sha256 "0c3166fe0a1248eafa9ca54fa7818f69b38855c4741ac480afa510d6d94e4b7a" => :yosemite
+    sha256 "a23106c814c4d21646b605bd0d91d40164035ab64fd47315a6854e1fa9483edd" => :mavericks
+  end
 
   head do
     url "https://github.com/znc/znc.git"
@@ -10,12 +17,6 @@ class Znc < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-  end
-
-  bottle do
-    sha1 "4f695db064f9971100f917f35ab2bcb9ba758f84" => :yosemite
-    sha1 "6e3799aae4b598b61062eb0b67744a5caa5f264e" => :mavericks
-    sha1 "83597cccd275a3a4bf8fcc5d8dd5c9048403869a" => :mountain_lion
   end
 
   option "with-debug", "Compile ZNC with debug support"
@@ -27,8 +28,16 @@ class Znc < Formula
   depends_on "openssl"
   depends_on "icu4c" => :optional
 
+  needs :cxx11
+
   def install
     ENV.cxx11
+    # These need to be set in CXXFLAGS, because ZNC will embed them in its
+    # znc-buildmod script; ZNC's configure script won't add the appropriate
+    # flags itself if they're set in superenv and not in the environment.
+    ENV.append "CXXFLAGS", "-std=c++11"
+    ENV.append "CXXFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
+
     args = ["--prefix=#{prefix}"]
     args << "--enable-debug" if build.with? "debug"
 
@@ -48,7 +57,7 @@ class Znc < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{bin}/znc</string>
+          <string>#{opt_bin}/znc</string>
           <string>--foreground</string>
         </array>
         <key>StandardErrorPath</key>

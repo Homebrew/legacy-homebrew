@@ -6,20 +6,32 @@ class Mecab < Formula
   sha256 "e073325783135b72e666145c781bb48fada583d5224fb2490fb6c1403ba69c59"
 
   bottle do
-    revision 1
-    sha1 "73f5e7206a4482f7ab714b0690ad3eeac7f0c9e0" => :yosemite
-    sha1 "530ee77a2f13cce3225abd0cd9401858219959d9" => :mavericks
-    sha1 "9747369cd4c0aa246e6a973c4f2e5652e174bae8" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "2956dbd7e2f18374621a8744acfdd296da3c5deec3e34ac070efb93602fad3de" => :el_capitan
+    sha256 "bdcd047c09a9c864addcb3e4053584ad35fb5b22044a6535d818a59260575f94" => :yosemite
+    sha256 "ac140494a5f9514c968e25163384011ef08ba21e525fcbe48b68517f07177734" => :mavericks
+    sha256 "5cbe634aaf3101f1889ff6b21a00359940bca964f770b51ab143e06357d3af16" => :mountain_lion
   end
+
+  conflicts_with "mecab-ko", :because => "both install mecab binaries"
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
     system "make", "install"
+
+    # Put dic files in HOMEBREW_PREFIX/lib instead of lib
+    inreplace "#{bin}/mecab-config", "${exec_prefix}/lib/mecab/dic", "#{HOMEBREW_PREFIX}/lib/mecab/dic"
+    inreplace "#{etc}/mecabrc", "#{lib}/mecab/dic", "#{HOMEBREW_PREFIX}/lib/mecab/dic"
+  end
+
+  def post_install
+    (HOMEBREW_PREFIX/"lib/mecab/dic").mkpath
   end
 
   test do
-    result = `echo "mecabのテストです。" | mecab |md5`.chomp
-    assert_equal "3518edb94fe7fbd3784474f2ddc02905", result
+    assert_equal "#{HOMEBREW_PREFIX}/lib/mecab/dic", shell_output("#{bin}/mecab-config --dicdir").chomp
   end
 end

@@ -6,9 +6,9 @@ class Libpano < Formula
   sha256 "037357383978341dea8f572a5d2a0876c5ab0a83dffda431bd393357e91d95a8"
   bottle do
     cellar :any
-    sha1 "b1e5da01e08bec1f5ca739a85a7d4c979bca21d6" => :yosemite
-    sha1 "ff85fcab7a27810d027116abaccf9362101780c9" => :mavericks
-    sha1 "0ea739e0ad708cc3d48d48eb542cb726e705ea2a" => :mountain_lion
+    sha256 "835f1cb01acb3a1f1093df06fc0b940bb4e224e7abb9ee67d131a43d428eb373" => :yosemite
+    sha256 "ef50d747fa8f71bb1f4bb9db5689c1456666dfd7df31c5c49f144174d9889900" => :mavericks
+    sha256 "232a6489290f8dfd237f19de0ece39a53bf15d8385fd936bfb738b93b15d01ce" => :mountain_lion
   end
 
   revision 1

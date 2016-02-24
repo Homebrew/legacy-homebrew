@@ -4,6 +4,8 @@ class Sbuild < Formula
   url "http://sbuild.org/uploads/sbuild/0.7.7/sbuild-0.7.7-dist.zip"
   sha256 "606bc09603707f31d9ca5bc306ba01b171f8400e643261acd28da7a1a24dfb23"
 
+  bottle :unneeded
+
   depends_on :java => "1.6+"
 
   def install

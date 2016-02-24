@@ -6,14 +6,20 @@ class Tcpreplay < Formula
 
   bottle do
     cellar :any
-    sha1 "4ad7a57a4ad4730cd48096fe547f81345726d186" => :yosemite
-    sha1 "6530b5c80d93381072019dfdc0caf96775b028f3" => :mavericks
-    sha1 "91ad4549dea2d5e715611fb82bd967da9896561d" => :mountain_lion
+    revision 1
+    sha256 "03bfe9130780358c6a9d37e8b663f84c0e939b03c5efa87c90985584d95d2cbc" => :el_capitan
+    sha256 "26ae99b72e3dc9feb27db71dd1f49de8734aff9debc1ed279c5a359fa5d4fece" => :yosemite
+    sha256 "ab0379428462fbdc2653feae2bcc404cf6b6d2129ddf0461019c53794ce87e4f" => :mavericks
   end
 
   depends_on "libdnet" => :recommended
 
   def install
+    # Recognise .tbd files inside Xcode 7 as valid.
+    # https://github.com/appneta/tcpreplay/pull/202
+    # Merged but into configure.ac, so inreplace here to avoid needing autotools.
+    inreplace "configure", "for ext in .dylib .so", "for ext in .dylib .so .tbd"
+
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",
                           "--prefix=#{prefix}",

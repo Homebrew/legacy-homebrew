@@ -1,14 +1,14 @@
 class Ykclient < Formula
   desc "Library to validate YubiKey OTPs against YubiCloud"
   homepage "https://yubico.github.io/yubico-c-client/"
-  url "https://yubico.github.io/yubico-c-client/releases/ykclient-2.14.tar.gz"
-  sha256 "bd7ddaa1d88ec7be323738cabdf58ff99cb6d6cd3fe937c69b52fa9b3764d362"
+  url "https://yubico.github.io/yubico-c-client/releases/ykclient-2.15.tar.gz"
+  sha256 "f461cdefe7955d58bbd09d0eb7a15b36cb3576b88adbd68008f40ea978ea5016"
 
   bottle do
     cellar :any
-    sha256 "a6bf94742e5dea65974107915a86ed3fdd97c4238279262fb6c49a153bf707da" => :yosemite
-    sha256 "c80e5dbdd8e4790db32c09f7ec7ce542a1ecaa3d26818711ab1b1f4d9779b516" => :mavericks
-    sha256 "1bc7d485b047e44cc7aca1530007f2480f36ddf26e1a4b5d55281ed587ade32c" => :mountain_lion
+    sha256 "3ad851c0204662921e24aab8b473ba543cc63f84514e7d8eb65ea68a4a617a69" => :el_capitan
+    sha256 "81b3de37e608406d52a02d5c56fcb2fa621af641e90e4985f4804d53dd41ef6e" => :yosemite
+    sha256 "c051e1c30bc2cb34907e5d91e1addb572d2bfa2011c75e13c167712d93fefb47" => :mavericks
   end
 
   option :universal

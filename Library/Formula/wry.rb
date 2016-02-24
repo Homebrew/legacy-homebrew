@@ -8,9 +8,9 @@ class Wry < Formula
 
   bottle do
     cellar :any
-    sha1 "01ed3904c9e01e700643609efae8fc0d8714bcc2" => :mavericks
-    sha1 "436083b0ec2addb57a9f042a8fcf99cbfce19618" => :mountain_lion
-    sha1 "1f492a3b41120e67046b84ee9d1d1f25e3897a87" => :lion
+    sha256 "bb692f4c4690c6a312abec61abf69c279880fbdf620c01f2f61d686a9e04a080" => :mavericks
+    sha256 "e318cba1a286d9d415f45c3f9729a27a8170713b1d06c897567dd5989d4acf14" => :mountain_lion
+    sha256 "62d8ccef8fe23dbc90b9f36d4693922a7884f69ad9276e1dd2e094a67c1fbbf2" => :lion
   end
 
   depends_on :macos => :lion

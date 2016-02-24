@@ -1,17 +1,24 @@
 class Boost < Formula
   desc "Collection of portable C++ source libraries"
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2"
-  sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2"
+  sha256 "686affff989ac2488f79a97b9479efb9f2abae035b5ed4d8226de6857933fd3b"
+  revision 1
 
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any
-    sha256 "9a3929bec0e9e9db36e005f57193433ac6b5ff9ff86b2ed3262b975d58488c19" => :yosemite
-    sha256 "c5ad1f8591ed91c551658fd198ce31cf9f6a8026fcbfd5970a39cb479e64faa2" => :mavericks
-    sha256 "7b154bf42d72bbb90c3017bb94b24fdd2e0605ceab8717283f5c9f456ac5c03d" => :mountain_lion
+    sha256 "2f7a84ca6edf978eef4fc23b6f1d4c540b343f5941f068dfc59eb1c103f01dc7" => :el_capitan
+    sha256 "cdea70d456a842617a9aa59dd297da2e63e95eddd74c1fa302eedfed21a51538" => :yosemite
+    sha256 "1a7feb411f4e89237fc212cab55c0f3acd1abe86a887069236ef6e7c58bdd82a" => :mavericks
   end
+
+  # Handle compile failure with boost/graph/adjacency_matrix.hpp
+  # https://github.com/Homebrew/homebrew/pull/48262
+  # https://svn.boost.org/trac/boost/ticket/11880
+  # patch derived from https://github.com/boostorg/graph/commit/1d5f43d
+  patch :DATA
 
   env :userpaths
 
@@ -119,6 +126,7 @@ class Boost < Formula
     end
 
     system "./bootstrap.sh", *bootstrap_args
+    system "./b2", "headers"
     system "./b2", *args
   end
 
@@ -168,3 +176,17 @@ class Boost < Formula
     system "./test"
   end
 end
+
+__END__
+diff -Nur boost_1_60_0/boost/graph/adjacency_matrix.hpp boost_1_60_0-patched/boost/graph/adjacency_matrix.hpp
+--- boost_1_60_0/boost/graph/adjacency_matrix.hpp	2015-10-23 05:50:19.000000000 -0700
++++ boost_1_60_0-patched/boost/graph/adjacency_matrix.hpp	2016-01-19 14:03:29.000000000 -0800
+@@ -443,7 +443,7 @@
+     // graph type. Instead, use directedS, which also provides the
+     // functionality required for a Bidirectional Graph (in_edges,
+     // in_degree, etc.).
+-    BOOST_STATIC_ASSERT(type_traits::ice_not<(is_same<Directed, bidirectionalS>::value)>::value);
++    BOOST_STATIC_ASSERT(!(is_same<Directed, bidirectionalS>::value));
+
+     typedef typename mpl::if_<is_directed,
+                                     bidirectional_tag, undirected_tag>::type

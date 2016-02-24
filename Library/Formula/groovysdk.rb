@@ -1,8 +1,12 @@
 class Groovysdk < Formula
   desc "SDK for Groovy: a Java-based scripting language"
   homepage "http://www.groovy-lang.org"
-  url "https://dl.bintray.com/groovy/maven/apache-groovy-sdk-2.4.4.zip"
-  sha256 "2e794749f38386c81101c05e83b2ddd2bc3675d1cb01101f3ee2be6cf67b2fc9"
+  url "https://dl.bintray.com/groovy/maven/apache-groovy-sdk-2.4.6.zip"
+  sha256 "fc95990225d70a8ab9d40a1bc93ea460e8ed6196cbc8ae520761efdf6cd609c1"
+
+  bottle :unneeded
+
+  conflicts_with "groovy", :because => "both install the same binaries"
 
   def install
     ENV["GROOVY_HOME"] = libexec

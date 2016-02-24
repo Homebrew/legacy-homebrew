@@ -1,14 +1,14 @@
 class Libftdi < Formula
   desc "Library to talk to FTDI chips"
-  homepage "http://www.intra2net.com/en/developer/libftdi"
-  url "http://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.1.tar.bz2"
-  sha256 "c0b1af1a13e2c6682a1d8041e5b164a1e0d90267cd378bb51e059bd62f821e21"
+  homepage "https://www.intra2net.com/en/developer/libftdi"
+  url "https://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.2.tar.bz2"
+  sha256 "a6ea795c829219015eb372b03008351cee3fb39f684bff3bf8a4620b558488d6"
 
   bottle do
-    revision 1
-    sha1 "23a46b49c327ff94e990f6677f343513f86cce45" => :yosemite
-    sha1 "f79c80ca34c4108a8d8b95e0814ee2316110ba1d" => :mavericks
-    sha1 "c0f8000f19d4910525fec572944115823e21bdfc" => :mountain_lion
+    cellar :any
+    sha256 "81690eae8fa778df6a48557d03b154fbb3fe726d27edf8c8cccfb0f440810c46" => :el_capitan
+    sha256 "fe679703a4c73cdae3d5c893c411ae4f080c113c9aef2e7c290c6c7386e2357d" => :yosemite
+    sha256 "4049462256cac963b49c6cb430be7458cfad761af6db42cfef19ac33c8a8eca6" => :mavericks
   end
 
   depends_on "cmake" => :build

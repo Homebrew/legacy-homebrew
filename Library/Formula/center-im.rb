@@ -7,6 +7,7 @@ class CenterIm < Formula
 
   bottle do
     revision 1
+    sha256 "315556554c3e5b972b0d99145fd6d0971837c2bbd981b849ca89e7a9c069335b" => :el_capitan
     sha256 "5a51f0130fcd601aeed50ae6f66008aaa0ec96f6ac3e7bc828b627f04b46b9f2" => :yosemite
     sha256 "673992c76745d9509dd32e71c964946018584db447b37d02a21f332b508c619d" => :mavericks
     sha256 "934ab216ab1f6eb9033cfb1bbbe720f2a7fa5190eb64c245d2140694c832a965" => :mountain_lion
@@ -22,7 +23,7 @@ class CenterIm < Formula
   patch :DATA
 
   patch :p0 do
-    url "https://trac.macports.org/export/113135/trunk/dports/net/centerim/files/patch-libjabber_jconn.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/677cb38/center-im/patch-libjabber_jconn.c.diff"
     sha256 "ed8d10075c23c7dec2a782214cb53be05b11c04e617350f6f559f3c3bf803cfe"
   end
 

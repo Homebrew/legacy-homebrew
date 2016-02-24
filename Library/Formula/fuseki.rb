@@ -1,9 +1,11 @@
 class Fuseki < Formula
   desc "SPARQL server"
   homepage "https://jena.apache.org/documentation/serving_data/"
-  url "https://www.apache.org/dist/jena/binaries/jena-fuseki1-1.1.2-distribution.tar.gz"
+  url "https://archive.apache.org/dist/jena/binaries/jena-fuseki1-1.1.2-distribution.tar.gz"
   version "1.1.2"
   sha256 "78bd92b4e32f9e918d89946d11aed9789416f4058b127af60b251b4a8636b5f0"
+
+  bottle :unneeded
 
   def install
     # Remove windows files
@@ -14,8 +16,8 @@ class Fuseki < Formula
 
     # Write the installation path into the wrapper shell script
     inreplace "fuseki-server" do |s|
-      s.gsub! /export FUSEKI_HOME=.+/,
-              %(export FUSEKI_HOME="#{libexec}")
+      s.gsub!(/export FUSEKI_HOME=.+/,
+              %(export FUSEKI_HOME="#{libexec}"))
     end
 
     # Install and symlink wrapper binaries into place
@@ -34,14 +36,10 @@ class Fuseki < Formula
     (var/"fuseki").mkpath
     (var/"log/fuseki").mkpath
 
-    # Install example configs
     prefix.install "config-examples.ttl", "config-inf-tdb.ttl", "config-tdb-text.ttl", "config-tdb.ttl"
 
-    # Install example data
     prefix.install "Data"
-
-    # Install documentation
-    prefix.install "LICENSE", "NOTICE", "ReleaseNotes.txt"
+    prefix.install "ReleaseNotes.txt"
   end
 
   def caveats; <<-EOS.undent
@@ -75,7 +73,7 @@ class Fuseki < Formula
         <array>
           <string>#{opt_bin}/fuseki-server</string>
           <string>--config</string>
-          <string>/usr/local/etc/fuseki.ttl</string>
+          <string>#{etc}/fuseki.ttl</string>
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>

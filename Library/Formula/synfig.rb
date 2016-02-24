@@ -3,14 +3,14 @@ class Synfig < Formula
   homepage "http://synfig.org"
   url "https://downloads.sourceforge.net/project/synfig/releases/1.0/source/synfig-1.0.tar.gz"
   sha256 "1f2f9b209d49dff838049e9817b0458ac6987e912a56c061aa2f9c2faeb40720"
+  revision 2
 
   head "git://synfig.git.sourceforge.net/gitroot/synfig/synfig"
 
   bottle do
-    revision 1
-    sha256 "ebc2dd13c9a693a5baaa194832a4e2c23dbb1e77c44fe698bfd03d7523a63701" => :yosemite
-    sha256 "2c724dfb2c4bc14f2ee795289dd69a3a3804fe711ebc125c7e0f72e931d78860" => :mavericks
-    sha256 "71cbd51d4f8f94018477d58767ea296a27c82f8dac5696c5976f7336a3b6004d" => :mountain_lion
+    sha256 "d109db84521cd3d8d4092de86bdeda50e96f726616f3c1a50f0bf0912a3a91e3" => :el_capitan
+    sha256 "45df75ac729cc20877f89542d25f466d48c62d7aa51a17ca5535469c59973670" => :yosemite
+    sha256 "a30a492c69ef50aec2f1e22482d3c4eaef7c5899a43805afe72918c59cff994c" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -28,7 +28,16 @@ class Synfig < Formula
   depends_on "mlt"
   depends_on "libtool" => :run
 
+  needs :cxx11
+
+  # bug filed upstream as http://www.synfig.org/issues/thebuggenie/synfig/issues/904
+  patch do
+    url "https://gist.githubusercontent.com/tschoonj/06d5de3cdc5d063f8612/raw/26fe46b6eedeecdc686b9fd5aac01de9f2756424/synfig.diff"
+    sha256 "0ac5b757ba3dda6a863a79e717fc239648c490eac1e643ff275b8ac232a466a3"
+  end
+
   def install
+    ENV.cxx11
     boost = Formula["boost"]
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -111,7 +120,7 @@ class Synfig < Formula
       -lxml++-2.6
       -lxml2
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end

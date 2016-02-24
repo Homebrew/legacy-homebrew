@@ -5,13 +5,16 @@ class GitAnnex < Formula
 
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-5.20150727/git-annex-5.20150727.tar.gz"
-  sha256 "9826836bd0eb4e35be8664862405afbf2ff4dff9a643b2f8ec61c295bd16099f"
+  url "https://hackage.haskell.org/package/git-annex-6.20160126/git-annex-6.20160126.tar.gz"
+  sha256 "dc59f670a3d0bdb90db8fc6cadba8003708219bb0dc3d56867a9246d825c0d11"
+
+  head "git://git-annex.branchable.com/"
 
   bottle do
-    sha256 "fcccfd5a002c1a93e38a0d4a34580a194d9b6a2d751e0e067a62866e2bce11c3" => :yosemite
-    sha256 "b5d40262da2ce7c12d625bff79b53cf5710323283a7bf4dda1e7f0e02b02cc01" => :mavericks
-    sha256 "ef54843a91d6ead2a30b08ac23ad6fc6d993c872ec1eb8121e247299084e7ccc" => :mountain_lion
+    revision 2
+    sha256 "1a6e76b4cbaa7c2eac95a79fc9f3a948dde4381cd1b76b1a9826e3329d29104b" => :el_capitan
+    sha256 "9659d18566c349478235e04c5dcf2606a8630617bc777387889fe4f9f260c08a" => :yosemite
+    sha256 "35becaff87bf133d5f9cd154287cb0e71086ee77a287f3182b85f9ad46cd6da0" => :mavericks
   end
 
   option "with-git-union-merge", "Build the git-union-merge tool"
@@ -24,30 +27,39 @@ class GitAnnex < Formula
   depends_on "gnutls"
   depends_on "quvi"
 
-  setup_ghc_compilers
-
   def install
-    cabal_sandbox do
-      cabal_install_tools "alex", "happy", "c2hs"
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}"
-
+    install_cabal_package :using => ["alex", "happy", "c2hs"], :flags => ["Webapp"] do
       # this can be made the default behavior again once git-union-merge builds properly when bottling
       if build.with? "git-union-merge"
         system "make", "git-union-merge", "PREFIX=#{prefix}"
         bin.install "git-union-merge"
         system "make", "git-union-merge.1", "PREFIX=#{prefix}"
       end
-
-      system "make", "install-docs", "PREFIX=#{prefix}"
     end
     bin.install_symlink "git-annex" => "git-annex-shell"
-    cabal_clean_lib
   end
 
   test do
     # make sure git can find git-annex
     ENV.prepend_path "PATH", bin
-    system "git", "annex", "test"
+    # We don't want this here or it gets "caught" by git-annex.
+    rm_r "Library/Python/2.7/lib/python/site-packages/homebrew.pth"
+
+    system "git", "init"
+    system "git", "annex", "init"
+    (testpath/"Hello.txt").write "Hello!"
+    assert !File.symlink?("Hello.txt")
+    assert_match "add Hello.txt ok", shell_output("git annex add .")
+    system "git", "commit", "-a", "-m", "Initial Commit"
+    assert File.symlink?("Hello.txt")
+
+    # The steps below are necessary to ensure the directory cleanly deletes.
+    # git-annex guards files in a way that isn't entirely friendly of automatically
+    # wiping temporary directories in the way `brew test` does at end of execution.
+    system "git", "rm", "Hello.txt", "-f"
+    system "git", "commit", "-a", "-m", "Farewell!"
+    system "git", "annex", "unused"
+    assert_match "dropunused 1 ok", shell_output("git annex dropunused 1 --force")
+    system "git", "annex", "uninit"
   end
 end

@@ -1,13 +1,14 @@
 class MmCommon < Formula
   desc "C++ interfaces for GTK+ and GNOME"
   homepage "http://www.gtkmm.org"
-  url "https://download.gnome.org/sources/mm-common/0.9/mm-common-0.9.8.tar.xz"
-  sha256 "c9ab5fd3872fbe245fbc35347acf4a95063111f81d54c43df3af662dad0a03d5"
+  url "https://download.gnome.org/sources/mm-common/0.9/mm-common-0.9.10.tar.xz"
+  sha256 "16c0e2bc196b67fbc145edaecb5dbe5818386504fe5703de27002d77140fa217"
 
   bottle do
-    sha256 "b6366001d4cd06cd25556862bfaeca62db80cf07d55e8fcda8d8978e7bc85125" => :yosemite
-    sha256 "ae6f4e4449d54b47d556e0831a861b9d5d3db9ad06e99d50f87e2f41035c80a7" => :mavericks
-    sha256 "57104e0bf06f9420bc0b38f6295ddc3e0f4aa90cfef08e830a1169f2c4343841" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8f34165d9e854d0d3cf261775c53191115537c343d65771a458ed827357f05a2" => :el_capitan
+    sha256 "8b131b53a8ace806b0b6a3c75be145312377b0f25d92ea578ba07e27809fa852" => :yosemite
+    sha256 "d04a14c639c497aea15e39ab5c70fb6753d3a7983528cb8b18a7e309babedbde" => :mavericks
   end
 
   def install

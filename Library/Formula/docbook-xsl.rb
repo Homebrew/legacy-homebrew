@@ -3,13 +3,13 @@ class DocbookXsl < Formula
   homepage "http://docbook.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/docbook/docbook-xsl/1.78.1/docbook-xsl-1.78.1.tar.bz2"
   sha256 "c98f7296ab5c8ccd2e0bc07634976a37f50847df2d8a59bdb1e157664700b467"
+  revision 1
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "2d71a5e24820de3f498f632b47ecaf7af7875312" => :yosemite
-    sha1 "236f05f3d22a6972eca770fcaf19063c6b0ec3aa" => :mavericks
-    sha1 "435ee69f4fc431bff00a973a70c5f24235f5392d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8598bedecfd34bfa552d83fbc1a94236fcaab2ff06238ffdc037916dcd57faec" => :el_capitan
+    sha256 "787f44fdcab7c85bedb4cb34020f706a5ebae0c920814e96e0d959514d26f808" => :yosemite
+    sha256 "73e392097207550fe56679cf96e42ddf8ba265cf7d6438be77b2addb18a4f5d1" => :mavericks
   end
 
   depends_on "docbook"
@@ -20,6 +20,7 @@ class DocbookXsl < Formula
   end
 
   def install
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     doc_files = %w[AUTHORS BUGS COPYING NEWS README RELEASE-NOTES.txt TODO VERSION VERSION.xsl]
     xsl_files = %w[assembly catalog.xml common docsrc eclipse epub epub3 extensions
                    fo highlighting html htmlhelp images javahelp lib log manpages
@@ -34,6 +35,7 @@ class DocbookXsl < Formula
   end
 
   def post_install
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     [prefix/"docbook-xsl/catalog.xml", prefix/"docbook-xsl-ns/catalog.xml"].each do |catalog|
       system "xmlcatalog", "--noout", "--del", "file://#{catalog}", "#{etc}/xml/catalog"
       system "xmlcatalog", "--noout", "--add", "nextCatalog", "", "file://#{catalog}", "#{etc}/xml/catalog"

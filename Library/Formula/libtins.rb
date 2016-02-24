@@ -1,20 +1,21 @@
 class Libtins < Formula
   desc "C++ network packet sniffing and crafting library"
   homepage "https://libtins.github.io/"
-  url "https://github.com/mfontanini/libtins/archive/v3.1.tar.gz"
-  sha256 "20662ed75699358078aacaf36f38cbd25a9b2bd9ae2c77b7193733c917aab651"
+  url "https://github.com/mfontanini/libtins/archive/v3.3.tar.gz"
+  sha256 "7e498cb1acb12779b2e6e3404c9e3792b068fbfc905775750c521d6845815a15"
   head "https://github.com/mfontanini/libtins.git"
 
   bottle do
-    revision 1
-    sha1 "3f7a5a404ce751fe953100f8a282490dec1eed2a" => :yosemite
-    sha1 "316b0d0b1255f9aa25b257a29f1900c49ec09046" => :mavericks
-    sha1 "85fb8ad451c673cb5cc918294e563525a95824ae" => :mountain_lion
+    cellar :any
+    sha256 "3171b46d86b4eabf9b9d4e18a5338dccc0439947a21e655d8acc8f318d193c09" => :el_capitan
+    sha256 "6474be2414fe6ae78939b5b21ac7e547f67b7717c58085e1cdd5945c369b872f" => :yosemite
+    sha256 "af9051d11be6d28d95270a80e718a4651d39e32f51e7ba633e0917b410fc1e60" => :mavericks
   end
 
   option :cxx11
 
   depends_on "cmake" => :build
+  depends_on "openssl"
 
   def install
     ENV.cxx11 if build.cxx11?

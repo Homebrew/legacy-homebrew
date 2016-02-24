@@ -1,7 +1,7 @@
 class Swatchbooker < Formula
   desc "Reads color swatches from various file formats"
   homepage "http://www.selapa.net/swatchbooker/"
-  url "http://launchpad.net/swatchbooker/trunk/0.7.3/+download/SwatchBooker-0.7.3.tar.gz"
+  url "https://launchpad.net/swatchbooker/trunk/0.7.3/+download/SwatchBooker-0.7.3.tar.gz"
   sha256 "c0c8bf038156337f1eebdf6f7c99f5b7a8e8f9a332cd625c57269ddc8ba18eb7"
 
   depends_on :python

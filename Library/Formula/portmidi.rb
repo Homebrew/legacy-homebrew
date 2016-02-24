@@ -1,8 +1,15 @@
 class Portmidi < Formula
   desc "Cross-platform library for real-time MIDI I/O"
-  homepage "http://sourceforge.net/apps/trac/portmedia/wiki/portmidi"
+  homepage "https://sourceforge.net/projects/portmedia/"
   url "https://downloads.sourceforge.net/project/portmedia/portmidi/217/portmidi-src-217.zip"
   sha256 "08e9a892bd80bdb1115213fb72dc29a7bf2ff108b378180586aa65f3cfd42e0f"
+
+  bottle do
+    cellar :any
+    sha256 "ce3b0c3983572586c6b13c79e5734866a38521ba0831ab432612384e54efc028" => :el_capitan
+    sha256 "1712ec9bc43775e9596d5ff067d4705d629efab4c147bdc1fef71b6fd2843bbd" => :yosemite
+    sha256 "d528f18ba9b7334a8012074ec5de718b41f9ba6a1a671c0e3dec6fe9b8672042" => :mavericks
+  end
 
   option "with-java", "Build java based app and bindings. You need the Java SDK for this."
 
@@ -24,8 +31,8 @@ class Portmidi < Formula
     # Fix outdated SYSROOT to avoid: No rule to make target `/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/CoreAudio.framework', needed by `latency'.  Stop.
     inreplace "pm_common/CMakeLists.txt", "set(CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk CACHE", "set(CMAKE_OSX_SYSROOT /#{MacOS.sdk_path} CACHE"
 
-    system "make -f pm_mac/Makefile.osx"
-    system "make -f pm_mac/Makefile.osx install"
+    system "make", "-f", "pm_mac/Makefile.osx"
+    system "make", "-f", "pm_mac/Makefile.osx install"
 
     if build.with? "python"
       cd "pm_python" do

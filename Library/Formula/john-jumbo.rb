@@ -1,15 +1,27 @@
 class JohnJumbo < Formula
   desc "Enhanced version of john, a UNIX password cracker"
   homepage "http://www.openwall.com/john/"
-  url "http://openwall.com/john/j/john-1.8.0-jumbo-1.tar.xz"
-  sha256 "bac93d025995a051f055adbd7ce2f1975676cac6c74a6c7a3ee4cfdd9c160923"
-  version "1.8.0"
+
+  stable do
+    url "http://openwall.com/john/j/john-1.8.0-jumbo-1.tar.xz"
+    sha256 "bac93d025995a051f055adbd7ce2f1975676cac6c74a6c7a3ee4cfdd9c160923"
+    version "1.8.0"
+
+    # Previously john-jumbo ignored the value of $HOME; fixed
+    # upstream.  See
+    # https://github.com/magnumripper/JohnTheRipper/issues/1901
+    patch do
+      url "https://github.com/magnumripper/JohnTheRipper/commit/d29ad8aabaa9726eb08f440001c37611fa072e0c.diff"
+      sha256 "de5c09397f3666d0592e0f418f26a78a6624c5a947347ec2440e141c8915ae82"
+    end
+  end
 
   bottle do
-    revision 3
-    sha256 "b5d13ea393e16a474bcd69d0d7fd14038effac04d423b6041d9dbb76dd6325ae" => :yosemite
-    sha256 "d8303c4412f7354e2778ef58ed8eb366d9d474491b255ad5f32d27946df174e6" => :mavericks
-    sha256 "c3a9c980f5725ec08854cdce75b91af58bb4f61c8a30e2d700de45e0a5b9ff3c" => :mountain_lion
+    cellar :any
+    revision 6
+    sha256 "a87bf02d882413393f3f3759ab0fa6a171438609d101c7c9bc7772fe69e2ab47" => :el_capitan
+    sha256 "cf9c82f416a4eb3aad7d4202b21105988d346be8d8df262ea4ca18e683475d32" => :yosemite
+    sha256 "b36f66b0469b5c6cde95f780671db5b32e4e4dd7c16c4e7e591043bfdef2b65c" => :mavericks
   end
 
   conflicts_with "john", :because => "both install the same binaries"
@@ -65,7 +77,7 @@ class JohnJumbo < Formula
 
   test do
     touch "john2.pot"
-    system "echo dave:`printf secret | /usr/bin/openssl md5` > test"
+    (testpath/"test").write "dave:#{`printf secret | /usr/bin/openssl md5`}"
     assert_match(/secret/, shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test"))
     assert_match(/secret/, (testpath/"john2.pot").read)
   end

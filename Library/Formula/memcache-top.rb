@@ -5,6 +5,8 @@ class MemcacheTop < Formula
   version "0.6"
   sha256 "d5f896a9e46a92988b782e340416312cc480261ce8a5818db45ccd0da8a0f22a"
 
+  bottle :unneeded
+
   def install
     bin.install "memcache-top-v#{version}" => "memcache-top"
   end

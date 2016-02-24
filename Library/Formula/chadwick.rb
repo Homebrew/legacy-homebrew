@@ -1,14 +1,15 @@
 class Chadwick < Formula
-  desc "Chadwick tools for parsing Retrosheet MLB play-by-play files."
+  desc "Tools for parsing Retrosheet MLB play-by-play files."
   homepage "http://chadwick.sourceforge.net/doc/index.html"
   url "https://downloads.sourceforge.net/project/chadwick/chadwick-0.6/chadwick-0.6.4/chadwick-0.6.4.tar.gz"
   sha256 "2fcc44b4110c3aebf8b9f3daaccf22ccaba3760d3d878e65d38b86127b913559"
 
   bottle do
     cellar :any
-    sha256 "e8e371df4cea6f75347381c35051fe784d20ddda26a4d0e33e606aa97cbcf41f" => :yosemite
-    sha256 "259937aa138f1a8ed2a3d86b934de8bbab7f33ec409eb17e2554fa59fcd3c8c0" => :mavericks
-    sha256 "fa568f6ce7e241f3f0b65920b4cc47c5879622b9f18e2521643799bf973fe86e" => :mountain_lion
+    revision 1
+    sha256 "cb7f68f0b7e1c858eb6f33018ab811f6c1a629ca6f59028cd0adb88086addc12" => :el_capitan
+    sha256 "ac3cc02a4bf29fa948483fe6362ac51e475331904b966229da43c98b039f36da" => :yosemite
+    sha256 "0e550047558d9108dc2c01b279ea00fbe68b3c0e103349e24b49bfd1c57d8436" => :mavericks
   end
 
   resource "event_files" do
@@ -25,7 +26,7 @@ class Chadwick < Formula
   test do
     resource("event_files").stage testpath
     output = shell_output("#{bin}/cwbox -i ATL201404080 -y 2014 2014ATL.EVN")
-    assert output.include?("Game of 4/8/2014 -- New York at Atlanta")
+    assert_match "Game of 4/8/2014 -- New York at Atlanta", output
     assert_equal 0, $?.exitstatus
   end
 end

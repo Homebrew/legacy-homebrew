@@ -1,22 +1,23 @@
 class Ccextractor < Formula
   desc "Free, GPL licensed closed caption tool"
   homepage "http://ccextractor.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/ccextractor/ccextractor/0.75/ccextractor.src.0.75.zip"
-  sha256 "fb6ed33d516b9198e1b625fec4fce99f079e28f1c556eff4552f53c92ecc9cca"
+  url "https://downloads.sourceforge.net/project/ccextractor/ccextractor/0.78/ccextractor.src.0.78.zip"
+  sha256 "95c40f788c803c1932f5678d10b4b63e6650290c35fa2328882af551ec6d3fc9"
   head "https://github.com/ccextractor/ccextractor.git"
-  revision 1
+
+  bottle do
+    cellar :any
+    revision 1
+    sha256 "08ca272b7c1ab7ee1945654a896282ed6c5f19651bbc5dc02e6ad7d71039456c" => :el_capitan
+    sha256 "10ad588c435ec6b4a0c1f6f8dea8603024100f404727b30c01e939fdc16f88ad" => :yosemite
+    sha256 "f353febd41be9199e791aedf219fb15d506a10928a86782c7afeab766d470a2f" => :mavericks
+  end
 
   depends_on "cmake" => :build
   depends_on "libpng"
 
-  bottle do
-    cellar :any
-    sha1 "2bd02af2ba9c80f8cdf6871eaaf2daac5fdbf4ae" => :yosemite
-    sha1 "3a8e49c088e63b8d3b20e7819265c59d35b970cb" => :mavericks
-    sha1 "1d77c07e0c5477c813219b4fd44e8479e720ce92" => :mountain_lion
-  end
-
   def install
+    ENV.append "LDFLAGS", "-lpng"
     system "cmake", "src", *std_cmake_args
     system "make"
     system "make", "install"
@@ -25,7 +26,7 @@ class Ccextractor < Formula
 
   test do
     touch testpath/"test"
-    system "ccextractor", "test"
-    assert File.exist? "test.srt"
+    system bin/"ccextractor", "test"
+    assert File.exist?("test.srt")
   end
 end

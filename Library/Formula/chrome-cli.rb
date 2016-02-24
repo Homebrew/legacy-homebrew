@@ -6,11 +6,12 @@ class ChromeCli < Formula
   head "https://github.com/prasmussen/chrome-cli.git"
 
   bottle do
-    cellar :any
-    revision 2
-    sha256 "38d45913effcf3f48d14c5455e006aa99ec36f89ee38da8155a648826a60064f" => :yosemite
-    sha256 "7cc270cf0c223b9dfa27c3498fa863e5309302fc6dbbc00f36c1c128904a9b5c" => :mavericks
-    sha256 "329d94b79632a9750ec875bf6a401575d215f271c2f8f62fa88a0f01cb8e036c" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 4
+    sha256 "9bfb2379f8697da91606ea8b6e7c63240e6d20b184d5cdf72c4c7e63a959be16" => :el_capitan
+    sha256 "05deec5813a4979652a645737a7ed7868878934f77ee5c4cc27140e11811b2d1" => :yosemite
+    sha256 "4b40b52e047b6b8db966a75155d94d5c42d293c5b8058d1e887eb294e96129c9" => :mavericks
+    sha256 "ccdfa38c03563f671508958ec1be43ef47fa368e3bb7c78743964a809409acba" => :mountain_lion
   end
 
   depends_on :xcode => :build
@@ -22,11 +23,18 @@ class ChromeCli < Formula
     bin.install "build/Release/chrome-cli"
 
     # Canary builds; see:
-    # https://github.com/prasmussen/chrome-cli/issues/15#issuecomment-35202217
+    # https://github.com/prasmussen/chrome-cli/issues/15
     rm_rf "build"
     inreplace "chrome-cli/App.m", "com.google.Chrome", "com.google.Chrome.canary"
     xcodebuild "SDKROOT=", "SYMROOT=build"
     bin.install "build/Release/chrome-cli" => "chrome-canary-cli"
+
+    # Chromium builds; see:
+    # https://github.com/prasmussen/chrome-cli/issues/31
+    rm_rf "build"
+    inreplace "chrome-cli/App.m", "com.google.Chrome.canary", "org.Chromium.chromium"
+    xcodebuild "SDKROOT=", "SYMROOT=build"
+    bin.install "build/Release/chrome-cli" => "chromium-cli"
   end
 
   test do

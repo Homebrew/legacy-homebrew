@@ -9,9 +9,9 @@ class Liblacewing < Formula
   bottle do
     cellar :any
     revision 2
-    sha1 "9b3c6627a900002583cd2d179997f507c23e2967" => :yosemite
-    sha1 "13c32999ea5cdb9e5c231cd3854d35ebb5bb82d2" => :mavericks
-    sha1 "dd1d9ee994fe2a4114063a382712c341591da3f5" => :mountain_lion
+    sha256 "46eef4fac2c25cae19b7500fee44b50851d753aeacc0d5f23dd9d54525a6adde" => :yosemite
+    sha256 "5ab6eb5fc3abee7e8b2027838c34ec689165694d60c4126e2ed71653e92b40ca" => :mavericks
+    sha256 "0302988d6edbdd9d3235dc990bb7625a207526c2fed3dc55091356be7a4332e8" => :mountain_lion
   end
 
   depends_on "openssl"

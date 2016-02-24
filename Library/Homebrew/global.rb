@@ -3,6 +3,7 @@ require "extend/fileutils"
 require "extend/pathname"
 require "extend/ARGV"
 require "extend/string"
+require "extend/enumerable"
 require "os"
 require "utils"
 require "exceptions"
@@ -25,15 +26,6 @@ else
 end
 RUBY_BIN = RUBY_PATH.dirname
 
-if RUBY_PLATFORM =~ /darwin/
-  MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-  MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/]
-  OS_VERSION = "OS X #{MACOS_FULL_VERSION}"
-else
-  MACOS_FULL_VERSION = MACOS_VERSION = "0"
-  OS_VERSION = RUBY_PLATFORM
-end
-
 HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
 
@@ -49,12 +41,14 @@ module Homebrew
   alias_method :failed?, :failed
 end
 
+HOMEBREW_PULL_API_REGEX = %r{https://api\.github\.com/repos/([\w-]+)/homebrew(-[\w-]+)?/pulls/(\d+)}
 HOMEBREW_PULL_OR_COMMIT_URL_REGEX = %r[https://github\.com/([\w-]+)/homebrew(-[\w-]+)?/(?:pull/(\d+)|commit/[0-9a-fA-F]{4,40})]
 
 require "compat" unless ARGV.include?("--no-compat") || ENV["HOMEBREW_NO_COMPAT"]
 
 ORIGINAL_PATHS = ENV["PATH"].split(File::PATH_SEPARATOR).map { |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
+# TODO: remove this as soon as it's removed from commands.rb.
 HOMEBREW_INTERNAL_COMMAND_ALIASES = {
   "ls" => "list",
   "homepage" => "home",

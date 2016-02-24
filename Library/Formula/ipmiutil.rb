@@ -6,9 +6,9 @@ class Ipmiutil < Formula
 
   bottle do
     cellar :any
-    sha1 "463fb38c4ac02170177e043ecddbd0b598bce163" => :yosemite
-    sha1 "91da6fd51706e874f8a72249339eb3a7bd22adba" => :mavericks
-    sha1 "15a3e15c010478e83bf1aa38f9369329f417220e" => :mountain_lion
+    sha256 "9fe09553dea21a6ea088bf0d571400da32b9826ab07263e6f9f618c34c2980b4" => :yosemite
+    sha256 "b1372295d77f7d211372bb496c856778369397fea35db58aba7262ad157e191e" => :mavericks
+    sha256 "debbe1e403702b0ee6178ca9674f7c05c4db8f1e68256152eb1c91482eaeda2d" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -17,6 +17,8 @@ class Ipmiutil < Formula
   # support. Patch submitted upstream in
   # http://sourceforge.net/p/ipmiutil/mailman/message/33373858/
   patch :DATA
+
+  conflicts_with "renameutils", :because => "both install `icmd` binaries"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

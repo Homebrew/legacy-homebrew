@@ -1,30 +1,29 @@
 class Golo < Formula
   desc "Lightweight dynamic language for the JVM"
   homepage "http://golo-lang.org"
-  url "https://repo1.maven.org/maven2/org/golo-lang/golo/2.1.0/golo-2.1.0-distribution.tar.gz"
-  sha256 "59c7324b7eac88dfe2cb9612468cf5639ae0b84e44319b2ee617e0e054eed422"
+  url "https://bintray.com/artifact/download/golo-lang/downloads/golo-3.0.0-incubation.zip"
+  sha256 "e7d350148a3a7492348f0214679b282858ced58e4063a17bbf53f9ec2ae5f288"
 
   devel do
-    url "https://www.eclipse.org/downloads/download.php?file=/golo/golo-3.0.0-incubation-M1-distribution.zip&r=1"
-    sha256 "fd92e70e11a7c4dccd160b1236a0981cfa3cb22d8af190d177c5c4e909e020ae"
-    version "3.0.0-incubation-M1"
-    depends_on :java => "1.8+"
+    url "https://bintray.com/artifact/download/golo-lang/downloads/golo-3.1.0-incubation-M1.zip"
+    sha256 "f0a58d4602c417c0351759eaa8787e757c5dc095604a07887c1179c007c8304a"
+    version "3.1.0-incubation-M1"
   end
 
   head do
     url "https://github.com/eclipse/golo-lang.git"
-    depends_on "maven" => :build
-    depends_on :java => "1.8+"
   end
 
-  depends_on :java => "1.7+"
+  bottle :unneeded
+
+  depends_on :java => "1.8+"
 
   def install
     if build.head?
-      rake "special:bootstrap"
-      libexec.install %w[target/appassembler/bin target/appassembler/lib]
+      system "./gradlew", "installDist"
+      libexec.install %w[build/install/golo/bin build/install/golo/docs build/install/golo/lib]
     else
-      libexec.install %w[bin doc lib]
+      libexec.install %w[bin docs lib]
     end
     libexec.install %w[share samples]
 

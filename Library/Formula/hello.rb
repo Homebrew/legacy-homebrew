@@ -6,10 +6,12 @@ class Hello < Formula
 
   bottle do
     cellar :any
-    sha1 "91dbdb51264005a4b5be16dc34726c6ddd358e59" => :yosemite
-    sha1 "ce8368b741ae6c8ceda6eb8b570864cc4e9f4c45" => :mavericks
-    sha1 "31f4537c7c3d231bf48fa50a14c1d82a958066c4" => :mountain_lion
+    sha256 "f81a305402e8f8b6cf11a17dac81f604b6f48d940909886a6733cf4f6a64c05f" => :yosemite
+    sha256 "c80495cb6d1ad8f2c3a64c22c9dcee9d0117ca25fa6426f20a6acca275cd6c56" => :mavericks
+    sha256 "c3468e676f2c9cb511e537774424299342ffd52740e252e515bddae6d9e79df3" => :mountain_lion
   end
+
+  conflicts_with "camlistore", :because => "both install `hello` binaries"
 
   def install
     system "./configure", "--disable-debug",

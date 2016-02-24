@@ -1,15 +1,16 @@
 class Blockhash < Formula
   desc "Perceptual image hash calculation tool"
   homepage "http://blockhash.io/"
-  head "https://github.com/commonsmachinery/blockhash.git"
   url "https://github.com/commonsmachinery/blockhash/archive/0.1.tar.gz"
   sha256 "aef300f39be2cbc1b508af15d7ddb5b851b671b27680d8b7ab1d043cc0369893"
+  head "https://github.com/commonsmachinery/blockhash.git"
 
   bottle do
     cellar :any
-    sha256 "73521bf91681f57dc01b0b5727f14e2ff36f0b1f0b3220661beaf18c62987e06" => :yosemite
-    sha256 "2760541166d22bacba3ebb6692523cdec601e6a257584a8bb56be83a19d73d2f" => :mavericks
-    sha256 "d975cead300bea505d86ac0478baa012f18b103d9250826feeab287e1c3a2b0a" => :mountain_lion
+    revision 1
+    sha256 "84a9ec978c225087a1699cc53490c18ed8447e115968bf66c12beea8e501e107" => :el_capitan
+    sha256 "cbd13eb4fd577a7bd20fae814ae5a303fa7c4dd17a382c9a74acbed6977b676f" => :yosemite
+    sha256 "3ca5aeb1b8324803f6f40ee08b2acbb1cb8a57328c8fcb3c776c8192d01beb25" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -33,6 +34,6 @@ class Blockhash < Formula
     # for now
     # https://github.com/commonsmachinery/blockhash/pull/9
     result = pipe_output("#{bin}/blockhash #{testpath}/clipper_ship.jpg", nil, nil)
-    assert result.include? hash
+    assert_match hash, result
   end
 end

@@ -1,14 +1,14 @@
 class Libre < Formula
   desc "Toolkit library for asynchronous network I/O with protocol stacks"
   homepage "http://www.creytiv.com"
-  url "http://www.creytiv.com/pub/re-0.4.12.tar.gz"
-  sha256 "0d44028ce9c156b2ca34ec7ead8f44a59d3dca57b048edb3410d94cc8b634df2"
+  url "http://www.creytiv.com/pub/re-0.4.14.tar.gz"
+  sha256 "9eb507e6358725d2cff69e3df169a572a1ab7b331131c78b02de6a79ce3e9b7a"
 
   bottle do
     cellar :any
-    sha256 "cf02e7c51634efbda62471097647b0c26a07fa00ca432bf4eaa57d4a4fe56711" => :yosemite
-    sha256 "46562eff71fcd8521112baa61231c45e7543af440f546479bc88bc8a0e63d304" => :mavericks
-    sha256 "de6f93149926c6eeda4b10c19a555dfc186fff9cdbd9bc356084589e18553e23" => :mountain_lion
+    sha256 "d7eef5f22d8ec76b95d010dfed8a08cfad74fcf0674324d0b83306ff7d60317d" => :el_capitan
+    sha256 "949957e3b098a6554dc60da2ff79242f8a54c19a9c4c14e307999b61a05fb1ba" => :yosemite
+    sha256 "ae8ad0853256ee12f73ea78d5043e74c3866a7c5f5e93916b34f9414fe722220" => :mavericks
   end
 
   depends_on "openssl"

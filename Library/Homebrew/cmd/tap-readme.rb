@@ -4,7 +4,7 @@ module Homebrew
     raise "A name is required" if name.nil?
 
     titleized_name = name.dup
-    titleized_name[0] = titleized_name[0].upcase
+    titleized_name[0..0] = titleized_name[0..0].upcase
 
     template = <<-EOS.undent
     # Homebrew #{titleized_name}
@@ -25,7 +25,7 @@ module Homebrew
     EOS
 
     puts template if ARGV.verbose?
-    path = Pathname.new("./README.md")
+    path = HOMEBREW_LIBRARY/"Taps/homebrew/homebrew-#{name}/README.md"
     raise "#{path} already exists" if path.exist?
     path.write template
   end

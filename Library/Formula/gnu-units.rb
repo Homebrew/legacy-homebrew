@@ -6,10 +6,10 @@ class GnuUnits < Formula
   sha256 "2b34fa70c9319956135b990afc1ac99d411ba5b291b5d29e4a89fdf052944e9a"
 
   bottle do
-    revision 1
-    sha256 "0f5e5b0454bdd6deb29457017d5fbd5b61b84f51a9aba3be9d55f835f1792cbc" => :yosemite
-    sha256 "c5f37a10a445c5c71a501d2680f2b00c49610a78e79619765b82400acd841afa" => :mavericks
-    sha256 "f2c7e44bcf0dfe0be3da8b09cbfaf979793e3a4245ce7c0969bb45b7e0d881e2" => :mountain_lion
+    revision 2
+    sha256 "bd921a8062e1975b950e1cd5997972b8e71c04d5b46327bee6d13e09d3eb3c48" => :el_capitan
+    sha256 "862fc7428003aa51b056f37399084931306b48db105f3127375e0e75b9c0ff3e" => :yosemite
+    sha256 "42fd2183ed7112794b546ac6115fcb2a7204af363d8a8685d40fad704a54dc5a" => :mavericks
   end
 
   deprecated_option "default-names" => "with-default-names"
@@ -28,6 +28,9 @@ class GnuUnits < Formula
   patch :DATA
 
   def install
+    # OS X does not provide a `python2` executable
+    inreplace "units_cur", "#!/usr/bin/python2", "#!/usr/bin/env python"
+
     args = ["--prefix=#{prefix}"]
     args << "--program-prefix=g" if build.without? "default-names"
 

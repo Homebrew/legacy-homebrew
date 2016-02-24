@@ -7,21 +7,24 @@ class Portaudio < Formula
 
   bottle do
     cellar :any
-    sha1 "dd0697d98af452ef4508c80bb1148f2e8df21c7c" => :mavericks
-    sha1 "97a88511e3068a00350867b67cf272b54f118a85" => :mountain_lion
-    sha1 "b9ea51a124685cb8b872c7ec9f0cdc02bbdee8de" => :lion
+    revision 1
+    sha256 "78d99a6512f411e12aede3e62ac9e1cceb4fc8d182073d3e2a6f60e65c387e2f" => :el_capitan
+    sha256 "e52067f235b82d537b44b33048eaa43381c5a4d4185da999d583812f6e4f9ff9" => :yosemite
+    sha256 "c032773623fd2cb49b736c6978fa7a765468d8a804f3f8618ecda5fcdd198499" => :mavericks
+    sha256 "1386972e0632b4ebe2b2770f1ade4c5921c7726fb7fa70f764f5fe09df085c5e" => :mountain_lion
   end
 
-  depends_on "pkg-config" => :build
-
   option :universal
+
+  depends_on "pkg-config" => :build
 
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--enable-mac-universal=#{build.universal? ? "yes" : "no"}"
+                          "--enable-mac-universal=#{build.universal? ? "yes" : "no"}",
+                          "--enable-cxx"
     system "make", "install"
 
     # Need 'pa_mac_core.h' to compile PyAudio

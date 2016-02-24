@@ -5,10 +5,11 @@ class Cscope < Formula
   sha256 "eb736ac40d5abebe8fa46820c7a8eccc8a17966a9a5f70375367b77177874d1e"
 
   bottle do
-    cellar :any
-    sha1 "75d73fea51fa5e4072134848a07c7c2f49308e35" => :yosemite
-    sha1 "64cb7e095386c2119155b0be51b242860681e2ab" => :mavericks
-    sha1 "bbccd86980669360c5085429a462166d8f238a15" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "10c4cd802d68e0c552a99e86b0609b882664583e39b9c3ff44591832e75277e2" => :el_capitan
+    sha256 "5625a04292cb85ee5ad70417db976aeb167b7b55c011f218d43febd2ee72b5c2" => :yosemite
+    sha256 "c456f77835232efe5e3f9ed52885175266a039fbbc250afd9b6e646292c4b7d7" => :mavericks
+    sha256 "80dbf0043c44a13d525b06096246e6ce493c1171d4b721cfa3828ac446e51831" => :mountain_lion
   end
 
   # Patch from http://bugs.gentoo.org/show_bug.cgi?ctype=html&id=111621

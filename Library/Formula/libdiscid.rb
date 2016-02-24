@@ -7,9 +7,9 @@ class Libdiscid < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "9ee7ba15bd468b30cb205a3480d2e3f3fd5da9c9" => :yosemite
-    sha1 "8713a0550c2410728a2f9b7f127339dd223ad63c" => :mavericks
-    sha1 "7147e8ff42ddd2f44aa93e6eb06497e2d60c4fb4" => :mountain_lion
+    sha256 "8fb4093273d7b74311c16574a8fe8979dad11b81e25e4ae261cd429e1078d873" => :yosemite
+    sha256 "1a812cec01d686ebceaabf3548715c767158a88e7ae245a9d44d14e2d632eab8" => :mavericks
+    sha256 "c6a182d34a50257902bf122b7cd48f4e5bab32dbf03a1d59c7769330d9eec7e5" => :mountain_lion
   end
 
   def install

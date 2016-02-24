@@ -1,22 +1,31 @@
 class GambitScheme < Formula
   desc "Complete, portable implementation of Scheme"
   homepage "http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page"
-  url "http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_3.tgz"
-  sha256 "59c4c62f2cfaf698b54a862e7af9c1b3e4cc27e46d386f31c66e00fed4701777"
+  url "https://www.iro.umontreal.ca/~gambit/download/gambit/v4.8/source/gambit-v4_8_4.tgz"
+  sha256 "b3153649440bde0f613c09b5038e2cc887784277e078cdea3e6703e4a582a0bf"
 
   bottle do
-    sha1 "4f04f85300495e2c3fad49206b57605d010ad1f7" => :mavericks
-    sha1 "57c650e3539e41e084f29adf26160e920e3a068e" => :mountain_lion
-    sha1 "f4002601e8f904d064909b5df30479a26c916f8d" => :lion
+    sha256 "9a71e8cff4ec71eedeebbe5fd7aaa44def0c59674f31aee5aa0cfee8542f3315" => :el_capitan
+    sha256 "6c1c2cd0f268d2888c3827b7296c560bdaafb095a25bb360e288ebf9eb22975d" => :yosemite
+    sha256 "d2bf0e670cf92cfb968b77aaba4c8d543f9d81fcf15f70a1aa838ef7c4cd4abc" => :mavericks
   end
 
   conflicts_with "ghostscript", :because => "both install `gsc` binaries"
   conflicts_with "scheme48", :because => "both install `scheme-r5rs` binaries"
 
-  option "with-check", 'Execute "make check" before installing'
-  option "enable-shared", "Build Gambit Scheme runtime as shared library"
+  option "with-test", 'Execute "make check" before installing'
+  option "with-shared", "Build Gambit Scheme runtime as shared library"
+
+  deprecated_option "with-check" => "with-test"
+  deprecated_option "enable-shared" => "with-shared"
 
   fails_with :llvm
+  fails_with :clang
+  # According to the docs, gambit-scheme requires absurd amounts of RAM
+  # to build using GCC 4.2 or 4.3; see
+  # https://github.com/mistydemeo/tigerbrew/issues/389
+  fails_with :gcc
+  fails_with :gcc => "4.3"
 
   def install
     args = %W[
@@ -25,30 +34,16 @@ class GambitScheme < Formula
       --libdir=#{lib}/gambit-c
       --infodir=#{info}
       --docdir=#{doc}
+      --enable-single-host
     ]
 
-    # Recommended to improve the execution speed and compactness
-    # of the generated executables. Increases compilation times.
-    # Don't enable this when using clang, per configure warning.
-    args << "--enable-single-host" unless ENV.compiler == :clang
-
-    args << "--enable-shared" if build.include? "enable-shared"
-
-    if ENV.compiler == :clang
-      opoo <<-EOS.undent
-        Gambit will build with Clang, however the build may take longer and
-        produce substandard binaries. If you have GCC, you can get a faster
-        build and faster execution with:
-          brew install gambit-scheme --cc=gcc-4.2 # or 4.7, 4.8, etc.
-      EOS
-    end
+    args << "--enable-shared" if build.with? "shared"
 
     system "./configure", *args
-    system "make check" if build.with? "check"
+    system "make", "check" if build.with? "test"
 
-    ENV.j1
     system "make"
-    system "make", "install"
+    system "make", "install", "emacsdir=#{share}/emacs/site-lisp/#{name}"
   end
 
   test do

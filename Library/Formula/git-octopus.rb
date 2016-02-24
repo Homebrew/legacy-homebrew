@@ -1,24 +1,33 @@
 class GitOctopus < Formula
   desc "Extends git-merge with branch naming patterns"
   homepage "https://github.com/lesfurets/git-octopus"
-  url "https://github.com/lesfurets/git-octopus/archive/v1.0.tar.gz"
-  sha256 "c83ab4aa3d8ec770f4f05619239a7852c871216a108b4e287c13efb10e3db5db"
-
-  head "https://github.com/lesfurets/git-octopus.git"
+  url "https://github.com/lesfurets/git-octopus/archive/v1.2.tar.gz"
+  sha256 "723b2b380f611f41b777cec3689afe441f52482a2fd7dcb73ae2555102bcd1cf"
 
   bottle do
-    cellar :any
-    sha256 "be33fe6c653675fb777b830ba7b5ba5d41986e87bcd2d79d5887240862c287a9" => :yosemite
-    sha256 "8fa36a0ea95851074f36b0375f0138293f7c3aa0fc6f819a14987e4c1dc520ee" => :mavericks
-    sha256 "7c953c0d60e50045229f63d9efecb9a9b25791f336efde09b91026067102682e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "49b09ecce43923827192367c44f07ecf7c5c395c3369e6adb80852ef6d15fc80" => :el_capitan
+    sha256 "ef168793e40ba5728986c3360fcfe94a4380b397f512c8fc1a059e18a77e654e" => :yosemite
+    sha256 "652cf404f04177114e05e9b7b8d36f2018beed92ba8877d598023e259604e4e9" => :mavericks
   end
 
   def install
-    bin.install "bin/git-octopus"
-    man1.install "man/man1/git-octopus.1"
+    system "make", "build"
+    bin.install "bin/git-octopus", "bin/git-conflict", "bin/git-apply-conflict-resolution"
+    man1.install "doc/git-octopus.1", "doc/git-conflict.1"
   end
 
   test do
-    system "#{bin}/git-octopus"
+    (testpath/".gitconfig").write <<-EOS.undent
+      [user]
+        name = Real Person
+        email = notacat@hotmail.cat
+      EOS
+    system "git", "init"
+    touch "homebrew"
+    system "git", "add", "."
+    system "git", "commit", "--message", "brewing"
+
+    assert_equal "", shell_output("#{bin}/git-octopus 2>&1", 0).strip
   end
 end

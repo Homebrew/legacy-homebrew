@@ -3,11 +3,11 @@ class RbenvDefaultGems < Formula
   homepage "https://github.com/sstephenson/rbenv-default-gems"
   url "https://github.com/sstephenson/rbenv-default-gems/archive/v1.0.0.tar.gz"
   sha256 "8271d58168ab10f0ace285dc4c394e2de8f2d1ccc24032e6ed5924f38dc24822"
-
   head "https://github.com/sstephenson/rbenv-default-gems.git"
 
-  depends_on "rbenv"
-  depends_on "ruby-build"
+  bottle :unneeded
+
+  depends_on :rbenv
 
   # Upstream patch: https://github.com/sstephenson/rbenv-default-gems/pull/3
   patch do
@@ -20,6 +20,6 @@ class RbenvDefaultGems < Formula
   end
 
   test do
-    assert shell_output("rbenv hooks install").include? "default-gems.bash"
+    assert_match "default-gems.bash", shell_output("rbenv hooks install")
   end
 end

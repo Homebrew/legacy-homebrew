@@ -6,7 +6,8 @@ class Dcal < Formula
   sha256 "d637fd27fc8d2a3c567b215fc05ee0fd9d88ba9fc5ddd5f0b07af3b8889dcba7"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "4135558d3a30c78364170daf22dc36f3c22a14b2574754edc27d2483e711b948" => :el_capitan
     sha256 "f91b680d549342c293d0decae1fcd17d872951cedc20c329dcdd13a7478ed5fa" => :yosemite
     sha256 "b5a277ca3a307bb47b137a76e2c8ee0fc1420b09819f0055b1010ef4ce5bc7ba" => :mavericks
     sha256 "7288e5eb42261ff5912b985eb63c438aa03d89a5f09eea676b3088bc92c1dd6c" => :mountain_lion

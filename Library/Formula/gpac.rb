@@ -9,16 +9,15 @@
 class Gpac < Formula
   desc "Multimedia framework for research and academic purposes"
   homepage "https://gpac.wp.mines-telecom.fr/"
+  url "https://github.com/gpac/gpac/archive/v0.6.0.tar.gz"
+  sha256 "b50a772ff55b5fa3680f50a06127262f43dcedf75143788101880e6f2c4e25b8"
+  revision 1
   head "https://github.com/gpac/gpac.git"
 
-  stable do
-    url "https://github.com/gpac/gpac/archive/v0.5.2.tar.gz"
-    sha256 "14de020482fc0452240f368564baa95a71b729980e4f36d94dd75c43ac4d9d5c"
-  end
   bottle do
-    sha256 "3feeb23cfe274e9e8e42cc1589ccd45a4b9c9006444bfce9205454c242abe205" => :yosemite
-    sha256 "495e9d51129841da9b135a8112c34ab831f01dfffb5f18db44e59b83813f16c0" => :mavericks
-    sha256 "b6291bcf89fc7ea7232e060ddebc3b5c561009a0923ad54b40ab991875c2fa57" => :mountain_lion
+    sha256 "d711ffb2ba85dc62a67dbedf5bd1abb3c9cbc4bf55fabb968130fbf5f4fb4ccb" => :el_capitan
+    sha256 "0be1701105c9c72b08fc3aad37792c43a53c9e4287cd53a88944ae55b15baaf2" => :yosemite
+    sha256 "97bda5a3f31d4341eb14c0f0bc7b5c54ddda5f086507e986ab4e29c7f8f5abff" => :mavericks
   end
 
   depends_on "openssl"
@@ -39,17 +38,7 @@ class Gpac < Formula
     args = ["--disable-wx",
             "--prefix=#{prefix}",
             "--mandir=#{man}"]
-
-    if build.with? "x11"
-      # gpac build system is barely functional
-      args << "--extra-cflags=-I#{MacOS::X11.include}"
-      # Force detection of X libs on 64-bit kernel
-      args << "--extra-ldflags=-L#{MacOS::X11.lib}"
-    else
-      # https://github.com/gpac/gpac/issues/166
-      inreplace "configure", "has_x11=\"yes\"", "has_x11=\"no\""
-      args << "--disable-x11-shm" << "--disable-x11-xv"
-    end
+    args << "--disable-x11" if build.without? "x11"
 
     system "./configure", *args
     system "make"
@@ -57,6 +46,7 @@ class Gpac < Formula
   end
 
   test do
-    system "MP4Box", "-h"
+    system "#{bin}/MP4Box", "-add", test_fixtures("test.mp3"), "#{testpath}/out.mp4"
+    File.exist? "#{testpath}/out.mp4"
   end
 end

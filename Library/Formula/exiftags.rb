@@ -6,9 +6,9 @@ class Exiftags < Formula
 
   bottle do
     cellar :any
-    sha1 "f798eb88c317e58eb1d37c1da9f4755d9a6f478c" => :yosemite
-    sha1 "5dbb67622e47f1b1cdc3e9810ad84dc2d4746ae3" => :mavericks
-    sha1 "a427dbfca42716ba54f26d8f2c9d5cbe543dc8bc" => :mountain_lion
+    sha256 "23a94f2c2694d52ef393e751e23a01c4ed23c0ca7004b6597546047310e73f53" => :yosemite
+    sha256 "2ca339b45b3ea518ca5b39262b4c68cc54187a2bfca7d7a52eded5685c81b3c9" => :mavericks
+    sha256 "d5c5f565b2b7f0d6f7161801680095c6fefb3c7234cb9a9046a263dd8d983cff" => :mountain_lion
   end
 
   def install

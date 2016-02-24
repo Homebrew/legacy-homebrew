@@ -1,15 +1,15 @@
 class Nspr < Formula
   desc "Platform-neutral API for system-level and libc-like functions"
   homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
-  url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.8/src/nspr-4.10.8.tar.gz"
-  sha256 "507ea57c525c0c524dae4857a642b4ef5c9d795518754c7f83422d22fe544a15"
+  url "https://archive.mozilla.org/pub/mozilla.org/nspr/releases/v4.11/src/nspr-4.11.tar.gz"
+  sha256 "cb320a9eee7028275ac0fce7adc39dee36f14f02fd8432fce1b7e1aa5e3685c2"
   revision 1
 
   bottle do
     cellar :any
-    sha256 "9860a936f88a0f57f05240e94daf678ddb8e014c0240e269da78f9207ef41b24" => :yosemite
-    sha256 "e8ad4221a5a0a1769547f2c8bc6b45f57ae2591896ffde08e6d6ec2a6018fcf7" => :mavericks
-    sha256 "ad1fb6a460c2f053cd9f6dce964a94354133b546caf7d9def37512c10f833a33" => :mountain_lion
+    sha256 "0b0e0e80b60b61391b0dade4a94399b58d3ec820a5b1f077fad8222c017c6200" => :el_capitan
+    sha256 "03830bf4a0b8f1df0dde98e08c502e6116f853f458174d259e398f57ba0565a8" => :yosemite
+    sha256 "b6e2ed3adab2e3f96942c00ad7b3bd00e56fd2fb5250234255b6fcc492ce4288" => :mavericks
   end
 
   keg_only <<-EOS.undent
@@ -31,7 +31,7 @@ class Nspr < Formula
         --disable-debug
         --prefix=#{prefix}
         --enable-strip
-        --enable-pthreads
+        --with-pthreads
         --enable-ipv6
         --enable-macos-target=#{MacOS.version}
       ]

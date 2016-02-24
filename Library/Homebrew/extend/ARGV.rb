@@ -13,7 +13,13 @@ module HomebrewArgvExtension
 
   def formulae
     require "formula"
-    @formulae ||= (downcased_unique_named - casks).map { |name| Formulary.factory(name, spec) }
+    @formulae ||= (downcased_unique_named - casks).map do |name|
+      if name.include?("/") || File.exist?(name)
+        Formulary.factory(name, spec)
+      else
+        Formulary.find_with_priority(name, spec)
+      end
+    end
   end
 
   def resolved_formulae
@@ -27,7 +33,8 @@ module HomebrewArgvExtension
         end
         f
       else
-        Formulary.from_rack(HOMEBREW_CELLAR/name, spec(default=nil))
+        rack = Formulary.to_rack(name)
+        Formulary.from_rack(rack, spec(default=nil))
       end
     end
   end
@@ -40,14 +47,14 @@ module HomebrewArgvExtension
     require "keg"
     require "formula"
     @kegs ||= downcased_unique_named.collect do |name|
-      canonical_name = Formulary.canonical_name(name)
-      rack = HOMEBREW_CELLAR/canonical_name
+      rack = Formulary.to_rack(name)
+
       dirs = rack.directory? ? rack.subdirs : []
 
-      raise NoSuchKegError.new(canonical_name) if dirs.empty?
+      raise NoSuchKegError.new(rack.basename) if dirs.empty?
 
-      linked_keg_ref = HOMEBREW_LIBRARY.join("LinkedKegs", canonical_name)
-      opt_prefix = HOMEBREW_PREFIX.join("opt", canonical_name)
+      linked_keg_ref = HOMEBREW_LIBRARY.join("LinkedKegs", rack.basename)
+      opt_prefix = HOMEBREW_PREFIX.join("opt", rack.basename)
 
       begin
         if opt_prefix.symlink? && opt_prefix.directory?
@@ -59,7 +66,7 @@ module HomebrewArgvExtension
         elsif (prefix = (name.include?("/") ? Formulary.factory(name) : Formulary.from_rack(rack)).prefix).directory?
           Keg.new(prefix)
         else
-          raise MultipleVersionsInstalledError.new(canonical_name)
+          raise MultipleVersionsInstalledError.new(rack.basename)
         end
       rescue FormulaUnavailableError
         raise <<-EOS.undent
@@ -118,11 +125,15 @@ module HomebrewArgvExtension
   end
 
   def homebrew_developer?
-    include?("--homebrew-developer") || !ENV["HOMEBREW_DEVELOPER"].nil?
+    !ENV["HOMEBREW_DEVELOPER"].nil?
   end
 
   def sandbox?
     include?("--sandbox") || !ENV["HOMEBREW_SANDBOX"].nil?
+  end
+
+  def no_sandbox?
+    include?("--no-sandbox") || !ENV["HOMEBREW_NO_SANDBOX"].nil?
   end
 
   def ignore_deps?
@@ -200,6 +211,20 @@ module HomebrewArgvExtension
     value "env"
   end
 
+  # If the user passes any flags that trigger building over installing from
+  # a bottle, they are collected here and returned as an Array for checking.
+  def collect_build_flags
+    build_flags = []
+
+    build_flags << "--HEAD" if build_head?
+    build_flags << "--universal" if build_universal?
+    build_flags << "--32-bit" if build_32_bit?
+    build_flags << "--build-bottle" if build_bottle?
+    build_flags << "--build-from-source" if build_from_source?
+
+    build_flags
+  end
+
   private
 
   def spec(default = :stable)
@@ -213,9 +238,13 @@ module HomebrewArgvExtension
   end
 
   def downcased_unique_named
-    # Only lowercase names, not paths or URLs
+    # Only lowercase names, not paths, bottle filenames or URLs
     @downcased_unique_named ||= named.map do |arg|
-      arg.include?("/") ? arg : arg.downcase
+      if arg.include?("/") || arg.end_with?(".tar.gz")
+        arg
+      else
+        arg.downcase
+      end
     end.uniq
   end
 end

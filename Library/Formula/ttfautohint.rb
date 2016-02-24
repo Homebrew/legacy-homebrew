@@ -1,8 +1,15 @@
 class Ttfautohint < Formula
-  desc "Automated hinting process for web fonts"
+  desc "Auto-hinter for TrueType fonts"
   homepage "http://www.freetype.org/ttfautohint"
-  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.3/ttfautohint-1.3.tar.gz"
-  sha256 "c39fa03790b2dfe711f66137cf0f0324eb19872932cef91da9c0bddf9e4ce104"
+  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.5/ttfautohint-1.5.tar.gz"
+  sha256 "644fe721e9e7fe3390ae1f66d40c74e4459fa539d436f4e0f8635c432683efd1"
+
+  bottle do
+    cellar :any
+    sha256 "18fe5769eed8332423805f93571e8b7dbdc26a7b51d1912aec2b3d76d40f59b5" => :el_capitan
+    sha256 "ae60250c59eb3751cc7e2c76ab319c5bef81d916bf4a81fb2428b7547177513f" => :yosemite
+    sha256 "8184c3cbfbae95edd6ff56edeb0a76f2ddc3eeef38093fb9a83a39a944307359" => :mavericks
+  end
 
   head do
     url "http://repo.or.cz/ttfautohint.git"
@@ -11,13 +18,6 @@ class Ttfautohint < Formula
     depends_on "automake" => :build
     depends_on "pkg-config" => :build
     depends_on "libtool" => :build
-  end
-
-  bottle do
-    cellar :any
-    sha1 "06db9ad73083d1a47515711fa5de47cb1b12fe4e" => :yosemite
-    sha1 "dd81a451044381a3f87a8ad9d9da464744b98b80" => :mavericks
-    sha1 "af5485546cb4fc3b6a663920ba9599f727e5fb11" => :mountain_lion
   end
 
   option "with-qt", "Build ttfautohintGUI also"

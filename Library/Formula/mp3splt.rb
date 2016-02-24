@@ -5,9 +5,9 @@ class Mp3splt < Formula
   sha256 "3ec32b10ddd8bb11af987b8cd1c76382c48d265d0ffda53041d9aceb1f103baa"
 
   bottle do
-    sha1 "00b4f15259c7e26e86dac674ef4169f8df2108e8" => :yosemite
-    sha1 "95a482d23df7573de4672fde06dae68939a968a2" => :mavericks
-    sha1 "30c65da5f3df5bd4b28420894bd9464cc857d2c9" => :mountain_lion
+    sha256 "d30a89754b5e57a5fd0fff9f794e14ddd920d8f1169158d166e8cd427f85dcd1" => :yosemite
+    sha256 "d928c6cc582737877a1e6a1e074f1d9577595eac6ac4a0b52f533141f0e2c4af" => :mavericks
+    sha256 "acc0022ebbe437c18d4f3dfca1805a459081288f437101e1cd329a31ca81e522" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

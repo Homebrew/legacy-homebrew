@@ -2,7 +2,7 @@
 Bottles are Homebrew's binary packages. They are produced by installing a formula with `brew install --build-bottle $FORMULA` and then bottling it with `brew bottle $FORMULA`. This outputs the bottle DSL which should be inserted into the formula file.
 
 ## Bottle Usage
-If a bottle is available and usable it will be downloaded and poured automatically when you `brew install <formula>`. If you wish to disable this you can do it by specifying `--build-from-source` or set `export HOMEBREW_BUILD_FROM_SOURCE=1` environment variable.
+If a bottle is available and usable it will be downloaded and poured automatically when you `brew install <formula>`. If you wish to disable this you can do it by specifying `--build-from-source`.
 
 Bottles will not be used if the user requests it (see above), if the formula requests it (with `pour_bottle?`), if any options are specified on installation (bottles are all compiled with default options), if the bottle is not up to date (e.g. lacking a checksum) or the bottle's `cellar` is not `:any` or equal to the current `HOMEBREW_CELLAR`.
 
@@ -32,7 +32,7 @@ end
 A full example:
 ```ruby
 bottle do
-  root_url "http://mikemcquaid.com"
+  root_url "https://example.com"
   prefix "/opt/homebrew"
   cellar "/opt/homebrew/Cellar"
   revision 4

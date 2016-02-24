@@ -6,9 +6,10 @@ class Cconv < Formula
 
   bottle do
     cellar :any
-    sha1 "bf9023851423f52249b9107fe71a89f16ea00146" => :yosemite
-    sha1 "d3c284caaf0ef18e98050078c9eda2f3896b666c" => :mavericks
-    sha1 "3a700e441e9b0d2d2a939269fa7c71e985a453bf" => :mountain_lion
+    sha256 "07e137c61d8d908275c223e703205205060ccf08c3694407398725dd8ad3233d" => :el_capitan
+    sha256 "65436699d38a250324868565690c295e9668d96f9fa5f1f8d23dfc2dff6fc122" => :yosemite
+    sha256 "6ccd7bc724cb38fb3af7ccb07fb4b45cc6486390c6c7030dc2f9cd89e7531cf4" => :mavericks
+    sha256 "21adc67fe672719cbfc93e940d044a2b2ceb32653cc1a901b79e251c3fb6d090" => :mountain_lion
   end
 
   def install

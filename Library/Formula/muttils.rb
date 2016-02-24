@@ -14,6 +14,8 @@ class Muttils < Formula
 
   depends_on :python if MacOS.version <= :snow_leopard
 
+  conflicts_with "talk-filters", :because => "both install `wrap` binaries"
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)

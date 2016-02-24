@@ -1,15 +1,18 @@
 class Datomic < Formula
-  desc "Database that simplifies by separating transactions, storage and queries"
+  desc "Database separating transactions, storage and queries"
   homepage "http://www.datomic.com/"
-  url "https://my.datomic.com/downloads/free/0.9.5198"
-  sha256 "1d42979079bd62c2b4df9fbc3c18cdc15d49ac04905eceab4c75720e23ed8fc7"
-  version "0.9.5198"
+  url "https://my.datomic.com/downloads/free/0.9.5344"
+  version "0.9.5344"
+  sha256 "7fa7d09b2aeae8f2a189f09a8b09c485cdee202e00aacc80c213d25735030498"
+
+  bottle :unneeded
 
   depends_on :java
 
   def install
     libexec.install Dir["*"]
     (bin/"datomic").write_env_script libexec/"bin/datomic", Language::Java.java_home_env
+
     %w[transactor repl repl-jline rest shell groovysh maven-install].each do |file|
       (bin/"datomic-#{file}").write_env_script libexec/"bin/#{file}", Language::Java.java_home_env
     end
@@ -26,7 +29,11 @@ class Datomic < Formula
   end
 
   test do
-    help = pipe_output("#{bin}/datomic-shell", "Shell.help();\n")
-    assert_match(/^\* Basics/, help)
+    IO.popen("#{bin}/datomic-repl", "r+") do |pipe|
+      assert_equal "Clojure 1.7.0", pipe.gets.chomp
+      pipe.puts "^C"
+      pipe.close_write
+      pipe.close
+    end
   end
 end

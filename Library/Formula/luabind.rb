@@ -3,18 +3,19 @@ class Luabind < Formula
   homepage "http://www.rasterbar.com/products/luabind.html"
   url "https://downloads.sourceforge.net/project/luabind/luabind/0.9.1/luabind-0.9.1.tar.gz"
   sha256 "80de5e04918678dd8e6dac3b22a34b3247f74bf744c719bae21faaa49649aaae"
-  bottle do
-    cellar :any
-    sha1 "aa32def1a41203aa36c907e55aa48741927e4de8" => :yosemite
-    sha1 "6c7fe3fd06a62aa7e8cd37775ca52c101fa045bb" => :mavericks
-    sha1 "dbe4488b6e323e142684949abb1589de9490ca7e" => :mountain_lion
-  end
-
   revision 1
 
+  bottle do
+    cellar :any
+    revision 1
+    sha256 "a91678a0e7830fdaebdebeb315b4e4480ca5eb12f16aa6e6534fd79c30f203dc" => :el_capitan
+    sha256 "57f0368918d142bba0d28ba02529cbf51eb6be30321ab001922032fbaabe583b" => :yosemite
+    sha256 "bdb3e0380687c7943c13986b054bce3ae7c53db72394b5f4bec3e40a649f08b8" => :mavericks
+  end
+
+  depends_on "boost-build" => :build
   depends_on "lua51"
   depends_on "boost"
-  depends_on "boost-build" => :build
 
   # boost 1.57 compatibility
   # https://github.com/Homebrew/homebrew/pull/33890#issuecomment-67723688
@@ -38,17 +39,17 @@ class Luabind < Formula
 
   # include C header that is not pulled in automatically on OS X 10.9 anymore
   # submitted https://github.com/luabind/luabind/pull/20
-  patch do
-    url "https://gist.githubusercontent.com/DennisOSRM/a246514bf7d01631dda8/raw/0e83503dbf862ebfb6ac063338a6d7bca793f94d/object_rep.diff"
-    sha256 "2fef524ac5e319d7092fbb28f6d4e3d3eccd6a570e7789a9b5b0c9a25e714523"
-  end if MacOS.version >= :mavericks
+  if MacOS.version >= :mavericks
+    patch do
+      url "https://gist.githubusercontent.com/DennisOSRM/a246514bf7d01631dda8/raw/0e83503dbf862ebfb6ac063338a6d7bca793f94d/object_rep.diff"
+      sha256 "2fef524ac5e319d7092fbb28f6d4e3d3eccd6a570e7789a9b5b0c9a25e714523"
+    end
+  end
 
   def install
     ENV["LUA_PATH"] = Formula["lua51"].opt_prefix
-    args = [
-      "release",
-      "install"
-    ]
+
+    args = %W[release install]
     if ENV.compiler == :clang
       args << "--toolset=clang"
     elsif ENV.compiler == :llvm
@@ -58,6 +59,22 @@ class Luabind < Formula
     end
     args << "--prefix=#{prefix}"
     system "bjam", *args
+
+    (lib/"pkgconfig/luabind.pc").write pc_file
+  end
+
+  def pc_file; <<-EOS.undent
+    prefix=#{HOMEBREW_PREFIX}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${exec_prefix}/include
+
+    Name: luabind
+    Description: Library for bindings between C++ and Lua
+    Version: 0.9.1
+    Libs: -L${libdir} -lluabind
+    Cflags: -I${includedir}
+    EOS
   end
 
   test do

@@ -1,6 +1,6 @@
 class OpusTools < Formula
   desc "Utilities to encode, inspect, and decode .opus files"
-  homepage "http://www.opus-codec.org"
+  homepage "https://www.opus-codec.org"
   url "http://downloads.xiph.org/releases/opus/opus-tools-0.1.9.tar.gz"
   sha256 "b1873dd78c7fbc98cf65d6e10cfddb5c2c03b3af93f922139a2104baedb4643a"
 

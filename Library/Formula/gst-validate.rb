@@ -1,18 +1,17 @@
 class GstValidate < Formula
   desc "Tools to validate GstElements from GStreamer"
-  homepage "http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-validate/html/"
-  url "http://gstreamer.freedesktop.org/src/gst-validate/gst-validate-1.4.0.tar.xz"
-  sha256 "ac30d1041a8cfe5d268439f5cedee7e9753ba49080fc67bff1266581198438d0"
+  homepage "https://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-validate/html/"
+  url "https://gstreamer.freedesktop.org/src/gst-validate/gst-validate-1.6.0.tar.xz"
+  sha256 "3baef8c7b5363293c20314a30afd54629849fc597669991fdcf92303602dafee"
 
   bottle do
-    revision 1
-    sha256 "450bf253e256d9031ad6ab0eb703e85d78e44b8bce2ad91090370abd5d7caf90" => :yosemite
-    sha256 "b08355b9b695b2be027e9f162f36f8b18e98eb876e5c636c244a5dfb2b48e712" => :mavericks
-    sha256 "e0d7815b3658c3227c49562c0c9ca532c66207df2e237e1977ce5dc159a2913f" => :mountain_lion
+    sha256 "338d8f489811e92491ad6d86a96c76ac6056b6e178bb5caa412f73feff9b7d8f" => :el_capitan
+    sha256 "46a75949ef97e6cfa1e1996886ebd34e1446752600e9308ce904ead70386ac19" => :yosemite
+    sha256 "8d11ac9dc97c9f85f941ad6d684b3e2640795f02d02338562dd5e9a9da7f23f2" => :mavericks
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gst-devtools"
+    url "https://anongit.freedesktop.org/git/gstreamer/gst-devtools.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

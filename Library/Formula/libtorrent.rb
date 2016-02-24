@@ -1,17 +1,17 @@
 class Libtorrent < Formula
   desc "BitTorrent library"
   homepage "https://github.com/rakshasa/libtorrent"
-  # Both homepage and primary url have been down since at least ~April 2015
-  # https://github.com/rakshasa/rtorrent/issues/295
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/libt/libtorrent/libtorrent_0.13.4.orig.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/libt/libtorrent/libtorrent_0.13.4.orig.tar.gz"
-  sha256 "74a193d0e91a26f9471c12424596e03b82413d0dd0e1c8d4d7dad25a01cc60e5"
+  url "http://rtorrent.net/downloads/libtorrent-0.13.6.tar.gz"
+  sha256 "2838a08c96edfd936aff8fbf99ecbb930c2bfca3337dd1482eb5fccdb80d5a04"
 
-  def pour_bottle?
-    # https://github.com/Homebrew/homebrew/commit/5eb5e4499c9
-    false
-  end
+  bottle :disable,
+    "Cannot be built with Clang so bottle depends on GCC at runtime."
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
+  depends_on "cppunit" => :build
   depends_on "pkg-config" => :build
   depends_on "openssl"
 
@@ -26,6 +26,7 @@ class Libtorrent < Formula
     # https://github.com/rakshasa/libtorrent/issues/47
     ENV.libstdcxx if ENV.compiler == :clang
 
+    system "sh", "autogen.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",

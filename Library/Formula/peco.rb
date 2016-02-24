@@ -3,16 +3,16 @@ require "language/go"
 class Peco < Formula
   desc "Simplistic interactive filtering tool"
   homepage "https://github.com/peco/peco"
-  url "https://github.com/peco/peco/archive/v0.3.3.tar.gz"
-  sha256 "3d30a8788c2c7cf4ac44bc5ad09415b9b6245c6e842e46b4e234cb844e929c84"
+  url "https://github.com/peco/peco/archive/v0.3.5.tar.gz"
+  sha256 "416d2547b639b11563d0bd910fa043e532f25fcc40de3ec0d7bec4943747fff1"
 
   head "https://github.com/peco/peco.git"
 
   bottle do
-    cellar :any
-    sha256 "f2132e8e5383140a49f9a6cadfa57b5736230cfbbec5a924a0edcc9a80f9ddfe" => :yosemite
-    sha256 "62ff8a3489cbfb5bea9257c56b924bd77c61c272131090b5edf2edffd1d66042" => :mavericks
-    sha256 "284f41c4f38f65f580c8c0d43704fdf672e22c56a22895664bb0e08ea6c5204f" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "3f42983ae2cdb2f8f4c583becbad5c708b95a9e9fbf474d80ee2abf813e16cd7" => :el_capitan
+    sha256 "f327e9d88ef8f10a405b6296868b5782743d047b4b8df7b25647ad0b92c07062" => :yosemite
+    sha256 "f341d17b7831b69486f632ed0b762610d47de56d364d4cf31e69ef49c67cc9ca" => :mavericks
   end
 
   depends_on "go" => :build
@@ -24,17 +24,17 @@ class Peco < Formula
 
   go_resource "github.com/jessevdk/go-flags" do
     url "https://github.com/jessevdk/go-flags.git",
-      :revision => "1b89bf73cd2c3a911d7b2a279ab085c4a18cf539"
+      :revision => "fc93116606d0a71d7e9de0ad5734fdb4b8eae834"
   end
 
   go_resource "github.com/mattn/go-runewidth" do
     url "https://github.com/mattn/go-runewidth.git",
-      :revision => "5890272cd41c5103531cd7b79e428d99c9e97f76"
+      :revision => "12e0ff74603c9a3209d8bf84f8ab349fe1ad9477"
   end
 
   go_resource "github.com/nsf/termbox-go" do
     url "https://github.com/nsf/termbox-go.git",
-      :revision => "785b5546a97f27460cfbc4c77132a46b90beb834"
+      :revision => "62033d80b58736ea31beaf43348f5147913af30e"
   end
 
   def install

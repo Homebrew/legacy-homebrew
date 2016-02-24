@@ -7,9 +7,9 @@ class Ocamlsdl < Formula
 
   bottle do
     cellar :any
-    sha1 "c158c8f04e5679333db3c074943c3ea37fe8c9a5" => :yosemite
-    sha1 "a64fd3f10a85599a9470b46a3b719e0d50d194e9" => :mavericks
-    sha1 "e39fd75cfdbc4f3c0fc570beb4bfbe6e58301014" => :mountain_lion
+    sha256 "07e016c5fa22b040d4f6081bc5f63657d02cf08810ff0bd1271e3ccb81b386e7" => :yosemite
+    sha256 "4708ebcb0d84023df49191db0d0af8d194247e882cf54c49c8165ba176b5ff59" => :mavericks
+    sha256 "fa6e3d9f55b354bab9d346a046de292a2c813193087f62ee55c5d10d348097b8" => :mountain_lion
   end
 
   depends_on "sdl"
@@ -17,7 +17,7 @@ class Ocamlsdl < Formula
   depends_on "sdl_image" => :recommended
   depends_on "sdl_gfx" => :recommended
   depends_on "sdl_ttf" => :recommended
-  depends_on "objective-caml"
+  depends_on "ocaml"
 
   def install
     system "./configure", "--prefix=#{prefix}",

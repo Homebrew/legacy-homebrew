@@ -5,9 +5,10 @@ class Libopendkim < Formula
   sha256 "43a0ba57bf942095fe159d0748d8933c6b1dd1117caf0273fa9a0003215e681b"
 
   bottle do
-    sha256 "42f6bac489a74cf6f05f059c454b8b821c884abc71138f811fb72e4feca14f6d" => :yosemite
-    sha256 "4177829cd1e50e4723c815b747298277554a0a52176601c1f56b5c548ba133ff" => :mavericks
-    sha256 "e9196bde7304789169ceb844a7bea8b67e273e6005ed93ffd80d0a4d5af6241c" => :mountain_lion
+    revision 1
+    sha256 "6b5052b456871186bc251a2e9551c87ca53c501bf162f104c4841fa07b4f2458" => :el_capitan
+    sha256 "cf601de122898a144b1c42c72980f1a19688c718638df2ab49735c65a9beb1ce" => :yosemite
+    sha256 "d1399f0f0bf8f13aee75557d516b7e09cc31155c3b72da6159e13f25ff94cbd8" => :mavericks
   end
 
   depends_on "unbound"
@@ -20,7 +21,8 @@ class Libopendkim < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--disable-filter",
-                          "--with-unbound=#{Formula["unbound"].opt_prefix}"
+                          "--with-unbound=#{Formula["unbound"].opt_prefix}",
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 

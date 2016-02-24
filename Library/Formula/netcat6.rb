@@ -25,9 +25,7 @@ class Netcat6 < Formula
   end
 
   test do
-    lines = `#{bin}/nc6 --version`.split("\n")
-    assert_equal "nc6 version #{version}", lines[0]
-    assert_equal 0, $?.exitstatus
+    assert_match "HTTP/1.0", pipe_output("#{bin}/nc6 www.google.com 80", "GET / HTTP/1.0\r\n\r\n")
   end
 end
 

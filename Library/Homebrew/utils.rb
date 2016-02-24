@@ -1,14 +1,28 @@
 require "pathname"
 require "exceptions"
-require "os/mac"
 require "utils/json"
 require "utils/inreplace"
 require "utils/popen"
 require "utils/fork"
+require "utils/git"
 require "open-uri"
 
 class Tty
   class << self
+    def tick
+      # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
+      @tick ||= ["2714".hex].pack("U*")
+    end
+
+    def cross
+      # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
+      @cross ||= ["2718".hex].pack("U*")
+    end
+
+    def strip_ansi(string)
+      string.gsub(/\033\[\d+(;\d+)*m/, "")
+    end
+
     def blue
       bold 34
     end
@@ -39,6 +53,10 @@ class Tty
 
     def gray
       bold 30
+    end
+
+    def highlight
+      bold 39
     end
 
     def width
@@ -80,6 +98,7 @@ def oh1(title)
   puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
 end
 
+# Print a warning (do this rarely)
 def opoo(warning)
   $stderr.puts "#{Tty.yellow}Warning#{Tty.reset}: #{warning}"
 end
@@ -98,10 +117,39 @@ def odie(error)
   exit 1
 end
 
+def pretty_installed(f)
+  if !$stdout.tty?
+    "#{f}"
+  elsif ENV["HOMEBREW_NO_EMOJI"]
+    "#{Tty.highlight}#{Tty.green}#{f} (installed)#{Tty.reset}"
+  else
+    "#{Tty.highlight}#{f} #{Tty.green}#{Tty.tick}#{Tty.reset}"
+  end
+end
+
+def pretty_uninstalled(f)
+  if !$stdout.tty?
+    "#{f}"
+  elsif ENV["HOMEBREW_NO_EMOJI"]
+    "#{Tty.red}#{f} (uninstalled)#{Tty.reset}"
+  else
+    "#{f} #{Tty.red}#{Tty.cross}#{Tty.reset}"
+  end
+end
+
 def pretty_duration(s)
-  return "2 seconds" if s < 3 # avoids the plural problem ;)
-  return "#{s.to_i} seconds" if s < 120
-  "%.1f minutes" % (s/60)
+  s = s.to_i
+  res = ""
+
+  if s > 59
+    m = s / 60
+    s %= 60
+    res = "#{m} minute#{plural m}"
+    return res if s == 0
+    res << " "
+  end
+
+  res + "#{s} second#{plural s}"
 end
 
 def plural(n, s = "s")
@@ -131,8 +179,7 @@ def interactive_shell(f = nil)
 end
 
 module Homebrew
-  def self.system(cmd, *args)
-    puts "#{cmd} #{args*" "}" if ARGV.verbose?
+  def self._system(cmd, *args)
     pid = fork do
       yield if block_given?
       args.collect!(&:to_s)
@@ -143,24 +190,71 @@ module Homebrew
     $?.success?
   end
 
+  def self.system(cmd, *args)
+    puts "#{cmd} #{args*" "}" if ARGV.verbose?
+    _system(cmd, *args)
+  end
+
+  def self.git_origin
+    return unless Utils.git_available?
+    HOMEBREW_REPOSITORY.cd { `git config --get remote.origin.url 2>/dev/null`.chuzzle }
+  end
+
   def self.git_head
+    return unless Utils.git_available?
     HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
   end
 
+  def self.git_short_head
+    return unless Utils.git_available?
+    HOMEBREW_REPOSITORY.cd { `git rev-parse --short=4 --verify -q HEAD 2>/dev/null`.chuzzle }
+  end
+
   def self.git_last_commit
+    return unless Utils.git_available?
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
+  end
+
+  def self.git_last_commit_date
+    return unless Utils.git_available?
+    HOMEBREW_REPOSITORY.cd { `git show -s --format="%cd" --date=short HEAD 2>/dev/null`.chuzzle }
+  end
+
+  def self.homebrew_version_string
+    if pretty_revision = git_short_head
+      last_commit = git_last_commit_date
+      "#{HOMEBREW_VERSION} (git revision #{pretty_revision}; last commit #{last_commit})"
+    else
+      "#{HOMEBREW_VERSION} (no git repository)"
+    end
   end
 
   def self.install_gem_setup_path!(gem, version = nil, executable = gem)
     require "rubygems"
-    ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
 
-    args = [gem]
-    args << "-v" << version if version
+    # Add Gem binary directory and (if missing) Ruby binary directory to PATH.
+    path = ENV["PATH"].split(File::PATH_SEPARATOR)
+    path.unshift(RUBY_BIN) if which("ruby") != RUBY_PATH
+    path.unshift("#{Gem.user_dir}/bin")
+    ENV["PATH"] = path.join(File::PATH_SEPARATOR)
 
-    unless quiet_system "gem", "list", "--installed", *args
-      safe_system "gem", "install", "--no-ri", "--no-rdoc",
-                                    "--user-install", *args
+    if Gem::Specification.find_all_by_name(gem, version).empty?
+      ohai "Installing or updating '#{gem}' gem"
+      install_args = %W[--no-ri --no-rdoc --user-install #{gem}]
+      install_args << "--version" << version if version
+
+      # Do `gem install [...]` without having to spawn a separate process or
+      # having to find the right `gem` binary for the running Ruby interpreter.
+      require "rubygems/commands/install_command"
+      install_cmd = Gem::Commands::InstallCommand.new
+      install_cmd.handle_options(install_args)
+      exit_code = 1 # Should not matter as `install_cmd.execute` always throws.
+      begin
+        install_cmd.execute
+      rescue Gem::SystemExitException => e
+        exit_code = e.exit_code
+      end
+      odie "Failed to install/update the '#{gem}' gem." if exit_code != 0
     end
 
     unless which executable
@@ -194,7 +288,7 @@ end
 
 # prints no output
 def quiet_system(cmd, *args)
-  Homebrew.system(cmd, *args) do
+  Homebrew._system(cmd, *args) do
     # Redirect output streams to `/dev/null` instead of closing as some programs
     # will fail to execute if they can't write to an open stream.
     $stdout.reopen("/dev/null")
@@ -204,7 +298,7 @@ end
 
 def curl(*args)
   brewed_curl = HOMEBREW_PREFIX/"opt/curl/bin/curl"
-  curl = if MacOS.version <= "10.6" && brewed_curl.exist?
+  curl = if MacOS.version <= "10.8" && brewed_curl.exist?
     brewed_curl
   else
     Pathname.new "/usr/bin/curl"
@@ -216,38 +310,73 @@ def curl(*args)
 
   args = [flags, HOMEBREW_USER_AGENT, *args]
   args << "--verbose" if ENV["HOMEBREW_CURL_VERBOSE"]
-  args << "--silent" unless $stdout.tty?
+  args << "--silent" if !$stdout.tty? || ENV["TRAVIS"]
 
   safe_system curl, *args
 end
 
-def puts_columns(items, star_items = [])
+def puts_columns(items)
   return if items.empty?
 
-  if star_items && star_items.any?
-    items = items.map { |item| star_items.include?(item) ? "#{item}*" : item }
+  unless $stdout.tty?
+    puts items
+    return
   end
 
-  if $stdout.tty?
-    # determine the best width to display for different console sizes
-    console_width = `/bin/stty size`.chomp.split(" ").last.to_i
-    console_width = 80 if console_width <= 0
-    longest = items.sort_by(&:length).last
-    optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
-    cols = optimal_col_width > 1 ? optimal_col_width : 1
+  # TTY case: If possible, output using multiple columns.
+  console_width = Tty.width
+  console_width = 80 if console_width <= 0
+  plain_item_lengths = items.map { |s| Tty.strip_ansi(s).length }
+  max_len = plain_item_lengths.max
+  col_gap = 2 # number of spaces between columns
+  gap_str = " " * col_gap
+  cols = (console_width + col_gap) / (max_len + col_gap)
+  cols = 1 if cols < 1
+  rows = (items.size + cols - 1) / cols
+  cols = (items.size + rows - 1) / rows # avoid empty trailing columns
 
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w") { |io| io.puts(items) }
-  else
+  if cols >= 2
+    col_width = (console_width + col_gap) / cols - col_gap
+    items = items.each_with_index.map do |item, index|
+      item + "".ljust(col_width - plain_item_lengths[index])
+    end
+  end
+
+  if cols == 1
     puts items
+  else
+    rows.times do |row_index|
+      item_indices_for_row = row_index.step(items.size - 1, rows).to_a
+      puts items.values_at(*item_indices_for_row).join(gap_str)
+    end
   end
 end
 
 def which(cmd, path = ENV["PATH"])
   path.split(File::PATH_SEPARATOR).each do |p|
-    pcmd = File.expand_path(cmd, p)
+    begin
+      pcmd = File.expand_path(cmd, p)
+    rescue ArgumentError
+      # File.expand_path will raise an ArgumentError if the path is malformed.
+      # See https://github.com/Homebrew/homebrew/issues/32789
+      next
+    end
     return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
   end
   nil
+end
+
+def which_all(cmd, path = ENV["PATH"])
+  path.split(File::PATH_SEPARATOR).map do |p|
+    begin
+      pcmd = File.expand_path(cmd, p)
+    rescue ArgumentError
+      # File.expand_path will raise an ArgumentError if the path is malformed.
+      # See https://github.com/Homebrew/homebrew/issues/32789
+      next
+    end
+    Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
+  end.compact.uniq
 end
 
 def which_editor
@@ -356,18 +485,14 @@ module GitHub
     def initialize(reset, error)
       super <<-EOS.undent
         GitHub #{error}
-        Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
-          https://github.com/settings/tokens
+        Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
+          #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
         and then set the token as: HOMEBREW_GITHUB_API_TOKEN
-                    EOS
+      EOS
     end
 
     def pretty_ratelimit_reset(reset)
-      if (seconds = Time.at(reset) - Time.now) > 180
-        "%d minutes %d seconds" % [seconds / 60, seconds % 60]
-      else
-        "#{seconds} seconds"
-      end
+      pretty_duration(Time.at(reset) - Time.now)
     end
   end
 
@@ -376,8 +501,8 @@ module GitHub
       super <<-EOS.undent
         GitHub #{error}
         HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
-          https://github.com/settings/tokens
-                    EOS
+          #{Tty.em}https://github.com/settings/tokens#{Tty.reset}
+      EOS
     end
   end
 
@@ -406,7 +531,7 @@ module GitHub
   end
 
   def handle_api_error(e)
-    if e.io.meta["x-ratelimit-remaining"].to_i <= 0
+    if e.io.meta.fetch("x-ratelimit-remaining", 1).to_i <= 0
       reset = e.io.meta.fetch("x-ratelimit-reset").to_i
       error = Utils::JSON.load(e.io.read)["message"]
       raise RateLimitExceededError.new(reset, error)
@@ -418,7 +543,8 @@ module GitHub
     when "404"
       raise HTTPNotFoundError, e.message, e.backtrace
     else
-      raise Error, e.message, e.backtrace
+      error = Utils::JSON.load(e.io.read)["message"] rescue nil
+      raise Error, [e.message, error].compact.join("\n"), e.backtrace
     end
   end
 
@@ -484,4 +610,33 @@ module GitHub
     uri = URI.parse("https://api.github.com/repos/#{user}/#{repo}")
     open(uri) { |json| json["private"] }
   end
+end
+
+def disk_usage_readable(size_in_bytes)
+  if size_in_bytes >= 1_073_741_824
+    size = size_in_bytes.to_f / 1_073_741_824
+    unit = "G"
+  elsif size_in_bytes >= 1_048_576
+    size = size_in_bytes.to_f / 1_048_576
+    unit = "M"
+  elsif size_in_bytes >= 1_024
+    size = size_in_bytes.to_f / 1_024
+    unit = "K"
+  else
+    size = size_in_bytes
+    unit = "B"
+  end
+
+  # avoid trailing zero after decimal point
+  if (size * 10).to_i % 10 == 0
+    "#{size.to_i}#{unit}"
+  else
+    "#{"%.1f" % size}#{unit}"
+  end
+end
+
+def number_readable(number)
+  numstr = number.to_i.to_s
+  (numstr.size - 3).step(1, -3) { |i| numstr.insert(i, ",") }
+  numstr
 end

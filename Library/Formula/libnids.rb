@@ -7,9 +7,9 @@ class Libnids < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "49f12f0277e954aad59221c16f28d1ac86838ea1" => :yosemite
-    sha1 "fcb4eed5e69d8f80e5f7bacd6dad1d09d942e4f7" => :mavericks
-    sha1 "23f8aaac028f2fd18323cebd0f5e06c74e708893" => :mountain_lion
+    sha256 "a0375ba5851ffc54b89948d05d843102dbf33dbe8f8d77e46673a985df40ca4f" => :yosemite
+    sha256 "4ad0be7662127faff0e9103f678f9d3f277278de4cdc801e2ecdc40ad81e448a" => :mavericks
+    sha256 "e88e84cda8a3bad62118791243f4642572fa19b9656f30bcdda08c510fd6b366" => :mountain_lion
   end
 
   deprecated_option "disable-libnet" => "without-libnet"

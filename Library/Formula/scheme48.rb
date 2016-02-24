@@ -5,9 +5,9 @@ class Scheme48 < Formula
   sha256 "9c4921a90e95daee067cd2e9cc0ffe09e118f4da01c0c0198e577c4f47759df4"
 
   bottle do
-    sha1 "c2d1d64385b004856a2bf1e1683f49ba339c8046" => :mavericks
-    sha1 "75692a9d2fdb41ffb11f05c1be298eb33143724b" => :mountain_lion
-    sha1 "061274969680e03b26a5c2c44719a41fa417ff74" => :lion
+    sha256 "2e85f609127d8741396d644722dbce29bf25b5fc06b76b96edda580f5ec3c260" => :mavericks
+    sha256 "e539425e96aec1a83017061ebcb8129ee15a132004b19f9aa7280a6fa69e8333" => :mountain_lion
+    sha256 "cc5793888804040fac2f4595896f862fc964409df9b37cc64a84579c80c18f45" => :lion
   end
 
   conflicts_with "gambit-scheme", :because => "both install `scheme-r5rs` binaries"

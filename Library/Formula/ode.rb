@@ -1,42 +1,42 @@
 class Ode < Formula
   desc "Library for simulating articulated rigid body dynamics"
   homepage "http://www.ode.org/"
-  url "https://bitbucket.org/odedevs/ode/downloads/ode-0.13.1.tar.gz"
-  sha256 "35e55e05c6c6ebb813a546017285a7aceedb3e8e55c8ff102e80e26bd84c5658"
+  url "https://bitbucket.org/odedevs/ode/downloads/ode-0.14.tar.gz"
+  sha256 "1072fc98d9d00262a0d6136e7b9ff7f5d953bbdb23b646f426909d28c0b4f6db"
+  head "https://bitbucket.org/odedevs/ode/", :using => :hg
 
   bottle do
-    cellar :any
-    sha1 "f4c142dc1276434e7482955e6932182065c9131c" => :yosemite
-    sha1 "f69f17cd9bf1eed526959049c41cf3f28caed0da" => :mavericks
-    sha1 "ca4743cc4e6cdce4ada98187f139c3e2acb4facb" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a819c7f5b726beab6c2dbb4bd4e0e09535e31e012fd6c2827d798eba88ecefec" => :el_capitan
+    sha256 "978f6488c0bec75919bfc2b12882a5d7c517e5e9a3ff3c55eea5bc9a3f99b7fb" => :yosemite
+    sha256 "1909c03ba89ab957497e58a02a95972e57f37bb7d4a45a5e7aa822eb37177e5c" => :mavericks
   end
 
-  head do
-    url "http://bitbucket.org/odedevs/ode/", :using => :hg
+  option "with-double-precision", "Compile ODE with double precision"
+  option "with-shared", "Compile ODE with shared library support"
+  option "with-libccd", "Enable all libccd colliders (except box-cylinder)"
+  option "with-x11", "Build the drawstuff library and demos"
 
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  deprecated_option "enable-double-precision" => "with-double-precision"
+  deprecated_option "enable-shared" => "with-shared"
+  deprecated_option "enable-libccd" => "with-libccd"
 
-  option "enable-double-precision", "Compile ODE with double precision"
-  option "enable-shared", "Compile ODE with shared library support"
-  option "enable-libccd", "enable all libccd colliders (except box-cylinder)"
-
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+  depends_on :x11 => :optional
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--disable-demos"]
-    args << "--enable-double-precision" if build.include? "enable-double-precision"
-    args << "--enable-shared" if build.include? "enable-shared"
-    args << "--enable-libccd" if build.include? "enable-libccd"
+    args = ["--prefix=#{prefix}"]
+    args << "--enable-double-precision" if build.with? "double-precision"
+    args << "--enable-shared" if build.with? "shared"
+    args << "--enable-libccd" if build.with? "libccd"
+    args << "--with-demos" if build.with? "x11"
 
-    if build.head?
-      ENV["LIBTOOLIZE"] = "glibtoolize"
-      inreplace "bootstrap", "libtoolize", "$LIBTOOLIZE"
-      system "./bootstrap"
-    end
+    inreplace "bootstrap", "libtoolize", "glibtoolize"
+    system "./bootstrap"
+
     system "./configure", *args
     system "make"
     system "make", "install"

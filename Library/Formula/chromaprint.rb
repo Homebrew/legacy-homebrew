@@ -1,14 +1,15 @@
 class Chromaprint < Formula
   desc "Core component of the AcoustID project (Audio fingerprinting)"
   homepage "https://acoustid.org/chromaprint"
-  url "https://bitbucket.org/acoustid/chromaprint/downloads/chromaprint-1.2.tar.gz"
-  sha256 "822b8949a322ac04c6f8a3ed78f5e689bcc493c6ca0972bf627c913c8430031a"
+  url "https://bitbucket.org/acoustid/chromaprint/downloads/chromaprint-1.3.tar.gz"
+  sha256 "3dc3ff97abdce63abc1f52d5f5f8e72c22f9a690dd6625271aa96d3a585b695a"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "fa9422d4e83a696110f9880e8b70330e92c36d964f67fc3e50c21a94a473b549" => :yosemite
-    sha256 "f909650189b87ed9f26ec1428fa2787688a0e36d677a5e4f0a605b209e128ca5" => :mavericks
-    sha256 "a15989c1b685ce333aeec347c20d1f903533bc478f4ac1f34bc6da9c0cd1bd29" => :mountain_lion
+    sha256 "05fa1392a131c834416a04943216724b534c5b5a5ed059fb4f591dd46aaae7c4" => :el_capitan
+    sha256 "21b0e47b870d43696ded14ea40a7022b98fdd1b08f0057a14a966b4caa4103fe" => :yosemite
+    sha256 "611f98dcc4855ad23b30ae5db399e5c6c6b659dc31fb09d5c7e573002e335448" => :mavericks
   end
 
   option "without-examples", "Don't build examples (including fpcalc)"

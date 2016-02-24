@@ -1,15 +1,15 @@
 class SigningParty < Formula
   desc "Various OpenPGP related tools"
   homepage "https://pgp-tools.alioth.debian.org/"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/signing-party/signing-party_2.0.orig.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/s/signing-party/signing-party_2.0.orig.tar.gz"
-  sha256 "cc23e48b2f06dee7cbf7b80ee4dfbed69908cb4584d3d5fa29ed7b2f962ec16e"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/signing-party/signing-party_2.2.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/s/signing-party/signing-party_2.2.orig.tar.gz"
+  sha256 "ad5d06c6c58de17aee104b9cf2f3a954cd9b854e5a77c1a8b62cf0a67c63168f"
 
   bottle do
-    cellar :any
-    sha256 "061247a4e861862dc0b8e247f4a8c6de630e970c14dc902bd29c93992e3dfc2d" => :yosemite
-    sha256 "d5adde6973b31e1011900a222a4cfaf7b5bb2cf1e16fe1c9e6152a65b7825d9e" => :mavericks
-    sha256 "20863e6bc105d06aaa714c5af4f3f6c83dcea69948803ba39a74c9f12fced4be" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "ab9402d885e55ac2edb59d1c851ceba1a5a68e49bbecf1e3ebc51bbaa851a851" => :el_capitan
+    sha256 "f9e76620c0bbddc7790d08b3b04570b47ef1e2bda514c91cee387f013002a800" => :yosemite
+    sha256 "b19c2c8df1addf2a8013c681e7b55d3ca45a742901ad167a212c1bfbbec73b9c" => :mavericks
   end
 
   option "with-rename-pgpring", "Install pgpring as pgppubring to avoid conflicting with mutt"
@@ -183,7 +183,7 @@ class SigningParty < Formula
 
   test do
     args = "--frontend=plain --keyserver=hkps.pool.sks-keyservers.net 0xE33A3D3CCE59E297"
-    assert_match /security@brew.sh/, shell_output("#{bin}/keylookup #{args}")
+    assert_match "security@brew.sh", shell_output("#{bin}/keylookup #{args}")
   end
 end
 

@@ -6,9 +6,9 @@ class UBootTools < Formula
 
   bottle do
     cellar :any
-    sha1 "cc0677b54979ae9ae04a0bae5c7124c05e269a97" => :yosemite
-    sha1 "081589c5dadc378d31accd101be6486023de7fe2" => :mavericks
-    sha1 "0acb015f103446d432d69db39b0a14b0abb9b130" => :mountain_lion
+    sha256 "4c369426945ddde9ec41b7b85108dce2f8dd0dd70a2fb7a308e2175f76efa55f" => :yosemite
+    sha256 "4268ed8923b3fe1f2d3e2dc87db23104a8b578636d86c47bf0ea25daae1c03ea" => :mavericks
+    sha256 "9756327207b93d3b3cd1c00365f5059ab16f2c3c2baffbfde5e8b918d85483bd" => :mountain_lion
   end
 
   depends_on "openssl"

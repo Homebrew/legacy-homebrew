@@ -3,11 +3,13 @@ class Libxmlsec1 < Formula
   homepage "https://www.aleksey.com/xmlsec/"
   url "https://www.aleksey.com/xmlsec/download/xmlsec1-1.2.20.tar.gz"
   sha256 "3221593ca50f362b546a0888a1431ad24be1470f96b2469c0e0df5e1c55e7305"
+  revision 1
 
   bottle do
-    sha1 "7cfecf66f3608695321bc195b35957f2dddeb354" => :yosemite
-    sha1 "ff35feb04a9f18af8cf96aacc340e25e60adb542" => :mavericks
-    sha1 "9b4df5db57f11d86d63fc7dcaa51939d9b874c23" => :mountain_lion
+    cellar :any
+    sha256 "e16e54d26f7ce2a7ae5fd7025cb421bba71252a9e9c47df251593fdb3d8400a6" => :el_capitan
+    sha256 "49cb24946eac37fc2e0f39f55376463b52ae0b702cdd06877ba3bb4e95476f15" => :yosemite
+    sha256 "ab08e6b9d0e6a781704d51a876518b340cec25b2593beb7c126a9ffa38768db3" => :mavericks
   end
 
   depends_on "pkg-config" => :build

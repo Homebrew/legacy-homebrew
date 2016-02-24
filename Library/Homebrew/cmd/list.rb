@@ -42,6 +42,7 @@ module Homebrew
 
   UNBREWED_EXCLUDE_FILES = %w[.DS_Store]
   UNBREWED_EXCLUDE_PATHS = %w[
+    .github/*
     bin/brew
     lib/gdk-pixbuf-2.0/*
     lib/gio/*
@@ -49,6 +50,9 @@ module Homebrew
     lib/python[23].[0-9]/*
     lib/pypy/*
     lib/pypy3/*
+    lib/ruby/gems/[12].*
+    lib/ruby/site_ruby/[12].*
+    lib/ruby/vendor_ruby/[12].*
     share/pypy/*
     share/pypy3/*
     share/doc/homebrew/*
@@ -61,15 +65,16 @@ module Homebrew
     dirs  = HOMEBREW_PREFIX.subdirs.map { |dir| dir.basename.to_s }
     dirs -= %w[Library Cellar .git]
 
-    # Exclude the repository and cache, if they are located under the prefix
-    dirs.delete HOMEBREW_CACHE.relative_path_from(HOMEBREW_PREFIX).to_s
-    dirs.delete HOMEBREW_REPOSITORY.relative_path_from(HOMEBREW_PREFIX).to_s
+    # Exclude cache, logs, and repository, if they are located under the prefix.
+    [HOMEBREW_CACHE, HOMEBREW_LOGS, HOMEBREW_REPOSITORY].each do |dir|
+      dirs.delete dir.relative_path_from(HOMEBREW_PREFIX).to_s
+    end
     dirs.delete "etc"
     dirs.delete "var"
 
     args = dirs + %w[-type f (]
-    args.concat UNBREWED_EXCLUDE_FILES.map { |f| %W[! -name #{f}] }.flatten
-    args.concat UNBREWED_EXCLUDE_PATHS.map { |d| %W[! -path #{d}] }.flatten
+    args.concat UNBREWED_EXCLUDE_FILES.flat_map { |f| %W[! -name #{f}] }
+    args.concat UNBREWED_EXCLUDE_PATHS.flat_map { |d| %W[! -path #{d}] }
     args.concat %w[)]
 
     cd HOMEBREW_PREFIX
@@ -78,7 +83,7 @@ module Homebrew
 
   def filtered_list
     names = if ARGV.named.empty?
-      HOMEBREW_CELLAR.subdirs
+      Formula.racks
     else
       ARGV.named.map { |n| HOMEBREW_CELLAR+n }.select(&:exist?)
     end
@@ -96,7 +101,7 @@ module Homebrew
     else # --versions without --pinned
       names.each do |d|
         versions = d.subdirs.map { |pn| pn.basename.to_s }
-        next if ARGV.include?("--multiple") && versions.count < 2
+        next if ARGV.include?("--multiple") && versions.length < 2
         puts "#{d.basename} #{versions*" "}"
       end
     end
@@ -136,7 +141,7 @@ class PrettyListing
     root.children.sort.each do |pn|
       if pn.directory?
         dirs << pn
-      elsif block_given? and yield pn
+      elsif block_given? && yield(pn)
         puts pn
         other = "other "
       else

@@ -5,9 +5,9 @@ class Redland < Formula
   sha256 "de1847f7b59021c16bdc72abb4d8e2d9187cd6124d69156f3326dd34ee043681"
 
   bottle do
-    sha1 "5f4840ede53c1f9ab9c7387355fc682be3a524b7" => :yosemite
-    sha1 "db4d3fdde92412bafe55e19def76b3447168595c" => :mavericks
-    sha1 "523752a1bd434159e361f66a7a72b45412d30a7a" => :mountain_lion
+    sha256 "6047842b51137c968df4787bbfcf2080b4f32b73bb9d3412fa117ee9c1ff22d2" => :yosemite
+    sha256 "06d1c7c81a9803ad37cd40303987b90456fb565f4305965388bc8faff54c6db7" => :mavericks
+    sha256 "bbe8f82451695648adb66ab2766413e938f8f4ffdc318ba946e210d23e637dd2" => :mountain_lion
   end
 
   revision 1

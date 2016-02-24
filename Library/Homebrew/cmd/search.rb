@@ -3,12 +3,15 @@ require "blacklist"
 require "utils"
 require "thread"
 require "official_taps"
+require "descriptions"
 
 module Homebrew
   SEARCH_ERROR_QUEUE = Queue.new
 
   def search
-    if ARGV.include? "--macports"
+    if ARGV.empty?
+      puts_columns Formula.full_names
+    elsif ARGV.include? "--macports"
       exec_browser "https://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? "--fink"
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
@@ -23,13 +26,7 @@ module Homebrew
     elsif ARGV.include? "--desc"
       query = ARGV.next
       rx = query_regexp(query)
-      Formula.each do |formula|
-        if formula.desc =~ rx
-          puts "#{Tty.white}#{formula.full_name}:#{Tty.reset} #{formula.desc}"
-        end
-      end
-    elsif ARGV.empty?
-      puts_columns Formula.full_names
+      Descriptions.search(rx, :desc).print
     elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
       query = ARGV.first
       user, repo, name = query.split("/", 3)
@@ -46,44 +43,49 @@ module Homebrew
       rx = query_regexp(query)
       local_results = search_formulae(rx)
       puts_columns(local_results)
-
-      if !query.empty? && $stdout.tty? && msg = blacklisted?(query)
-        unless local_results.empty?
-          puts
-          puts "If you meant #{query.inspect} precisely:"
-          puts
-        end
-        puts msg
-      end
-
       tap_results = search_taps(rx)
       puts_columns(tap_results)
-      count = local_results.length + tap_results.length
 
-      if count == 0 && !blacklisted?(query)
-        puts "No formula found for #{query.inspect}."
-        begin
-          GitHub.print_pull_requests_matching(query)
-        rescue GitHub::Error => e
-          SEARCH_ERROR_QUEUE << e
+      if $stdout.tty?
+        count = local_results.length + tap_results.length
+
+        if msg = blacklisted?(query)
+          if count > 0
+            puts
+            puts "If you meant #{query.inspect} precisely:"
+            puts
+          end
+          puts msg
+        elsif count == 0
+          puts "No formula found for #{query.inspect}."
+          begin
+            GitHub.print_pull_requests_matching(query)
+          rescue GitHub::Error => e
+            SEARCH_ERROR_QUEUE << e
+          end
         end
       end
     end
-    metacharacters = %w[\\ | ( ) [ ] { } ^ $ * + ? .]
-    bad_regex = metacharacters.any? do |char|
-      ARGV.any? do |arg|
-        arg.include?(char) && !arg.start_with?("/")
+
+    if $stdout.tty?
+      metacharacters = %w[\\ | ( ) [ ] { } ^ $ * + ? .]
+      bad_regex = metacharacters.any? do |char|
+        ARGV.any? do |arg|
+          arg.include?(char) && !arg.start_with?("/")
+        end
+      end
+      if ARGV.any? && bad_regex
+        ohai "Did you mean to perform a regular expression search?"
+        ohai "Surround your query with /slashes/ to search by regex."
       end
     end
-    if ARGV.any? && bad_regex
-      ohai "Did you mean to perform a regular expression search?"
-      ohai "Surround your query with /slashes/ to search by regex."
-    end
+
     raise SEARCH_ERROR_QUEUE.pop unless SEARCH_ERROR_QUEUE.empty?
   end
 
   SEARCHABLE_TAPS = OFFICIAL_TAPS.map { |tap| ["Homebrew", tap] } + [
-    %w[Caskroom cask]
+    %w[Caskroom cask],
+    %w[Caskroom versions]
   ]
 
   def query_regexp(query)
@@ -103,7 +105,7 @@ module Homebrew
 
   def search_tap(user, repo, rx)
     if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory? && \
-       "#{user}/#{repo}" != "Caskroom/cask"
+       user != "Caskroom"
       return []
     end
 
@@ -140,13 +142,25 @@ module Homebrew
   end
 
   def search_formulae(rx)
-    aliases = Formula.aliases
+    aliases = Formula.alias_full_names
     results = (Formula.full_names+aliases).grep(rx).sort
 
-    # Filter out aliases when the full name was also found
-    results.reject do |name|
-      canonical_name = Formulary.canonical_name(name)
-      aliases.include?(name) && results.include?(canonical_name)
-    end
+    results.map do |name|
+      begin
+        formula = Formulary.factory(name)
+        canonical_name = formula.name
+        canonical_full_name = formula.full_name
+      rescue
+        canonical_name = canonical_full_name = name
+      end
+      # Ignore aliases from results when the full name was also found
+      if aliases.include?(name) && results.include?(canonical_full_name)
+        next
+      elsif (HOMEBREW_CELLAR/canonical_name).directory?
+        pretty_installed(name)
+      else
+        name
+      end
+    end.compact
   end
 end

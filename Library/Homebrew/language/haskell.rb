@@ -1,79 +1,99 @@
 module Language
   module Haskell
-    # module for formulas using cabal-install as build tool
     module Cabal
-      module ClassMethods
-        def setup_ghc_compilers
-          # Use llvm-gcc on Lion or below (same compiler used when building GHC).
-          fails_with(:clang) if MacOS.version <= :lion
-        end
-      end
-
       def self.included(base)
-        base.extend ClassMethods
+        # use llvm-gcc on Lion or below, as when building GHC)
+        base.fails_with(:clang) if MacOS.version <= :lion
       end
 
-      def cabal_sandbox
+      def cabal_sandbox(options = {})
         pwd = Pathname.pwd
-        # force cabal to put its stuff here instead of the home directory by
-        # pretending the home is here. This also avoid to deal with many options
-        # to configure cabal. Note this is also useful with cabal sandbox to
-        # avoid touching ~/.cabal
-        home = ENV["HOME"]
-        ENV["HOME"] = pwd
+        home = options[:home] || pwd
 
-        # use cabal's sandbox feature if available
-        cabal_version = `cabal --version`[/[0-9.]+/].split(".").collect(&:to_i)
-        if (cabal_version <=> [1, 20]) > -1
-          system "cabal", "sandbox", "init"
-          cabal_sandbox_bin = pwd/".cabal-sandbox/bin"
-        else
-          # no or broken sandbox feature - just use the HOME trick
-          cabal_sandbox_bin = pwd/".cabal/bin"
-        end
-        # cabal may build useful tools that should be found in the PATH
-        mkdir_p cabal_sandbox_bin
-        path = ENV["PATH"]
-        ENV.prepend_path "PATH", cabal_sandbox_bin
-        # update cabal package database
-        system "cabal", "update"
-        yield
-        # restore the environment
-        if (cabal_version <=> [1, 20]) > -1
-          system "cabal", "sandbox", "delete"
-        end
+        # pretend HOME is elsewhere, so that ~/.cabal is kept as untouched
+        # as possible (except for ~/.cabal/setup-exe-cache)
+        # https://github.com/haskell/cabal/issues/1234
+        saved_home = ENV["HOME"]
         ENV["HOME"] = home
-        ENV["PATH"] = path
+
+        system "cabal", "sandbox", "init"
+        cabal_sandbox_bin = pwd/".cabal-sandbox/bin"
+        mkdir_p cabal_sandbox_bin
+
+        # make available any tools that will be installed in the sandbox
+        saved_path = ENV["PATH"]
+        ENV.prepend_path "PATH", cabal_sandbox_bin
+
+        # avoid updating the cabal package database more than once
+        system "cabal", "update" unless (home/".cabal/packages").exist?
+
+        yield
+
+        # remove the sandbox and all build products
+        rm_rf [".cabal-sandbox", "cabal.sandbox.config", "dist"]
+
+        # avoid installing any Haskell libraries, as a matter of policy
+        rm_rf lib unless options[:keep_lib]
+
+        # restore the environment
+        ENV["HOME"] = saved_home
+        ENV["PATH"] = saved_path
       end
 
-      def cabal_install(*opts)
-        system "cabal", "install", "--jobs=#{ENV.make_jobs}", *opts
+      def cabal_sandbox_add_source(*args)
+        system "cabal", "sandbox", "add-source", *args
       end
 
-      # install the tools passed in parameter and remove the packages that where
-      # used so they won't be in the way of the dependency solver for the main
-      # package. The tools are installed sequentially in order to make possible
-      # to install several tools that depends on each other
-      def cabal_install_tools(*opts)
-        opts.each { |t| cabal_install t }
-        rm_rf Dir[".cabal*/*packages.conf.d/"]
+      def cabal_install(*args)
+        # cabal-install's dependency-resolution backtracking strategy can easily
+        # need more than the default 2,000 maximum number of "backjumps," since
+        # Hackage is a fast-moving, rolling-release target. The highest known
+        # needed value by a formula at this time (February 2016) was 43,478 for
+        # git-annex, so 100,000 should be enough to avoid most gratuitous
+        # backjumps build failures.
+        system "cabal", "install", "--jobs=#{ENV.make_jobs}", "--max-backjumps=100000", *args
       end
 
-      # remove the development files from the lib directory. cabal-install should
-      # be used instead to install haskell packages
-      def cabal_clean_lib
-        # a better approach may be needed here
-        rm_rf lib
+      def cabal_configure(flags)
+        system "cabal", "configure", flags
       end
 
-      def install_cabal_package(args = [])
+      def cabal_install_tools(*tools)
+        # install tools sequentially, as some tools can depend on other tools
+        tools.each { |tool| cabal_install tool }
+
+        # unregister packages installed as dependencies for the tools, so
+        # that they can't cause dependency conflicts for the main package
+        rm_rf Dir[".cabal-sandbox/*packages.conf.d/"]
+      end
+
+      def install_cabal_package(*args)
+        options = if args[-1].kind_of?(Hash) then args.pop else {} end
+
         cabal_sandbox do
-          # the dependencies are built first and installed locally, and only the
-          # current package is actually installed in the destination dir
-          cabal_install "--only-dependencies", *args
+          cabal_install_tools(*options[:using]) if options[:using]
+
+          # if we have build flags, we have to pass them to cabal install to resolve the necessary
+          # dependencies, and call cabal configure afterwards to set the flags again for compile
+          flags = ""
+          if options[:flags]
+            flags = "--flags='#{options[:flags].join(" ")}'"
+          end
+
+          args_and_flags = args
+          args_and_flags << flags unless flags.empty?
+
+          # install dependencies in the sandbox
+          cabal_install "--only-dependencies", *args_and_flags
+
+          # call configure if build flags are set
+          cabal_configure flags unless flags.empty?
+
+          # install the main package in the destination dir
           cabal_install "--prefix=#{prefix}", *args
+
+          yield if block_given?
         end
-        cabal_clean_lib
       end
     end
   end

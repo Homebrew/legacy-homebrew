@@ -1,18 +1,16 @@
 class Assimp < Formula
   desc "Portable library for importing many well-known 3D model formats"
-  homepage "http://assimp.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/assimp/assimp-3.1/assimp-3.1.1_no_test_models.zip"
-  sha256 "da9827876f10a8b447270368753392cfd502e70a2e9d1361554e5dfcb1fede9e"
-  version "3.1.1"
+  homepage "http://www.assimp.org"
+  url "https://github.com/assimp/assimp/archive/v3.2.tar.gz"
+  sha256 "187f825c563e84b1b17527a4da0351aa3d575dfd696a9d204ae4bb19ee7df94a"
 
   head "https://github.com/assimp/assimp.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "147bc1b92a31526950262c123b2d78d78b092005" => :yosemite
-    sha1 "a44ef2d43ab074beb0b03196e65df3bf1a8e406b" => :mavericks
-    sha1 "31bb541f50c5ff22055ce2f608ae88ab4997407c" => :mountain_lion
+    sha256 "b3d78e827c13d6f66a98bd9c52cf2a3bd44a69082f33183f2afbcbbf4fe68fc5" => :el_capitan
+    sha256 "bf4f61f6fe5c3debd29c768bba9024ca1ce51606fe2e9814ad36415ea4f391a7" => :yosemite
+    sha256 "82faa217aabc364693ca749e55f990cf16c8cc808eceb768d0880f70cff95d59" => :mavericks
   end
 
   option "without-boost", "Compile without thread safe logging or multithreaded computation if boost isn't installed"
@@ -21,7 +19,9 @@ class Assimp < Formula
   depends_on "boost" => [:recommended, :build]
 
   def install
-    system "cmake", ".", *std_cmake_args
+    args = std_cmake_args
+    args << "-DASSIMP_BUILD_TESTS=OFF"
+    system "cmake", *args
     system "make", "install"
   end
 

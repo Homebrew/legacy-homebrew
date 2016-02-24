@@ -1,15 +1,24 @@
 class KubernetesCli < Formula
-  desc "Command-line tool for kubernetes, a cluster manager for Docker"
+  desc "Kubernetes command-line interface"
   homepage "http://kubernetes.io/"
-  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v1.0.0.tar.gz"
-  sha256 "8aa74850d5549e9c659d1c2e821e26ae16596ca92d79406959a20f26b7526cf5"
-  head "https://github.com/GoogleCloudPlatform/kubernetes.git"
+  head "https://github.com/kubernetes/kubernetes.git"
+
+  stable do
+    url "https://github.com/kubernetes/kubernetes/archive/v1.1.8.tar.gz"
+    sha256 "fbc1a01edc6683dc3c59830a63622730c5baece1e02dfa1cd32a852bf4415581"
+  end
 
   bottle do
-    cellar :any
-    sha256 "a2496ee1bb13c5414140390e002dc510a0266f9c44f86bcba42e55d91e5eee4c" => :yosemite
-    sha256 "536577b748dd0d3f18d07827d2245eabd0ed371ad1e4715c84ba348ffc4c10d0" => :mavericks
-    sha256 "06b6d8c50db75c1473dc739a6083d64a6ce92fee8d352e38e8414e64ce3f525a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0ebbae000a1f339588e052d1aba970b8d04fc4050aa2362bc865198acf535de5" => :el_capitan
+    sha256 "47bc25716067a1804506be5d670c148dc75c750cadad0475af0ee9048c6ee3b7" => :yosemite
+    sha256 "afb9bb03e2df5018d92ee7a09c2f3e7d080736094dd1150d1b5f4f587f805ab1" => :mavericks
+  end
+
+  devel do
+    url "https://github.com/kubernetes/kubernetes/archive/v1.2.0-alpha.4.tar.gz"
+    sha256 "0c1d1a57ceb5beffcc7f8852d0d680ee37fc8e21814c74a0ea09e711e2c8aa44"
+    version "1.2.0-alpha.4"
   end
 
   depends_on "go" => :build
@@ -17,14 +26,14 @@ class KubernetesCli < Formula
   def install
     arch = MacOS.prefer_64_bit? ? "amd64" : "x86"
 
-    system "make", "all", "WHAT=cmd/*", "GOFLAGS=-v"
+    system "make", "all", "WHAT=cmd/kubectl", "GOFLAGS=-v"
 
     dir = "_output/local/bin/darwin/#{arch}"
-    bin.install "#{dir}/kubectl", "#{dir}/kubernetes"
+    bin.install "#{dir}/kubectl"
+    bash_completion.install "contrib/completions/bash/kubectl"
   end
 
   test do
     assert_match /^kubectl controls the Kubernetes cluster manager./, shell_output("#{bin}/kubectl 2>&1", 0)
-    assert_match %r{^Usage of #{bin}/kubernetes:}, shell_output("#{bin}/kubernetes --help 2>&1", 2)
   end
 end

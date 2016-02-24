@@ -6,9 +6,9 @@ class Vavrdiasm < Formula
 
   bottle do
     cellar :any
-    sha1 "3cd688a816ee9f7a4046db6170e8d42467877ee5" => :yosemite
-    sha1 "840d8e147085e86941da55763625d82e44b2ca79" => :mavericks
-    sha1 "5ce2eed553cbe8e522b29106eda55b559ce55ac5" => :mountain_lion
+    sha256 "ce57062586ca9cb91290141376f1da1f5de3c6efb6fe4687585a3e64cc29c014" => :yosemite
+    sha256 "f881c5a6d94581c4fc9efb13118c84c40700f13d130302f6ee4cb16968d1f6b0" => :mavericks
+    sha256 "d3866a89762e6d98987128b3e961788d1f997b1851b8b35213a9bb7ce3f53f39" => :mountain_lion
   end
 
   # Patch:

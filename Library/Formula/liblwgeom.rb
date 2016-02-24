@@ -1,7 +1,7 @@
 class Liblwgeom < Formula
   desc "Allows SpatiaLite to support ST_MakeValid() like PostGIS"
   homepage "http://postgis.net"
-  revision 1
+  revision 2
 
   stable do
     url "http://download.osgeo.org/postgis/source/postgis-2.1.5.tar.gz"
@@ -18,13 +18,13 @@ class Liblwgeom < Formula
 
   bottle do
     cellar :any
-    sha256 "48aa3296e32ff2a72c2c559649a37e7ad1ce3c8fe825d9a0f3e320683c97041e" => :yosemite
-    sha256 "c2a7148e99fe6b03f368a12bf89e69262795e97c1d8b1578f250607bf8833136" => :mavericks
-    sha256 "11a77a99a93daed092be094195bc1afce3f2c2d91adc9412106bf5c89e4f5755" => :mountain_lion
+    sha256 "a12e1bb07f3b6288118f52b7e711aa0cb54c4edab8be537de26762d1b617471e" => :el_capitan
+    sha256 "b902de2302683c968a3a375d16cd87814570c233e055a69de37e2842bbbcc5ab" => :yosemite
+    sha256 "4b53028a2954665d46d15dc6d77e4a535c74d6ee446f95539e856e7c573ad4e2" => :mavericks
   end
 
   head do
-    url "http://svn.osgeo.org/postgis/trunk/"
+    url "https://svn.osgeo.org/postgis/trunk/"
     depends_on "postgresql" => :build # don't maintain patches for HEAD
   end
 

@@ -1,7 +1,7 @@
 class Irssi < Formula
   desc "Modular IRC client"
-  homepage "http://irssi.org/"
-  url "http://irssi.org/files/irssi-0.8.17.tar.gz"
+  homepage "https://irssi.org/"
+  url "https://github.com/irssi-import/irssi/releases/download/0.8.17/irssi-0.8.17.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/i/irssi/irssi_0.8.17.orig.tar.gz"
   sha256 "0ae01f76797fb6d6b8e0f2268b39c7afb90ac62658ec754c82acfc344b8203e9"
   revision 2
@@ -15,10 +15,10 @@ class Irssi < Formula
   end
 
   bottle do
-    revision 2
-    sha256 "a3f40b5a09cd11ee4fe46420b03fe8ac99c1603ac560cdd56b373745d5a07b6b" => :yosemite
-    sha256 "58a876749226ac7f862bdd8ba2d8c1b3aa9f5f9e9bc69e6d7671a32899b108e8" => :mavericks
-    sha256 "dbe24bf6031f96b060884f07dcfc33e00fca993001c3676ce949f6f00522ba88" => :mountain_lion
+    revision 3
+    sha256 "3c70f0936f14cf71dcefdbd635e825ef0941a9c44e6693ae495cc68382c751bc" => :el_capitan
+    sha256 "b55f35cd938692dd577d553c3a6b48f89b5923125a96fa23697ab162d2a7cb61" => :yosemite
+    sha256 "1b30b5687ad71c6cb74ba6264673bc6244c053c30773a145f3cb008500989c9f" => :mavericks
   end
 
   option "with-dante", "Build with SOCKS support"
@@ -58,10 +58,6 @@ class Irssi < Formula
     else
       args << "--with-perl=no"
     end
-
-    # confuses Perl library path configuration
-    # https://github.com/Homebrew/homebrew/issues/34685
-    ENV.delete "PERL_MM_OPT"
 
     args << "--disable-ssl" if build.without? "openssl"
 

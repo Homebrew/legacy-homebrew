@@ -1,34 +1,26 @@
 class Phantomjs < Formula
   desc "Headless WebKit scriptable with a JavaScript API"
-  homepage "http://www.phantomjs.org/"
-
-  stable do
-    url "https://github.com/ariya/phantomjs/archive/2.0.0.tar.gz"
-    sha256 "0a1338464ca37314037d139b3e0f7368325f5d8810628d9d9f2df9f9f535d407"
-
-    # Qt Yosemite build fix. Upstream commit/PR:
-    # https://qt.gitorious.org/qt/qtbase/commit/70e442
-    # https://github.com/ariya/phantomjs/pull/12934
-    patch do
-      url "https://gist.githubusercontent.com/mikemcquaid/db645f7cbeec4f3b1b2e/raw/e664ecc5c259344d5a73a84b52e472bf8ad3733e/phantomjs-yosemite.patch"
-      sha256 "f54bd1592185f031552d3ad5c8809ff27e8f3be4f1c05c81b59bf7dbc4a59de1"
-    end
-  end
+  homepage "http://phantomjs.org/"
+  url "https://github.com/ariya/phantomjs.git",
+      :tag => "2.1.1",
+      :revision => "d9cda3dcd26b0e463533c5cc96e39c0f39fc32c1"
+  head "https://github.com/ariya/phantomjs.git"
 
   bottle do
     cellar :any
-    sha1 "f9dd71edb662479e0f832379368d4cd4878f940e" => :yosemite
-    sha1 "817ab92d4bfcd5496cf1c59173d48976610e5f70" => :mavericks
-    sha1 "887a96e55f67a3d350bc40f910926286c6cea240" => :mountain_lion
+    sha256 "f66255cd772834de297a10fc7053800bfbd99c4833196958c18f05299dec6bc9" => :el_capitan
+    sha256 "0ba4152cce3869cc01ed697d9bbf4dfe55d7749693dfbf6bede24c191c0f177f" => :yosemite
+    sha256 "908cacf9af85893f54c5330987099896448c2699a7f3712de3e2232348c433b2" => :mavericks
   end
 
-  head "https://github.com/ariya/phantomjs.git"
+  depends_on :xcode => :build
+  depends_on "openssl"
 
   def install
-    system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
-      "--qt-config", "-openssl-linked"
+    inreplace "build.py", "/usr/local", HOMEBREW_PREFIX
+    system "./build.py", "--confirm", "--jobs", ENV.make_jobs
     bin.install "bin/phantomjs"
-    (share+"phantomjs").install "examples"
+    pkgshare.install "examples"
   end
 
   test do

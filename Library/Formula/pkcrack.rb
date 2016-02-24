@@ -20,6 +20,8 @@ class Pkcrack < Formula
     sha256 "e0303d9adeffb2fb2a61a82ad040a3fec4edc23cae044ac1517b826c27fce412"
   end
 
+  conflicts_with "libextractor", :because => "both install `extract` binaries"
+
   def install
     system "make", "-C", "src/"
     bin.install Dir["src/*"].select { |f| File.executable? f }

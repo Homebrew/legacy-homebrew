@@ -1,23 +1,25 @@
 class Volatility < Formula
   desc "Advanced memory forensics framework"
   homepage "https://github.com/volatilityfoundation/volatility"
-  url "http://downloads.volatilityfoundation.org/releases/2.4/volatility-2.4.tar.gz"
-  sha256 "684fdffd79ca4453298ee2eb001137cff802bc4b3dfaaa38c4335321f7cccef1"
+  url "http://downloads.volatilityfoundation.org/releases/2.5/volatility-2.5.zip"
+  sha256 "b90dfd18b6a99e1b35ef0f92f28422cca03bea0b7b8ec411cfbc603e72aa594b"
   head "https://github.com/volatilityfoundation/volatility.git"
 
   bottle do
     revision 1
-    sha1 "cf22cc05b0a17b14ebd781ce9ba8776df093fbfc" => :yosemite
-    sha1 "fa9bf1f6eed8a25ebeef726bcb178858e9c97043" => :mavericks
-    sha1 "f98e08887443635e783ca8bb2395b0737a810a93" => :mountain_lion
+    sha256 "a172e7259226791dafd1515114240b461b6c5dcf37ff4741eb29e4aef610a9dd" => :el_capitan
+    sha256 "f813ccfed0915e5c6fdad736335d7df61863023cb12d4e0ac579b2225e99e6e7" => :yosemite
+    sha256 "50ab8b49c39e37a4757a3679b01c63d0d20bc278214209015c5a1be5430a9229" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "yara"
+  depends_on "jpeg"
+  depends_on "freetype"
 
   resource "yara-python" do
-    url "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz"
-    sha256 "4a062ac3b44a3cb1487240e32d3dcbdb4e4d2e742174d87e36a95f18a3963507"
+    url "https://github.com/plusvic/yara/archive/v3.4.0.tar.gz"
+    sha256 "528571ff721364229f34f6d1ff0eedc3cd5a2a75bb94727dc6578c6efe3d618b"
   end
 
   resource "distorm3" do
@@ -30,19 +32,19 @@ class Volatility < Formula
     sha256 "41542a5be24da239e0841cb66e9dd28b772e79684b78d0b8292118e5c0d4e184"
   end
 
-  resource "PIL" do
-    url "http://effbot.org/downloads/Imaging-1.1.7.tar.gz"
-    sha256 "895bc7c2498c8e1f9b99938f1a40dc86b3f149741f105cf7c7bd2e0725405211"
+  resource "pillow" do
+    url "https://pypi.python.org/packages/source/P/Pillow/Pillow-3.1.1.tar.gz"
+    sha256 "486f4ccddee09429cb1c63ea56c02894aecf9d69acdcaf006c53835df2549fff"
   end
 
   resource "openpyxl" do
-    url "https://pypi.python.org/packages/source/o/openpyxl/openpyxl-2.0.5.tar.gz"
-    sha256 "874c2f1180b0b6c84173abac1b9de87f4cb4eef59b83b3095ef345f77c824a93"
+    url "https://pypi.python.org/packages/source/o/openpyxl/openpyxl-2.3.3.tar.gz"
+    sha256 "93d64157d8cab5c7040bc025f0a7a9ad3c05e2d3f11518329c3f1682f5f62ffe"
   end
 
   resource "ipython" do
-    url "https://pypi.python.org/packages/source/i/ipython/ipython-2.2.0.tar.gz"
-    sha256 "b7ca77ba54a02f032055b73f5f62b01431f818ae00f63716b78f881c2b2564e2"
+    url "https://pypi.python.org/packages/source/i/ipython/ipython-2.4.1.tar.gz"
+    sha256 "6d350b5c2d3e925b0ff6167658812d720b891e476238d924504e2f7f483e9217"
   end
 
   resource "readline" do
@@ -51,21 +53,26 @@ class Volatility < Formula
   end
 
   resource "pytz" do
-    url "https://pypi.python.org/packages/source/p/pytz/pytz-2014.4.tar.gz"
-    sha256 "fddc081b9aead4d4ec09685c6e9ed6c7d3f5cace1ff7d39c76ba770f2c8d1049"
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.7.tar.gz"
+    sha256 "99266ef30a37e43932deec2b7ca73e83c8dbc3b9ff703ec73eca6b1dae6befea"
   end
 
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
 
-    res = %w[distorm3 pycrypto PIL openpyxl pytz ipython readline]
+    res = %w[distorm3 pycrypto openpyxl pytz ipython readline]
 
     res.each do |r|
       resource(r).stage do
         system "python", "setup.py", "build"
         system "python", "setup.py", "install", "--prefix=#{libexec}"
       end
+    end
+
+    resource("pillow").stage do
+      inreplace "setup.py", "'brew', '--prefix'", "'#{HOMEBREW_PREFIX}/bin/brew', '--prefix'"
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
     resource("yara-python").stage do

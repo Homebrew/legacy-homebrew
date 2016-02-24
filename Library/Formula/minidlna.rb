@@ -1,15 +1,15 @@
 class Minidlna < Formula
   desc "Media server software, compliant with DLNA/UPnP-AV clients"
-  homepage "http://sourceforge.net/projects/minidlna/"
-  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.4/minidlna-1.1.4.tar.gz"
-  sha256 "9814c04a2c506a0dd942c4218d30c07dedf90dabffbdef2d308a3f9f23545314"
-  revision 2
+  homepage "https://sourceforge.net/projects/minidlna/"
+  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.5/minidlna-1.1.5.tar.gz"
+  sha256 "8477ad0416bb2af5cd8da6dde6c07ffe1a413492b7fe40a362bc8587be15ab9b"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "8f9e4ee18d746731d37330c3b04b729235d16b49567a6980a3f7d76e37fe444a" => :yosemite
-    sha256 "d42575d92f63cfc68bff7d4fcf68b6aa4738490f66f016625099eed627e803b7" => :mavericks
-    sha256 "ed8cb39eed82926932beed72e00d6c96e22eabfe39f4296f5345079da78813d5" => :mountain_lion
+    sha256 "26eca84ae424d6c09eaaafed4c1086f5f0a0b7ac31d85f5b2326ac79fc4f2d13" => :el_capitan
+    sha256 "5f60b419cbaaafe10346bee031fe8ade57776e40833846164280950595d7a601" => :yosemite
+    sha256 "6685427a0ff92f85a312e6b378ed3aa3ce746b0777bd661dbc544883261fa19a" => :mavericks
   end
 
   head do
@@ -34,32 +34,47 @@ class Minidlna < Formula
     system "./autogen.sh" if build.head?
     system "./configure", "--exec-prefix=#{prefix}"
     system "make", "install"
-    sample_config_path.write sample_config
+  end
+
+  def post_install
+    (pkgshare/"minidlna.conf").write <<-EOS.undent
+      friendly_name=Mac DLNA Server
+      media_dir=#{ENV["HOME"]}/.config/minidlna/media
+      db_dir=#{ENV["HOME"]}/.config/minidlna/cache
+      log_dir=#{ENV["HOME"]}/.config/minidlna
+    EOS
   end
 
   def caveats; <<-EOS.undent
       Simple single-user configuration:
 
       mkdir -p ~/.config/minidlna
-      cp #{sample_config_path} ~/.config/minidlna/minidlna.conf
+      cp #{opt_pkgshare}/minidlna.conf ~/.config/minidlna/minidlna.conf
       ln -s YOUR_MEDIA_DIR ~/.config/minidlna/media
       minidlnad -f ~/.config/minidlna/minidlna.conf -P ~/.config/minidlna/minidlna.pid
     EOS
   end
 
-  def sample_config_path
-    share + "minidlna/minidlna.conf"
-  end
-
-  def sample_config; <<-EOS.undent
-    friendly_name=Mac DLNA Server
-    media_dir=#{ENV["HOME"]}/.config/minidlna/media
-    db_dir=#{ENV["HOME"]}/.config/minidlna/cache
-    log_dir=#{ENV["HOME"]}/.config/minidlna
-    EOS
-  end
-
   test do
-    system "#{sbin}/minidlnad", "-V"
+    (testpath/".config/minidlna/media").mkpath
+    (testpath/".config/minidlna/cache").mkpath
+    (testpath/"minidlna.conf").write <<-EOS.undent
+      friendly_name=Mac DLNA Server
+      media_dir=#{testpath}/.config/minidlna/media
+      db_dir=#{testpath}/.config/minidlna/cache
+      log_dir=#{testpath}/.config/minidlna
+    EOS
+
+    pid = fork do
+      exec "#{sbin}/minidlnad -f minidlna.conf -p 8081 -P #{testpath}/minidlna.pid"
+    end
+    sleep 2
+
+    begin
+      assert_match /MiniDLNA #{version}/, shell_output("curl localhost:8081")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

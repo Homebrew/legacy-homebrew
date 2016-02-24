@@ -1,16 +1,16 @@
 class Ejdb < Formula
   desc "C library based on modified version of Tokyo Cabinet"
   homepage "http://ejdb.org"
-  url "https://github.com/Softmotions/ejdb/archive/v1.2.6.tar.gz"
-  sha256 "50baee93b2815c1b9c45973eda4a03e36fabd1bc6987122dd391f16e43c88a9d"
+  url "https://github.com/Softmotions/ejdb/archive/v1.2.10.tar.gz"
+  sha256 "3a6d4a487e02c05dd67e72a77ee6082fbb1f5a19d4f7f15d14e1c891bbfe520e"
 
   head "https://github.com/Softmotions/ejdb.git"
 
   bottle do
     cellar :any
-    sha256 "e6eed78d9a3c3b87f78f7f27599e66642d6403c79a7880649eb1da62dfd2f27c" => :yosemite
-    sha256 "c262565e0fb217c13147c3112d9450686af22de2516740ba70e3acf199a72ae5" => :mavericks
-    sha256 "284b9c2230b10a825d282febd68dcc2a2604a8759b2f0266033422ef071497b9" => :mountain_lion
+    sha256 "15c0f59354c39a9481591bbfad7e46f8c87cfeda8371e27728009b0fc20fc923" => :yosemite
+    sha256 "4afc62e8452bc92ebd72c89b134b16f5d9781f56eee2b7b75e1ab03698ca5fc7" => :mavericks
+    sha256 "246e34413c364ce13accac4c23169ebf42daaba94f1aa90c770fafd6aa74a6b0" => :mountain_lion
   end
 
   depends_on "cmake" => :build

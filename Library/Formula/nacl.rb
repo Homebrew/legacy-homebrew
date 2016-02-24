@@ -1,15 +1,16 @@
 class Nacl < Formula
   desc "Network communication, encryption, decryption, signatures library"
-  homepage "http://nacl.cr.yp.to/"
+  homepage "https://nacl.cr.yp.to/"
   url "https://hyperelliptic.org/nacl/nacl-20110221.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/n/nacl/nacl_20110221.orig.tar.bz2"
   sha256 "4f277f89735c8b0b8a6bbd043b3efb3fa1cc68a9a5da6a076507d067fc3b3bf8"
 
   bottle do
-    cellar :any
-    sha1 "a2fd2a9f121f7c20dee040ae70cdd3e05708b98f" => :yosemite
-    sha1 "ec947d17a2d50bca7e3ecd24ff24ef19481afac3" => :mavericks
-    sha1 "074b5a2eda0007f256830e44314e55c152b6c03e" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "55af6242b2da64f373ddb2c60a2725b556a945ba7f1c7e9c90f7795bfe42e20e" => :el_capitan
+    sha256 "e97604331197c2d4fd013fcab8b68d5ac9627872a3d550afa4920a95ac1cfe5c" => :yosemite
+    sha256 "f223d3283ef0003d2693d45d4d83b9e57c85a69ef2da29a38611dae45c649572" => :mavericks
   end
 
   def install

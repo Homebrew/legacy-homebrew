@@ -8,17 +8,15 @@ class Cig < Formula
   head "https://github.com/stevenjack/cig.git"
 
   bottle do
-    cellar :any
-    sha256 "b25800ad21c429e9d658f39b81c38025e3051706a5b1ade48942bac784cc7c1d" => :yosemite
-    sha256 "b1c2b1e3017d5f37667a3cb4283c5980fe086d3ebe1d299fa7a57d741c5e318a" => :mavericks
-    sha256 "fda6e73c27a3b73ef769a07134346efb22eb393f0f97c4acde9c3715136db401" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "c64c5aaab66ee0853e0b3437c002dcf233fd543a019e4b411f9cf3f9555de702" => :el_capitan
+    sha256 "d349ccf020a30a7db72333a4aa1a8f73bcb2b3c6f0984c7a0e88de38bc07ed4c" => :yosemite
+    sha256 "b61176af3e53d2505f36ee3deafbb92a5f02f6c0841fefdcdfdd084821a95837" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git", :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
-  end
+  depends_on "godep" => :build
 
   go_resource "github.com/kr/fs" do
     url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
@@ -34,11 +32,7 @@ class Cig < Formula
     ln_sf buildpath, buildpath/"src/github.com/stevenjack/cig"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-
-    system "./bin/godep", "go", "build", "-o", "cig", "."
+    system "godep", "go", "build", "-o", "cig", "."
     bin.install "cig"
   end
 

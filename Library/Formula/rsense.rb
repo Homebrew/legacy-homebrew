@@ -4,6 +4,8 @@ class Rsense < Formula
   url "http://cx4a.org/pub/rsense/rsense-0.3.tar.bz2"
   sha256 "508795d2f11784e708cbbc39c3e4149a3e87baab7161db3df60b68a321bb534b"
 
+  bottle :unneeded
+
   def install
     libexec.install Dir["*"]
     (libexec/"bin/rsense").chmod 0755

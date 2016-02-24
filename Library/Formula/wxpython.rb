@@ -18,9 +18,11 @@ class Wxpython < Formula
   sha256 "d54129e5fbea4fb8091c87b2980760b72c22a386cb3b9dd2eebc928ef5e8df61"
 
   bottle do
-    sha1 "e73ade83e5802db3b824ebdc8b8fc62d0c70ae6f" => :yosemite
-    sha1 "739ab76d3bc7e0f804ea487d14274630ae0e19cc" => :mavericks
-    sha1 "76bd0e1a6ce0fba459b4847836c3dfd0ac4a31af" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "9956afc649ebc394fbae40dd55d3ce367ab42abe6be43ef01c35c1c6d0a8e225" => :el_capitan
+    sha256 "04d8dfeab6dbb7a1c099c8e866f35e6d5d528ea69ef283d556c545347882abe2" => :yosemite
+    sha256 "41ec8003758d804b8c426ce654a87f2d9f4be3be40fcbcb3d5686e3ecabaddbc" => :mavericks
   end
 
   if MacOS.version <= :snow_leopard
@@ -39,6 +41,12 @@ class Wxpython < Formula
     else
       ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
     end
+
+    # wxPython is hardcoded to install headers in wx's prefix;
+    # set it to use wxPython's prefix instead
+    # See #47187.
+    inreplace %w[wxPython/config.py wxPython/wx/build/config.py],
+      "WXPREFIX +", "'#{prefix.to_s}' +"
 
     args = [
       "WXPORT=osx_cocoa",

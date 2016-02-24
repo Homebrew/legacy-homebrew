@@ -8,9 +8,9 @@ class Libuvc < Formula
 
   bottle do
     revision 1
-    sha1 "600fa35a693bccc80b44f731acc9cd945c35181d" => :yosemite
-    sha1 "b292f190f52e1e659aa3c2e51c19f15b421fb01e" => :mavericks
-    sha1 "6216c3b15fc83f9612b8573999d0dc537381a20b" => :mountain_lion
+    sha256 "cfb92d3277e90897153ddd3e64f2fecd5330c1b8656b9dfcd7864641988d12ac" => :yosemite
+    sha256 "fba52081f76397aab2520f7d56e09b12a78e54b8606587a45ec12305dd03407d" => :mavericks
+    sha256 "cca1e796069a44f26f64b935e371bb28c40121270f55b3cca82cbf7ef4586f6f" => :mountain_lion
   end
 
   depends_on "cmake" => :build

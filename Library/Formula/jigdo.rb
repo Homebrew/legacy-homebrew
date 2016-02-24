@@ -6,20 +6,20 @@ class Jigdo < Formula
   revision 2
 
   bottle do
-    revision 1
-    sha256 "a5ba35413d5395a286b39d9ad3f9b3bfc3a4095d3537f7d3b227d86825c23f43" => :yosemite
-    sha256 "a9c0ede0039a384a3fa4b268765d683d72980d94d092417c55274a072ea60d73" => :mavericks
-    sha256 "1243645dd9eaf663aed268faa133596cb96b75ea8c2a8c6867d9110b538aa736" => :mountain_lion
+    revision 2
+    sha256 "8128ebe3947194e46c94ee9f141c1000ce0a8a0281522a4a858e341bae011bf9" => :el_capitan
+    sha256 "1a8a7505c33fc6ee08c23effc8776b4a575947fab9b8e1ea08c03df0c1d83d65" => :yosemite
+    sha256 "78483d046c8deea235b333401dc959d7e928dc65728519a789ba09488546cced" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "wget" => :recommended
-  depends_on "berkeley-db4"
+  depends_on "berkeley-db"
   depends_on "gtk+"
 
   # Use MacPorts patch for compilation on 10.9; this software is no longer developed.
   patch :p0 do
-    url "https://trac.macports.org/export/113020/trunk/dports/net/jigdo/files/patch-src-compat.hh.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/e101570/jigdo/patch-src-compat.hh.diff"
     sha256 "a21aa8bcc5a03a6daf47e0ab4e04f16e611e787a7ada7a6a87c8def738585646"
   end
 
@@ -33,6 +33,6 @@ class Jigdo < Formula
   end
 
   test do
-    system "#{bin}/jigdo-file", "-h"
+    assert_match "version #{version}", shell_output("#{bin}/jigdo-file -v")
   end
 end

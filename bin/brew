@@ -1,31 +1,23 @@
-#!/bin/sh
-
-chdir () {
+#!/bin/bash
+chdir() {
   cd "$@" >/dev/null
 }
 
-BREW_FILE_DIRECTORY=$(chdir "${0%/*}" && pwd -P)
-export HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
+BREW_FILE_DIRECTORY="$(chdir "${0%/*}" && pwd -P)"
+HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 
-BREW_SYMLINK=$(readlink "$0")
-if [ -n "$BREW_SYMLINK" ]
+HOMEBREW_PREFIX="${HOMEBREW_BREW_FILE%/*/*}"
+HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX"
+
+if [[ -L "$HOMEBREW_BREW_FILE" ]]
 then
-    BREW_SYMLINK_DIRECTORY=$(dirname "$BREW_SYMLINK")
-    BREW_FILE_DIRECTORY=$(chdir "$BREW_FILE_DIRECTORY" &&
-                          chdir "$BREW_SYMLINK_DIRECTORY" && pwd -P)
+  BREW_SYMLINK="$(readlink "$HOMEBREW_BREW_FILE")"
+  BREW_SYMLINK_DIRECTORY="$(dirname "$BREW_SYMLINK")"
+  BREW_FILE_DIRECTORY="$(chdir "$BREW_FILE_DIRECTORY" &&
+                         chdir "$BREW_SYMLINK_DIRECTORY" && pwd -P)"
+  HOMEBREW_REPOSITORY="${BREW_FILE_DIRECTORY%/*}"
 fi
 
-BREW_LIBRARY_DIRECTORY=$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)
+HOMEBREW_LIBRARY="$HOMEBREW_REPOSITORY/Library"
 
-# Users may have these set, pointing the system Ruby
-# at non-system gem paths
-unset GEM_HOME
-unset GEM_PATH
-
-BREW_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
-if [ "$BREW_SYSTEM" = "darwin" ]
-then
-    exec "$BREW_LIBRARY_DIRECTORY/brew.rb" "$@"
-else
-    exec ruby -W0 "$BREW_LIBRARY_DIRECTORY/brew.rb" "$@"
-fi
+source "$HOMEBREW_LIBRARY/brew.sh"

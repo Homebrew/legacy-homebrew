@@ -1,22 +1,23 @@
 class OpenSceneGraph < Formula
   desc "3D graphics toolkit"
   homepage "http://www.openscenegraph.org/projects/osg"
-  url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.3.3.zip"
-  sha256 "b81cda123ffb3bd108e0fe4be4fff1351d6636e6fb0a1475b2c4fb9618d3ae2b"
+  url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.4.0.zip"
+  sha256 "5c727d84755da276adf8c4a4a3a8ba9c9570fc4b4969f06f1d2e9f89b1e3040e"
   revision 1
 
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
 
   bottle do
-    revision 1
-    sha256 "84a2fb06650a9b61bcefe3abcc3619263a1e36fa086e85ccc5b749e4948cb793" => :yosemite
-    sha256 "c5de6622bedf78bc453db80ec34f9d784c453444e2046f17061a7e1da272772f" => :mavericks
-    sha256 "1be15b3c3e807af706d6a6a5ddf985550c4eabc6ebeceb92908f5fdc6c90d081" => :mountain_lion
+    sha256 "d75dbe609dc34b520dd70a8a04548252e3cb68e9faa28221420ceb7e5e56f2cf" => :mavericks
   end
 
   option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
+
+  # Currently does not build on 10.10+, possibly due to Xcode 7 issue
+  # https://github.com/Homebrew/homebrew/pull/46776
+  depends_on MaximumMacOSRequirement => :mavericks
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build

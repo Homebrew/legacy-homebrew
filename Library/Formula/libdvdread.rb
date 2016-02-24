@@ -1,8 +1,8 @@
 class Libdvdread < Formula
   desc "C library for reading DVD-video images"
   homepage "https://dvdnav.mplayerhq.hu/"
-  url "https://download.videolan.org/pub/videolan/libdvdread/5.0.2/libdvdread-5.0.2.tar.bz2"
-  sha256 "82cbe693f2a3971671e7428790b5498392db32185b8dc8622f7b9cd307d3cfbf"
+  url "https://download.videolan.org/pub/videolan/libdvdread/5.0.3/libdvdread-5.0.3.tar.bz2"
+  sha256 "321cdf2dbdc83c96572bc583cd27d8c660ddb540ff16672ecb28607d018ed82b"
 
   head do
     url "git://git.videolan.org/libdvdread.git"
@@ -13,9 +13,9 @@ class Libdvdread < Formula
 
   bottle do
     cellar :any
-    sha1 "df466eb8a5baca8d26615d93d9eb3e88bf5ec6a8" => :yosemite
-    sha1 "427e4c4a5553abbfba325837be969811496641bd" => :mavericks
-    sha1 "3ad46154279902cb54890942f2d2ade6eeb32f7a" => :mountain_lion
+    sha256 "ec4bf18e28993cb210722e2a15fb7c22297e219dfb94d910148c291af59bf6a3" => :el_capitan
+    sha256 "1c77e1abc90ea979e77da169a6a91d1df11e234ac78516bb448486da048d2f01" => :yosemite
+    sha256 "caf2bd44104c46195d80cfd4305c3c24856ff6d2a5018924eac84f9a2f2f8508" => :mavericks
   end
 
   depends_on "libdvdcss"

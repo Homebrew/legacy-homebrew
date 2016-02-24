@@ -1,13 +1,14 @@
 class Bitchx < Formula
-  desc "BitchX IRC client"
+  desc "Text-based, scriptable IRC client"
   homepage "http://bitchx.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/bitchx/ircii-pana/bitchx-1.2.1/bitchx-1.2.1.tar.gz"
   sha256 "2d270500dd42b5e2b191980d584f6587ca8a0dbda26b35ce7fadb519f53c83e2"
 
   bottle do
-    sha1 "8ad5407a90b61e1d20f59486c2ca750383bcc595" => :yosemite
-    sha1 "3581e44130a9bcf64636355c09d5dae36ea30d1c" => :mavericks
-    sha1 "01ca96037d259ab3b17354e65001672140b4cfa9" => :mountain_lion
+    sha256 "c76cb88aaa53b51248620ce021b6ea771adc77716b04291dcbaa36d98021b20b" => :el_capitan
+    sha256 "ebb3d7dd9342843c47964d4c545e76136aeb4e200f9495cd2767d0e31fc37181" => :yosemite
+    sha256 "494fd5d6084f70158e82d49a067439770935d5aeeb6223d1c229a27e6f7f9e8f" => :mavericks
+    sha256 "f0d7c9d8eaccd526c39037903121e1e6a026ce93988610ed32ad3b5f864fb630" => :mountain_lion
   end
 
   depends_on "openssl"

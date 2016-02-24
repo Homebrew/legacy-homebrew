@@ -7,9 +7,9 @@ class IcalBuddy < Formula
 
   bottle do
     cellar :any
-    sha1 "23aa4a5dc5375edfa78f0d61c6748dd71e388330" => :mavericks
-    sha1 "0c95d85ea39d4c9d288e1a938e1b5f5e791c29cd" => :mountain_lion
-    sha1 "a856530a9a30a218b2570b3aafb9610ab4297fb8" => :lion
+    sha256 "740d83125399a1ce92f49c3e32b289d5b7df1ccb26efb7fcbcdaf1cfef63d20b" => :mavericks
+    sha256 "dd01140c9f8fc6648c322e258df3718b6fe3e78a20758178a4f1f7932f205198" => :mountain_lion
+    sha256 "91b4b914f49c4a523a286b0e44e3a58e306756467a8887b97a61a26e755373db" => :lion
   end
 
   def install

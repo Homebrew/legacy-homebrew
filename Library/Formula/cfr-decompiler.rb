@@ -1,13 +1,15 @@
 class CfrDecompiler < Formula
   desc "Yet Another Java Decompiler."
   homepage "http://www.benf.org/other/cfr/"
-  url "http://www.benf.org/other/cfr/cfr_0_101.jar"
-  sha256 "90e166325ca4443a65663a75876c639cace9a29558713878c6a2b6eb211f947f"
+  url "http://www.benf.org/other/cfr/cfr_0_111.jar"
+  sha256 "503666882bb3f3413ab285fd3234d69a70c1baba62400ea1f590f241798728fb"
+
+  bottle :unneeded
 
   depends_on :java => "1.6+"
 
   def install
-    jar_version = version.to_s.gsub(".", "_")
+    jar_version = version.to_s.tr(".", "_")
     libexec.install "cfr_#{jar_version}.jar"
     bin.write_jar_script libexec/"cfr_#{jar_version}.jar", "cfr-decompiler"
   end
@@ -28,6 +30,6 @@ class CfrDecompiler < Formula
     (testpath/"T.java").write fixture
     system "javac", "T.java"
     output = pipe_output("#{bin}/cfr-decompiler T.class")
-    assert output.include?(fixture), "Different output than expected"
+    assert_match fixture, output
   end
 end

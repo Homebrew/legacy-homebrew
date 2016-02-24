@@ -14,12 +14,12 @@ module OS
         when "10.7"  then "4.6.3"
         when "10.8"  then "5.1.1"
         when "10.9"  then "6.2"
-        when "10.10" then "6.4"
-        when "10.11" then "7.0"
+        when "10.10" then "7.2.1"
+        when "10.11" then "7.2.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
-          if MacOS.version > "10.11"
-            "7.0"
+          if OS::Mac.prerelease?
+            "7.2.1"
           else
             raise "OS X '#{MacOS.version}' is invalid"
           end
@@ -75,6 +75,8 @@ module OS
         # if return is used in the middle, which we do many times in here.
 
         return "0" unless OS.mac?
+
+        return nil if !MacOS::Xcode.installed? && !MacOS::CLT.installed?
 
         %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
           if File.file? path
@@ -139,9 +141,9 @@ module OS
 
       def default_prefix?
         if version < "4.3"
-          %r{^/Developer} === prefix
+          prefix.to_s.start_with? "/Developer"
         else
-          %r{^/Applications/Xcode.app} === prefix
+          prefix.to_s.start_with? "/Applications/Xcode.app"
         end
       end
     end
@@ -163,8 +165,8 @@ module OS
 
       def latest_version
         case MacOS.version
-        when "10.11" then "700.0.59.1"
-        when "10.10" then "602.0.53"
+        when "10.11" then "700.1.81"
+        when "10.10" then "700.1.81"
         when "10.9"  then "600.0.57"
         when "10.8"  then "503.0.40"
         else

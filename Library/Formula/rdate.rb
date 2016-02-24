@@ -1,14 +1,15 @@
 class Rdate < Formula
   desc "Set the system's date from a remote host"
-  homepage "http://www.aelius.com/njh/rdate/"
-  url "http://www.aelius.com/njh/rdate/rdate-1.5.tar.gz"
+  homepage "https://www.aelius.com/njh/rdate/"
+  url "https://www.aelius.com/njh/rdate/rdate-1.5.tar.gz"
   sha256 "6e800053eaac2b21ff4486ec42f0aca7214941c7e5fceedd593fa0be99b9227d"
 
   bottle do
-    cellar :any
-    sha256 "d962e91795117120254eaf32a2aa2e8ece278878fc993e4b34af6f64c259fcf7" => :yosemite
-    sha256 "8d6ddfab85875845287bedd1dc1db43f3f589d2e6987ca5a369bc228805818c4" => :mavericks
-    sha256 "3cb827a2d8c308da387d6eff74c64e3ec4dc049e1960511ce14fe60a5f267c9c" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "acb2ae5951a0f32cbdce39e02d86c63cdb85b41fd02aff74aac6ea4939d71d8d" => :el_capitan
+    sha256 "553782017635be9c8d80bbf6fd033f294cddcb427a2d83fe82af8c069c60867f" => :yosemite
+    sha256 "3a36b6feccd119c90db3373a3de1b67f4aa03fc72aacdf7b11165b538206ae14" => :mavericks
   end
 
   def install

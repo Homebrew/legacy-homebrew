@@ -1,14 +1,14 @@
 class Scons < Formula
   desc "Substitute for classic 'make' tool with autoconf/automake functionality"
   homepage "http://www.scons.org"
-  url "https://downloads.sourceforge.net/project/scons/scons/2.3.6/scons-2.3.6.tar.gz"
-  sha256 "98adaa351d8f4e4068a5bf1894bdd7f85b390c8c3f80d437cf8bb266012404df"
+  url "https://downloads.sourceforge.net/project/scons/scons/2.4.1/scons-2.4.1.tar.gz"
+  sha256 "8fc4f42928c69bcbb33e1be94b646f2c700b659693fabc778c192d4d22f753a7"
 
   bottle do
-    cellar :any
-    sha256 "800a91209a67e94c6d6c9d54fcc9a99e844bbbbd4a34cf6049a47f24e7ccaa95" => :yosemite
-    sha256 "3db46c468cdee0d79d57634e9ab7f883f57f62b242d03baa3ff2906f846751f7" => :mavericks
-    sha256 "602cda55fa1699afa81d1aa479a50d3e11a4f11c2871556c13998362c4bf9391" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d3660e9012706af7146bc9fbc6f49a24b2c4d3464bda7e616863fa1f74b474a5" => :el_capitan
+    sha256 "ec8f843e6f368527556500a81af539884b8dc502a352742e9fcd94a36b4caf16" => :yosemite
+    sha256 "af5e2c2014667d651be904091590cb8f9c65dc15651e84f531d523370f567ddb" => :mavericks
   end
 
   def install

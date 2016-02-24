@@ -1,7 +1,7 @@
 class Pyexiv2 < Formula
   desc "Python binding to exiv2 for manipulation of image metadata"
   homepage "http://tilloy.net/dev/pyexiv2/"
-  url "http://launchpad.net/pyexiv2/0.3.x/0.3.2/+download/pyexiv2-0.3.2.tar.bz2"
+  url "https://launchpad.net/pyexiv2/0.3.x/0.3.2/+download/pyexiv2-0.3.2.tar.bz2"
   sha256 "0abc117c6afa71f54266cb91979a5227f60361db1fcfdb68ae9615398d7a2127"
   revision 1
 

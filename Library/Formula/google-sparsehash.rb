@@ -1,30 +1,26 @@
 class GoogleSparsehash < Formula
   desc "Extremely memory-efficient hash_map implementation"
-  homepage "https://code.google.com/p/google-sparsehash/"
-  url "https://sparsehash.googlecode.com/files/sparsehash-2.0.2.tar.gz"
-  sha256 "2ed639a7155607c097c2029af5f4287296595080b2e5dd2e2ebd9bbb7450b87c"
+  homepage "https://github.com/sparsehash/sparsehash"
+  url "https://github.com/sparsehash/sparsehash/archive/sparsehash-2.0.3.tar.gz"
+  sha256 "05e986a5c7327796dad742182b2d10805a8d4f511ad090da0490f146c1ff7a8c"
 
   bottle do
-    cellar :any
-    sha1 "b69142883864c3a93e55670fbf0e04ae87d9aaf1" => :yosemite
-    sha1 "3847a9017f9962b3df7ccfbb89ebf38d1c853e24" => :mavericks
-    sha1 "a9a03d28f355310965005ab055e02f1df411b93e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8655e0c3b4f4c69e46d8823eef0d8ae2b1397cd2aa01bda3340eb3a84d647b89" => :el_capitan
+    sha256 "b8e55b96aa3016ed2ab5a8d53a4bb39b44773885355ec75e80c9d9ef57c3e8b1" => :yosemite
+    sha256 "570c4d250a4fe18d99f11167653a501a1d8a82ff74d2413336a85bc7fa8cbb81" => :mavericks
   end
 
   option :cxx11
-  option "without-check", "Skip build-time tests (not recommended)"
+  option "without-test", "Skip build-time tests (not recommended)"
 
-  # Patch from upstream issue: https://code.google.com/p/sparsehash/issues/detail?id=99
-  patch do
-    url "https://gist.githubusercontent.com/jacknagel/3314c8cc67032a912f8b/raw/387b44a3b46e7b68876dbcb3c6595d700fa08a3c/sparsehash.diff"
-    sha256 "c12f68278bce1ebf893ffa791e43df7f09e5452db3fbd13bd30fcf91cbf6ad36"
-  end
+  deprecated_option "without-check" => "without-test"
 
   def install
     ENV.cxx11 if build.cxx11?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
   end
 end

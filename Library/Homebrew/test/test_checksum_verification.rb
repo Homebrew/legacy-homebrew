@@ -1,4 +1,5 @@
 require "testing_env"
+require "formula"
 
 class ChecksumVerificationTests < Homebrew::TestCase
   def assert_checksum_good
@@ -22,7 +23,7 @@ class ChecksumVerificationTests < Homebrew::TestCase
 
   def test_good_sha1
     formula do
-      sha1 "482e737739d946b7c8cbaf127d9ee9c148b999f5"
+      sha1 TESTBALL_SHA1
     end
 
     assert_checksum_good
@@ -38,7 +39,7 @@ class ChecksumVerificationTests < Homebrew::TestCase
 
   def test_good_sha256
     formula do
-      sha256 "1dfb13ce0f6143fe675b525fc9e168adb2215c5d5965c9f57306bb993170914f"
+      sha256 TESTBALL_SHA256
     end
 
     assert_checksum_good

@@ -1,14 +1,14 @@
 class GnomeIconTheme < Formula
   desc "Icons for the GNOME project"
   homepage "https://developer.gnome.org"
-  url "https://download.gnome.org/sources/adwaita-icon-theme/3.16/adwaita-icon-theme-3.16.2.1.tar.xz"
-  sha256 "b4556dfbf555d4fac12d4d5c12f7519de0d43ec42a1b649611439a50bf7acb96"
+  url "https://download.gnome.org/sources/adwaita-icon-theme/3.18/adwaita-icon-theme-3.18.0.tar.xz"
+  sha256 "5e9ce726001fdd8ee93c394fdc3cdb9e1603bbed5b7c62df453ccf521ec50e58"
 
   bottle do
-    cellar :any
-    sha256 "280b69b14c0c526ca652ce6246c64e4a9c3446836f50d8e8bb050fe9cd69489a" => :yosemite
-    sha256 "91d0523ab7ba7d8443bcd031530a70842a7d6a708576b65828dc991cbec83042" => :mavericks
-    sha256 "0860138b37323829ea795e18f6bc46a23d5da03369bfa197796e3bd2347add5e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "47a339c62c994b350334e36d7b593376adcc4779e9a767df0051ff4afe76d070" => :el_capitan
+    sha256 "795bcc9d4d6d34032c4a5987ecc3fbd06c69116a188cd7fac7bc5c2ce3fbfb79" => :yosemite
+    sha256 "14f676da17d596310a592efd03c67122ea108d01b85f46e8d83985e7a1e4b5ee" => :mavericks
   end
 
   depends_on "pkg-config" => :build

@@ -1,12 +1,16 @@
 class Groovy < Formula
   desc "Groovy: a Java-based scripting language"
   homepage "http://www.groovy-lang.org"
-  url "https://dl.bintray.com/groovy/maven/apache-groovy-binary-2.4.4.zip"
-  sha256 "a7cc1e5315a14ea38db1b2b9ce0792e35174161141a6a3e2ef49b7b2788c258c"
+  url "https://dl.bintray.com/groovy/maven/apache-groovy-binary-2.4.6.zip"
+  sha256 "9b3fb5b51bc21342bba13f090a88ad6d89b20c4a7a166dd50df2ac763c278768"
+
+  bottle :unneeded
 
   option "with-invokedynamic", "Install the InvokeDynamic version of Groovy (only works with Java 1.7+)"
 
   deprecated_option "invokedynamic" => "with-invokedynamic"
+
+  conflicts_with "groovysdk", :because => "both install the same binaries"
 
   def install
     # Don't need Windows files.
@@ -29,5 +33,9 @@ class Groovy < Formula
       You should set GROOVY_HOME:
         export GROOVY_HOME=#{opt_libexec}
     EOS
+  end
+
+  test do
+    system "#{bin}/grape", "install", "org.activiti", "activiti-engine", "5.16.4"
   end
 end

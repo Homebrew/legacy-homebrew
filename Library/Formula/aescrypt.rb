@@ -5,10 +5,10 @@ class Aescrypt < Formula
   sha256 "7b17656cbbd76700d313a1c36824a197dfb776cadcbf3a748da5ee3d0791b92d"
 
   bottle do
-    cellar :any
-    sha1 "0e83157b9bda1e52f645746b1e00eececffc896b" => :yosemite
-    sha1 "9b17c325b41375b2635eb7a5fd729f616e73dddb" => :mavericks
-    sha1 "7f8c9dbc1fe36d3a0b9fca80756a38e55c1fb1d5" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0cd940c7c9e59104746a8f83f92a06e703e7f98195a202d20516c03b588fd63f" => :el_capitan
+    sha256 "660c8a9266d7f85e699fb5bfabb82c508a66d303b2a2057c9c70a3c70fed43f6" => :yosemite
+    sha256 "a0bf8895165037991bf5b33be5c995e9b68a1d05898003a0ef45adb7aa3d3da9" => :mavericks
   end
 
   def install

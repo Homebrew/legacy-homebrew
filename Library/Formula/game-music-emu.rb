@@ -8,9 +8,9 @@ class GameMusicEmu < Formula
 
   bottle do
     cellar :any
-    sha1 "ceef76e75ac6ba2cc10f3d909fa42884a54a7833" => :yosemite
-    sha1 "bc298aea7a024e60411c1cb2f6f778656dad7bc1" => :mavericks
-    sha1 "5f5ceca1e279614d32a06134d0f35585fd0d2446" => :mountain_lion
+    sha256 "ae3d3d693ce6114a264f0a323172c995f554060cbc70e3e6195f3f4734486432" => :yosemite
+    sha256 "e98e08a428bff3aef00f3c48e999d6b0d1753242f319b2998b62a48f9c00c629" => :mavericks
+    sha256 "7877316c725c649b0f7a2245de83895a800ac48f12a86a5868e08b7517460fa5" => :mountain_lion
   end
 
   depends_on "cmake" => :build

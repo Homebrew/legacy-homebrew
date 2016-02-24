@@ -1,17 +1,17 @@
 class Kafka < Formula
   desc "Publish-subscribe messaging rethought as a distributed commit log"
   homepage "https://kafka.apache.org"
-  head "https://git-wip-us.apache.org/repos/asf/kafka.git"
-  url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
-  mirror "https://archive.apache.org/dist/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
-  sha256 "a043655be6f3b6ec3f7eea25cc6525fd582da825972d3589b24912af71493a21"
+  url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.2/kafka-0.8.2.2-src.tgz"
+  mirror "https://archive.apache.org/dist/kafka/0.8.2.2/kafka-0.8.2.2-src.tgz"
+  sha256 "77e9ed27c25650c07d00f380bd7c04d6345cbb984d70ddc52bbb4cb512d8b03c"
+
+  head "https://git-wip-us.apache.org/repos/asf/kafka.git", :branch => "trunk"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "6421db989eae488bbd6491f22ced46753500cb3534f0dec47b2f2132afa4425d" => :yosemite
-    sha256 "4adacd36a38bbef07e4326224d56c74cdc34b906ec60594035f4c354aa25381e" => :mavericks
-    sha256 "63fca4b6a35aaa7c50771d93ffca044c1cbe6ae66f6b76617408533b40ff8687" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "881db94838f291a09fef3d7070c4e99865eccb16f84e8447777a65cc14e0a180" => :el_capitan
+    sha256 "e07789b42a964353d49fdd4402f502c9803044e0477fcd0da6dad14b26b4c20d" => :yosemite
+    sha256 "1e57ab9774f8adee9f08c941eabdc029955b6ea43c4bc109b6420e74a515f08c" => :mavericks
   end
 
   depends_on "gradle"
@@ -21,11 +21,14 @@ class Kafka < Formula
   # Related to https://issues.apache.org/jira/browse/KAFKA-2034
   # Since Kafka does not currently set the source or target compability version inside build.gradle
   # if you do not have Java 1.8 installed you cannot used the bottled version of Kafka
-  def pour_bottle?
-    quiet_system("/usr/libexec/java_home --version 1.8 --failfast")
+  pour_bottle? do
+    reason "The bottle requires Java 1.8."
+    satisfy { quiet_system("/usr/libexec/java_home --version 1.8 --failfast") }
   end
 
   def install
+    ENV.java_cache
+
     system "gradle"
     system "gradle", "jar"
 

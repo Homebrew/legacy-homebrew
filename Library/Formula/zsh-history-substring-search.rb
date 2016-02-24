@@ -4,6 +4,8 @@ class ZshHistorySubstringSearch < Formula
   url "https://github.com/zsh-users/zsh-history-substring-search/archive/v1.0.0.tar.gz"
   sha256 "2b25a06c6d98f8443cfe33187cd31850febaf243c67e551a70cc0030d18443e7"
 
+  bottle :unneeded
+
   def install
     inreplace "README.md", "source zsh-history", "source #{opt_prefix}/zsh-history"
     prefix.install Dir["*.zsh"]

@@ -8,9 +8,9 @@ class Ry < Formula
 
   bottle do
     cellar :any
-    sha1 "68b813c169fc16024ac73774bba8ab074ec966d3" => :mavericks
-    sha1 "ffa8d32fade2e880391d4229e09c6b7bfb394910" => :mountain_lion
-    sha1 "370606fd9714e3f0eda2748f52fb404197c51d78" => :lion
+    sha256 "81b21b5a615197eddf8048c3cbe21dfd0425ea7fe8fdd3d01f8ab5af487b57a4" => :mavericks
+    sha256 "1a7ee174b349b62c9c6192ebb7db6ed741dd1b88261fd2e23f43d53a9a5c2709" => :mountain_lion
+    sha256 "a62486fac22e1f2881872653ae7030e64c64e4ecc1cacab4ce0ffd3e3f4c7a80" => :lion
   end
 
   depends_on "ruby-build" => :recommended
@@ -26,10 +26,17 @@ class Ry < Formula
   def caveats; <<-EOS.undent
     Please add to your profile:
       which ry &>/dev/null && eval "$(ry setup)"
-    EOS
+
+    If you want your Rubies to persist across updates you
+    should set the `RY_RUBIES` variable in your profile, i.e.
+      export RY_RUBIES="#{HOMEBREW_PREFIX}/var/ry/rubies"
+  EOS
   end
 
   test do
+    ENV["RY_RUBIES"] = testpath/"rubies"
+
     system bin/"ry", "ls"
+    assert File.exist?(testpath/"rubies")
   end
 end

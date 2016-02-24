@@ -1,17 +1,19 @@
 class Pyqt5 < Formula
   desc "Python bindings for v5 of Qt"
-  homepage "http://www.riverbankcomputing.co.uk/software/pyqt/download5"
-  url "http://www.riverbankcomputing.com/static/Downloads/PyQt5/PyQt-gpl-5.5.tar.gz"
-  sha256 "cdd1bb55b431acdb50e9210af135428a13fb32d7b1ab86e972ac7101f6acd814"
+  homepage "https://www.riverbankcomputing.com/software/pyqt/download5"
+  url "https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz"
+  sha256 "0a70ef94fbffcf674b0dde024aae2a2a7a3f5a8c42806109ff7df2c941bd8386"
 
   bottle do
-    sha256 "031c5f439bb11d97d2262edce4b50151bd94272cea8889dee710c6eadfd8c3db" => :yosemite
-    sha256 "02276afa07267aa91f61e98a411172e59de31dbfceb253581d184c1a0fed096d" => :mavericks
-    sha256 "d514535d8c758b7a978c99d38d2275adab714846dd33885e72c98d3a73a84ca5" => :mountain_lion
+    sha256 "b9e313a98af2b16a6ab3df8e0c2d7d153b80f49211741a565945049a18765c51" => :el_capitan
+    sha256 "c298d8b38ca10572c1026c5489dc879b64de97ae083847c78f547d388b8b2e26" => :yosemite
+    sha256 "33f2dfb85349db6826d9653512e608bde4f99f6297957c0c7c4ee8457d09ef9f" => :mavericks
   end
 
-  option "enable-debug", "Build with debug symbols"
+  option "with-debug", "Build with debug symbols"
   option "with-docs", "Install HTML documentation and python examples"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   depends_on :python3 => :recommended
   depends_on :python => :optional
@@ -42,8 +44,9 @@ class Pyqt5 < Formula
               "--qmake=#{Formula["qt5"].bin}/qmake",
               # Force deployment target to avoid libc++ issues
               "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
+              "--qml-plugindir=#{pkgshare}/plugins",
               "--verbose"]
-      args << "--debug" if build.include? "enable-debug"
+      args << "--debug" if build.with? "debug"
 
       system python, "configure.py", *args
       system "make"
@@ -58,6 +61,17 @@ class Pyqt5 < Formula
     system "pylupdate5", "-version"
     Language::Python.each_python(build) do |python, _version|
       system python, "-c", "import PyQt5"
+      %w[
+        Gui
+        Location
+        Multimedia
+        Network
+        Quick
+        Svg
+        WebKit
+        Widgets
+        Xml
+      ].each { |mod| system python, "-c", "import PyQt5.Qt#{mod}" }
     end
   end
 end

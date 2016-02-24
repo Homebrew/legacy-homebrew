@@ -1,13 +1,14 @@
 class DbusGlib < Formula
   desc "GLib bindings for the D-Bus message bus system"
   homepage "https://wiki.freedesktop.org/www/Software/DBusBindings/"
-  url "http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.104.tar.gz"
-  sha256 "bfc1f1a82bfc3ec3ecafe04d0e87bab7e999f50dce4f4a34d0b89caf6bd821f6"
+  url "https://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.106.tar.gz"
+  sha256 "b38952706dcf68bad9c302999ef0f420b8cf1a2428227123f0ac4764b689c046"
 
   bottle do
-    sha256 "b32228702ab3d7e4b518dbe0481c631f0ad89377804ce46bdb96f952fc2489f8" => :yosemite
-    sha256 "fe8132af05fb6bcc70679c4b82406fc727fd2e6272e9b57d1d91592c4415f1c8" => :mavericks
-    sha256 "75eade40f2f89acf2b93a17e7492dad4a2a63f5375ec28446628bdd9ac4647f8" => :mountain_lion
+    cellar :any
+    sha256 "621550837f7ee93fab562120edc5852e5af03f671dca773de3a8ea44008e5ad6" => :el_capitan
+    sha256 "0fc755aa6af5b706275d82a782ce99188050084e504f7b865413db482ab1ed67" => :yosemite
+    sha256 "fcac3d3c20ccb4a114b736dab4fb952e44d6f3ccecd5d2b69495d3474a0f24db" => :mavericks
   end
 
   depends_on "pkg-config" => :build

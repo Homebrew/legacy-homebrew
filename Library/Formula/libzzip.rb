@@ -1,15 +1,15 @@
 class Libzzip < Formula
   desc "Library providing read access on ZIP-archives"
-  homepage "http://sourceforge.net/projects/zziplib/"
+  homepage "https://sourceforge.net/projects/zziplib/"
   url "https://downloads.sourceforge.net/project/zziplib/zziplib13/0.13.62/zziplib-0.13.62.tar.bz2"
   sha256 "a1b8033f1a1fd6385f4820b01ee32d8eca818409235d22caf5119e0078c7525b"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "5a1b7004e05d64c363169b7437df6df13dcf442a" => :yosemite
-    sha1 "9ba90a192f579f08425969b07abf9da33cf06b96" => :mavericks
-    sha1 "986d13aa3974d0b7c2621a8447f1aad640f11d92" => :mountain_lion
+    revision 2
+    sha256 "f93a8fd68c8ed930f84f54f4f438191f4445d555f601b370b48c0fbeb2db0e56" => :el_capitan
+    sha256 "ca2078a2a603b0d1c6fd81d01bb50ec0c82c15891b2549918ca058fd4d88f520" => :yosemite
+    sha256 "84694b367a72ce8edb39976ab0b3f383c5dfffc1e58571e94e5d0d08ec190ed0" => :mavericks
   end
 
   option "with-sdl", "Enable SDL usage and create SDL_rwops_zzip.pc"
@@ -25,7 +25,7 @@ class Libzzip < Formula
   def install
     if build.universal?
       ENV.universal_binary
-      # See: https://sourceforge.net/tracker/?func=detail&aid=3511669&group_id=6389&atid=356389
+      # See: https://sourceforge.net/p/zziplib/feature-requests/5/
       ENV["ac_cv_sizeof_long"] = "(LONG_BIT/8)"
     end
 

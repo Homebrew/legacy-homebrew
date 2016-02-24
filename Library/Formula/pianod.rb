@@ -1,21 +1,22 @@
 class Pianod < Formula
   desc "Pandora client with multiple control interfaces"
   homepage "http://deviousfish.com/pianod/"
-  url "http://deviousfish.com/Downloads/pianod/pianod-173.tar.gz"
-  sha256 "d91a890561037ee3faf5d4d1d4de546c8ff8c828eced91eea6be026c4fcf16fd"
-
-  devel do
-    url "http://deviousfish.com/Downloads/pianod/pianod-174.tar.gz"
-    sha256 "8b46cf57a785256bb9d5543022c1b630a5d45580800b6eb6c170712c6c78d879"
-  end
+  url "http://deviousfish.com/Downloads/pianod/pianod-175.tar.gz"
+  sha256 "19733d4937b48707eebcde75775d865d6bf925efa86d8989f0efb2392ab4cdf9"
 
   bottle do
-    sha256 "c445526d673caadf44783aa2992817f1a172a4ad83376b8c5ee0c62e94c3ef01" => :yosemite
-    sha256 "77975c68192f2fc203decc2122e05e720f6fb248b3aec061540536ea4371a871" => :mavericks
-    sha256 "dc09efd35ee5e55e5196c2a72ca8b3ca61b4a437fb66ff481e80be1782e9931a" => :mountain_lion
+    sha256 "2ee0ba99862d32947b418b00ea3d1f6bab6bbbfbe5a9cd190558e3baf4c0586b" => :el_capitan
+    sha256 "535664f3192932537dc9656380e44fa8c1e835ba361e6f92418cd379e6970d0d" => :yosemite
+    sha256 "33d938cf80c04f224f72bca2592a20b28707246c5c5450baaf1974e4114e8bfc" => :mavericks
+  end
+
+  devel do
+    url "http://deviousfish.com/Downloads/pianod2/Devel/pianod2-189.tar.gz"
+    sha256 "dad7a1a5b18a712178d3835ef2cd898f0f92a8d608987bdfc807ce2226fab863"
   end
 
   depends_on "pkg-config" => :build
+  depends_on "ffmpeg" => :build if build.devel?
 
   depends_on "libao"
   depends_on "libgcrypt"

@@ -1,8 +1,10 @@
 class Hive < Formula
   desc "Hadoop-based data summarization, query, and analysis"
   homepage "https://hive.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=hive/hive-1.1.1/apache-hive-1.1.1-bin.tar.gz"
-  sha256 "71cb92f87aaea1af69ff27f95878f3190e9b184cdff84b8f8740af4cc99d81c3"
+  url "https://www.apache.org/dyn/closer.cgi?path=hive/hive-1.2.1/apache-hive-1.2.1-bin.tar.gz"
+  sha256 "29d9780c4af887ef623bafe6a73ec6f1bea9759bbe31fb4aeeb5b0f68c4c9979"
+
+  bottle :unneeded
 
   depends_on "hadoop"
   depends_on :java
@@ -24,5 +26,9 @@ class Hive < Formula
     You may need to set JAVA_HOME:
       export JAVA_HOME="$(/usr/libexec/java_home)"
     EOS
+  end
+
+  test do
+    assert_match /default/, shell_output("#{bin}/hive -e 'show databases;'")
   end
 end

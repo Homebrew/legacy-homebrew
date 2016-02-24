@@ -5,7 +5,8 @@ class Dnsmasq < Formula
   sha256 "f8252c0a0ba162c2cd45f81140c7c17cc40a5fca2b869d1a420835b74acad294"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "80f9f8382c98cc0922883d6a23a6b6de05232bc75baa4b2fe088c57654bf1c4e" => :el_capitan
     sha256 "f245adcc7718bd0c8167fa0518f286f261755aa7c54b029c1d6e8e26625b7193" => :yosemite
     sha256 "c3aad8472b1d51d81c14ecfecec69cfa94a43adb07a445c11880ad0c0c9ffc1e" => :mavericks
     sha256 "08084970fe50a3d7a325ca40c3b7ead00bcf3a67be5415e97c1557857c211323" => :mountain_lion

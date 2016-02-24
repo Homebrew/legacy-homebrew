@@ -1,15 +1,27 @@
 class Deheader < Formula
   desc "Analyze C/C++ files for unnecessary headers"
   homepage "http://www.catb.org/~esr/deheader"
-  url "http://www.catb.org/~esr/deheader/deheader-1.1.tar.gz"
-  sha256 "69f69e9c7d9398221cb49f7de91df0d122e4b0ec942bede2d7c592401e4b913c"
-  head "git://thyrsus.com/repositories/deheader.git"
+  url "http://www.catb.org/~esr/deheader/deheader-1.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/d/deheader/deheader_1.2.orig.tar.gz"
+  sha256 "c4e4a4af6f0707a2f8b10b10f3776674c589a569c3451dea978f2d0b76c71d12"
+  head "https://gitlab.com/esr/deheader.git"
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "23896cdcdc0c87915f1547334b7a7a537f9aa93dfcf71c13322fa97c689553b3" => :el_capitan
+    sha256 "f5639a19b49fa7d603a2d41b2fc143342fe757b1e6c81f3ce316e93fc05a6d97" => :yosemite
+    sha256 "19f3da5c021391bdf55276bbfadaf52459dceb8e591a6ea051d88c02bc1da93e" => :mavericks
+    sha256 "a2bf7da66e79643bb3dbb0ec6a37a54d8d9436885d3a8c59d13e812050dcc8e5" => :mountain_lion
+  end
+
+  depends_on "xmlto" => :build
 
   def install
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+
+    system "make"
     bin.install "deheader"
-    # Man page is defined in a DocBook XML file, the DTD for which is MIA,
-    # thus there's no way to build it from HEAD...
-    man1.install "deheader.1" unless build.head?
+    man1.install "deheader.1"
   end
 
   test do

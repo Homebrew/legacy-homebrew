@@ -2,8 +2,11 @@ class Gcovr < Formula
   desc "Reports from gcov test coverage program"
   homepage "http://gcovr.com/"
   url "https://github.com/gcovr/gcovr/archive/3.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/gcovr/gcovr_3.2.orig.tar.gz"
   sha256 "5a969caf61452705a39f6642f4707d23644bdd2e5ef913014bf95c4bd0263db6"
   head "https://github.com/gcovr/gcovr.git"
+
+  bottle :unneeded
 
   def install
     libexec.install Dir["*"]

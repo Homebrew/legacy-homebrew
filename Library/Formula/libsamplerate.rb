@@ -6,10 +6,10 @@ class Libsamplerate < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7bdee60fa49e368546369cafdbff37a772970492" => :yosemite
-    sha1 "a60d3e18f126fe69826cd8e4ab9944574e1ac9b6" => :mavericks
-    sha1 "64fd25bc4134aa6f3d3d463892c662e0e73bc333" => :mountain_lion
+    revision 2
+    sha256 "7cdb2a6ae9047052461037e2a48742ca8a0caf72c5bce3eca856bbf24eeffd11" => :el_capitan
+    sha256 "e50d3c4c47d61b844db05e1a37d299dbcaeec4236ebdff53ebd8e4dbedb32c29" => :yosemite
+    sha256 "02bf6dca011543e5f49c42109462a5a94d02e2803f3258c0e38033f2205dcf1a" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -25,6 +25,21 @@ class Libsamplerate < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+
+    # https://github.com/Homebrew/homebrew/issues/47133
+    # Unless formula is built with libsndfile, the example program is broken.
+    rm_f "#{bin}/sndfile-resample" if build.without? "libsndfile"
+  end
+
+  def caveats
+    s = ""
+    if build.without? "libsndfile"
+      s += <<-EOS.undent
+      Unless this formula is built with libsndfile, the example program,
+      "sndfile-resample", is broken and hence, removed from installation.
+      EOS
+    end
+    s
   end
 end
 

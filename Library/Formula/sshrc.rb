@@ -4,6 +4,8 @@ class Sshrc < Formula
   url "https://github.com/Russell91/sshrc/archive/0.5.tar.gz"
   sha256 "4592df6fc2987adbbce84dbe305d9b769f7177a545122295629ce2fb61ecbba3"
 
+  bottle :unneeded
+
   def install
     bin.install "sshrc"
   end

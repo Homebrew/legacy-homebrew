@@ -1,14 +1,14 @@
 class ArpScan < Formula
   desc "ARP scanning and fingerprinting tool"
-  homepage "http://www.nta-monitor.com/tools-resources/security-tools/arp-scan"
-  url "http://www.nta-monitor.com/files/arp-scan/arp-scan-1.9.tar.gz"
-  mirror "https://github.com/royhills/arp-scan/releases/download/1.9/arp-scan-1.9.tar.gz"
+  homepage "https://github.com/royhills/arp-scan"
+  url "https://github.com/royhills/arp-scan/releases/download/1.9/arp-scan-1.9.tar.gz"
   sha256 "ce908ac71c48e85dddf6dd4fe5151d13c7528b1f49717a98b2a2535bd797d892"
 
   bottle do
-    sha1 "90cc962c894c21bddbaf2d88fe47c9fcef784c47" => :mavericks
-    sha1 "25fca5b74656e3facbd40963e550042a993f4cac" => :mountain_lion
-    sha1 "9b693b9695209bec034828b827f8f84574492b34" => :lion
+    revision 1
+    sha256 "f0fdab57a9d16dc270b9bedba6c5cca5e99e2b5319268261a320dda86fa5da54" => :el_capitan
+    sha256 "4a26a7bb3c586122b4aad81c17bf8427bc820ec4a4353573ffedf79087000232" => :yosemite
+    sha256 "e0570d20ec6c79c1a43c9925eb5c09d7ab9589fbe9d2ce1579927800ac6c53d5" => :mavericks
   end
 
   head do

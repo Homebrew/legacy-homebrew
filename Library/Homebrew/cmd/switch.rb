@@ -12,8 +12,7 @@ module Homebrew
     name = ARGV.shift
     version = ARGV.shift
 
-    canonical_name = Formulary.canonical_name(name)
-    rack = HOMEBREW_CELLAR.join(canonical_name)
+    rack = Formulary.to_rack(name)
 
     unless rack.directory?
       onoe "#{name} not found in the Cellar."

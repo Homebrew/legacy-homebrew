@@ -20,14 +20,14 @@ class Libkml < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "604dafcf5fb8135e89f4636af4ecb21b404b4e4b" => :yosemite
-    sha1 "61000bffb52eb852149276e37b42461fd5f710a7" => :mavericks
-    sha1 "68d01ed7b9748caa23f6309c62e836cb030f673d" => :mountain_lion
+    revision 2
+    sha256 "57b9693cdf9a6abaeeea9648cd84a81d17ba0f056bd8d8e8442e68d97dbc7828" => :el_capitan
+    sha256 "a3cdfca3ed0acbc93949683a8bb2862c36ec8bf06f20b9fe3752ac624667f455" => :yosemite
+    sha256 "22c4df9a8f64f8c6ec300cfb268994d739ff41e80db44ca3a72358fc4b70bc05" => :mavericks
   end
 
   head do
-    url "http://libkml.googlecode.com/svn/trunk/"
+    url "https://libkml.googlecode.com/svn/trunk/"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -36,7 +36,7 @@ class Libkml < Formula
     # see stable patch
     patch do
       url "https://gist.githubusercontent.com/dakcarto/7420023/raw/65cdb088c91a7da844251e348eeda8df1d903f1d/libkml-svn-static-deps"
-      sha1 "9ef82d73199325e63596c28c6965ec8c151bf7c5"
+      sha256 "a85abf19e364ea745a5bbc9a24bf580058acaea98cf129adf28fc5bb0627f253"
     end
   end
 
@@ -47,7 +47,7 @@ class Libkml < Formula
   def install
     if build.head?
       # The inreplace line below is only required until the patch in #issue 186
-      # is applied. http://code.google.com/p/libkml/issues/detail?id=186
+      # is applied. https://code.google.com/p/libkml/issues/detail?id=186
       # If the patch is applied, this find and replace will be unnecessary, but also
       # harmless
       inreplace "configure.ac", "-Werror", ""

@@ -1,16 +1,16 @@
 class Rsnapshot < Formula
   desc "File system snapshot utility (based on rsync)"
   homepage "http://rsnapshot.org"
-  url "http://rsnapshot.org/downloads/rsnapshot-1.4.0.tar.gz"
-  sha256 "222574fee2f59d0e3ef5da6e6dd0f445205fecfa7ca12ef821eb8a89cf4f2ca8"
+  url "https://github.com/rsnapshot/rsnapshot/releases/download/1.4.2/rsnapshot-1.4.2.tar.gz"
+  sha256 "042a81c45b325296b21c363f417985d857f083f87c5c27f5a64677a052f24e16"
 
   head "https://github.com/DrHyde/rsnapshot.git"
 
   bottle do
-    cellar :any
-    sha256 "6f0086191066abd47c9dd489e1d0833175b645581f00e99f99e7cb0df3a0d8f2" => :yosemite
-    sha256 "7f0d7508a38c74d7b4c0022d4e214e8f5179f397ce3860f879d4fffa41f86a15" => :mavericks
-    sha256 "713d6da6fb78bb7c7f16fa03f22eebb7b7cfa0a9701030d062fab9efe0e544e3" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "21823489c045150e8d8e51addba52b6cd75eedaec93357732db859ba738f59d5" => :el_capitan
+    sha256 "d6374fba65d24f7067197c9a7732f6f629dcb537f0687ab91f4f15d5c55d6cc6" => :yosemite
+    sha256 "66cc127c640855b029881b2cd029197b093d92b8d77c3bb9a61167cbaedfedd8" => :mavericks
   end
 
   def install

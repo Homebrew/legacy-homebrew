@@ -1,15 +1,15 @@
 class Libutf < Formula
   desc "Port of Plan 9's support library for UTF-8 and Unicode"
-  homepage "http://swtch.com/plan9port/unix/"
-  url "http://swtch.com/plan9port/unix/libutf-20110530.tgz"
+  homepage "https://swtch.com/plan9port/unix/"
+  url "https://swtch.com/plan9port/unix/libutf-20110530.tgz"
   sha256 "7789326c507fe9c07ade0731e0b0da221385a8f7cd1faa890af92a78a953bf5e"
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "ff7ca7a52c3c3cf376a8e751627fd23728f08e14" => :yosemite
-    sha1 "ad54688e8da7c6d72aa85ec679a2f2b442ab5d7b" => :mavericks
-    sha1 "3c5dac2740872a0583db363a103af74ffd6fb7cd" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "4be39969572bec265a41d1ff6bc8f6d04b6d2b4f514cfd58c3362bc3434b3807" => :el_capitan
+    sha256 "db18dd0a20318d3f07f2eb195cb6ec345976136d5d2eddfb71c3e426fe4c1162" => :yosemite
+    sha256 "36a420b96d2d8bebc33a10edfce866c576664a8001136e4440609138b892db30" => :mavericks
   end
 
   def install

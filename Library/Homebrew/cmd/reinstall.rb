@@ -2,6 +2,8 @@ require "formula_installer"
 
 module Homebrew
   def reinstall
+    FormulaInstaller.prevent_build_flags unless MacOS.has_apple_developer_tools?
+
     ARGV.resolved_formulae.each { |f| reinstall_formula(f) }
   end
 
@@ -23,11 +25,12 @@ module Homebrew
     fi.build_bottle        = ARGV.build_bottle? || (!f.bottled? && tab.build_bottle?)
     fi.build_from_source   = ARGV.build_from_source?
     fi.force_bottle        = ARGV.force_bottle?
+    fi.interactive         = ARGV.interactive?
+    fi.git                 = ARGV.git?
     fi.verbose             = ARGV.verbose?
     fi.debug               = ARGV.debug?
     fi.prelude
     fi.install
-    fi.caveats
     fi.finish
   rescue FormulaInstallationAlreadyAttemptedError
     # next

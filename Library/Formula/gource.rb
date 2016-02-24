@@ -3,12 +3,12 @@ class Gource < Formula
   homepage "https://github.com/acaudwell/Gource"
   url "https://github.com/acaudwell/Gource/releases/download/gource-0.43/gource-0.43.tar.gz"
   sha256 "85a40ac8e4f5c277764216465c248d6b76589ceac012541c4cc03883a24abde4"
-  revision 1
+  revision 3
 
   bottle do
-    sha256 "f98ddff763524d0d5bc670a31c12229145be613077b250a2af79acd36ee1df0b" => :yosemite
-    sha256 "83dd5ace96b12094dfe287d1655072d57e15ed79588b65ff3752e870460f3068" => :mavericks
-    sha256 "7107bae161947b07edf8361846fd18d1b77a6a900456ff30ae01f9a9c9db6978" => :mountain_lion
+    sha256 "cb581cb4c8afafd98dc4fd96f3c87a26ad57519d5ab65267de14b3da5790934a" => :el_capitan
+    sha256 "d47030c8dc55a2721257b26cfa2de90f2efa5b3e7d0f3d9ae92c0a1a183846af" => :yosemite
+    sha256 "f65a495853061d4515445d1a07d2931a06ce0bb9e6782743d63763d00c2dd878" => :mavericks
   end
 
   head do
@@ -24,6 +24,11 @@ class Gource < Formula
   depends_on "pkg-config" => :build
   depends_on "glm" => :build
   depends_on "freetype"
+  depends_on "glew"
+  depends_on "jpeg"
+  depends_on "pcre"
+  depends_on "sdl2"
+  depends_on "sdl2_image"
 
   # boost failing on lion
   depends_on :macos => :mountain_lion
@@ -33,12 +38,6 @@ class Gource < Formula
   else
     depends_on "boost"
   end
-
-  depends_on "glew"
-  depends_on "jpeg"
-  depends_on "pcre"
-  depends_on "sdl2"
-  depends_on "sdl2_image"
 
   needs :cxx11
 

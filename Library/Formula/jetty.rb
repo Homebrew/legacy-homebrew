@@ -1,16 +1,11 @@
 class Jetty < Formula
   desc "Java servlet engine and webserver"
   homepage "https://www.eclipse.org/jetty/"
-  url "http://download.eclipse.org/jetty/9.3.2.v20150730/dist/jetty-distribution-9.3.2.v20150730.tar.gz"
-  version "9.3.2.v20150730"
-  sha256 "c9d51e6e09c710cd084adb694149acfa93b90ba6a979cbaccc41e191bc4c14da"
+  url "http://download.eclipse.org/jetty/9.3.7.v20160115/dist/jetty-distribution-9.3.7.v20160115.tar.gz"
+  version "9.3.7.v20160115"
+  sha256 "624990a139ea455587dd681a5c15298e31bf60e6c8e1d742ce8500c8298887c3"
 
-  bottle do
-    cellar :any
-    sha256 "b85569259442f3ba6e4cceab1ad1ae51ef3e2a43253b02251ec3e0a584e1dfd6" => :yosemite
-    sha256 "bb5f2e2d895543f7d79b3ffec46804d7316822cf2107c61671c39e1b51a54aac" => :mavericks
-    sha256 "0226ed8ffb51ad60afb85752a0ec0347df9f9a8d2387510e03f276dac579344f" => :mountain_lion
-  end
+  bottle :unneeded
 
   depends_on :java => "1.8+"
 
@@ -31,6 +26,8 @@ class Jetty < Formula
   end
 
   test do
+    ENV["JETTY_BASE"] = testpath
+    cp_r Dir[libexec/"*"], testpath
     pid = fork { exec bin/"jetty", "start" }
     sleep 5 # grace time for server start
     begin

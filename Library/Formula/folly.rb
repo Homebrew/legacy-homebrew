@@ -3,11 +3,14 @@ class Folly < Formula
   homepage "https://github.com/facebook/folly"
   url "https://github.com/facebook/folly/archive/v0.48.0.tar.gz"
   sha256 "e0b6b3cd143b5d581e8cef470aea1b6f8aeaa4e7431522058872e245cac5c144"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "7f63861d73f611c756c2e701d3a66293dcb025ea6741708931757a1014dbd87d" => :yosemite
-    sha256 "5138bd78569d3e6e2e01ada415d606f689f702448dc4c2c2f82cdae33b035d49" => :mavericks
+    revision 1
+    sha256 "085000e4af6e1d62c902b6da76fcff7598324856c8c129f8dd8844c9d19e099e" => :el_capitan
+    sha256 "458df2aa0cad8420b702875999bc4b75ecbb842faa85d1ebcc0d6a731da9ed60" => :yosemite
+    sha256 "8dd2b333ea7c77e92eccdc7df93cd46917d7048c8834c9ec30330a91c90c91a8" => :mavericks
   end
 
   depends_on "autoconf" => :build
@@ -19,6 +22,11 @@ class Folly < Formula
   depends_on "gflags"
   depends_on "boost"
   depends_on "libevent"
+  depends_on "xz"
+  depends_on "snappy"
+  depends_on "lz4"
+  depends_on "jemalloc"
+  depends_on "openssl"
 
   needs :cxx11
   depends_on :macos => :mavericks

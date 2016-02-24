@@ -2,14 +2,14 @@ class Headphones < Formula
   desc "Automatic music downloader for SABnzbd"
   homepage "https://github.com/rembo10/headphones"
   head "https://github.com/rembo10/headphones.git"
-  url "https://github.com/rembo10/headphones/archive/v0.5.2.tar.gz"
-  sha256 "d2d5783ea4e2b3dcb77a266be594834c29b5b51adb0e9e718749c8d758a57453"
+  url "https://github.com/rembo10/headphones/archive/v0.5.9.tar.gz"
+  sha256 "c1811985ac93a7a24fc0668bb4a726a663e815b7f1a90eb52bf5af60f035c953"
 
   bottle do
-    cellar :any
-    sha256 "0d08693b084d643f0c994c9b3bfa151cbb3b59e7bfeaf7df51c74dc4ca4a65cb" => :yosemite
-    sha256 "b9770751fa170bb63dd4ed3eec4d0924bfe5c57344a93689d064b50809d10473" => :mavericks
-    sha256 "561f55a8140600eea056c4596a4627d9ce076b24de9daec57cbc2749f8691276" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a7ec802ae3b408718f32e486d0acd99cccbdfa6323637f909d522d02c50714c6" => :el_capitan
+    sha256 "f3e510b4e855350ab24ee1fc463438df3c9273e52ec6f047cf0ecd228f23dfd6" => :yosemite
+    sha256 "6e66ba50f949f45d295d5cd75e4240a893c4d564f2522ca9c3985298c14181b8" => :mavericks
   end
 
   resource "Markdown" do

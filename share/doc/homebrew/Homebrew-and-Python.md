@@ -71,7 +71,7 @@ Homebrew builds bindings against the first `python` (and `python-config`) in you
 
 ## Policy for non-brewed Python bindings
 
-These should be installed via `pip install <x>`. To discover, you can use `pip search` or <https://pypi.python.org/pypi>. (**Note:** System Python does not provide `pip`. Simply `easy_install pip` to fix that.)
+These should be installed via `pip install <x>`. To discover, you can use `pip search` or <https://pypi.python.org/pypi>. (**Note:** System Python does not provide `pip`. Follow the instructions at https://pip.readthedocs.org/en/stable/installing/#install-pip to install it for your system Python if you would like it.)
 
 
 ## Brewed Python modules

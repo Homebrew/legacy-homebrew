@@ -1,13 +1,13 @@
 class Sysdig < Formula
   desc "System-level exploration and troubleshooting tool"
   homepage "http://www.sysdig.org/"
-  url "https://github.com/draios/sysdig/archive/0.1.102.tar.gz"
-  sha256 "e0bac2262f075ec75cc2c01a002b6d47bb5ee5c80b47925b44152db639093f57"
+  url "https://github.com/draios/sysdig/archive/0.8.0.tar.gz"
+  sha256 "b90dacb27a101526cd21c78a43b336e6752b7cc45f03bb424de0754ed99869a4"
 
   bottle do
-    sha256 "7c7b3811314837d435c2d417f33dadc974c993f8a1dd47d7fceef7b1e54ab171" => :yosemite
-    sha256 "502342ee5e92bda0673db5c9556ddf62d4ba385b90dd7455be1aa9a42b570bb0" => :mavericks
-    sha256 "49649ecbf5a81778ff850145fe6ca4779a121f868d106caf0e108b4f6077f04f" => :mountain_lion
+    sha256 "74c39b4da58d955066e2dea2ba8289a8e442eee6e50dffd96301e7ca726ccf0e" => :el_capitan
+    sha256 "c4c3de501f493428b1182e8306fe3bd2949fb0ed7cbaf234e22be1885e8d0c53" => :yosemite
+    sha256 "cde8850408ad936f0f446a8a7ed0dbe86b8ae99287bbae9c547f60316499c220" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -32,11 +32,11 @@ class Sysdig < Formula
       system "cmake", "..", *args
       system "make", "install"
     end
+
+    (share/"demos").install resource("sample_file").files("sample.scap")
   end
 
   test do
-    (share/"demos").install resource("sample_file").files("sample.scap")
-
     # tests if it can load chisels
     `#{bin}/sysdig -cl`
     assert_equal 0, $?.exitstatus

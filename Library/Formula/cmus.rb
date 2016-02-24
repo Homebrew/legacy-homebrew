@@ -3,12 +3,13 @@ class Cmus < Formula
   homepage "https://cmus.github.io/"
   url "https://github.com/cmus/cmus/archive/v2.7.1.tar.gz"
   sha256 "8179a7a843d257ddb585f4c65599844bc0e516fe85e97f6f87a7ceade4eb5165"
+  revision 1
   head "https://github.com/cmus/cmus.git"
 
   bottle do
-    sha256 "f4270eee31bc7c8ef97b1ae000f08d2a023c52e1088b2061ba3553546405b4f2" => :yosemite
-    sha256 "6df496b6de1ff930667217e4a8d5076bb0b89e171c9d6f0dd3566840daba0d46" => :mavericks
-    sha256 "b35d34f834f02e8e21611ade71a67dbbdbd0f1ffc4286279939e6f30f2767f28" => :mountain_lion
+    sha256 "c59774836e10d043d117b3a07193fc4eee97e37e11875fceea17980a067a7904" => :el_capitan
+    sha256 "efaa6209f0fdfe5bfffa9a527a9c073ac202229e82484e96e5b539d17c283444" => :yosemite
+    sha256 "15b3a9610c3b37808396787ced0f1cb5ae9b0dff30e6657419d46906229f5097" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -22,6 +23,7 @@ class Cmus < Formula
   depends_on "libcue"
   depends_on "ffmpeg" => :optional
   depends_on "opusfile" => :optional
+  depends_on "jack" => :optional
 
   def install
     system "./configure", "prefix=#{prefix}", "mandir=#{man}"

@@ -1,8 +1,15 @@
 class Uchardet < Formula
   desc "Encoding detector library"
-  homepage "https://code.google.com/p/uchardet/"
-  url "https://uchardet.googlecode.com/files/uchardet-0.0.1.tar.gz"
-  sha256 "e238c212350e07ebbe1961f8f128faaa40f71b70d37b63ffa2fe12c664269ee6"
+  homepage "https://github.com/BYVoid/uchardet"
+  url "https://github.com/BYVoid/uchardet/archive/v0.0.5.tar.gz"
+  sha256 "7c5569c8ee1a129959347f5340655897e6a8f81ec3344de0012a243f868eabd1"
+
+  bottle do
+    cellar :any
+    sha256 "927127881787a7fcca21226eb1072f95467e82d452850fe87510ca9d67196ef0" => :el_capitan
+    sha256 "69444742bc7dd30b001febea95b52943b39037241622e19e331aa97af17d3d5c" => :yosemite
+    sha256 "a04a384e25bb191d827ef07694a0ed27636c2e1cc99162dd7efd30c3cad6fb6c" => :mavericks
+  end
 
   depends_on "cmake" => :build
 

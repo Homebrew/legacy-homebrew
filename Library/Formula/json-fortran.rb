@@ -1,23 +1,25 @@
 class JsonFortran < Formula
   desc "Fortran 2008 JSON API"
   homepage "https://github.com/jacobwilliams/json-fortran"
-  url "https://github.com/jacobwilliams/json-fortran/archive/4.1.1.tar.gz"
-  sha256 "97f258d28536035ef70e9ead5c7053e654106760a12db2cc652587ed61b76124"
+  url "https://github.com/jacobwilliams/json-fortran/archive/4.3.0.tar.gz"
+  sha256 "c97f8de53e2ca9ee91fb3148bfa971b00eaea6e757b5e3d67cc4b4ff197e392e"
 
   head "https://github.com/jacobwilliams/json-fortran.git"
 
   bottle do
     cellar :any
-    sha256 "3b6410ef26c24d63f90e420aae0157f7d97b4d154b398305863e2be6c24eed8d" => :yosemite
-    sha256 "5608f04857515ce6b38d6a7ade2cf50a15541cb307ff97cbde1d367af3b19801" => :mavericks
-    sha256 "443ce5965a801c7e3dda0dfc5762b9f84ec97bf450d98eedfe0385d3681a725e" => :mountain_lion
+    sha256 "a80853e1da087f33cccfc10f1ebce1f77339a211d3223347d8659d977965ea50" => :el_capitan
+    sha256 "f790c4a3c3ff3a720fd69ee70b6bec42f13c5d0c0f4dee433e1b40ce73630f23" => :yosemite
+    sha256 "f908838becce85cf6cba0f355b66f677695d9e718b6a1e4d3f46db327f884058" => :mavericks
   end
 
   option "with-unicode-support", "Build json-fortran to support unicode text in json objects and files"
   option "without-test", "Skip running build-time tests (not recommended)"
-  option "without-robodoc", "Do not build and install ROBODoc generated documentation for json-fortran"
+  option "without-docs", "Do not build and install FORD generated documentation for json-fortran"
 
-  depends_on "robodoc" => [:recommended, :build]
+  deprecated_option "without-robodoc" => "without-docs"
+
+  depends_on "ford" => :build if build.with? "docs"
   depends_on "cmake" => :build
   depends_on :fortran
 
@@ -26,9 +28,9 @@ class JsonFortran < Formula
       args = std_cmake_args
       args << "-DUSE_GNU_INSTALL_CONVENTION:BOOL=TRUE" # Use more GNU/Homebrew-like install layout
       args << "-DENABLE_UNICODE:BOOL=TRUE" if build.with? "unicode-support"
-      args << "-DSKIP_DOC_GEN:BOOL=TRUE" if build.without? "robodoc"
+      args << "-DSKIP_DOC_GEN:BOOL=TRUE" if build.without? "docs"
       system "cmake", "..", *args
-      system "make", "all", "test" if build.with? "test" # CMake doesn't build tests when `make test`
+      system "make", "check" if build.with? "test"
       system "make", "install"
     end
   end

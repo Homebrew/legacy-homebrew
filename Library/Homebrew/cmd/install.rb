@@ -1,8 +1,9 @@
 require "blacklist"
-require "cmd/doctor"
+require "diagnostic"
 require "cmd/search"
-require "cmd/tap"
 require "formula_installer"
+require "tap"
+require "core_formula_repository"
 require "hardware"
 
 module Homebrew
@@ -14,9 +15,10 @@ module Homebrew
     end
 
     ARGV.named.each do |name|
-      if !File.exist?(name) && (name =~ HOMEBREW_TAP_FORMULA_REGEX \
-                                || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
-        install_tap $1, $2
+      if !File.exist?(name) &&
+         (name =~ HOMEBREW_TAP_FORMULA_REGEX || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
+        tap = Tap.fetch($1, $2)
+        tap.install unless tap.installed?
       end
     end unless ARGV.force?
 
@@ -24,8 +26,6 @@ module Homebrew
       formulae = []
 
       if ARGV.casks.any?
-        brew_cask = Formulary.factory("brew-cask")
-        install_formula(brew_cask) unless brew_cask.installed?
         args = []
         args << "--force" if ARGV.force?
         args << "--debug" if ARGV.debug?
@@ -37,6 +37,10 @@ module Homebrew
           system(*cmd)
         end
       end
+
+      # if the user's flags will prevent bottle only-installations when no
+      # developer tools are available, we need to stop them early on
+      FormulaInstaller.prevent_build_flags unless MacOS.has_apple_developer_tools?
 
       ARGV.formulae.each do |f|
         # head-only without --HEAD is an error
@@ -73,6 +77,13 @@ module Homebrew
           msg = "#{f.full_name}-#{f.installed_version} already installed"
           msg << ", it's just not linked" unless f.linked_keg.symlink? || f.keg_only?
           opoo msg
+        elsif f.oldname && (dir = HOMEBREW_CELLAR/f.oldname).directory? && !dir.subdirs.empty? \
+            && f.tap == Tab.for_keg(dir.subdirs.first).tap && !ARGV.force?
+          # Check if the formula we try to install is the same as installed
+          # but not migrated one. If --force passed then install anyway.
+          opoo "#{f.oldname} already installed, it's just not migrated"
+          puts "You can migrate formula with `brew migrate #{f}`"
+          puts "Or you can force install it with `brew install #{f} --force`"
         else
           formulae << f
         end
@@ -87,10 +98,36 @@ module Homebrew
       else
         ofail e.message
         query = query_regexp(e.name)
-        ohai "Searching formulae..."
-        puts_columns(search_formulae(query))
+
+        ohai "Searching for similarly named formulae..."
+        formulae_search_results = search_formulae(query)
+        case formulae_search_results.length
+        when 0
+          ofail "No similarly named formulae found."
+        when 1
+          puts "This similarly named formula was found:"
+          puts_columns(formulae_search_results)
+          puts "To install it, run:\n  brew install #{formulae_search_results.first}"
+        else
+          puts "These similarly named formulae were found:"
+          puts_columns(formulae_search_results)
+          puts "To install one of them, run (for example):\n  brew install #{formulae_search_results.first}"
+        end
+
         ohai "Searching taps..."
-        puts_columns(search_taps(query))
+        taps_search_results = search_taps(query)
+        case taps_search_results.length
+        when 0
+          ofail "No formulae found in taps."
+        when 1
+          puts "This formula was found in a tap:"
+          puts_columns(taps_search_results)
+          puts "To install it, run:\n  brew install #{taps_search_results.first}"
+        else
+          puts "These formulae were found in taps:"
+          puts_columns(taps_search_results)
+          puts "To install one of them, run (for example):\n  brew install #{taps_search_results.first}"
+        end
 
         # If they haven't updated in 48 hours (172800 seconds), that
         # might explain the error
@@ -122,13 +159,13 @@ module Homebrew
   end
 
   def check_xcode
-    checks = Checks.new
+    checks = Diagnostic::Checks.new
     %w[
       check_for_unsupported_osx
+      check_for_bad_install_name_tool
       check_for_installed_developer_tools
       check_xcode_license_approved
       check_for_osx_gcc_installer
-      check_for_bad_install_name_tool
     ].each do |check|
       out = checks.send(check)
       opoo out unless out.nil?
@@ -155,7 +192,7 @@ module Homebrew
   def perform_preinstall_checks
     check_ppc
     check_writable_install_location
-    check_xcode
+    check_xcode if MacOS.has_apple_developer_tools?
     check_cellar
   end
 
@@ -176,7 +213,6 @@ module Homebrew
     fi.debug               = ARGV.debug?
     fi.prelude
     fi.install
-    fi.caveats
     fi.finish
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to install f as part of the dependency tree of

@@ -1,13 +1,14 @@
 class ExactImage < Formula
   desc "Image processing library"
-  homepage "http://www.exactcode.com/site/open_source/exactimage"
-  url "http://dl.exactcode.de/oss/exact-image/exact-image-0.9.1.tar.bz2"
+  homepage "https://exactcode.com/opensource/exactimage/"
+  url "https://dl.exactcode.de/oss/exact-image/exact-image-0.9.1.tar.bz2"
   sha256 "79e6a58522897f9740aa3b5a337f63ad1e0361a772141b24aaff2e31264ece7d"
 
   bottle do
-    sha256 "77f3d83c27eca6a0804c9edda52b4d49799a37b03a65f8316fa0c7e256437681" => :yosemite
-    sha256 "57fab089650fdbf201037ae199caf049db95ab42db3bc16d92e6323db09fa866" => :mavericks
-    sha256 "9526777ff0d57b8a8c56f23039c62495b02b419eb04e4d6e01d57b9f909594d5" => :mountain_lion
+    revision 1
+    sha256 "70d2c9f04047842003395c40aab94e4d5f5f2505ed2a1caead3f2bc3b19fbb79" => :el_capitan
+    sha256 "0d4f8c47de237fad9ff663f7be0227694bc2cc2010a9e909c8d7e98ee3448677" => :yosemite
+    sha256 "981c8cee58d2985735f8716d1fff0db690de70eeb0e848eb0f8e340737b4134f" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -15,7 +16,7 @@ class ExactImage < Formula
   depends_on "freetype" => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--without-libungif"
     system "make", "install"
   end
 

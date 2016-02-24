@@ -6,9 +6,10 @@ class Diction < Formula
   sha256 "35c2f1bf8ddf0d5fa9f737ffc8e55230736e5d850ff40b57fdf5ef1d7aa024f6"
 
   bottle do
-    sha1 "5a3520b96c45b01b39c14eb55537780fdbaeb830" => :yosemite
-    sha1 "cc7d45e7d240f0eef22dfcda475ee9daac382c36" => :mavericks
-    sha1 "23b2b3ebafb4434c0097cef9deef057ce1eec850" => :mountain_lion
+    sha256 "858b8312ef527a7745a02b3bf40cd483c0212216e3342ac7eaddbfe6045893dd" => :el_capitan
+    sha256 "ce2b0d6b0f7184596753de94a3cbd171f5236c947f47536d3bf5be806c8ef804" => :yosemite
+    sha256 "b993bef13629751dc5ac23a38e67ea8fdce3e75f0d96585dc71508543e099f0e" => :mavericks
+    sha256 "f3d0a49027153c0c81928a9648a2211630f6542bbb7bbe283b7265ef8fdab716" => :mountain_lion
   end
 
   def install

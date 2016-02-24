@@ -6,10 +6,11 @@ class Cbmbasic < Formula
   head "https://github.com/mist64/cbmbasic.git"
 
   bottle do
-    cellar :any
-    sha1 "83830760860b56bb7c10dd301c72aae60e8172c1" => :yosemite
-    sha1 "3e6da115337e59d612236113185fd29d49cd5763" => :mavericks
-    sha1 "7da6d8d160c73fd00e28999ae6c6f4c89b1cacbb" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "92762d9b7f5f21190b98d23e7fedf787cccc14e1c82699b60036948beaf1e7d1" => :el_capitan
+    sha256 "d7285a8376e20ac008e51814a97f155f8ac80ce94a809c953ee63932a1d2c1d7" => :yosemite
+    sha256 "ffe1126f8e12f15471abadf280fa83b8e77770170749805a28fdaa1a1adf51b0" => :mavericks
+    sha256 "04ac2ecc60ab69d7d4c6150260aeb8c63dc0bb3974d554241b8470792332be56" => :mountain_lion
   end
 
   def install

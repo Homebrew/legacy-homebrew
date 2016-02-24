@@ -6,9 +6,9 @@ class Solid < Formula
 
   bottle do
     cellar :any
-    sha1 "f7c0aa5b2b75678c27f4d003ab55e7a0ea9f9921" => :yosemite
-    sha1 "fca885d1b9f9cd78fbe6b8f018b5513a8fd7d29a" => :mavericks
-    sha1 "9ad7a31ab3b9a2dc7effaa14ac1e0d0a09ba1e6f" => :mountain_lion
+    sha256 "e54bf158f4e91171c55d5514abe6fd36ca358e39e8271985f446be4002b6a5e7" => :yosemite
+    sha256 "b22bde511d5fa7a1112ef122fa70e5260ac6491bdfd3f8eeb19848b5b769621d" => :mavericks
+    sha256 "db9bd9a409bc447657f759852aa02feb0bc19cd84c552b9c16dfed130c2a3829" => :mountain_lion
   end
 
   deprecated_option "enable-doubles" => "with-doubles"

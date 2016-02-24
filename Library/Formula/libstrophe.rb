@@ -1,17 +1,15 @@
 class Libstrophe < Formula
   desc "XMPP library for C"
   homepage "http://strophe.im/libstrophe/"
-  url "https://github.com/strophe/libstrophe/archive/0.8.6.tar.gz"
-  sha256 "a2158134381e544a7697e9379f45abe18da817cd05eb3272eabec2151599d702"
+  url "https://github.com/strophe/libstrophe/archive/0.8.8.tar.gz"
+  sha256 "08f4a85ef419a8bdf08b6afa8f7b2a0e5e180fdc9c16cede81af672ec10e21e7"
   head "https://github.com/strophe/libstrophe.git"
-  revision 1
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "cba04617714a99e25d71ab0efd9d26d046d336c4" => :yosemite
-    sha1 "1f824c9bcb4d8e370e5423d26b75bc926de23afc" => :mavericks
-    sha1 "5ed9df92858ba19d256cfc99c1459649b4840f68" => :mountain_lion
+    sha256 "a67aa03ee2d0643b652be84252e5d33f62d7a315ff2d581dcbbb1c938c7ca9a3" => :el_capitan
+    sha256 "73c638c2bf7572e9ff6a87b8cbe99349c25544606aba13706f6719b3cbe66d07" => :yosemite
+    sha256 "1e874fe49c1b35f613ba86d28b53783bdf2c55d67cdd838e23d86f278657dd42" => :mavericks
   end
 
   depends_on "autoconf" => :build

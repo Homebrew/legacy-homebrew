@@ -26,6 +26,8 @@ class IrcdIrc2 < Formula
     EOS
   end
 
+  conflicts_with "ircd-hybrid", :because => "both install `ircd` binaries"
+
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}",

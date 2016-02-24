@@ -4,14 +4,16 @@ class Boot2docker < Formula
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of docker too
   url "https://github.com/boot2docker/boot2docker-cli.git",
-    :tag => "v1.7.1", :revision => "8fdc6f573bf08149b6311681800d55fda6e19e71"
+    :tag => "v1.8.0", :revision => "9a2606673efcfa282fb64a5a5c9e1b2f89d86fb4"
+  revision 1
+
   head "https://github.com/boot2docker/boot2docker-cli.git"
 
   bottle do
-    cellar :any
-    sha256 "ee635531a2ef65a83f026e71b5c807c98413793a5f736db66dbb0c7eb9053214" => :yosemite
-    sha256 "6d72b9ce39f9c50fffa55c9314a2c7b0785ad32048722183f2c96ce29bd3e2cf" => :mavericks
-    sha256 "26a9309721b6c04f031f652d06f34cf5f16f2dcbb710e2a8e73de8d8b7654b08" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "40ee29e8a44e50bdacdbe81e9bcebb6b9ed01dc7045d5c7178a1e4d97ba3f8e6" => :el_capitan
+    sha256 "abb90647cee5070ec8f627ccf5c1742f4178af44aa457269c397cc0a0bcf7fe3" => :yosemite
+    sha256 "df535640233157d16e153391019bd2dc2ed3448be77dbf77dde4586b071cd407" => :mavericks
   end
 
   depends_on "docker" => :recommended

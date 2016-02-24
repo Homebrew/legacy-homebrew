@@ -1,12 +1,14 @@
 class Artifactory < Formula
   desc "Manages binaries"
-  homepage "http://www.jfrog.com/artifactory/"
-  url "https://dl.bintray.com/jfrog/artifactory/jfrog-artifactory-oss-4.0.0.zip"
-  sha256 "733b6f0f388099657cdf2429c41c7d8a91e8322346b811a97bedfb09036600dc"
+  homepage "https://www.jfrog.com/artifactory/"
+  url "https://dl.bintray.com/jfrog/artifactory/jfrog-artifactory-oss-4.5.1.zip"
+  sha256 "7199a0127606cfc934c9f7984c83db4df5af15b33969471016a26ef3e226ce9a"
 
-  depends_on :java => "1.8+"
+  bottle :unneeded
 
   option "with-low-heap", "Run artifactory with low Java memory options. Useful for development machines. Do not use in production."
+
+  depends_on :java => "1.8+"
 
   def install
     # Remove Windows binaries
@@ -65,7 +67,6 @@ class Artifactory < Formula
   end
 
   test do
-    output = shell_output("#{bin}/artifactory.sh check 2>&1", 1)
-    assert_match /Checking arguments to Artifactory/, output
+    assert_match /Checking arguments to Artifactory/, pipe_output("#{bin}/artifactory.sh check")
   end
 end

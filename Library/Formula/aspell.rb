@@ -6,13 +6,14 @@ class Aspell < Formula
   sha256 "f52583a83a63633701c5f71db3dc40aab87b7f76b29723aeb27941eff42df6e1"
 
   bottle do
-    sha1 "2dc302f844040241b90625896d90f8167a7fed2e" => :yosemite
-    sha1 "1bbcc135fd6b28bd3c604805b1e24aee42d4b194" => :mavericks
-    sha1 "8408ca154004072598e294aad2d17d4665d5b313" => :mountain_lion
+    sha256 "ccc60cb56f23d7ad911ae2b564c1257ba0e5136e069b9cff6372a12bd720ce64" => :el_capitan
+    sha256 "cbef227317d456df1bb54e11aa041ed28a445a95fb0b8517c1a352b01634026b" => :yosemite
+    sha256 "2c254cad4de36437852bf34806f3766b90013ea52310eb4b7afcb7eb2399d970" => :mavericks
+    sha256 "138549002ae369e1659a990ef26b30e500cab4f5cd0a21b80290946099fee6d0" => :mountain_lion
   end
 
   devel do
-    url "ftp://alpha.gnu.org/gnu/aspell/aspell-0.60.7-20110707.tar.gz"
+    url "http://alpha.gnu.org/gnu/aspell/aspell-0.60.7-20110707.tar.gz"
     sha256 "084005bd37013f17b725eca033fe19053b2ab33144e990685486746cb10416a5"
     version "0.60.7-20110707"
   end

@@ -1,6 +1,6 @@
 class Man2html < Formula
   desc "Convert nroff man pages to HTML"
-  homepage "http://dcssrv1.oit.uci.edu/indiv/ehood/man2html.html"
+  homepage "https://savannah.nongnu.org/projects/man2html/"
   url "http://dcssrv1.oit.uci.edu/indiv/ehood/tar/man2html3.0.1.tar.gz"
   mirror "https://distfiles.macports.org/man2html/man2html3.0.1.tar.gz"
   sha256 "a3dd7fdd80785c14c2f5fa54a59bf93ca5f86f026612f68770a0507a3d4e5a29"

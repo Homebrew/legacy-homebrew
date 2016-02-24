@@ -5,6 +5,8 @@ class CloudWatch < Formula
   version "1.0.20.0"
   sha256 "7b241dc6b49ea2aafdeb66f859be9d30128fb0ab5833074f6596762c9bd84417"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

@@ -1,27 +1,16 @@
 class Cryptopp < Formula
   desc "Free C++ class library of cryptographic schemes"
-  homepage "http://www.cryptopp.com/"
-  url "https://downloads.sourceforge.net/project/cryptopp/cryptopp/5.6.2/cryptopp562.zip"
-  mirror "http://www.cryptopp.com/cryptopp562.zip"
-  sha256 "5cbfd2fcb4a6b3aab35902e2e0f3b59d9171fee12b3fc2b363e1801dfec53574"
-  version "5.6.2"
+  homepage "https://www.cryptopp.com/"
+  url "https://downloads.sourceforge.net/project/cryptopp/cryptopp/5.6.3/cryptopp563.zip"
+  mirror "https://www.cryptopp.com/cryptopp563.zip"
+  version "5.6.3"
+  sha256 "9390670a14170dd0f48a6b6b06f74269ef4b056d4718a1a329f6f6069dc957c9"
+  revision 1
 
-  bottle do
-    cellar :any
-    revision 1
-    sha256 "a136d3cf1d63f9b22d5bde0a0bb6df00ff2b39dc265de0382ac1220518aad1e0" => :yosemite
-    sha256 "27fd4366af9bd34c6008d8e7508f3d95f119b8a1f55a33b2c78215933f30bbb4" => :mavericks
-    sha256 "650e6e1ca3b24ed922b67d842ff702bb0574cac20fa054812558787cfcfba9e1" => :mountain_lion
-  end
+  # https://cryptopp.com/wiki/Config.h#Options_and_Defines
+  bottle :disable, "Library and clients must be built on the same microarchitecture"
 
   option :cxx11
-
-  # Incorporated upstream, remove on next version update
-  # https://groups.google.com/forum/#!topic/cryptopp-users/1wdyb2FSwc4
-  patch :p1 do
-    url "https://github.com/weidai11/cryptopp/commit/44015c26ba215f955b1e653f9c8f3c894a532707.patch"
-    sha256 "2ca6c2f9dda56fa29df952d0ee829c9501a2cbc43a68bdc786d8241aefaddea6"
-  end
 
   def install
     ENV.cxx11 if build.cxx11?

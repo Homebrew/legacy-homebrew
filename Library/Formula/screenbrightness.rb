@@ -1,14 +1,14 @@
 class Screenbrightness < Formula
   desc "Change OS X display brightness from the command-line"
-  homepage "https://github.com/jmstacey/screenbrightness"
-  url "https://github.com/jmstacey/screenbrightness/archive/1.1.tar.gz"
-  sha256 "05c6ec76f50a0d2c6dd9d3597311c97ff3c23b2da2501eed9950e89bf8f079fa"
+  homepage "https://github.com/nriley/brightness"
+  url "https://github.com/nriley/brightness/archive/1.2.tar.gz"
+  sha256 "6094c9f0d136f4afaa823d299f5ea6100061c1cec7730bf45c155fd98761f86b"
 
   bottle do
     cellar :any
-    sha1 "af2ab5c5ba668e9be32b95ed3ac581423e14b1b8" => :yosemite
-    sha1 "c780916b31a50d6a599b1c6238548a8db3a008a1" => :mavericks
-    sha1 "9cf03ce35a3cb24a25bd28b9a213963f64a3dfdd" => :mountain_lion
+    sha256 "daba4223ac40edc23967a4b5f18fd21d292d5e698ce2808483dba8cd77980135" => :yosemite
+    sha256 "cb4a3e3e7089a675d9067d7d64b5e5f783758e859301516849b65c4ab9fe6c70" => :mavericks
+    sha256 "9bc33321a6f83786f092c0b7e83bdccf2e103f84962f9defa02856f9336db97f" => :mountain_lion
   end
 
   def install
@@ -17,6 +17,6 @@ class Screenbrightness < Formula
   end
 
   test do
-    system "#{bin}/screenbrightness", "-l"
+    system "#{bin}/brightness", "-l"
   end
 end

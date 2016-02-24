@@ -1,32 +1,18 @@
 class P7zip < Formula
   desc "7-Zip (high compression file archiver) implementation"
   homepage "http://p7zip.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/p7zip/p7zip/9.20.1/p7zip_9.20.1_src_all.tar.bz2"
-  sha1 "1cd567e043ee054bf08244ce15f32cb3258306b7"
-
-  devel do
-    url "https://downloads.sourceforge.net/project/p7zip/p7zip/9.38.1/p7zip_9.38.1_src_all.tar.bz2"
-    sha1 "6b1eccf272d8b141a94758f80727ae633568ba69"
-  end
+  url "https://downloads.sourceforge.net/project/p7zip/p7zip/15.09/p7zip_15.09_src_all.tar.bz2"
+  sha256 "8783acf747e210e00150f7311cc06c4cd8ecf7b0c27b4adf2194284cc49b4d6f"
 
   bottle do
-    sha1 "c734e7052a1e3e9e280b189db31cf59e9d4f98e6" => :yosemite
-    sha1 "aba193d047e84781a4d18911a41e77c16d520aea" => :mavericks
-    sha1 "0d6f280dcedc67a789bbfd54f0ddef65899f4dfe" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "f511842f500b491038e1ba33846b9e740d6b05806e713df89d166f81b5577c22" => :el_capitan
+    sha256 "d826d0523d22bdb8d5d3215057d9dadc6d8a087f2c6df2906b8639272dd0f2aa" => :yosemite
+    sha256 "c42705fef2c52ce8d2244d4e953d43d7276f4c884aa9ed8349680d9ff7d18916" => :mavericks
   end
 
-  option "32-bit"
-
   def install
-    if Hardware.is_32_bit? || build.build_32_bit?
-      mv "makefile.macosx_32bits", "makefile.machine"
-    else
-      mv "makefile.macosx_64bits", "makefile.machine"
-    end
-
-    # install.sh chmods to 444, which is bad and breaks uninstalling
-    inreplace "install.sh", /chmod (444|555).*/, ""
-
+    mv "makefile.macosx_llvm_64bits", "makefile.machine"
     system "make", "all3",
                    "CC=#{ENV.cc} $(ALLFLAGS)",
                    "CXX=#{ENV.cxx} $(ALLFLAGS)"

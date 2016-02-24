@@ -6,9 +6,9 @@ class Aggregate < Formula
 
   bottle do
     cellar :any
-    sha1 "94eb9307d2f12e20663b6c47e3a60317ab7ac6e6" => :mavericks
-    sha1 "b2f030ab1484299fa1fffbcfbcd4e84e8726e1bc" => :mountain_lion
-    sha1 "c2a27bf04eb3efcafbf4b271e7cfb7b520eac7f4" => :lion
+    sha256 "6c89bcfc86345dc4367c13ac78ac3a1bfaef5a43d1003afc741882a39496c9c6" => :mavericks
+    sha256 "90f9a420fa1edc97cbaed1471850eba494970eb392874a562c568f94f18832e6" => :mountain_lion
+    sha256 "13616e0a1b9502dd61abebe8a780688f694a777ad48d2bf19cf64f0a70c3d9f6" => :lion
   end
 
   # Note - Freecode is no longer being updated & an alternative homepage should be found if possible.

@@ -1,26 +1,29 @@
 class Bro < Formula
   desc "Network security monitor"
   homepage "https://www.bro.org"
+  url "https://www.bro.org/downloads/release/bro-2.4.1.tar.gz"
+  sha256 "d8b99673a5024630f6bae820c4f8c3ca9029f1167f9e5729c914c66e1fc7c8f6"
   head "https://github.com/bro/bro.git"
 
-  stable do
-    url "https://www.bro.org/downloads/release/bro-2.4.tar.gz"
-    sha256 "740c0d0b0bec279c2acef5e1b6b4d0016c57cd02a729f5e2924ae4a922e208b2"
-  end
-
   bottle do
-    sha256 "6ebeb99f7435427fea693cb6a7a1484cbf065a501af389ff6a86b139a16a7cbe" => :yosemite
-    sha256 "6a15212763d47074a8d9cc3783a0e28c245eebc79afc09b4f86d385840a8e07a" => :mavericks
-    sha256 "b1ab1064cba21febae1e902477292a974602881ad4d2aa837ed1ee008df0eaf3" => :mountain_lion
+    revision 1
+    sha256 "a48cb079b41fe45aad9e4acf3f9d6ef774569cfa14b970a9e205c40882147848" => :el_capitan
+    sha256 "fb0a8b536d58745f837a3e5731e6c34c09dd4542ca33c523860c3c9aea6dea84" => :yosemite
+    sha256 "e0aab7ebf5af8aea92fadc1df19f2ad6d65a2a1a91f62ecd4a2c2146466b989c" => :mavericks
   end
 
   depends_on "cmake" => :build
   depends_on "swig" => :build
-  depends_on "geoip" => :recommended
   depends_on "openssl"
+  depends_on "geoip" => :recommended
+
+  conflicts_with "brotli", :because => "Both install a `bro` binary"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-openssl=#{Formula["openssl"].opt_prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}",
+                          "--localstatedir=#{var}",
+                          "--conf-files-dir=#{etc}"
     system "make", "install"
   end
 

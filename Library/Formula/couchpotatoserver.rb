@@ -1,16 +1,11 @@
 class Couchpotatoserver < Formula
   desc "Download movies automatically"
   homepage "https://couchpota.to"
-  url "https://github.com/RuudBurger/CouchPotatoServer/archive/build/2.6.1.tar.gz"
-  sha256 "1e0ab9536d61be39b4ee8f8a988af48fe56a521406fe01fc77deefadebdfb986"
-
+  url "https://github.com/RuudBurger/CouchPotatoServer/archive/build/3.0.1.tar.gz"
+  sha256 "f08f9c6ac02f66c6667f17ded1eea4c051a62bbcbadd2a8673394019878e92f7"
   head "https://github.com/RuudBurger/CouchPotatoServer.git"
 
-  bottle do
-    sha1 "51646a81a472465367ad2fdf3fd352a5010603fd" => :yosemite
-    sha1 "2d9fa437d8be3478eb98aeaf5e1d9ea43ec74939" => :mavericks
-    sha1 "fde0bf248a2ee10e56d7865d3d0bcb21cc12d868" => :mountain_lion
-  end
+  bottle :unneeded
 
   def install
     prefix.install_metafiles
@@ -53,5 +48,9 @@ class Couchpotatoserver < Formula
 
   def caveats
     "CouchPotatoServer defaults to port 5050."
+  end
+
+  test do
+    system "#{bin}/couchpotatoserver", "--help"
   end
 end

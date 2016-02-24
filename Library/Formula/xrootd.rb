@@ -8,9 +8,10 @@ class Xrootd < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "9a9d65cd4671a62253bf1d270d0e7e789e4385f7" => :yosemite
-    sha1 "81dc9c675bb2fff6a63079bd0d61c0a8dbad2344" => :mavericks
-    sha1 "02b5631c4943e11c45d03ce75fbd133f90170265" => :mountain_lion
+    sha256 "10019de1deb873bb5324d94ec6153dab41e537f1cdbab4eaf7c00f6de666e0d4" => :el_capitan
+    sha256 "5aec9e2b8272937b9bfe807b0fe19ecbd80ee09cffb90199f4bacedafb4993c0" => :yosemite
+    sha256 "dd7dc0728eb0117d8d0d544bc6ff20b460015d8e2cc6868c3ba5fd8c748716b7" => :mavericks
+    sha256 "1b6edb252ed5915dc67b39dbe84500d9f36af0dc883e63dfcf724af59b35e6f5" => :mountain_lion
   end
 
   depends_on "cmake" => :build

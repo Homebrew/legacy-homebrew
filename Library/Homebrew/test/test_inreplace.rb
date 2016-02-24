@@ -85,7 +85,8 @@ class InreplaceTest < Homebrew::TestCase
     s.sub!("f", "b")
     assert_equal "boo", s
 
-    s.gsub!("o", "e")
+    # Under current context, we are testing `String#gsub!`, so let's disable rubocop temporarily.
+    s.gsub!("o", "e") # rubocop:disable Performance/StringReplacement
     assert_equal "bee", s
   end
 
@@ -99,7 +100,8 @@ class InreplaceTest < Homebrew::TestCase
     end
 
     assert_raises(Utils::InreplaceError) do
-      inreplace("test") { |s| s.gsub! "d", "f" }
+      # Under current context, we are testing `String#gsub!`, so let's disable rubocop temporarily.
+      inreplace("test") { |s| s.gsub!("d", "f") } # rubocop:disable Performance/StringReplacement
     end
 
     assert_raises(Utils::InreplaceError) do

@@ -50,7 +50,7 @@ module Homebrew
 
   def keg_only?(rack)
     Formulary.from_rack(rack).keg_only?
-  rescue FormulaUnavailableError, TapFormulaAmbiguityError
+  rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
     false
   end
 end

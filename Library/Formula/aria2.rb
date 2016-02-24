@@ -1,21 +1,23 @@
 class Aria2 < Formula
   desc "Download with resuming and segmented downloading"
   homepage "http://aria2.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.9/aria2-1.18.9.tar.bz2"
-  sha256 "e24bca91edbe8fff52615420085317ce22faec4a0a9c34843f86dbcc2a79c4b2"
+  url "https://github.com/tatsuhiro-t/aria2/releases/download/release-1.20.0/aria2-1.20.0.tar.xz"
+  sha256 "bf96344b6fee3aada0881ca008b077ea2c5dd820e8f8d693329481ecc7ff8fd0"
 
   bottle do
-    cellar :any
-    sha1 "a82e7baf0bf64cd3beb6ee2c5d16c10534138852" => :yosemite
-    sha1 "f0ab29fdeebb96b6f9594a7119b9210b820b28f4" => :mavericks
-    sha1 "b931e5c286c97a5cc5d5ef2e21336dfc9fe62ea6" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "f6238cde6d6cdec0d8ced8cd97760b897bffda6d8d856d45dfa169bd358ac001" => :el_capitan
+    sha256 "2d0cf115454f179349bd7e540cb89faae0fcd8cb8e9f270888e4b743a51adf9b" => :yosemite
+    sha256 "0d8e36764f00d0068deabe5976f140cc3085e8f9627cd3719764225fec277429" => :mavericks
   end
 
   depends_on "pkg-config" => :build
+  depends_on "libssh2" => :optional
 
   needs :cxx11
 
   def install
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -26,6 +28,8 @@ class Aria2 < Formula
       --without-libnettle
       --without-libgcrypt
     ]
+
+    args << "--with-libssh2" if build.with? "libssh2"
 
     system "./configure", *args
     system "make", "install"

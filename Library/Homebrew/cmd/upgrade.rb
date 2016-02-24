@@ -1,19 +1,22 @@
 require "cmd/install"
-require "cmd/outdated"
+require "cleanup"
 
 module Homebrew
   def upgrade
+    FormulaInstaller.prevent_build_flags unless MacOS.has_apple_developer_tools?
+
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      outdated = Homebrew.outdated_brews(Formula.installed)
+      outdated = Formula.installed.select(&:outdated?)
       exit 0 if outdated.empty?
     elsif ARGV.named.any?
-      outdated = Homebrew.outdated_brews(ARGV.resolved_formulae)
+      outdated = ARGV.resolved_formulae.select(&:outdated?)
 
       (ARGV.resolved_formulae - outdated).each do |f|
-        if f.rack.directory?
-          version = f.rack.subdirs.map { |d| Keg.new(d).version }.max
+        versions = f.installed_kegs.map { |keg| keg.version }
+        if versions.any?
+          version = versions.max
           onoe "#{f.full_name} #{version} already installed"
         else
           onoe "#{f.full_name} not installed"
@@ -39,7 +42,12 @@ module Homebrew
       puts pinned.map { |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     end
 
-    outdated.each { |f| upgrade_formula(f) }
+    outdated.each do |f|
+      upgrade_formula(f)
+      next unless ARGV.include?("--cleanup")
+      next unless f.installed?
+      Homebrew::Cleanup.cleanup_formula f
+    end
   end
 
   def upgrade_pinned?
@@ -67,7 +75,6 @@ module Homebrew
     outdated_keg.unlink if outdated_keg
 
     fi.install
-    fi.caveats
     fi.finish
 
     # If the formula was pinned, and we were force-upgrading it, unpin and

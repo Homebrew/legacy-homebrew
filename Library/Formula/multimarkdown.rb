@@ -2,35 +2,41 @@ class Multimarkdown < Formula
   desc "Turn marked-up plain text into well-formatted documents"
   homepage "http://fletcherpenney.net/multimarkdown/"
   # Use git tag instead of the tarball to get submodules
-  url "https://github.com/fletcher/MultiMarkdown-4.git", :tag => "4.7.1",
-                                                         :revision => "3083076038cdaceb666581636ef9e1fc68472ff0"
-  head "https://github.com/fletcher/MultiMarkdown-4.git"
+  url "https://github.com/fletcher/MultiMarkdown-5.git",
+    :tag => "v5.0",
+    :revision => "47e7c4a2fac0271ee52ae0c7062a726978219341"
+
+  head "https://github.com/fletcher/MultiMarkdown-5.git"
 
   bottle do
-    cellar :any
-    sha256 "3ee488167591254206ff276f3b15ec760be60ff76bf1729ef0d49ba3efd1a1a2" => :yosemite
-    sha256 "e1ca2bd2e5667406abe9629a03e12b6670336e6efdcdfa71b6b53e93f6f886a1" => :mavericks
-    sha256 "7b3b8c13b58c25cd8eae393275361d7442d47e285df34898818604ac6279cb94" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "a68770c5e002c4d8d4ee1a0740cee09c9c78ee22ccbe9a2531d719d7549af2cc" => :el_capitan
+    sha256 "7729153a228a109bb0d8c1822bded14c513bedda6683d7e84556a4d6c7fd2092" => :yosemite
+    sha256 "c1cd1527d934780701e4cceb0649ee20c81bdfecd3e38409de2008840a6d07f0" => :mavericks
   end
+
+  depends_on "cmake" => :build
 
   conflicts_with "mtools", :because => "both install `mmd` binaries"
   conflicts_with "markdown", :because => "both install `markdown` binaries"
+  conflicts_with "discount", :because => "both install `markdown` binaries"
 
   def install
-    ENV.append "CFLAGS", "-g -O3 -include GLibFacade.h"
+    system "sh", "link_git_modules"
+    system "sh", "update_git_modules"
     system "make"
-    rm_f Dir["scripts/*.bat"]
-    bin.install "multimarkdown", Dir["scripts/*"]
-    prefix.install "Support"
-  end
 
-  def caveats; <<-EOS.undent
-    Support files have been installed to:
-      #{opt_prefix}/Support
-    EOS
+    cd "build" do
+      system "make"
+      bin.install "multimarkdown"
+    end
+
+    bin.install Dir["scripts/*"].reject { |f| f =~ /\.bat$/ }
   end
 
   test do
+    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"multimarkdown", "foo *bar*\n")
     assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"mmd", "foo *bar*\n")
   end
 end

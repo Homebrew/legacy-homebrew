@@ -12,20 +12,45 @@ class VersionTests < Homebrew::TestCase
     assert_raises(TypeError) { Version.new(1) }
     assert_raises(TypeError) { Version.new(:symbol) }
   end
+
+  def test_detected_from_url?
+    refute Version.new("1.0").detected_from_url?
+    assert Version::FromURL.new("1.0").detected_from_url?
+  end
+end
+
+class VersionTokenTests < Homebrew::TestCase
+  def test_inspect
+    assert_equal '#<Version::Token "foo">',
+      Version::Token.new("foo").inspect
+  end
+
+  def test_to_s
+    assert_equal "foo", Version::Token.new("foo").to_s
+  end
+end
+
+class VersionNullTokenTests < Homebrew::TestCase
+  def test_inspect
+    assert_equal "#<Version::NullToken>", Version::NullToken.new.inspect
+  end
+
+  def test_comparing_null
+    assert_operator Version::NullToken.new, :==, Version::NullToken.new
+  end
 end
 
 class VersionComparisonTests < Homebrew::TestCase
-  def test_version_comparisons
+  def test_comparing_regular_versions
     assert_operator version("0.1"), :==, version("0.1.0")
     assert_operator version("0.1"), :<, version("0.2")
     assert_operator version("1.2.3"), :>, version("1.2.2")
     assert_operator version("1.2.4"), :<, version("1.2.4.1")
-  end
 
-  def test_patchlevel
-    assert_operator version("1.2.3-p34"), :>, version("1.2.3-p33")
-    assert_operator version("1.2.3-p33"), :<, version("1.2.3-p34")
-    assert_operator version("1.2.3-p10"), :>, version("1.2.3-p9")
+    assert_operator version("1.2.3"), :>, version("1.2.3alpha4")
+    assert_operator version("1.2.3"), :>, version("1.2.3beta2")
+    assert_operator version("1.2.3"), :>, version("1.2.3rc3")
+    assert_operator version("1.2.3"), :<, version("1.2.3-p34")
   end
 
   def test_HEAD
@@ -33,14 +58,54 @@ class VersionComparisonTests < Homebrew::TestCase
     assert_operator version("1.2.3"), :<, version("HEAD")
   end
 
-  def test_alpha_beta_rc
-    assert_operator version("3.2.0b4"), :<, version("3.2.0")
-    assert_operator version("1.0beta6"), :<, version("1.0b7")
-    assert_operator version("1.0b6"), :<, version("1.0beta7")
-    assert_operator version("1.1alpha4"), :<, version("1.1beta2")
-    assert_operator version("1.1beta2"), :<, version("1.1rc1")
-    assert_operator version("1.0.0beta7"), :<, version("1.0.0")
-    assert_operator version("3.2.1"), :>, version("3.2beta4")
+  def test_comparing_alpha_versions
+    assert_operator version("1.2.3alpha4"), :==, version("1.2.3a4")
+    assert_operator version("1.2.3alpha4"), :==, version("1.2.3A4")
+    assert_operator version("1.2.3alpha4"), :>, version("1.2.3alpha3")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3alpha5")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3alpha10")
+
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3beta2")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3rc3")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3-p34")
+  end
+
+  def test_comparing_beta_versions
+    assert_operator version("1.2.3beta2"), :==, version("1.2.3b2")
+    assert_operator version("1.2.3beta2"), :==, version("1.2.3B2")
+    assert_operator version("1.2.3beta2"), :>, version("1.2.3beta1")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3beta3")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3beta10")
+
+    assert_operator version("1.2.3beta2"), :>, version("1.2.3alpha4")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3rc3")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3-p34")
+  end
+
+  def test_comparing_rc_versions
+    assert_operator version("1.2.3rc3"), :==, version("1.2.3RC3")
+    assert_operator version("1.2.3rc3"), :>, version("1.2.3rc2")
+    assert_operator version("1.2.3rc3"), :<, version("1.2.3rc4")
+    assert_operator version("1.2.3rc3"), :<, version("1.2.3rc10")
+
+    assert_operator version("1.2.3rc3"), :>, version("1.2.3alpha4")
+    assert_operator version("1.2.3rc3"), :>, version("1.2.3beta2")
+    assert_operator version("1.2.3rc3"), :<, version("1.2.3")
+    assert_operator version("1.2.3rc3"), :<, version("1.2.3-p34")
+  end
+
+  def test_comparing_patchlevel_versions
+    assert_operator version("1.2.3-p34"), :==, version("1.2.3-P34")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3-p33")
+    assert_operator version("1.2.3-p34"), :<, version("1.2.3-p35")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3-p9")
+
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3alpha4")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3beta2")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3rc3")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3")
   end
 
   def test_comparing_unevenly_padded_versions
@@ -55,10 +120,6 @@ class VersionComparisonTests < Homebrew::TestCase
     v = version("1.0")
     assert_nil v <=> Object.new
     assert_raises(ArgumentError) { v > Object.new }
-  end
-
-  def test_compare_patchlevel_to_non_patchlevel
-    assert_operator version("9.9.3-P1"), :>, version("9.9.3")
   end
 
   def test_erlang_version
@@ -126,6 +187,10 @@ class VersionParsingTests < Homebrew::TestCase
 
   def test_new_github_style
     assert_version_detected "1.1.4", "https://github.com/sam-github/libnet/tarball/libnet-1.1.4"
+  end
+
+  def test_codeload_style
+    assert_version_detected "0.7.1", "https://codeload.github.com/gsamokovarov/jump/tar.gz/v0.7.1"
   end
 
   def test_gloox_beta_style
@@ -255,6 +320,7 @@ class VersionParsingTests < Homebrew::TestCase
 
   def test_jenkins_version_style
     assert_version_detected "1.486", "http://mirrors.jenkins-ci.org/war/1.486/jenkins.war"
+    assert_version_detected "0.10.11", "https://github.com/hechoendrupal/DrupalConsole/releases/download/0.10.11/drupal.phar"
   end
 
   def test_apache_version_style
@@ -349,5 +415,29 @@ class VersionParsingTests < Homebrew::TestCase
       "http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x64.zip"
     assert_version_detected "4.0.18",
       "http://ftpmirror.gnu.org/mtools/mtools_4.0.18_i386.deb"
+  end
+
+  def test_opam_version
+    assert_version_detected "2.18.3",
+      "https://opam.ocaml.org/archives/lablgtk.2.18.3+opam.tar.gz"
+    assert_version_detected "1.9",
+      "https://opam.ocaml.org/archives/sha.1.9+opam.tar.gz"
+    assert_version_detected "0.99.2",
+      "https://opam.ocaml.org/archives/ppx_tools.0.99.2+opam.tar.gz"
+    assert_version_detected "1.0.2",
+      "https://opam.ocaml.org/archives/easy-format.1.0.2+opam.tar.gz"
+  end
+
+  def test_waf_version
+    assert_version_detected "1.8.12", "https://waf.io/waf-1.8.12"
+  end
+
+  def test_dash_separated_version
+    assert_version_detected "6-20151227", "ftp://gcc.gnu.org/pub/gcc/snapshots/6-20151227/gcc-6-20151227.tar.bz2"
+  end
+
+  def test_from_url
+    assert_version_detected "1.2.3",
+      "http://github.com/foo/bar.git", {:tag => "v1.2.3"}
   end
 end

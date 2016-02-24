@@ -2,6 +2,9 @@ require "hardware"
 require "os/mac/version"
 require "os/mac/xcode"
 require "os/mac/xquartz"
+require "os/mac/pathname"
+require "os/mac/sdk"
+require "os/mac/keg"
 
 module OS
   module Mac
@@ -12,7 +15,23 @@ module OS
     # This can be compared to numerics, strings, or symbols
     # using the standard Ruby Comparable methods.
     def version
-      @version ||= Version.new(MACOS_VERSION)
+      @version ||= Version.new(full_version.to_s[/10\.\d+/])
+    end
+
+    # This can be compared to numerics, strings, or symbols
+    # using the standard Ruby Comparable methods.
+    def full_version
+      @full_version ||= Version.new(`/usr/bin/sw_vers -productVersion`.chomp)
+    end
+
+    def prerelease?
+      # TODO: bump version when new OS is released
+      version >= "10.12"
+    end
+
+    def outdated_release?
+      # TODO: bump version when new OS is released
+      version < "10.9"
     end
 
     def cat
@@ -27,8 +46,8 @@ module OS
         @locate[key] = if File.executable?(path = "/usr/bin/#{tool}")
           Pathname.new path
         # Homebrew GCCs most frequently; much faster to check this before xcrun
-        elsif File.executable?(path = "#{HOMEBREW_PREFIX}/bin/#{tool}")
-          Pathname.new path
+        elsif (path = HOMEBREW_PREFIX/"bin/#{tool}").executable?
+          path
         else
           path = Utils.popen_read("/usr/bin/xcrun", "-no-cache", "-find", tool).chomp
           Pathname.new(path) if File.executable?(path)
@@ -36,21 +55,56 @@ module OS
       end
     end
 
+    # Locates a (working) copy of install_name_tool, guaranteed to function
+    # whether the user has developer tools installed or not.
+    def install_name_tool
+      if (path = HOMEBREW_PREFIX/"opt/cctools/bin/install_name_tool").executable?
+        path
+      else
+        locate("install_name_tool")
+      end
+    end
+
+    # Locates a (working) copy of otool, guaranteed to function whether the user
+    # has developer tools installed or not.
+    def otool
+      if (path = HOMEBREW_PREFIX/"opt/cctools/bin/otool").executable?
+        path
+      else
+        locate("otool")
+      end
+    end
+
+    # Checks if the user has any developer tools installed, either via Xcode
+    # or the CLT. Convenient for guarding against formula builds when building
+    # is impossible.
+    def has_apple_developer_tools?
+      Xcode.installed? || CLT.installed?
+    end
+
     def active_developer_dir
       @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
     end
 
-    def sdk_path(v = version)
-      (@sdk_path ||= {}).fetch(v.to_s) do |key|
-        opts = []
-        # First query Xcode itself
-        opts << Utils.popen_read(locate("xcodebuild"), "-version", "-sdk", "macosx#{v}", "Path").chomp
-        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
-        opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-        # Xcode < 4.3 style
-        opts << "/Developer/SDKs/MacOSX#{v}.sdk"
-        @sdk_path[key] = opts.map { |a| Pathname.new(a) }.detect(&:directory?)
+    # Returns the requested SDK, if installed.
+    # If the requested SDK is not installed returns either:
+    # a) The newest SDK (if any SDKs are available), or
+    # b) nil
+    def sdk(v = version)
+      @locator ||= SDKLocator.new
+      begin
+        @locator.sdk_for v
+      rescue SDKLocator::NoSDKError
+        sdk = @locator.latest_sdk
+        # don't return an SDK that's older than the OS version
+        sdk unless sdk.nil? || sdk.version < version
       end
+    end
+
+    # Returns the path to an SDK or nil, following the rules set by #sdk.
+    def sdk_path(v = version)
+      s = sdk(v)
+      s.path unless s.nil?
     end
 
     def default_cc
@@ -79,7 +133,7 @@ module OS
     def gcc_40_build_version
       @gcc_40_build_version ||=
         if (path = locate("gcc-4.0"))
-        `#{path} --version`[/build (\d{4,})/, 1].to_i
+          `#{path} --version 2>/dev/null`[/build (\d{4,})/, 1].to_i
         end
     end
     alias_method :gcc_4_0_build_version, :gcc_40_build_version
@@ -88,8 +142,8 @@ module OS
       @gcc_42_build_version ||=
         begin
           gcc = MacOS.locate("gcc-4.2") || HOMEBREW_PREFIX.join("opt/apple-gcc42/bin/gcc-4.2")
-          if gcc.exist? && gcc.realpath.basename.to_s !~ /^llvm/
-            `#{gcc} --version`[/build (\d{4,})/, 1].to_i
+          if gcc.exist? && !gcc.realpath.basename.to_s.start_with?("llvm")
+            `#{gcc} --version 2>/dev/null`[/build (\d{4,})/, 1].to_i
           end
         end
     end
@@ -97,22 +151,22 @@ module OS
 
     def llvm_build_version
       @llvm_build_version ||=
-        if (path = locate("llvm-gcc")) && path.realpath.basename.to_s !~ /^clang/
-        `#{path} --version`[/LLVM build (\d{4,})/, 1].to_i
+        if (path = locate("llvm-gcc")) && !path.realpath.basename.to_s.start_with?("clang")
+          `#{path} --version`[/LLVM build (\d{4,})/, 1].to_i
         end
     end
 
     def clang_version
       @clang_version ||=
         if (path = locate("clang"))
-        `#{path} --version`[/(?:clang|LLVM) version (\d\.\d)/, 1]
+          `#{path} --version`[/(?:clang|LLVM) version (\d\.\d)/, 1]
         end
     end
 
     def clang_build_version
       @clang_build_version ||=
         if (path = locate("clang"))
-        `#{path} --version`[/clang-(\d{2,})/, 1].to_i
+          `#{path} --version`[/clang-(\d{2,})/, 1].to_i
         end
     end
 
@@ -211,7 +265,12 @@ module OS
       "6.3.1" => { :clang => "6.1", :clang_build => 602 },
       "6.3.2" => { :clang => "6.1", :clang_build => 602 },
       "6.4"   => { :clang => "6.1", :clang_build => 602 },
-      "7.0"   => { :clang => "7.0", :clang_build => 700 }
+      "7.0"   => { :clang => "7.0", :clang_build => 700 },
+      "7.0.1" => { :clang => "7.0", :clang_build => 700 },
+      "7.1"   => { :clang => "7.0", :clang_build => 700 },
+      "7.1.1" => { :clang => "7.0", :clang_build => 700 },
+      "7.2"   => { :clang => "7.0", :clang_build => 700 },
+      "7.2.1" => { :clang => "7.0", :clang_build => 700 },
     }
 
     def compilers_standard?

@@ -1,13 +1,13 @@
 class Geoipupdate < Formula
   desc "Automatic updates of GeoIP2 and GeoIP Legacy databases"
   homepage "https://github.com/maxmind/geoipupdate"
-  url "https://github.com/maxmind/geoipupdate/releases/download/v2.2.1/geoipupdate-2.2.1.tar.gz"
-  sha256 "9547c42cc8620b2c3040fd8df95e8ee45c8b6ebcca7737d641f9526104d5f446"
+  url "https://github.com/maxmind/geoipupdate/releases/download/v2.2.2/geoipupdate-2.2.2.tar.gz"
+  sha256 "156ab7604255a9c62c4a442c76d48d024ac813c6542639bffa93b28e2a781621"
 
   bottle do
-    sha256 "bf6ff091c8e3ad9529d0cbd39f7380e1cd2379137684b508c8e70799a0e1feb2" => :yosemite
-    sha256 "175eaccb4fad21fcd9bb64f9fc1997d450c8c66b4146544d27180b57e2eaace8" => :mavericks
-    sha256 "d24c71e19f810f252619df4a183da690e8b0fb97943adcae5b35405b11595c43" => :mountain_lion
+    sha256 "0e69897d110e62e85a16536ee88955bd99ec20e428436f02253b8017535f5c48" => :el_capitan
+    sha256 "3cb6006adb116784d3aec5415be409feb2d663595fa05defab110d5856029b8b" => :yosemite
+    sha256 "5738a8729ef6111da261f11d7819d614d3d22c48d0261caea89b12b668b62a7e" => :mavericks
   end
 
   head do
@@ -42,6 +42,6 @@ class Geoipupdate < Formula
   end
 
   test do
-    system "#{bin}/geoipupdate", "-v"
+    system "#{bin}/geoipupdate", "-V"
   end
 end

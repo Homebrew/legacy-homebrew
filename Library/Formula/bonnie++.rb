@@ -6,9 +6,9 @@ class Bonniexx < Formula
 
   bottle do
     cellar :any
-    sha1 "92516b5595cecc77d56bcf908625e09b26f094d9" => :yosemite
-    sha1 "c1f228e5344318c848ac96b9e9a6e451d043faf8" => :mavericks
-    sha1 "201190cf5f4783a63c743163040da9ed6978d53a" => :mountain_lion
+    sha256 "0e262e7f22ad5b31e7aa3eb197c26e3b0b20bda3e4f5d7650b3c6a5771adf75b" => :yosemite
+    sha256 "9edb4a622920f753243c3ec9dcf8cfa4e9cea31e56656f6c55004a6d74e8821a" => :mavericks
+    sha256 "84cc882f89feb0df9ac06b2f7b3ace5bc817da9bf77b73da2dbb8ca3e1583504" => :mountain_lion
   end
 
   # Fix use of min/max with clang

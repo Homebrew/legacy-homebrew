@@ -1,14 +1,14 @@
 class Libsvm < Formula
   desc "Library for support vector machines"
   homepage "https://www.csie.ntu.edu.tw/~cjlin/libsvm/"
-  url "https://www.csie.ntu.edu.tw/~cjlin/libsvm/libsvm-3.20.tar.gz"
-  sha256 "0f122480bef44dec4df6dae056f468c208e4e08c00771ec1b6dae2707fd945be"
+  url "https://www.csie.ntu.edu.tw/~cjlin/libsvm/libsvm-3.21.tar.gz"
+  sha256 "519e0bdc0e31ab8246e9035e7ca91f794c16084f80abe4dffe776261d23c772f"
 
   bottle do
     cellar :any
-    sha1 "9a87d885fd4d943448c9107fe572ed0b5687bf5b" => :yosemite
-    sha1 "8fcd71c75841c4def48a4f57312ab5aae4ee628e" => :mavericks
-    sha1 "90e7456fa54524a2a12f563ae3e9bcab57d6ade7" => :mountain_lion
+    sha256 "0fce8de31135d07cd0fdb3641ebad2dfa974cc764ebaf6687f37a3a69a745c3a" => :el_capitan
+    sha256 "bdbaaa0c8be35d3424ace7a9fc4ff03158116c76151cbd2baa5361bd34db7b67" => :yosemite
+    sha256 "dca4ebe29389222258e146be192f3d40d147c355751a9581b873d30b8f1a0f91" => :mavericks
   end
 
   def install

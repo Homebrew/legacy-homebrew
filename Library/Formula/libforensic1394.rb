@@ -7,9 +7,9 @@ class Libforensic1394 < Formula
 
   bottle do
     cellar :any
-    sha1 "325248a31ee7f4c57126d77afe4268cf572a9dc5" => :yosemite
-    sha1 "311dddfc3d77a5ceb316fd909ad3cfae2268483b" => :mavericks
-    sha1 "55ed86e44ef8c35019fc7e68743e0443b95cf2f7" => :mountain_lion
+    sha256 "b64837090b557e25444999bfc41e2023f8fc2ced465ef7ccc067938fe0ec2f2c" => :yosemite
+    sha256 "a2039bd1c161253eac9ac123414f660fbb6059f709b6499ec6a92c73bfba4f42" => :mavericks
+    sha256 "2e47c1998b61152dd2ce086c78cf53d0d35781861921aafb1149589d7a312acb" => :mountain_lion
   end
 
   depends_on "cmake" => :build

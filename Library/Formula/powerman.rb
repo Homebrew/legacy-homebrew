@@ -7,9 +7,9 @@ class Powerman < Formula
 
   bottle do
     revision 1
-    sha1 "ec06181b96d551028f7d850af6d234b0ed10bdc8" => :yosemite
-    sha1 "1ce9ff3c11efed5f95e5dfb163e00112cddc3178" => :mavericks
-    sha1 "ad745e9cbf51ec189f1b7575ef6b426bb35e7686" => :mountain_lion
+    sha256 "d66a3faf7b2e5e07a56a3160158a3d9dc8314a2ca0acd09ba7b8ecebd42fc9e9" => :yosemite
+    sha256 "ad709cbaf0eb057c18ca98a8c9215132785b3d9a751df89600c38059b7b12265" => :mavericks
+    sha256 "c801c9d90323a6817a144dd9bf24ea095642eff51cae2500451507a367701546" => :mountain_lion
   end
 
   head do

@@ -6,23 +6,23 @@ class Trafshow < Formula
 
   bottle do
     cellar :any
-    sha1 "c41e1061e5300760e840f7cfde4ae669b24800e8" => :mavericks
-    sha1 "13881774f1b3a0ba6886dda9fe12aea126f2fefd" => :mountain_lion
-    sha1 "86097cbc1a851ae8a07b591ef6da823926b132cc" => :lion
+    sha256 "b09387706ec1b936ded262d795d2371a9e5f9682c06ee4d32e7d434a2291dea9" => :mavericks
+    sha256 "9df6fd0a83650199c086577968ad5d89d66ebf5d7c947064c63f061bf28cbe10" => :mountain_lion
+    sha256 "3783dc9d296d39390c792a347a72b9bebac5ab73a1e0b242af406d5505b0dc4f" => :lion
   end
 
   depends_on "libtool" => :build
 
   {
-    "domain_resolver.c" => "1e7b470e65ed5df0a5ab2b8c52309d19430a6b9b",
-    "colormask.c"       => "25086973e067eb205b67c63014b188af3b3477ab",
-    "trafshow.c"        => "3a7f7e1cd740c8f027dee7e0d5f9d614b83984f2",
-    "trafshow.1"        => "99c1d930049b261a5848c34b647d21e6980fa671",
-    "configure"         => "94e9667a86f11432e3458fae6acc593db75936b5"
+    "domain_resolver.c" => "43b97d4ea025ed2087e4525a0b1acffc887082148df6dd2603b91fa70f79b678",
+    "colormask.c"       => "04121b295d22a18aaf078611c75401a620570fbd89362bba2dd1abc042ea3c4a",
+    "trafshow.c"        => "3164a612689d8ec310453a50fbb728f9bae3c356b88c41b6eab7ba7e925b1bf1",
+    "trafshow.1"        => "8072e52acc56dd6f64c75f5d2e8a814431404b3fdfbc15149aaad1d469c47ff1",
+    "configure"         => "c6e34dddd6c159cbd373b2b593f7643642cb10449c6bc6c606e160586bc5b794",
   }.each do |name, sha|
     patch :p0 do
-      url "https://trac.macports.org/export/68507/trunk/dports/net/trafshow/files/patch-#{name}"
-      sha1 sha
+      url "https://raw.githubusercontent.com/Homebrew/patches/be6fd4a/trafshow/patch-#{name}"
+      sha256 sha
     end
   end
 

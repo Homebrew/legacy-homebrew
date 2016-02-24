@@ -7,14 +7,15 @@ class Opam < Formula
   revision 1
 
   bottle do
-    cellar :any
-    sha256 "0f2d33bd48a28f2427e58bdddb6057b39674de3547a150eaf88f12028c819e55" => :yosemite
-    sha256 "c09cf278e8d576955808468ec494238205e00bd9bfd52fb94c02a3ac2153cc9d" => :mavericks
-    sha256 "fab436947193e2e0b402320e520daa2826af8c80d0ddb4f9cf37d11ebd009ddf" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "2be7ee48f1102131153515736589e8766112cb86c45a7e0b2cc4ed424ad063ec" => :el_capitan
+    sha256 "28ac4e9f4aa5d36b654d4dcefc0f33105eb84583b4ae542d709de79c14883f04" => :yosemite
+    sha256 "71d0c0fb91faef76d207078c354c8ef8a64a8cb2959126358669378a209bda53" => :mavericks
   end
 
-  depends_on "objective-caml"
-  depends_on "camlp4" => :recommended
+  depends_on "ocaml" => :recommended
+  depends_on "camlp4" => :recommended if build.with? "ocaml"
 
   # aspcud has a fairly large buildtime dep tree, and uses gringo,
   # which requires C++11 and is inconvenient to install pre-10.8
@@ -71,18 +72,23 @@ class Opam < Formula
   def install
     ENV.deparallelize
 
-    # We put the compressed external libraries where the build
-    # expects to find them, thus tricking it into believing that it
-    # already downloaded the necessary files.
-    resources.each do |r|
-      r.verify_download_integrity(r.fetch)
-      original_name = r.cached_download.basename.sub(/^#{Regexp.escape(name)}--/, "")
-      cp r.cached_download, buildpath/"src_ext/#{original_name}"
-    end
+    if build.without? "ocaml"
+      system "make", "cold", "CONFIGURE_ARGS=--prefix #{prefix} --mandir #{man}"
+      ENV.prepend_path "PATH", "#{buildpath}/bootstrap/ocaml/bin"
+    else
+      # We put the compressed external libraries where the build
+      # expects to find them, thus tricking it into believing that it
+      # already downloaded the necessary files.
+      resources.each do |r|
+        r.verify_download_integrity(r.fetch)
+        original_name = r.cached_download.basename.sub(/^#{Regexp.escape(name)}--/, "")
+        cp r.cached_download, buildpath/"src_ext/#{original_name}"
+      end
 
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make", "lib-ext"
-    system "make"
+      system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+      system "make", "lib-ext"
+      system "make"
+    end
     system "make", "man"
     system "make", "install"
 

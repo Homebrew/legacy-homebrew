@@ -6,9 +6,9 @@ class Gcore < Formula
 
   bottle do
     cellar :any
-    sha1 "370c2f33ce79d1dbd0715b57d6e5fa8fd5338fbe" => :mavericks
-    sha1 "6b94b3961f147490fac3f259e8158d0d0ef9feb3" => :mountain_lion
-    sha1 "746794e1c9f6114185be7afc018ae8fda2e13fcd" => :lion
+    sha256 "88cd9f3114b081d8f079e1ca5625c49ca1bedc67cc827a07ce70fb8db78deb81" => :mavericks
+    sha256 "48a90f4a6719d732ea99740c8423f810e615decfb10df124d47bc8322faebbc6" => :mountain_lion
+    sha256 "f7a90a39ed7f20ff96b7b313e9e8cebf6e60f5919ec6fc981cce139e90a7f32c" => :lion
   end
 
   def install

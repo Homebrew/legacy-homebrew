@@ -20,10 +20,16 @@ module Dependable
   end
 
   def required?
+    # FIXME: Should `required?` really imply `!build?`? And if so, why doesn't
+    #        any of `optional?` and `recommended?` equally imply `!build?`?
     !build? && !optional? && !recommended?
   end
 
+  def option_tags
+    tags - RESERVED_TAGS
+  end
+
   def options
-    Options.create(tags - RESERVED_TAGS)
+    Options.create(option_tags)
   end
 end

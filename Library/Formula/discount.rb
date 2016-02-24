@@ -5,16 +5,17 @@ class Discount < Formula
   sha256 "c01502f4eedba8163dcd30c613ba5ee238a068f75291be127856261727e03526"
 
   bottle do
-    cellar :any
-    sha256 "a803af2105ca176a4e525bd7ebbd055cb3d4d1020b9d0fa2ef3f723ffacb1f99" => :yosemite
-    sha256 "2c1442bebb7543681cd076b88037c9a891dbc685ac781d6658dee3821cfbdd61" => :mavericks
-    sha256 "cab7dbc460fe459181e6fa69e530a9b1d9083218449cd36a2a7a30e123f558c0" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "51e475aa60c7f7d5125c96adc93cc00e7fce51fd21cd7eb9db6ad2e37def14d1" => :el_capitan
+    sha256 "2b55cb2a180d431fcfc0d261cb852495d694e12720a845b7f38a356abd4dd809" => :yosemite
+    sha256 "360be54b555218063b73b74a4530c8b573a4d2779dcc2e225816070e63e161b5" => :mavericks
   end
 
   option "with-fenced-code", "Enable Pandoc-style fenced code blocks."
 
-  conflicts_with "markdown",
-    :because => "both discount and markdown ship a `markdown` executable."
+  conflicts_with "markdown", :because => "both install `markdown` binaries"
+  conflicts_with "multimarkdown", :because => "both install `markdown` binaries"
 
   def install
     args = %W[
@@ -28,6 +29,6 @@ class Discount < Formula
     bin.mkpath
     lib.mkpath
     include.mkpath
-    system "make install.everything"
+    system "make", "install.everything"
   end
 end

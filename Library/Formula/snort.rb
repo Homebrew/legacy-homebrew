@@ -1,15 +1,19 @@
 class Snort < Formula
   desc "Flexible Network Intrusion Detection System"
   homepage "https://www.snort.org"
-  url "https://www.snort.org/downloads/snort/snort-2.9.7.3.tar.gz"
-  sha256 "8cc3613b888fc54947a2beec773c76d9a20368f2659b31d45a9f0b11e66cc229"
+  url "https://www.snort.org/downloads/snort/snort-2.9.8.0.tar.gz"
+  sha256 "bddd5d01d10d20c182836fa0199cd3549239b7a9d0fd5bbb10226feb8b42d231"
 
   bottle do
     cellar :any
-    sha256 "500a6e7527ccd71d95cad8dc6fa2ee4c09ea516c7c866357efecda0dca70389f" => :yosemite
-    sha256 "a9a9f2afbe4ebcad4814da730399510ca68c6eed201ca71e17069cc97ce6092c" => :mavericks
-    sha256 "2b4871dcf9ac94c842458fcf190ee35390ecc49be2c077cce1c074b3ebc306fb" => :mountain_lion
+    sha256 "488b341548299f7506e074bda07cd250110f68693a51552a801cb513d3c06912" => :el_capitan
+    sha256 "c5de68e295f5ecfdbc6019a2fc307023c7b1a163850be7e4347fa30329cc6599" => :yosemite
+    sha256 "17a3390ad63726fa4505f60bb6d6b8acb112d70e4dd1db7889ecbfe05c96d629" => :mavericks
   end
+
+  option "with-debug", "Compile Snort with debug options enabled"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   depends_on "pkg-config" => :build
   depends_on "luajit"
@@ -17,10 +21,6 @@ class Snort < Formula
   depends_on "libdnet"
   depends_on "pcre"
   depends_on "openssl"
-
-  option "with-debug", "Compile Snort with debug options enabled"
-
-  deprecated_option "enable-debug" => "with-debug"
 
   def install
     openssl = Formula["openssl"]
@@ -54,7 +54,7 @@ class Snort < Formula
     system "make", "install"
 
     rm Dir[buildpath/"etc/Makefile*"]
-    (etc+"snort").install Dir[buildpath/"etc/*"]
+    (etc/"snort").install Dir[buildpath/"etc/*"]
   end
 
   def caveats; <<-EOS.undent

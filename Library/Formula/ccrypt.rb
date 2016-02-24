@@ -6,10 +6,13 @@ class Ccrypt < Formula
   sha256 "87d66da2170facabf6f2fc073586ae2c7320d4689980cfca415c74688e499ba0"
 
   bottle do
-    sha1 "89c604ac653e2bd1cbf7b56494ab14ac4a6de3f3" => :yosemite
-    sha1 "f6d046eb7552fe541bef3eda66a7155b2c284b80" => :mavericks
-    sha1 "70ed9462ae982f2939f76dab3b335d84db53479f" => :mountain_lion
+    sha256 "28709273d08ed2188def37735842b6c4ae576042f391ebaed975938366c7c5f6" => :el_capitan
+    sha256 "a6772e44a314ed6bceacb544f5da9f6e3b5b5035007e4146a41b917d0017bcc7" => :yosemite
+    sha256 "d5bbf02562843fa96d4e248aa8973e0434d7044f47840b1e506d9d43f2b2d1bf" => :mavericks
+    sha256 "34eb45bc81353931dccf4b978857091073212a6a19dfde4d0e11479fb6a18ca8" => :mountain_lion
   end
+
+  conflicts_with "ccat", :because => "both install `ccat` binaries"
 
   fails_with :clang do
     build 318

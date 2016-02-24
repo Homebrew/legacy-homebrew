@@ -8,7 +8,7 @@ Python libraries exist to be imported from other Python modules; they are often 
 
 Bindings are a special case of libraries that allow Python code to interact with a library or application implemented in another language.
 
-Homebrew is happy to accept applications that are built in Python, whether the apps are available from PyPI or not. Homebrew generally won't accept libraries that can be installed correctly with `pip install foo`. Libraries that can be pip-installed but have several Homebrew dependencies may be appropriate for the [homebrew-python tap](https://github.com/Homebrew/homebrew-python). Bindings may be installed for packages that provide them, especially if equivalent functionality isn't available through pip.
+Homebrew is happy to accept applications that are built in Python, whether the apps are available from PyPI or not. Homebrew generally won't accept libraries that can be installed correctly with `pip install foo`. Libraries that can be pip-installed but have several Homebrew dependencies may be appropriate for the [homebrew/python](https://github.com/Homebrew/homebrew-python) tap. Bindings may be installed for packages that provide them, especially if equivalent functionality isn't available through pip.
 
 # Running setup.py
 
@@ -77,7 +77,7 @@ The first line copies all of the executables to bin. The second line writes stub
 
 All Python dependencies of applications that are not packaged by Homebrew (and those dependencies' Python dependencies, recursively) **should** be unconditionally downloaded as `Resource`s and installed into the application keg's `libexec/"vendor"` path. This prevents the state of the system Python packages from being affected by installing an app with Homebrew and guarantees that apps use versions of their dependencies that are known to work together. `libexec/"vendor"` is preferred to `libexec` so that formulæ don't accidentally install executables belonging to their dependencies, which can cause linking conflicts.
 
-Each dependency **should** be explicitly installed; please do not rely on setup.py or pip to perform automatic dependency resolution, for the [reasons described here](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Acceptable-Formulae.md#we-dont-like-install-scripts-that-download-things).
+Each dependency **should** be explicitly installed; please do not rely on setup.py or pip to perform automatic dependency resolution, for the [reasons described here](Acceptable-Formulae.md#we-dont-like-install-scripts-that-download-things).
 
 You can use [homebrew-pypi-poet](https://pypi.python.org/pypi/homebrew-pypi-poet) to help you write resource stanzas. To use it, set up a virtualenv and install your package and all its dependencies. Then, `pip install homebrew-pypi-poet` into the same virtualenv. `poet -f foo` will draft a complete formula for you, or `poet foo` will just generate the resource stanzas.
 
@@ -99,13 +99,13 @@ class Foo < Formula
   url ...
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
-    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
-   resource "parsedatetime" do
+  resource "parsedatetime" do
     url "https://pypi.python.org/packages/source/p/parsedatetime/parsedatetime-1.4.tar.gz"
-    sha1 "4b9189d38f819cc8144f30d91779716a696d97f8"
+    sha256 "09bfcd8f3c239c75e77b3ff05d782ab2c1aed0892f250ce2adf948d4308fe9dc"
   end
 
   def install
@@ -166,7 +166,7 @@ Formulæ that declare a dependency on `:python` will always be bottled against H
 
 Libraries may be installed to `libexec` and added to `sys.path` by writing a .pth file (named like "homebrew-foo.pth") to the `prefix` site-packages. This simplifies the ensuing drama if pip is accidentally used to upgrade a Homebrew-installed package and prevents the accumulation of stale .pyc files in Homebrew's site-packages.
 
-Most formulas presently just install to `prefix`.
+Most formulae presently just install to `prefix`.
 
 ## Dependencies
 

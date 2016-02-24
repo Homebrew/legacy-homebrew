@@ -1,17 +1,15 @@
 class Libgcrypt < Formula
   desc "Cryptographic library based on the code from GnuPG"
-  homepage "https://gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.3.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.3.tar.bz2"
-  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.3.tar.bz2"
-  sha256 "41b4917b93ae34c6a0e2127378d7a4d66d805a2a86a09911d4f9bd871db7025f"
-  revision 1
+  homepage "https://directory.fsf.org/wiki/Libgcrypt"
+  url "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.6.5.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.5.tar.bz2"
+  sha256 "f49ebc5842d455ae7019def33eb5a014a0f07a2a8353dc3aa50a76fd1dafa924"
 
   bottle do
     cellar :any
-    sha256 "741d7dcaa9443b581283f8d755304867925e92c77165ac7c15d349d33e39a383" => :yosemite
-    sha256 "cdfa536c703efe18375b48040dd30a3c9183696239680ef946ed324afd08fdff" => :mavericks
-    sha256 "0860f683be527ed5e1dbbf710c97e952cda47411f4a5516763c6ff3a8c95e6f4" => :mountain_lion
+    sha256 "20f15a1fc7316033c35c11f9b18af95ed0e716b5fb588d5756c78c2feeaf01a3" => :el_capitan
+    sha256 "bfc5b81aa344074433ccc84f20949d96be15a6fe8a7126330da2a90bd38f03cf" => :yosemite
+    sha256 "cd65e7d1c4c3820f345fc502a1fd893a12334ee212dd4b85934b4ce16a3232bc" => :mavericks
   end
 
   option :universal
@@ -19,7 +17,7 @@ class Libgcrypt < Formula
   depends_on "libgpg-error"
 
   resource "config.h.ed" do
-    url "https://trac.macports.org/export/113198/trunk/dports/devel/libgcrypt/files/config.h.ed"
+    url "https://raw.githubusercontent.com/Homebrew/patches/ec8d133/libgcrypt/config.h.ed"
     version "113198"
     sha256 "d02340651b18090f3df9eed47a4d84bed703103131378e1e493c26d7d0c7aab1"
   end
@@ -31,7 +29,7 @@ class Libgcrypt < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--disable-asm",
-                          "--with-gpg-error-prefix=#{Formula["libgpg-error"].opt_prefix}"
+                          "--with-libgpg-error-prefix=#{Formula["libgpg-error"].opt_prefix}"
 
     if build.universal?
       buildpath.install resource("config.h.ed")
@@ -40,14 +38,17 @@ class Libgcrypt < Formula
 
     # Parallel builds work, but only when run as separate steps
     system "make"
+    system "make", "install"
     # Make check currently dies on El Capitan
     # https://github.com/Homebrew/homebrew/issues/41599
     # https://bugs.gnupg.org/gnupg/issue2056
-    system "make", "check" unless MacOS.version >= :el_capitan
-    system "make", "install"
+    # This check should be above make install again when fixed.
+    system "make", "check"
   end
 
   test do
-    system bin/"libgcrypt-config", "--libs"
+    touch "testing"
+    output = shell_output("#{bin}/hmac256 \"testing\" testing")
+    assert_match "0e824ce7c056c82ba63cc40cffa60d3195b5bb5feccc999a47724cc19211aef6", output
   end
 end

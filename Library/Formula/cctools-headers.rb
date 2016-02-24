@@ -1,6 +1,6 @@
 # The system versions are too old to build ld64
 class CctoolsHeaders < Formula
-  desc "cctools-headers via Apple"
+  desc "cctools headers via Apple"
   homepage "https://opensource.apple.com/"
   url "https://opensource.apple.com/tarballs/cctools/cctools-855.tar.gz"
   sha256 "751748ddf32c8ea84c175f32792721fa44424dad6acbf163f84f41e9617dbc58"

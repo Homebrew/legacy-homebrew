@@ -1,24 +1,26 @@
 class JbossForge < Formula
   desc "Tools to help set up and configure a project"
   homepage "http://forge.jboss.org/"
-  url "https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&g=org.jboss.forge&a=forge-distribution&v=2.17.0.Final&e=zip&c=offline"
-  version "2.17.0.Final"
-  sha256 "c0d8cadb315b23d99fb582db670ef32beea51b9b06ea9313ec81daa3998bedd8"
+  url "https://downloads.jboss.org/forge/releases/2.20.1.Final/forge-distribution-2.20.1.Final-offline.zip"
+  version "2.20.1.Final"
+  sha256 "dbe51b8c9cd0cf1b0a9adadcd8161c442a4ab586ca63f3a3f6d3369a2831afae"
 
-  bottle do
-    cellar :any
-    sha256 "4accd77051ff6cd0e425bbb17e6557b8110999430d1ab504336325605b198efc" => :yosemite
-    sha256 "aff4bb3754d83399de23494e3f223cd071678cd5f5a204b4883f0ecb784c4290" => :mavericks
-    sha256 "d69a922b8ac9cf315f8e2af074c068e163b13aa551bfc7641c557f7bc137305e" => :mountain_lion
+  bottle :unneeded
+
+  devel do
+    url "https://downloads.jboss.org/forge/releases/3.0.0.CR1/forge-distribution-3.0.0.CR1-offline.zip"
+    version "3.0.0.CR1"
+    sha256 "2297478830ea01e69eb07122065d5760c7fd27b27668b1aa7e01e0d9e4e07458"
   end
 
   def install
     rm_f Dir["bin/*.bat"]
-    libexec.install %w[addons bin img lib logging.properties]
+    libexec.install %w[addons bin lib logging.properties]
     bin.install_symlink libexec/"bin/forge"
   end
 
   test do
+    ENV["FORGE_OPTS"] = "-Duser.home=#{testpath}"
     assert_match "org.jboss.forge.addon:core", shell_output("#{bin}/forge --list")
   end
 end

@@ -1,13 +1,14 @@
 class Augeas < Formula
   desc "Configuration editing tool and API"
   homepage "http://augeas.net"
-  url "http://download.augeas.net/augeas-1.3.0.tar.gz"
-  sha256 "80763031af76515a8ea66013ddc3c466742a15d2e907c7c8e2e3b7410262e2af"
+  url "http://download.augeas.net/augeas-1.4.0.tar.gz"
+  sha256 "659fae7ac229029e60a869a3b88c616cfd51cf2fba286cdfe3af3a052cb35b30"
 
   bottle do
-    sha1 "374c491053aff309ba2ae417f3bb6e888a4fbae9" => :yosemite
-    sha1 "21e1bb5ec9d1bf623e61cf6ab1179a1d09cd9060" => :mavericks
-    sha1 "3b3c437736fb3e4edb5c60a73f0097e91703dd1f" => :mountain_lion
+    revision 1
+    sha256 "34d6940f0ab935135c1a69a31c878712c9b28954e6686f52f48315c6e7c92f3e" => :el_capitan
+    sha256 "0cc6f1fe0eff9493bc33044c3a8289120bcd2ffaebf2a3623bf95ae9b7baf7a9" => :yosemite
+    sha256 "fd49d49a8dce0fd653b21536c2396a8ecd9f394c73ea4ec6cd50d90eb39303d0" => :mavericks
   end
 
   head do
@@ -32,11 +33,6 @@ class Augeas < Formula
       system "./configure", *args
     end
 
-    # libfa example program doesn't compile cleanly on OSX, so skip it
-    inreplace "Makefile" do |s|
-      s.change_make_var! "SUBDIRS", "gnulib/lib src gnulib/tests tests man doc"
-    end
-
     system "make", "install"
   end
 
@@ -44,5 +40,9 @@ class Augeas < Formula
     Lenses have been installed to:
       #{HOMEBREW_PREFIX}/share/augeas/lenses/dist
     EOS
+  end
+
+  test do
+    system bin/"augtool", "print", etc
   end
 end

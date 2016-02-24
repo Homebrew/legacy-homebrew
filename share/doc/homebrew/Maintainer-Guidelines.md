@@ -16,7 +16,7 @@ This is all that really matters:
 - Ensure it is not a library that can be installed with
   [gem](https://en.wikipedia.org/wiki/RubyGems),
   [cpan](https://en.wikipedia.org/wiki/Cpan) or
-  [pip](https://pip.pypa.io/en/latest).
+  [pip](https://pip.pypa.io/en/stable/).
 - Ensure that any dependencies are accurate and minimal. We don't need to
   support every possible optional feature for the software.
 - Use `brew pull` when possible to add messages to auto-close pull requests (which may take ~5m, be patient) and pull bottles built by BrewTestBot.
@@ -31,12 +31,12 @@ For example, we build Wireshark, but not the monolithic GUI. If users want
 that, they should just grab the DMG that Wireshark themselves provide.
 
 Homebrew is about Unix software. Stuff that builds to an `.app` should
-be accepted frugally. That is, rarely.
+probably be in Homebrew Cask instead.
 
 ### Naming
 The name is the strictest item, because we can’t change it afterwards.
 
-Choose a name that’s the colloquial (most common) name for the project.
+Choose a name that’s the most common name for the project.
 For example, we chose `objective-caml`, but we should have chosen `ocaml`.
 Choose what people say to each other when talking about the project.
 
@@ -82,15 +82,6 @@ If the formula uses a repository, then the `url` parameter should have a
 tag or revision. `url` s have versions and are stable (not yet
 implemented!).
 
-### Testing in `/usr/local` and somewhere else
-If not completely annoying, test in both `/usr/local` and somewhere
-else. Preferably on different machines to ensure the `/usr/local`
-install doesn’t effect the other one.
-
-The reason for this is some build systems suck, and fail if deps aren’t
-installed in `/usr/local`, even though Homebrew goes to some lengths to
-try to make this work.
-
 ## Common “Gotchas”
 1.  [Ensure you have set your username and email address
     properly](https://help.github.com/articles/setting-your-email-in-git/)
@@ -98,10 +89,6 @@ try to make this work.
     otherwise there is a command line flag for it)
 3.  If the commit fixes a bug, use “Fixes \#104” syntax to close the bug
     report and link to the commit
-
-### Build “Gotchas”
-Often parallel builds work with 2-core systems, but fail on 4-core
-systems.
 
 ### Duplicates
 The main repository avoids duplicates as much as possible. The exception is
@@ -120,7 +107,7 @@ Dupes we have allowed:
 -   `libxml` \<— OS X version is old and buggy
 -   `libpng` \<— Ditto
 
-#### Add comments!
+#### Add comments
 It may be enough to refer to an issue ticket, but make sure changes that
 if you came to them unaware of the surrounding issues would make sense
 to you. Many times on other projects I’ve seen code removed because the

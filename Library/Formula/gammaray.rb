@@ -1,13 +1,15 @@
 class Gammaray < Formula
   desc "Examine and manipulate Qt application internals at runtime"
   homepage "https://www.kdab.com/kdab-products/gammaray/"
-  url "https://github.com/KDAB/GammaRay/archive/v2.2.0.tar.gz"
-  sha256 "43a370cf31f799763388d6c01626219352375cffdea74710ccec82cb705e2e1b"
+  url "https://github.com/KDAB/GammaRay/releases/download/v2.3.0/gammaray-2.3.0.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/gammaray/gammaray_2.3.0.orig.tar.gz"
+  sha256 "d3da28ff1f7ac5534e518a9d4a7b5d7d22267490d3ab3ae094b0592d33244799"
+  head "https://github.com/KDAB/GammaRay.git"
 
   bottle do
-    sha1 "07bfe7c133e5a72e116f07b5cd65e70b6e5ee00b" => :yosemite
-    sha1 "7d1e58d5d6c9212c52445859921554c22f0f4404" => :mavericks
-    sha1 "8f1aa69e5a27f6078f3fe5c3c5b67f6caa931f55" => :mountain_lion
+    sha256 "149fcf14623364258624a74de84c1ab286ab7de0cc978dd83f3ddc8a2d39322b" => :yosemite
+    sha256 "3ea0e2da59b8b73f0d51cc4b35f67f950ad06f7b00f0592efa4645e786c6ce5d" => :mavericks
+    sha256 "1e11205cfd53296ea2a45f08d64c510bade4e910288202bb2d695e3511c9178e" => :mountain_lion
   end
 
   option "without-qt4", "Build against Qt5 instead of Qt4 (default)"
@@ -19,10 +21,14 @@ class Gammaray < Formula
   depends_on "qt" if build.with? "qt4"
   depends_on "qt5" if build.without? "qt4"
   depends_on "graphviz" => :recommended
+
   # VTK needs to have Qt support, and it needs to match GammaRay's
   depends_on "homebrew/science/vtk" => [:optional, ((build.with? "qt4") ? "with-qt" : "with-qt5")]
 
   def install
+    # For Mountain Lion
+    ENV.libcxx
+
     args = std_cmake_args
     args << "-DGAMMARAY_ENFORCE_QT4_BUILD=" + ((build.with? "qt4") ? "ON" : "OFF")
     args << "-DCMAKE_DISABLE_FIND_PACKAGE_VTK=" + ((build.without? "vtk") ? "ON" : "OFF")
@@ -35,6 +41,6 @@ class Gammaray < Formula
   end
 
   test do
-    assert_match /^qt/, `#{bin}/gammaray --list-probes`.chomp
+    (prefix/"GammaRay.app/Contents/MacOS/GammaRay").executable?
   end
 end

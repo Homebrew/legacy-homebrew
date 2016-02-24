@@ -1,14 +1,14 @@
 class Babl < Formula
   desc "Dynamic, any-to-any, pixel format translation library"
   homepage "http://www.gegl.org/babl/"
-  url "http://download.gimp.org/pub/babl/0.1/babl-0.1.12.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/b/babl/babl_0.1.12.orig.tar.bz2"
-  sha256 "2f802b7f1a17b72c10bf0fe1e69b7a888cf7ce62b7cf1537b030f7f88d55a407"
+  url "https://download.gimp.org/pub/babl/0.1/babl-0.1.16.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/b/babl/babl_0.1.16.orig.tar.bz2"
+  sha256 "7d6ba55ec53ee6f6bf6945beec28839d09ff72376f4d83035eb379cd4f3e980e"
 
   bottle do
-    sha256 "db81183522e6d338475e43c2bed097b0ab5706eb24cc68c1889a673ca529e743" => :yosemite
-    sha256 "8782f771f5efa9cbc5dcf09815b4cb078647477f56b2110e5c67517adeb5c8e3" => :mavericks
-    sha256 "6e4ba55b1698c2edb1a006fbaa1bcaa72a8fc65007d86e21e022116a42a1bcae" => :mountain_lion
+    sha256 "b6eaf46444795d0f3ad5f6dae51212403057baca537912d53c5b65ff87f9e694" => :el_capitan
+    sha256 "a47b7f4832814eb4effdf8b11fd5763f48ae6ab330e823dfd88b55923fa33c05" => :yosemite
+    sha256 "94cb19207e867b58f77fe6c2ba3629a6595a994722840ad657c5461743b5f2ac" => :mavericks
   end
 
   head do
@@ -24,12 +24,16 @@ class Babl < Formula
 
   depends_on "pkg-config" => :build
 
-  def install
-    if build.universal?
-      ENV.universal_binary
-      opoo "Compilation may fail at babl-cpuaccel.c using gcc for a universal build" if ENV.compiler == :gcc
+  if build.universal?
+    fails_with :gcc_4_0
+    fails_with :gcc
+    ("4.3".."5.1").each do |n|
+      fails_with :gcc => n
     end
+  end
 
+  def install
+    ENV.universal_binary if build.universal?
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

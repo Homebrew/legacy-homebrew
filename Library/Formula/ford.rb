@@ -1,33 +1,39 @@
 class Ford < Formula
   desc "Automatic documentation generator for modern Fortran programs"
   homepage "https://github.com/cmacmackin/ford/"
-  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.0.0.tar.gz"
-  sha256 "1c1f6299ea81641fd1e7f7b643d37e620f8230a731ff1b9b1dfe3e81b9cf316f"
+  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.5.1.tar.gz"
+  sha256 "50e7625a9c9ecd39ead16cf8f141a68d42977e76f6564e798b7b14fc4a89eefd"
 
   head "https://github.com/cmacmackin/ford.git"
 
   bottle do
-    cellar :any
-    sha256 "1ce47f1020ee0b268c4989d3e10fa619c43393c22e65359f7a884668883cc030" => :yosemite
-    sha256 "e9de3afbaf26e3670c4ea208d3d50e581426ffd1ac6ba698e3dddf5f35ac4c16" => :mavericks
-    sha256 "630b4dbc59e870c13643245641619fc41f1be41ad870eaef757639b96023203e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "7f0382ffa9d718d6ed4a3e187127cba9543b5a1b3908855cbd63b7d8bbda16d3" => :el_capitan
+    sha256 "c82f610a4bf9dccdd518858d10658c191450fcdcc9aaa63d7ead51098b688902" => :yosemite
+    sha256 "cc9b1d682ea39d47ee76c85b59e325442bd90ff0b961a25d95d24092571186f2" => :mavericks
   end
 
+  depends_on "graphviz"
   depends_on :python if MacOS.version <= :snow_leopard
 
-  resource "toposort" do
-    url "https://pypi.python.org/packages/source/t/toposort/toposort-1.4.tar.gz"
-    sha256 "c190b9d9a9e53ae2835f4d524130147af601fbd63677d19381c65067a80fa903"
+  resource "beautifulsoup4" do
+    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.4.1.tar.gz"
+    sha256 "87d4013d0625d4789a4f56b8d79a04d5ce6db1152bb65f1d39744f7709a366b4"
+  end
+
+  resource "graphviz" do
+    url "https://pypi.python.org/packages/source/g/graphviz/graphviz-0.4.8.zip"
+    sha256 "71d56c61af9b4ff5e1e64a89b46872aa27c598bab8b0e9083f0fd3213cfc28b0"
+  end
+
+  resource "Jinja2" do
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
   resource "Markdown" do
-    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.2.tar.gz"
-    sha256 "ee17d0d7dc091e645dd48302a2e21301cc68f188505c2069d8635f94554170bf"
-  end
-
-  resource "beautifulsoup4" do
-    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.3.2.tar.gz"
-    sha256 "a2b29bd048ca2fe54a046b29770964738872a9747003a371344a93eedf7ad58e"
+    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.5.tar.gz"
+    sha256 "8d94cf6273606f76753fcb1324623792b3738c7612c2b180c85cc5e88642e560"
   end
 
   resource "markdown-include" do
@@ -40,19 +46,19 @@ class Ford < Formula
     sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
-  resource "Jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
-  end
-
   resource "Pygments" do
     url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
     sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
   end
 
+  resource "toposort" do
+    url "https://pypi.python.org/packages/source/t/toposort/toposort-1.4.tar.gz"
+    sha256 "c190b9d9a9e53ae2835f4d524130147af601fbd63677d19381c65067a80fa903"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[toposort Markdown beautifulsoup4 markdown-include MarkupSafe Jinja2 Pygments].each do |r|
+    %w[beautifulsoup4 graphviz Jinja2 Markdown markdown-include MarkupSafe Pygments toposort].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -70,12 +76,12 @@ class Ford < Formula
       project_dir: ./src
       output_dir: ./doc
       project_github: https://github.com/cmacmackin/futility
-      project_website: http://github.com
+      project_website: https://github.com
       summary: Some Fortran program which I wrote.
       author: John Doe
       author_description: I program stuff in Fortran.
       github: https://github.com/cmacmackin
-      email: john.doe@address.com
+      email: john.doe@example.com
       predocmark: >
       docmark_alt: #
       predocmark_alt: <

@@ -1,13 +1,13 @@
 class Rrdtool < Formula
   desc "Round Robin Database"
   homepage "https://oss.oetiker.ch/rrdtool/index.en.html"
-  url "https://oss.oetiker.ch/rrdtool/pub/rrdtool-1.5.3.tar.gz"
-  sha256 "79e7b2f5cf74843e89fe4d08925f955268fd21736cbea03e54ae83320fc6129f"
+  url "https://github.com/oetiker/rrdtool-1.x/releases/download/v1.5.5/rrdtool-1.5.5.tar.gz"
+  sha256 "aeb5e58799b6c02e1046e409ceed1b9ed8b3238241d952e0267c7e9be1525a54"
 
   bottle do
-    sha256 "dfa037b903c0fd8206c6f3e99ed05ca2d2543419895f7f0e081fabece5b6616f" => :yosemite
-    sha256 "1d7526bbb9a963d0f7c146b7fc538c4289998fe8f047713bcac2aaed6e906551" => :mavericks
-    sha256 "2ec6be27efb28a6a493f4dda63291c9f464976161627e8135c5a80c89ac8aed9" => :mountain_lion
+    sha256 "40ef7a5538670895456321c7f34e359a88556532be110fe1f5c9b75912678e98" => :el_capitan
+    sha256 "05faf9477d73dcc9880622199f170255db8f7b050502e5e0f6b2685b5c76125f" => :yosemite
+    sha256 "4ad881432a19f31f917a14d793f8838e0fbba140efeca9eb6efe7fbbf60ebdfa" => :mavericks
   end
 
   head do

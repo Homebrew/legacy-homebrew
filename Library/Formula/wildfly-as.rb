@@ -1,8 +1,10 @@
 class WildflyAs < Formula
   desc "Managed application runtime for building applications"
   homepage "http://wildfly.org/"
-  url "https://download.jboss.org/wildfly/9.0.1.Final/wildfly-9.0.1.Final.tar.gz"
-  sha256 "8f570f978dff65a006c1c6cb58c26a3856b19f01dad5b2a3ef9e463c8dee2a54"
+  url "https://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.tar.gz"
+  sha256 "e00c4e4852add7ac09693e7600c91be40fa5f2791d0b232e768c00b2cb20a84b"
+
+  bottle :unneeded
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -11,7 +13,7 @@ class WildflyAs < Formula
   end
 
   def caveats; <<-EOS.undent
-    The home of WildFly Application Server 9 is:
+    The home of WildFly Application Server 10 is:
       #{opt_libexec}
     You may want to add the following to your .bash_profile:
       export JBOSS_HOME=#{opt_libexec}

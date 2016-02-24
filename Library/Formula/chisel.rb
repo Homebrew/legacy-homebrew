@@ -1,8 +1,10 @@
 class Chisel < Formula
   desc "Collection of LLDB commands to assist debugging iOS apps"
   homepage "https://github.com/facebook/chisel"
-  url "https://github.com/facebook/chisel/archive/1.2.0.tar.gz"
-  sha256 "af22dde2c5b4f0832f25ac0d3831c43a227f148f97ca7e6bab71e10b2b3225b5"
+  url "https://github.com/facebook/chisel/archive/1.4.0.tar.gz"
+  sha256 "94d695cbc24343f8002c2b68a68bcc00601ab161ef24d16ee0718c93a2889493"
+
+  bottle :unneeded
 
   def install
     libexec.install Dir["*.py", "commands"]
@@ -19,6 +21,6 @@ class Chisel < Formula
     xcode_path = `xcode-select --print-path`.strip
     lldb_rel_path = "Contents/SharedFrameworks/LLDB.framework/Resources/Python"
     ENV["PYTHONPATH"] = "#{xcode_path}/../../#{lldb_rel_path}"
-    system "python #{libexec}/fblldb.py"
+    system "python", "#{libexec}/fblldb.py"
   end
 end

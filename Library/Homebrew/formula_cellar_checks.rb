@@ -152,7 +152,7 @@ module FormulaCellarChecks
       object files were linked against system openssl
       These object files were linked against the deprecated system OpenSSL.
       Adding `depends_on "openssl"` to the formula may help.
-        #{system_openssl  * "\n        "}
+        #{system_openssl * "\n        "}
     EOS
   end
 
@@ -173,19 +173,34 @@ module FormulaCellarChecks
     EOS
   end
 
-  def check_emacs_lisp(share, name)
+  def check_elisp_dirname(share, name)
     return unless (share/"emacs/site-lisp").directory?
+    # Emacs itself can do what it wants
+    return if name == "emacs"
 
+    bad_dir_name = (share/"emacs/site-lisp").children.any? do |child|
+      child.directory? && child.basename.to_s != name
+    end
+
+    return unless bad_dir_name
+    <<-EOS
+      Emacs Lisp files were installed into the wrong site-lisp subdirectory.
+      They should be installed into:
+      #{share}/emacs/site-lisp/#{name}
+    EOS
+  end
+
+  def check_elisp_root(share, name)
+    return unless (share/"emacs/site-lisp").directory?
     # Emacs itself can do what it wants
     return if name == "emacs"
 
     elisps = (share/"emacs/site-lisp").children.select { |file| %w[.el .elc].include? file.extname }
     return if elisps.empty?
-
     <<-EOS.undent
       Emacs Lisp files were linked directly to #{HOMEBREW_PREFIX}/share/emacs/site-lisp
-
-      This may cause conflicts with other packages; install to a subdirectory instead, such as
+      This may cause conflicts with other packages.
+      They should instead be installed into:
       #{share}/emacs/site-lisp/#{name}
 
       The offending files are:
@@ -206,7 +221,8 @@ module FormulaCellarChecks
     audit_check_output(check_easy_install_pth(formula.lib))
     audit_check_output(check_openssl_links)
     audit_check_output(check_python_framework_links(formula.lib))
-    audit_check_output(check_emacs_lisp(formula.share, formula.name))
+    audit_check_output(check_elisp_dirname(formula.share, formula.name))
+    audit_check_output(check_elisp_root(formula.share, formula.name))
   end
 
   private

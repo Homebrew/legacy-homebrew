@@ -5,9 +5,9 @@ class Rlwrap < Formula
   sha256 "5a70d8469db9d0a6630628f2d5d2972ad16c092400b7fbbdf699693ec0f87e44"
 
   bottle do
-    sha1 "d895f5ac3cf2db5fce06deb670c8d4877f83ec4d" => :yosemite
-    sha1 "4571cde3836f4ea9c065bb35dea96cdb2f60c6ab" => :mavericks
-    sha1 "fd194bd5d282e6a1a182762e7d3f89f321014713" => :mountain_lion
+    sha256 "d340e6e7c9c56c25f2bb9904213c0161697135423e4479562cb54bfed6fa6718" => :yosemite
+    sha256 "036303739cbfd4ee484244dd57d7a383b8e75898f4a9b58cc29d90bc172a3800" => :mavericks
+    sha256 "7eb3a13529d70e7229546b346d364af496f53c7f6985f81a1bd8298ed92fd0dc" => :mountain_lion
   end
 
   depends_on "readline"

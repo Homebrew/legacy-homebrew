@@ -1,20 +1,22 @@
-require "os/mac"
 require "extend/ENV/shared"
 
-### Why `superenv`?
-# 1) Only specify the environment we need (NO LDFLAGS for cmake)
-# 2) Only apply compiler specific options when we are calling that compiler
-# 3) Force all incpaths and libpaths into the cc instantiation (less bugs)
-# 4) Cater toolchain usage to specific Xcode versions
-# 5) Remove flags that we don't want or that will break builds
-# 6) Simpler code
-# 7) Simpler formula that *just work*
-# 8) Build-system agnostic configuration of the tool-chain
-
+# ### Why `superenv`?
+#
+# 1. Only specify the environment we need (NO LDFLAGS for cmake)
+# 2. Only apply compiler specific options when we are calling that compiler
+# 3. Force all incpaths and libpaths into the cc instantiation (less bugs)
+# 4. Cater toolchain usage to specific Xcode versions
+# 5. Remove flags that we don't want or that will break builds
+# 6. Simpler code
+# 7. Simpler formula that *just work*
+# 8. Build-system agnostic configuration of the tool-chain
 module Superenv
   include SharedEnvExtension
 
-  attr_accessor :keg_only_deps, :deps, :x11
+  # @private
+  attr_accessor :keg_only_deps, :deps
+
+  attr_accessor :x11
   alias_method :x11?, :x11
 
   def self.extended(base)
@@ -22,7 +24,10 @@ module Superenv
     base.deps = []
   end
 
+  # @private
   def self.bin
+    return unless MacOS.has_apple_developer_tools?
+
     bin = (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
     bin.realpath unless bin.nil?
   end
@@ -34,6 +39,7 @@ module Superenv
     delete("as_nl")
   end
 
+  # @private
   def setup_build_environment(formula = nil)
     super
     send(compiler)
@@ -60,6 +66,11 @@ module Superenv
     self["HOMEBREW_ISYSTEM_PATHS"] = determine_isystem_paths
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
+
+    if MacOS::Xcode.without_clt?
+      self["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s
+      self["SDKROOT"] = MacOS.sdk_path
+    end
 
     # On 10.9, the tools in /usr/bin proxy to the active developer directory.
     # This means we can use them for any combination of CLT and Xcode.
@@ -121,7 +132,7 @@ module Superenv
     when "gcc-4.2"
       begin
         apple_gcc42 = Formulary.factory("apple-gcc42")
-       rescue FormulaUnavailableError
+      rescue FormulaUnavailableError
       end
       paths << apple_gcc42.opt_bin.to_s if apple_gcc42
     when GNU_GCC_REGEXP
@@ -162,15 +173,7 @@ module Superenv
   end
 
   def determine_include_paths
-    paths = keg_only_deps.map { |d| d.opt_include.to_s }
-
-    # https://github.com/Homebrew/homebrew/issues/38514
-    if MacOS::CLT.installed? && MacOS.active_developer_dir.include?("CommandLineTools") &&
-       MacOS::CLT.version == "6.3.0.0.1.1428348375"
-      paths << "#{HOMEBREW_LIBRARY}/ENV/include/6.3"
-    end
-
-    paths.to_path_s
+    keg_only_deps.map { |d| d.opt_include.to_s }.to_path_s
   end
 
   def determine_library_paths
@@ -265,6 +268,8 @@ module Superenv
   end
 
   def universal_binary
+    check_for_compiler_universal_support
+
     self["HOMEBREW_ARCHFLAGS"] = Hardware::CPU.universal_archs.as_arch_flags
 
     # GCC doesn't accept "-march" for a 32-bit CPU with "-arch x86_64"
@@ -308,6 +313,7 @@ module Superenv
     append "HOMEBREW_CCCFG", "h", "" if compiler == :clang
   end
 
+  # @private
   def refurbish_args
     append "HOMEBREW_CCCFG", "O", ""
   end
@@ -318,6 +324,7 @@ module Superenv
     end
   end
 
+  # @private
   def noop(*_args); end
   noops = []
 

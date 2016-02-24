@@ -1,13 +1,13 @@
 class GribApi < Formula
   desc "Encode and decode grib messages (editions 1 and 2)"
   homepage "https://software.ecmwf.int/wiki/display/GRIB/Home"
-  url "https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.13.1.tar.gz"
-  sha256 "aa66c4d744f3073b06792c0e6299fcae99aa2a921f8b59a9ccd9056bf26baf5f"
+  url "https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.14.5-Source.tar.gz"
+  sha256 "047029afca9445047f8fce8250146f6b17d1bc4eb9c17fcaa8e74aa173c4ab08"
 
   bottle do
-    sha256 "bca2414b4550d8cd07636440635fdba4673fe98a3225a7d12bf257d6115d3155" => :yosemite
-    sha256 "57aff6f17cc19706e4e8a65b2e920521a30923ab232b8ba7cad12019e8e68505" => :mavericks
-    sha256 "cf7953a2b3a265d3a656e590f50dee80f7ce337b510834bf53313b702b700547" => :mountain_lion
+    sha256 "7a8e7b2f8b4f3d19a14d11f095710b48d2ee7e75db94869cccb498212ddbbe2c" => :el_capitan
+    sha256 "e636c97f2e346299004a2fd253a166d85afdbe10f3401340a48274394489019c" => :yosemite
+    sha256 "fd24fe432bc29f78dd58e3f1fd8f04475f2397ff547a183e46d1a69dbb54228a" => :mavericks
   end
 
   depends_on :fortran

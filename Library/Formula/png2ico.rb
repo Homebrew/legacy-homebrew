@@ -3,14 +3,15 @@ class Png2ico < Formula
   homepage "http://www.winterdrache.de/freeware/png2ico/"
   url "http://www.winterdrache.de/freeware/png2ico/data/png2ico-src-2002-12-08.tar.gz"
   sha256 "d6bc2b8f9dacfb8010e5f5654aaba56476df18d88e344ea1a32523bb5843b68e"
+  revision 1
+
   bottle do
     cellar :any
-    sha1 "b3c0353afa9ea55e8dc9e8f41eeaac8968f569d3" => :yosemite
-    sha1 "75edd65a4d22ec52b41010b2c8140e3fe20c0895" => :mavericks
-    sha1 "1d603b519c4067f20de399892d85fbcd834a9f39" => :mountain_lion
+    revision 1
+    sha256 "19b80cbf09671aa0dd1a355e025617d8c796baed200c93585037a34715a02762" => :el_capitan
+    sha256 "a0bc61603d8861f82578a3686d55870e651bac6c0c0f029426e56e62428253e1" => :yosemite
+    sha256 "8c514f8a5aacc0720332e091a2480bd609a7a42df235c6daec948f0dda92faad" => :mavericks
   end
-
-  revision 1
 
   depends_on "libpng"
 

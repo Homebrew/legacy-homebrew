@@ -5,6 +5,8 @@ class Hyperspec < Formula
   version "7.0"
   sha256 "1ac1666a9dc697dbd8881262cad4371bcd2e9843108b643e2ea93472ba85d7c3"
 
+  bottle :unneeded
+
   def install
     doc.install Dir["*"]
   end

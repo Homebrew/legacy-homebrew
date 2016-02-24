@@ -25,7 +25,7 @@ class SoftwareSpec
   attr_reader :bottle_specification
   attr_reader :compiler_failures
 
-  def_delegators :@resource, :stage, :fetch, :verify_download_integrity
+  def_delegators :@resource, :stage, :fetch, :verify_download_integrity, :source_modified_time
   def_delegators :@resource, :cached_download, :clear_cache
   def_delegators :@resource, :checksum, :mirrors, :specs, :using
   def_delegators :@resource, :version, :mirror, *Checksum::TYPES
@@ -63,13 +63,33 @@ class SoftwareSpec
     dependency_collector.add(@resource)
   end
 
+  def bottle_unneeded?
+    !!@bottle_disable_reason && @bottle_disable_reason.unneeded?
+  end
+
+  def bottle_disabled?
+    !!@bottle_disable_reason
+  end
+
+  def bottle_disable_reason
+    @bottle_disable_reason
+  end
+
+  def bottle_defined?
+    bottle_specification.collector.keys.any?
+  end
+
   def bottled?
     bottle_specification.tag?(bottle_tag) && \
       (bottle_specification.compatible_cellar? || ARGV.force_bottle?)
   end
 
-  def bottle(&block)
-    bottle_specification.instance_eval(&block)
+  def bottle(disable_type = nil, disable_reason = nil,  &block)
+    if disable_type
+      @bottle_disable_reason = BottleDisableReason.new(disable_type, disable_reason)
+    else
+      bottle_specification.instance_eval(&block)
+    end
   end
 
   def resource_defined?(name)
@@ -165,12 +185,12 @@ class SoftwareSpec
   end
 
   def add_dep_option(dep)
-    name = dep.option_name
-
-    if dep.optional? && !option_defined?("with-#{name}")
-      options << Option.new("with-#{name}", "Build with #{name} support")
-    elsif dep.recommended? && !option_defined?("without-#{name}")
-      options << Option.new("without-#{name}", "Build without #{name} support")
+    dep.option_names.each do |name|
+      if dep.optional? && !option_defined?("with-#{name}")
+        options << Option.new("with-#{name}", "Build with #{name} support")
+      elsif dep.recommended? && !option_defined?("without-#{name}")
+        options << Option.new("without-#{name}", "Build without #{name} support")
+      end
     end
   end
 end
@@ -245,6 +265,11 @@ class Bottle
     @spec.compatible_cellar?
   end
 
+  # Does the bottle need to be relocated?
+  def skip_relocation?
+    @spec.skip_relocation?
+  end
+
   def stage
     resource.downloader.stage
   end
@@ -281,7 +306,12 @@ class BottleSpecification
   end
 
   def compatible_cellar?
-    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+    cellar == :any || cellar == :any_skip_relocation || cellar == HOMEBREW_CELLAR.to_s
+  end
+
+  # Does the Bottle this BottleSpecification belongs to need to be relocated?
+  def skip_relocation?
+    cellar == :any_skip_relocation
   end
 
   def tag?(tag)
@@ -312,5 +342,19 @@ class BottleSpecification
       checksums[checksum.hash_type] << { checksum => osx }
     end
     checksums
+  end
+end
+
+class PourBottleCheck
+  def initialize(formula)
+    @formula = formula
+  end
+
+  def reason(reason)
+    @formula.pour_bottle_check_unsatisfied_reason = reason
+  end
+
+  def satisfy(&block)
+    @formula.send(:define_method, :pour_bottle?, &block)
   end
 end

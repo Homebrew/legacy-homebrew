@@ -80,14 +80,10 @@ including how to set this across reboots. If you’re pre-Mountain Lion,
 alternative](https://developer.apple.com/legacy/library/qa/qa1067/_index.html).
 
 ### How do I contribute to Homebrew?
-Read everything in https://github.com/Homebrew/homebrew/blob/master/CONTRIBUTING.md.
+Read [CONTRIBUTING.md](/.github/CONTRIBUTING.md).
 
 ### Why do you compile everything?
-Homebrew is about **homebrewing**, it’s half the point that you can just
-`brew edit $FORMULA` and change how the formula is compiled to your own
-specification.
-
-Homebrew does provide pre-compiled versions for some formulae. These
+Homebrew provides pre-compiled versions for many formulae. These
 pre-compiled versions are referred to as **bottles** and are available
 at:
 [https://bintray.com/homebrew/bottles](https://bintray.com/homebrew/bottles).
@@ -97,11 +93,11 @@ following conditions:
 
 * Options were passed to the install command i.e. `brew install $FORMULA`
 will use a bottled version of $FORMULA, but
-`brew install $FORMULA —enable-bar` will trigger a source build.
+`brew install $FORMULA --enable-bar` will trigger a source build.
 * The `--build-from-source` option is invoked.
 * The environment variable `HOMEBREW_BUILD_FROM_SOURCE` is set.
-* The machine is not running OS X 10.8+ as all bottled builds are
-generated on Mountain Lion or later.
+* The machine is not running OS X 10.9+ as all bottled builds are
+generated on Mavericks or later.
 * Homebrew is installed to a prefix other than the standard
 `/usr/local` (although some bottles support this)
 
@@ -124,9 +120,9 @@ Or:
 
 Or:
 
-`brew pull https://github.com/Homebrew/homebrew/pulls/1234`
+`brew pull https://github.com/Homebrew/homebrew/pull/1234`
 
-### Why does Homebrew insist I install to `/usr/local` with such vehemence?
+### Why does Homebrew prefer I install to `/usr/local`?
 <a name="usrlocal"></a>
 
 1.  **It’s easier**<br>`/usr/local/bin` is already in your
@@ -174,7 +170,7 @@ creating a separate user account especially for use of Homebrew.
 
 ### Why isn’t a particular command documented?
 
-If it’s not in `man brew`, it’s probably an external command. These are documented [here](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External-Commands.md).
+If it’s not in `man brew`, it’s probably an external command. These are documented [here](External-Commands.md).
 
 ### Why haven’t you pulled my pull request?
 If it’s been a while, bump it with a “bump” comment. Sometimes we miss requests and there are plenty of them. Maybe we were thinking on something. It will encourage consideration. In the meantime if you could rebase the pull request so that it can be cherry-picked more easily we will love you for a long time.
@@ -207,8 +203,8 @@ then `brew link` it. Like so:
 ```bash
 $ cd foo-0.1
 $ brew diy
-./configure —prefix=/usr/local/Cellar/foo/0.1
-$ ./configure —prefix=/usr/local/Cellar/foo/0.1
+./configure --prefix=/usr/local/Cellar/foo/0.1
+$ ./configure --prefix=/usr/local/Cellar/foo/0.1
 [snip]
 $ make && make install
 $ brew link foo
@@ -221,9 +217,9 @@ Use `brew log $FORMULA` to find out!
 Sometimes formulae are moved to specialized repositories. These are the
 likely candidates:
 
-* [https://github.com/Homebrew/homebrew-dupes](https://github.com/Homebrew/homebrew-dupes)
-* [https://github.com/Homebrew/homebrew-versions](https://github.com/Homebrew/homebrew-versions)
-* [https://github.com/Homebrew/homebrew-games](https://github.com/Homebrew/homebrew-games)
+* [homebrew/dupes](https://github.com/Homebrew/homebrew-dupes)
+* [homebrew/games](https://github.com/Homebrew/homebrew-games)
+* [homebrew/versions](https://github.com/Homebrew/homebrew-versions)
 
 You can use `brew tap` to access these formulae:
 
@@ -235,7 +231,7 @@ brew install …
 Note that brew search still finds formula in taps.
 
 ### Homebrew is a poor name, it is generic, why was it chosen?
-mxcl was too concerned with the beer theme and didn’t consider that the
+@mxcl was too concerned with the beer theme and didn’t consider that the
 project may actually prove popular. By the time he realized it was too
 late. However, today, the first google hit for “homebrew” is not beer
 related ;-)

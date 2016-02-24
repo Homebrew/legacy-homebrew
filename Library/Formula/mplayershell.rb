@@ -15,9 +15,9 @@ class Mplayershell < Formula
 
   bottle do
     cellar :any
-    sha1 "5b280e20e9f690914906c41da02671b6c4667657" => :yosemite
-    sha1 "e12cbcf444c89071bdc4a0d8cea731d222444817" => :mavericks
-    sha1 "4993ca2b08d334843db0c31a35003424a4342a66" => :mountain_lion
+    sha256 "1637360e180d7b48367cb7c4f01d03856b9d13247000e4cc33f0af5f6ed92101" => :yosemite
+    sha256 "a95437813704c56c3e52bd1b17974bec24c209e26df8e9dfe07af45d51ecaf49" => :mavericks
+    sha256 "0553f3ff5cae0a8938c3dc09e6448621029b52bbbc6c17d53225c1f3e7881ae4" => :mountain_lion
   end
 
   depends_on MPlayerRequirement

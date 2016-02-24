@@ -1,6 +1,15 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
+#!/bin/sh
+# Make sure this shim uses the same Ruby interpreter that is used by Homebrew.
+unset RUBYLIB
+unset RUBYOPT
+if [ -z "$HOMEBREW_RUBY_PATH" ]
+then
+  echo "${0##*/}: The build tool has reset ENV; --env=std required." >&2
+  exit 1
+fi
+exec "$HOMEBREW_RUBY_PATH" -x "$0" "$@"
+#!/usr/bin/env ruby -W0
 
-$:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
 require "pathname"
 require "set"
 
@@ -21,7 +30,7 @@ class Cmd
   end
 
   def mode
-    if @arg0 == "cpp" or @arg0 == "ld"
+    if @arg0 == "cpp" || @arg0 == "ld"
       @arg0.to_sym
     elsif @args.include? "-c"
       if @arg0 =~ /(?:c|g|clang)\+\+/
@@ -61,7 +70,7 @@ class Cmd
   end
 
   def args
-    if @args.length == 1 and @args[0] == "-v"
+    if @args.length == 1 && @args[0] == "-v"
       # Don't add linker arguments if -v passed as sole option. This stops gcc
       # -v with no other arguments from outputting a linker error. Some
       # software uses gcc -v (wrongly) to sniff the GCC version.
@@ -135,7 +144,7 @@ class Cmd
     args = []
 
     case arg
-    when /^-g\d?/, /^-gstabs\d+/, "-gstabs+", /^-ggdb\d?/, "-gdwarf-2",
+    when /^-g\d?$/, /^-gstabs\d+/, "-gstabs+", /^-ggdb\d?/,
       /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/,
       /^-O[0-9zs]?$/, "-fast", "-no-cpp-precomp",
       "-pedantic", "-pedantic-errors", "-Wno-long-double",
@@ -149,6 +158,9 @@ class Cmd
       "-fuse-linker-plugin"
       # clang doesn't support these flags
       args << arg unless tool =~ /^clang/
+    when "-Wno-deprecated-register"
+      # older gccs don't support these flags
+      args << arg unless tool =~ /^g..-4.[02]/
     when /^-W[alp],/, /^-Wno-/
       args << arg
     when /^-W.*/
@@ -160,8 +172,9 @@ class Cmd
     when "-undefineddynamic_lookup"
       args << "-Wl,-undefined,dynamic_lookup"
     when /^-isysroot/, /^--sysroot/
-      # We set the sysroot
-      enum.next
+      sdk = enum.next
+      # We set the sysroot for OS X SDKs
+      args << "-isysroot" << sdk unless sdk.downcase.include? "osx"
     when "-dylib"
       args << "-Wl,#{arg}"
     when /^-I(.+)?/
@@ -300,7 +313,6 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   ##################################################################### sanity
-  abort "The build-tool has reset ENV. --env=std required." unless ENV["HOMEBREW_BREW_FILE"]
 
   if (cc = ENV["HOMEBREW_CC"]).nil? || cc.empty? || cc == "cc"
     # those values are not allowed

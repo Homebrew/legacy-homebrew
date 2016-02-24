@@ -5,10 +5,17 @@ class Cabocha < Formula
   sha256 "9db896d7f9d83fc3ae34908b788ae514ae19531eb89052e25f061232f6165992"
 
   bottle do
-    sha1 "c6d6a98dedfe7466c454101174b3d5cbc2752f9b" => :yosemite
-    sha1 "de55a785d8dcce5696a36f69b67168c913405259" => :mavericks
-    sha1 "40106c50d68d5bd03941946378679ff490ae679a" => :mountain_lion
+    sha256 "bf3ed6bc9333b43919264913c40a86997a7601a83abf6dcfa1dfe14745b3fc7c" => :el_capitan
+    sha256 "fe97decdca655899faffd6356bb8ddbb52d4949222690835374c3aeb9a65cdb2" => :yosemite
+    sha256 "794df46e362f3146b2bab17ba132978609954b0ba0a51ffa4d6d4e8845548764" => :mavericks
+    sha256 "b1aaf6623ac7332459c795ebd992ed92224b0d0b9e20fb57dd0313fbeea7647c" => :mountain_lion
   end
+
+  option "with-charset=", "choose default charset: EUC-JP, CP932, UTF8"
+  option "with-posset=", "choose default posset: IPA, JUMAN, UNIDIC"
+
+  deprecated_option "charset=" => "with-charset="
+  deprecated_option "posset=" => "with-posset="
 
   depends_on "crf++"
   depends_on "mecab"
@@ -19,9 +26,6 @@ class Cabocha < Formula
   depends_on "mecab-jumandic" => :optional
   depends_on "mecab-unidic" => :optional
 
-  option "charset=", "choose default charset: EUC-JP, CP932, UTF8"
-  option "posset=", "choose default posset: IPA, JUMAN, UNIDIC"
-
   def install
     ENV["LIBS"] = "-liconv"
 
@@ -30,8 +34,9 @@ class Cabocha < Formula
       s.change_make_var! "CXXFLAGS", ENV.cflags
     end
 
-    charset = ARGV.value("charset") || "UTF8"
-    posset = ARGV.value("posset") || "IPA"
+    charset = ARGV.value("with-charset") || "UTF8"
+    posset = ARGV.value("with-posset") || "IPA"
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}

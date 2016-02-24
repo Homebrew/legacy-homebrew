@@ -4,6 +4,8 @@ class Pssh < Formula
   url "https://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz"
   sha256 "539f8d8363b722712310f3296f189d1ae8c690898eca93627fc89a9cb311f6b4"
 
+  conflicts_with "putty", :because => "both install `pscp` binaries"
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install

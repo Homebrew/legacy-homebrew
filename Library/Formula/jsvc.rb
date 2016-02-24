@@ -8,6 +8,8 @@ class Jsvc < Formula
   # Enable Java 7 JVMs: https://issues.apache.org/jira/browse/DAEMON-281
   patch :DATA
 
+  depends_on :java
+
   def install
     ENV.append "CFLAGS", "-arch #{MacOS.preferred_arch}"
     ENV.append "LDFLAGS", "-arch #{MacOS.preferred_arch}"

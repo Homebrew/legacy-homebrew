@@ -4,6 +4,8 @@ class Betty < Formula
   url "https://github.com/pickhardt/betty/archive/v0.1.7.tar.gz"
   sha256 "ed71e88a659725e0c475888df044c9de3ab1474ff483f0a3bb432949035e62d3"
 
+  bottle :unneeded
+
   depends_on :ruby => "1.9"
 
   def install

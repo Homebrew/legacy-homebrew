@@ -7,10 +7,11 @@ class BoostBuild < Formula
   head "https://github.com/boostorg/build.git"
 
   bottle do
-    cellar :any
-    sha1 "e1ab34b88ac324bfa985d91a857ecdcd86e06541" => :yosemite
-    sha1 "0d8f9f91809f3b3b7b5eeb5e70cb92ed2a7ec42b" => :mavericks
-    sha1 "19db795fdbbcbc4f5916e8c9d249fe0c05bad1b5" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "54e173a7e91aef66bfdb5c497156915518d69dd9a062552ab48e62d443adaa04" => :el_capitan
+    sha256 "a61eaa58a94a1f236d1dc6e652f7cb57e241e0dd5664bb5cadc258b73ce34887" => :yosemite
+    sha256 "dd11acd551a6c26f216743eeb938d704f92bc5349c79b5f8e853176e311b7990" => :mavericks
+    sha256 "03d989cecd3251825466d725f6a00212979b2d41fce344380606b482eaab9b80" => :mountain_lion
   end
 
   def install

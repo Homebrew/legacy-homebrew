@@ -6,9 +6,10 @@ class Arpoison < Formula
 
   bottle do
     cellar :any
-    sha1 "e350e47d43c370aa48cb2bfb944cff1723ab500d" => :mavericks
-    sha1 "3fbfa7b1e1a21d1bdd8c61b2aefb84aca7dc91f6" => :mountain_lion
-    sha1 "465efcfc1778734810c249a71892d062eaf41b45" => :lion
+    revision 1
+    sha256 "33e496f9d1ca384ad23c50a1868fc2682352176d1cf5b37472299a9e36dc7e6c" => :el_capitan
+    sha256 "9d902ac3611dd0422783aecb7d46f39dd0278f65f5cab1aa99490fb527de5e22" => :yosemite
+    sha256 "0737a954fa5f4d6794f7a373b90b5d2b2008a0bf7cdc4e2fd51266485e86b983" => :mavericks
   end
 
   depends_on "libnet"
@@ -16,5 +17,6 @@ class Arpoison < Formula
   def install
     system "make"
     bin.install "arpoison"
+    man8.install "arpoison.8"
   end
 end

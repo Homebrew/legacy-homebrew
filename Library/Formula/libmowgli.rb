@@ -1,6 +1,6 @@
 class Libmowgli < Formula
   desc "Core framework for Atheme applications"
-  homepage "http://www.atheme.org/project/mowgli"
+  homepage "https://github.com/atheme/libmowgli-2"
   url "https://github.com/atheme/libmowgli-2/archive/libmowgli-2.0.0.tar.gz"
   sha256 "fd48e74f1f706b436e0f25c3d3d63753e9c066ef88e662cd34303ccd3b780798"
   revision 1
@@ -10,9 +10,9 @@ class Libmowgli < Formula
   bottle do
     cellar :any
     revision 3
-    sha1 "3c8576b64db4e689e386376b66821b95a45716d4" => :yosemite
-    sha1 "21d241c7ef4f94bb0dd4407ac09ecb9fbde93660" => :mavericks
-    sha1 "b0a6bf09ca579425a935063b9c8b86ee7cceec53" => :mountain_lion
+    sha256 "e32cc8c528e1cb58775f1fd4fb2e491649bbc1d50fe6c7767d8502fa183d1cab" => :yosemite
+    sha256 "687b05dd17d208907b854c245be8ee1c2eae759aab0db7e2b620173cd6fd06f1" => :mavericks
+    sha256 "c7bb30b3ec74cbeb74a9092504b336c5e1ec155c6702830ae6d6f548b65d74e0" => :mountain_lion
   end
 
   depends_on "openssl"

@@ -1,28 +1,29 @@
 class GstPluginsBad < Formula
   desc "GStreamer plugins (less supported, missing docs, not fully tested)"
-  homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.5.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.5.tar.xz"
-  sha256 "152fad7250683d72f9deb36c5685428338365fe4a4c87ffe15e38783b14f983c"
+  homepage "https://gstreamer.freedesktop.org/"
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.6.3.tar.xz"
+  sha256 "971b29101d6a9c5e3fe94d99d977a227f58f0b2d29b6ca2c7f292052542b3a61"
 
   bottle do
-    sha1 "ee012b6192397e44d9dc1bc8646fccb9e360f787" => :yosemite
-    sha1 "5b29c05070a308f2fd45be44b53939807301b6fe" => :mavericks
-    sha1 "bc81df3a700b39b388b1301fe4ed960ab3258aa6" => :mountain_lion
+    sha256 "f464a92a3bd3066094abdbce011b3ee378fa5ce049c7fd551724ec2c5b04c098" => :el_capitan
+    sha256 "e4efd9f1bd09ee72752cf1d36f182df201dedda78f185979074521b2ef22352c" => :yosemite
+    sha256 "d129f8dbb129eeef35a192c287fe43c7a7f04fdbcba7ac68c20f257f86801cd8" => :mavericks
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gst-plugins-bad"
+    url "https://anongit.freedesktop.org/git/gstreamer/gst-plugins-bad.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-    depends_on "openssl"
   end
+
+  option "with-applemedia", "Build with applemedia support"
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "gst-plugins-base"
+  depends_on "openssl"
 
   depends_on "dirac" => :optional
   depends_on "faac" => :optional
@@ -31,10 +32,12 @@ class GstPluginsBad < Formula
   depends_on "libdvdread" => :optional
   depends_on "libexif" => :optional
   depends_on "libmms" => :optional
+  depends_on "homebrew/science/opencv" => :optional
+  depends_on "opus" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "schroedinger" => :optional
-
-  option "with-applemedia", "Build with applemedia support"
+  depends_on "sound-touch" => :optional
+  depends_on "srtp" => :optional
 
   def install
     args = %W[

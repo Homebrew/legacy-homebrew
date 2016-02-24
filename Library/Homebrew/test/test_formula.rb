@@ -1,5 +1,6 @@
 require "testing_env"
 require "testball"
+require "formula"
 
 class FormulaTests < Homebrew::TestCase
   def test_formula_instantiation
@@ -33,7 +34,7 @@ class FormulaTests < Homebrew::TestCase
     refute_predicate f, :any_version_installed?
     prefix = HOMEBREW_CELLAR+f.name+"0.1"
     prefix.mkpath
-    FileUtils.touch (prefix+Tab::FILENAME)
+    FileUtils.touch prefix+Tab::FILENAME
     assert_predicate f, :any_version_installed?
   ensure
     f.rack.rmtree
@@ -153,14 +154,6 @@ class FormulaTests < Homebrew::TestCase
     assert_nil Testball.new <=> Object.new
   end
 
-  def test_class_naming
-    assert_equal "ShellFm", Formulary.class_s("shell.fm")
-    assert_equal "Fooxx", Formulary.class_s("foo++")
-    assert_equal "SLang", Formulary.class_s("s-lang")
-    assert_equal "PkgConfig", Formulary.class_s("pkg-config")
-    assert_equal "FooBar", Formulary.class_s("foo_bar")
-  end
-
   def test_formula_spec_integration
     f = formula do
       homepage "http://example.com"
@@ -210,22 +203,6 @@ class FormulaTests < Homebrew::TestCase
   def test_path
     name = "foo-bar"
     assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formulary.core_path(name)
-  end
-
-  def test_factory
-    name = "foo-bar"
-    path = HOMEBREW_PREFIX+"Library/Formula/#{name}.rb"
-    path.dirname.mkpath
-    File.open(path, "w") do |f|
-      f << %(
-        class #{Formulary.class_s(name)} < Formula
-          url 'foo-1.0'
-        end
-            )
-    end
-    assert_kind_of Formula, Formulary.factory(name)
-  ensure
-    path.unlink
   end
 
   def test_class_specs_are_always_initialized
@@ -315,5 +292,117 @@ class FormulaTests < Homebrew::TestCase
 
     assert f1.post_install_defined?
     refute f2.post_install_defined?
+  end
+
+  def test_test_defined
+    f1 = formula do
+      url "foo-1.0"
+
+      def test; end
+    end
+
+    f2 = formula do
+      url "foo-1.0"
+    end
+
+    assert f1.test_defined?
+    refute f2.test_defined?
+  end
+
+  def test_test_fixtures
+    f1 = formula do
+      url "foo-1.0"
+    end
+
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Homebrew/test/fixtures/foo"),
+      f1.test_fixtures("foo")
+  end
+
+  def test_to_hash
+    f1 = formula("foo") do
+      url "foo-1.0"
+    end
+
+    h = f1.to_hash
+    assert h.is_a?(Hash), "Formula#to_hash should return a Hash"
+    assert_equal "foo", h["name"]
+    assert_equal "foo", h["full_name"]
+    assert_equal "1.0", h["versions"]["stable"]
+  end
+
+  def test_to_hash_bottle
+    MacOS.stubs(:version).returns(MacOS::Version.new("10.11"))
+
+    f1 = formula("foo") do
+      url "foo-1.0"
+
+      bottle do
+        cellar :any
+        sha256 TEST_SHA256 => :el_capitan
+      end
+    end
+
+    h = f1.to_hash
+    assert h.is_a?(Hash), "Formula#to_hash should return a Hash"
+    assert h["versions"]["bottle"], "The hash should say the formula is bottled"
+  end
+
+  def test_eligible_kegs_for_cleanup
+    f1 = Class.new(Testball) { version "0.1" }.new
+    f2 = Class.new(Testball) { version "0.2" }.new
+    f3 = Class.new(Testball) { version "0.3" }.new
+
+    shutup do
+      f1.brew { f1.install }
+      f2.brew { f2.install }
+      f3.brew { f3.install }
+    end
+
+    assert_predicate f1, :installed?
+    assert_predicate f2, :installed?
+    assert_predicate f3, :installed?
+
+    assert_equal f3.installed_kegs[0..1], f3.eligible_kegs_for_cleanup
+  ensure
+    [f1, f2, f3].each(&:clear_cache)
+    f3.rack.rmtree
+  end
+
+  def test_pour_bottle
+    f_false = formula("foo") do
+      url "foo-1.0"
+      def pour_bottle?
+        false
+      end
+    end
+    refute f_false.pour_bottle?
+
+    f_true = formula("foo") do
+      url "foo-1.0"
+      def pour_bottle?
+        true
+      end
+    end
+    assert f_true.pour_bottle?
+  end
+
+  def test_pour_bottle_dsl
+    f_false = formula("foo") do
+      url "foo-1.0"
+      pour_bottle? do
+        reason "false reason"
+        satisfy { var == etc }
+      end
+    end
+    refute f_false.pour_bottle?
+
+    f_true = formula("foo") do
+      url "foo-1.0"
+      pour_bottle? do
+        reason "true reason"
+        satisfy { var == var }
+      end
+    end
+    assert f_true.pour_bottle?
   end
 end

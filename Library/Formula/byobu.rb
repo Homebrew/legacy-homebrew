@@ -1,14 +1,24 @@
 class Byobu < Formula
   desc "Text-based window manager and terminal multiplexer"
   homepage "http://byobu.co"
-  url "https://launchpad.net/byobu/trunk/5.94/+download/byobu_5.94.orig.tar.gz"
-  sha256 "4917013f590110d25b18293a51af02bd1ebcd1c665474f62e2566fb9b8f62916"
+  url "https://launchpad.net/byobu/trunk/5.101/+download/byobu_5.101.orig.tar.gz"
+  sha256 "15972e7a6fc877fbc4e281f75ea23c04393d99764c8f6fe129dc91d614f5c8ce"
 
   bottle do
-    sha256 "3b5da5651f1d2f0b1233b1ae764c3f4a7e72a4c1725f4889c526bb83d5eca816" => :yosemite
-    sha256 "00f1ef5add1a0c204aedc18c562274d8740c4699b1b28cd21b6e44f9564428ce" => :mavericks
-    sha256 "85c10105b1d5a4b6b1ed3161c755643070fbd446547dbeac44bb4388ecd00669" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "4a86fe5d52e406dbf457465fb163a91705e44508a94a7b811c4c9bcdbe4a1455" => :el_capitan
+    sha256 "73f0f7d6e37622ddd82684246ea5357e458df912c11b25a0e4298e35c7d62a69" => :yosemite
+    sha256 "ca449ba4b66017d09280d24ff3d1d0389eeee6b5d9cb84b00f2c10397c43fa5d" => :mavericks
   end
+
+  head do
+    url "https://github.com/dustinkirkland/byobu.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
+
+  conflicts_with "ctail", :because => "both install `ctail` binaries"
 
   depends_on "coreutils"
   depends_on "gnu-sed" # fails with BSD sed
@@ -16,6 +26,10 @@ class Byobu < Formula
   depends_on "newt" => "with-python"
 
   def install
+    if build.head?
+      cp "./debian/changelog", "./ChangeLog"
+      system "autoreconf", "-fvi"
+    end
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end

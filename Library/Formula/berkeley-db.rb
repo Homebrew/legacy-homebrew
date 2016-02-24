@@ -1,18 +1,21 @@
 class BerkeleyDb < Formula
   desc "High performance key/value database"
   homepage "https://www.oracle.com/technology/products/berkeley-db/index.html"
-  url "http://download.oracle.com/berkeley-db/db-6.1.19.tar.gz"
-  sha256 "ad8aa5f9ede68118732f78718128e29e4d765e46a87dce54fa9143d9de8684ce"
+  url "http://download.oracle.com/berkeley-db/db-6.1.26.tar.gz"
+  sha256 "dd1417af5443f326ee3998e40986c3c60e2a7cfb5bfa25177ef7cadb2afb13a6"
 
   bottle do
     cellar :any
-    sha1 "1e80c66e55a970b39829cc98e41f3252557d3736" => :yosemite
-    sha1 "296738e8b7d2d23fafc19f3eaad6693e18bab05d" => :mavericks
-    sha1 "9573e87c5c4a5bf39f89b712c59b5329cb7c0b41" => :mountain_lion
+    sha256 "70f4c1cea6a4c2f9454680988b73bb9fdc107307dafeec47e21a4539dce57b36" => :el_capitan
+    sha256 "3e4324500931e32e3a187f9790b4465efd4d249dc9ec03ff46b4209ed061e935" => :yosemite
+    sha256 "b2ba3aff83ee27a52115f47abc3c1767d124841ad342e63e433dfa36af064b36" => :mavericks
+    sha256 "8f5a87bc3336e01f8528ae8aaae24c83e8fa10e8f01ee65e8cac4af7d0786bf1" => :mountain_lion
   end
 
   option "with-java", "Compile with Java support."
-  option "enable-sql", "Compile with SQL support."
+  option "with-sql", "Compile with SQL support."
+
+  deprecated_option "enable-sql" => "with-sql"
 
   def install
     # BerkeleyDB dislikes parallel builds
@@ -27,7 +30,7 @@ class BerkeleyDb < Formula
       --enable-compat185
     ]
     args << "--enable-java" if build.with? "java"
-    args << "--enable-sql" if build.include? "enable-sql"
+    args << "--enable-sql" if build.with? "sql"
 
     # BerkeleyDB requires you to build everything from the build_unix subdirectory
     cd "build_unix" do

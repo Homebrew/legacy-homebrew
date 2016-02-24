@@ -1,31 +1,31 @@
 class Duck < Formula
   desc "Command-line interface for Cyberduck (a multi-protocol file transfer tool)"
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-4.7.1.17911.tar.gz"
-  sha256 "51cf135a12743c0a524c23adeab13f01a635999f8b03122eaf06056e320d365d"
+  # check the changelog for the latest stable version: https://cyberduck.io/changelog/
+  url "https://dist.duck.sh/duck-src-4.7.3.18396.tar.gz"
+  sha256 "47e25f0a28393c388f37d319c9d51dd51eebdf15198ee48df3995af8a60bcc16"
   head "https://svn.cyberduck.io/trunk/"
 
   bottle do
     cellar :any
-    sha256 "bfe86da78894f372c068519d0ad4c460bc30f575fa7d340fc598ca8347b959c2" => :yosemite
-    sha256 "815df4596b0403106df8a896c250af44b76ecaf1670a239b97a7c5926ce95d71" => :mavericks
-    sha256 "e0183f13dcf4caa7522b25896708ad2ba1de370749eae07a0216c44b408f6223" => :mountain_lion
+    sha256 "357282a2d6092927a8dd133e9868646dffab55b339376280b8476d19cf7db6b8" => :el_capitan
+    sha256 "fb45a7ae70bbf69a247563591deb6b5f8a305f4a2bf073bd216c4567cd6e3864" => :yosemite
+    sha256 "6aaab98af32f261163510703ea45f15aeedc38fb81af648952a294ddf96c438a" => :mavericks
   end
 
-  depends_on :java => ["1.7+", :build]
+  depends_on :java => ["1.8+", :build]
   depends_on :xcode => :build
   depends_on "ant" => :build
 
   def install
     revision = version.to_s.rpartition(".").last
-    system "ant", "-Dbuild.compile.target=1.7", "-Drevision=#{revision}", "cli"
+    system "ant", "-Dbuild.compile.target=1.8", "-Drevision=#{revision}", "cli"
     libexec.install Dir["build/duck.bundle/*"]
     bin.install_symlink "#{libexec}/Contents/MacOS/duck" => "duck"
   end
 
   test do
-    filename = (testpath/"test")
-    system "#{bin}/duck", "--download", stable.url, filename
-    filename.verify_checksum stable.checksum
+    system "#{bin}/duck", "--download", Formula["wget"].stable.url, testpath/"test"
+    (testpath/"test").verify_checksum Formula["wget"].stable.checksum
   end
 end

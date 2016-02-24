@@ -1,16 +1,17 @@
 class Direnv < Formula
   desc "Load/unload environment variables based on $PWD"
-  homepage "http://www.direnv.net"
-  url "https://github.com/zimbatm/direnv/archive/v2.6.0.tar.gz"
-  sha256 "b85aac4d6a4ddf2daf193aabb3b2faf89e56507d33d763ab74cc7eb0b524ac03"
+  homepage "http://direnv.net"
+  url "https://github.com/zimbatm/direnv/archive/v2.7.0.tar.gz"
+  sha256 "3cfa8f41e740c0dc09d854f3833058caec0ea0d67d19e950f97eee61106b0daf"
 
   head "https://github.com/zimbatm/direnv.git"
 
   bottle do
-    cellar :any
-    sha1 "0cee43bd9df0e2f376e6edfaaebb6ca537df0692" => :yosemite
-    sha1 "9d0cd4d5ec285daba2d2e4237cac58e963fd88fc" => :mavericks
-    sha1 "26f4abf81efa2bcf23ae58c0a913ac6b93ef3f1d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "20345349318934e2ba44d5109872a0e51ae69d09306727cfd88a45597eda27c0" => :el_capitan
+    sha256 "13c1d2a2b34eab4f755a47235f85fd02c7cbd65d0bcb5bd01de0e69d1f28cb38" => :yosemite
+    sha256 "8c32edd5768f78b31308f382d07237c17ea9e664da9b2ad5613fd564d271fb28" => :mavericks
+    sha256 "a7fd223871f2e8ddbf4b797e13527400a27207c9c8ace2b5c995c931a0e70a33" => :mountain_lion
   end
 
   depends_on "go" => :build

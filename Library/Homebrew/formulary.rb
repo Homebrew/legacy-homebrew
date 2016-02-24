@@ -1,4 +1,7 @@
 require "digest/md5"
+require "formula_renames"
+require "tap"
+require "core_formula_repository"
 
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
@@ -14,20 +17,24 @@ class Formulary
     FORMULAE.fetch(path)
   end
 
-  def self.load_formula(name, path)
+  def self.load_formula(name, path, contents, namespace)
     mod = Module.new
-    const_set("FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}", mod)
-    contents = path.open("r") { |f| set_encoding(f).read }
+    const_set(namespace, mod)
     mod.module_eval(contents, path)
     class_name = class_s(name)
 
     begin
-      klass = mod.const_get(class_name)
+      mod.const_get(class_name)
     rescue NameError => e
       raise FormulaUnavailableError, name, e.backtrace
-    else
-      FORMULAE[path] = klass
     end
+  end
+
+  def self.load_formula_from_path(name, path)
+    contents = path.open("r") { |f| set_encoding(f).read }
+    namespace = "FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}"
+    klass = load_formula(name, path, contents, namespace)
+    FORMULAE[path] = klass
   end
 
   if IO.method_defined?(:set_encoding)
@@ -43,7 +50,7 @@ class Formulary
   def self.class_s(name)
     class_name = name.capitalize
     class_name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
-    class_name.gsub!("+", "x")
+    class_name.tr!("+", "x")
     class_name
   end
 
@@ -75,7 +82,7 @@ class Formulary
     def load_file
       STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
       raise FormulaUnavailableError.new(name) unless path.file?
-      Formulary.load_formula(name, path)
+      Formulary.load_formula_from_path(name, path)
     end
   end
 
@@ -140,9 +147,18 @@ class Formulary
 
     def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
-      @tap = Tap.new user, repo.sub(/^homebrew-/, "")
+      @tap = Tap.fetch user, repo
+      name = @tap.formula_renames.fetch(name, name)
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
-      path ||= @tap.path/"#{name}.rb"
+
+      unless path
+        if (possible_alias = @tap.alias_dir/name).file?
+          path = possible_alias.resolved_path
+          name = path.basename(".rb").to_s
+        else
+          path = @tap.path/"#{name}.rb"
+        end
+      end
 
       super name, path
     end
@@ -161,6 +177,23 @@ class Formulary
 
     def get_formula(_spec)
       raise FormulaUnavailableError.new(name)
+    end
+  end
+
+  # Load formulae directly from their contents
+  class FormulaContentsLoader < FormulaLoader
+    # The formula's contents
+    attr_reader :contents
+
+    def initialize(name, path, contents)
+      @contents = contents
+      super name, path
+    end
+
+    def klass
+      STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
+      namespace = "FormulaNamespace#{Digest::MD5.hexdigest(contents)}"
+      Formulary.load_formula(name, path, contents, namespace)
     end
   end
 
@@ -186,11 +219,31 @@ class Formulary
     tap = tab.tap
     spec ||= tab.spec
 
-    if tap.nil? || tap == "Homebrew/homebrew"
+    if tap.nil?
       factory(rack.basename.to_s, spec)
     else
-      factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec)
+      begin
+        factory("#{tap}/#{rack.basename}", spec)
+      rescue FormulaUnavailableError
+        # formula may be migrated to different tap. Try to search in core and all taps.
+        factory(rack.basename.to_s, spec)
+      end
     end
+  end
+
+  # Return a Formula instance directly from contents
+  def self.from_contents(name, path, contents, spec = :stable)
+    FormulaContentsLoader.new(name, path, contents).get_formula(spec)
+  end
+
+  def self.to_rack(ref)
+    # First, check whether the rack with the given name exists.
+    if (rack = HOMEBREW_CELLAR/File.basename(ref, ".rb")).directory?
+      return rack.resolved_path
+    end
+
+    # Second, use canonical name to locate rack.
+    (HOMEBREW_CELLAR/canonical_name(ref)).resolved_path
   end
 
   def self.canonical_name(ref)
@@ -207,7 +260,7 @@ class Formulary
 
   def self.loader_for(ref)
     case ref
-    when %r{(https?|ftp)://}
+    when %r{(https?|ftp|file)://}
       return FromUrlLoader.new(ref)
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
@@ -224,7 +277,7 @@ class Formulary
       return FormulaLoader.new(ref, formula_with_that_name)
     end
 
-    possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{ref}")
+    possible_alias = CoreFormulaRepository.instance.alias_dir/ref
     if possible_alias.file?
       return AliasLoader.new(possible_alias)
     end
@@ -233,7 +286,29 @@ class Formulary
     if possible_tap_formulae.size > 1
       raise TapFormulaAmbiguityError.new(ref, possible_tap_formulae)
     elsif possible_tap_formulae.size == 1
-      return FormulaLoader.new(ref, possible_tap_formulae.first)
+      path = possible_tap_formulae.first.resolved_path
+      name = path.basename(".rb").to_s
+      return FormulaLoader.new(name, path)
+    end
+
+    if newref = CoreFormulaRepository.instance.formula_renames[ref]
+      formula_with_that_oldname = core_path(newref)
+      if formula_with_that_oldname.file?
+        return FormulaLoader.new(newref, formula_with_that_oldname)
+      end
+    end
+
+    possible_tap_newname_formulae = []
+    Tap.each do |tap|
+      if newref = tap.formula_renames[ref]
+        possible_tap_newname_formulae << "#{tap.name}/#{newref}"
+      end
+    end
+
+    if possible_tap_newname_formulae.size > 1
+      raise TapFormulaWithOldnameAmbiguityError.new(ref, possible_tap_newname_formulae)
+    elsif !possible_tap_newname_formulae.empty?
+      return TapLoader.new(possible_tap_newname_formulae.first)
     end
 
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
@@ -245,17 +320,36 @@ class Formulary
   end
 
   def self.core_path(name)
-    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
+    CoreFormulaRepository.instance.formula_dir/"#{name.downcase}.rb"
   end
 
-  def self.tap_paths(name)
+  def self.tap_paths(name, taps = Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"])
     name = name.downcase
-    Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
+    taps.map do |tap|
       Pathname.glob([
         "#{tap}Formula/#{name}.rb",
         "#{tap}HomebrewFormula/#{name}.rb",
-        "#{tap}#{name}.rb"
+        "#{tap}#{name}.rb",
+        "#{tap}Aliases/#{name}",
       ]).detect(&:file?)
     end.compact
+  end
+
+  def self.find_with_priority(ref, spec = :stable)
+    possible_pinned_tap_formulae = tap_paths(ref, Dir["#{HOMEBREW_LIBRARY}/PinnedTaps/*/*/"]).map(&:realpath)
+    if possible_pinned_tap_formulae.size > 1
+      raise TapFormulaAmbiguityError.new(ref, possible_pinned_tap_formulae)
+    elsif possible_pinned_tap_formulae.size == 1
+      selected_formula = factory(possible_pinned_tap_formulae.first, spec)
+      if core_path(ref).file?
+        opoo <<-EOS.undent
+          #{ref} is provided by core, but is now shadowed by #{selected_formula.full_name}.
+          To refer to the core formula, use Homebrew/homebrew/#{ref} instead.
+        EOS
+      end
+      selected_formula
+    else
+      factory(ref, spec)
+    end
   end
 end

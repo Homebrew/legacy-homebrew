@@ -6,10 +6,11 @@ class Aget < Formula
   head "https://github.com/EnderUNIX/Aget.git"
 
   bottle do
-    cellar :any
-    sha1 "62c6fbd2f84ce88cd4c10f7faf48f4436c2addde" => :yosemite
-    sha1 "7949a392886fe34408669c529af6697b96acafc9" => :mavericks
-    sha1 "2b6c73f112e7aedd05807c61e118a32a057cd5f7" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "9e4c47e799f36de6502a569d0ed75ee28070986e701ff814b353988a57c9fa1e" => :el_capitan
+    sha256 "50eeae036e0d440673b98a1952992d10d8d7f67fca0ed7424b295606b86d33de" => :yosemite
+    sha256 "ec1c185478a302af5644b494dd82cf162947b3f389e1125dcaae25b00b2259c3" => :mavericks
+    sha256 "e13906227621a18d8c3ea3bfa3fd164ab82a398f3d556557d786c7a7899d36c2" => :mountain_lion
   end
 
   def install

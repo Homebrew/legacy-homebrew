@@ -1,5 +1,4 @@
 require "tab"
-require "os/mac"
 require "extend/ARGV"
 
 def built_as_bottle?(f)
@@ -39,7 +38,7 @@ def bottle_tag
 end
 
 def bottle_receipt_path(bottle_file)
-  Utils.popen_read("tar", "-tzf", bottle_file, "*/*/INSTALL_RECEIPT.json").chomp
+  Utils.popen_read("/usr/bin/tar", "-tzf", bottle_file, "*/*/INSTALL_RECEIPT.json").chomp
 end
 
 def bottle_resolve_formula_names(bottle_file)
@@ -48,10 +47,10 @@ def bottle_resolve_formula_names(bottle_file)
   name = receipt_file_path.split("/").first
   tap = Tab.from_file_content(receipt_file, "#{bottle_file}/#{receipt_file_path}").tap
 
-  if tap.nil? || tap == "Homebrew/homebrew"
+  if tap.nil? || tap.core_formula_repository?
     full_name = name
   else
-    full_name = "#{tap.sub("homebrew-", "")}/#{name}"
+    full_name = "#{tap}/#{name}"
   end
 
   [name, full_name]
@@ -63,12 +62,15 @@ end
 
 class Bintray
   def self.package(formula_name)
-    formula_name.to_s.gsub "+", "x"
+    formula_name.to_s.tr("+", "x")
   end
 
   def self.repository(tap = nil)
-    return "bottles" if tap.nil? || tap == "Homebrew/homebrew"
-    "bottles-#{tap.sub(/^homebrew\/(homebrew-)?/i, "")}"
+    if tap.nil? || tap.core_formula_repository?
+      "bottles"
+    else
+      "bottles-#{tap.repo}"
+    end
   end
 end
 

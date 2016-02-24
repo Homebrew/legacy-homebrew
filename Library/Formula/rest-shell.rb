@@ -5,6 +5,8 @@ class RestShell < Formula
   version "1.2.1.RELEASE"
   sha256 "0ecfa67d005cc0d51e7a3a26c4dacc53aa12012f0e757332a2fa40c5e780c2d6"
 
+  bottle :unneeded
+
   def install
     libexec.install Dir["*"]
     bin.write_exec_script libexec/"bin/rest-shell"

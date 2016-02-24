@@ -9,9 +9,10 @@ class Apib < Formula
 
   bottle do
     cellar :any
-    sha1 "ffdea23d6f3e9627d3d99ec931d29f1e93f7dd9f" => :yosemite
-    sha1 "d7443be34f3d7b9347c26bfdaae5c46eab41e3c8" => :mavericks
-    sha1 "0952c22383ab1f4da194d66b823dd513a3f30ac8" => :mountain_lion
+    sha256 "cc30447ff51239eb2334d85b2f3faf0842b21ff882d8a4edb2e99155cb1dab76" => :el_capitan
+    sha256 "9cd200dbdb251c5d50e7fa2307a6252aa295a4a7ac0e594d0774ad1d2631215c" => :yosemite
+    sha256 "b14202356551d0b33446c99d38c4ed0f1d4893aa8e203fd04b6923db18ff40c1" => :mavericks
+    sha256 "c538b9389b1849704720383f03fb2fe4eaf145ecd01d7dca5fd08d95e0e961ba" => :mountain_lion
   end
 
   depends_on :apr => :build

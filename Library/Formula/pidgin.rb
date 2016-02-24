@@ -1,15 +1,14 @@
 class Pidgin < Formula
   desc "Multi-protocol chat client"
   homepage "https://pidgin.im/"
-  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.11/pidgin-2.10.11.tar.bz2"
-  sha256 "f2ae211341fc77efb9945d40e9932aa535cdf3a6c8993fe7919fca8cc1c04007"
+  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.12/pidgin-2.10.12.tar.bz2"
+  sha256 "2c7523f0fefe89749c03b2b738ab9f7bd186da435be4762f1487eee31e77ffdd"
   revision 1
 
   bottle do
-    revision 5
-    sha256 "67e7892b128e2b5589cd7649c74bb449aa54adf133789ff1a0a3bd9f3c52ec57" => :yosemite
-    sha256 "8d6452281c705226b987d79ae1642a256ec010a47a613d2674c0750215efe528" => :mavericks
-    sha256 "b7daac4be432e5420d690750c8403486edbcb3ba173f4165c32f2aa79b85859f" => :mountain_lion
+    sha256 "a010b4baeb0d28eb3c22ddb45ce85c0dc73ee1c32e01f1f42d55f52718e8aaf9" => :el_capitan
+    sha256 "48128e5a37ed28e61d616f25b55b85424817a2d4421f8133bd46a1514f2b9ea3" => :yosemite
+    sha256 "f78352ef4891c3d84a1d5ae3a1eae001a526163f8586c7b4ecaf23b3004bd45f" => :mavericks
   end
 
   option "with-perl", "Build Pidgin with Perl support"

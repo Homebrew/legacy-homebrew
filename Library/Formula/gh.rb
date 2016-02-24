@@ -6,17 +6,16 @@ class Gh < Formula
   head "https://github.com/jingweno/gh.git"
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "2f7d94e9d932fa8a275b097c1756c8827511de17" => :yosemite
-    sha1 "bac12bb9f1b776a10eab9d7b3fd859f4fb459a23" => :mavericks
-    sha1 "9706eaf67eed09dc7e1267afed043c32c67c4ca1" => :mountain_lion
-    sha1 "3f46e4ee7a3e2d63e514f057e9dd8e116b3c18e2" => :lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "e2d0bc29c2f4b7eaf706955002ba1e88634aa4f2c0e0461b9d22b00e66da2734" => :el_capitan
+    sha256 "553daabe8b4a839ce8f6403e78770d2fcb7773da9ac6b617a64e34bb52c3f70b" => :yosemite
+    sha256 "541e522a0ccc06c007bed65b12ac60cd3db1e84c284aa878daecc24d628c17bf" => :mavericks
   end
 
-  depends_on "go" => :build
-
   option "without-completions", "Disable bash/zsh completions"
+
+  depends_on "go" => :build
 
   def install
     system "script/make", "--no-update"

@@ -1,25 +1,27 @@
 class Tachyon < Formula
-  desc "Distributed storage system to enable data sharing across cluster frameworks"
+  desc "Memory-centric storage system for data sharing across cluster frameworks"
   homepage "http://tachyon-project.org/"
-  url "https://github.com/amplab/tachyon/releases/download/v0.6.4/tachyon-0.6.4-bin.tar.gz"
-  sha256 "c105e2e984cc7139933e1d1debc4b393fe22ef33fb90776edc5be7148829b820"
+  url "http://tachyon-project.org/downloads/files/0.8.2/tachyon-0.8.2-bin.tar.gz"
+  sha256 "52823ba1b5764a3c4be6738a0becb80d88de636bb605310718f6bf0fdbb632a0"
+
+  bottle :unneeded
 
   def install
-    libexec.install %w[bin client conf core libexec]
-    bin.write_exec_script Dir["#{libexec}/bin/*"]
     doc.install Dir["docs/*"]
+    libexec.install Dir["*"]
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
 
     (etc/"tachyon").install libexec/"conf/tachyon-env.sh.template" => "tachyon-env.sh"
     ln_sf "#{etc}/tachyon/tachyon-env.sh", "#{libexec}/conf/tachyon-env.sh"
-  end
-
-  test do
-    system bin/"tachyon", "version"
   end
 
   def caveats; <<-EOS.undent
     To configure tachyon, edit
       #{etc}/tacyon/tachyon-env.sh
     EOS
+  end
+
+  test do
+    system bin/"tachyon", "version"
   end
 end

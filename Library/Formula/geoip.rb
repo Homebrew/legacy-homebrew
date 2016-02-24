@@ -1,34 +1,24 @@
 class Geoip < Formula
-  desc "GeoIP databases in a number of formats"
+  desc "This library is for the GeoIP Legacy format (dat)"
   homepage "https://github.com/maxmind/geoip-api-c"
-  url "https://github.com/maxmind/geoip-api-c/archive/v1.6.6.tar.gz"
-  sha256 "db8ed5d07292c75cb3018738e6411037f15cc2a517f38ee04c1232cbe3d30b46"
+  url "https://github.com/maxmind/geoip-api-c/releases/download/v1.6.9/GeoIP-1.6.9.tar.gz"
+  sha256 "4b446491843de67c1af9b887da17a3e5939e0aeed4826923a5f4bf09d845096f"
 
   head "https://github.com/maxmind/geoip-api-c.git"
 
   bottle do
     cellar :any
-    sha256 "8394441f236c3f35fb436da2a52798aaac637818213883f074d2f976e296e11d" => :yosemite
-    sha256 "ccc2707ef9e8b24747ad772cfa1949781f8e4063a90a692ad4317a699ae84526" => :mavericks
-    sha256 "ad4d958f99890a460f9d8c32e7ed589d91651ce6537eed620832840c36dc699c" => :mountain_lion
+    sha256 "dc7c79eef8500456198b3ba981c13498c049b2f8c4398fe885534c386dfbf283" => :el_capitan
+    sha256 "0525ae799027334cafb551a349c7837c8b17853660797dff430b035ca0eedc65" => :yosemite
+    sha256 "5ee66187d1b4510fd463ebb8bf360c2d78a4252467a0e10e905a2a3502f9bcaa" => :mavericks
   end
-
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
-  depends_on "geoipupdate" => :optional
 
   option :universal
 
+  depends_on "geoipupdate" => :optional
+
   def install
     ENV.universal_binary if build.universal?
-
-    # Fixes a build error on Lion when configure does a variant of autoreconf
-    # that results in a botched Makefile, causing this error:
-    # No rule to make target '../libGeoIP/libGeoIP.la', needed by 'geoiplookup'
-    # This works on Snow Leopard also when it tries but fails to run autoreconf.
-    # Also fixes the tests by downloading required data file
-    system "./bootstrap"
 
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",

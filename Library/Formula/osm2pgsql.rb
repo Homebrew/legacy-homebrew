@@ -1,14 +1,14 @@
 class Osm2pgsql < Formula
-  desc "Convert OpenStreetMap data to postGIS-enabled PostgreSQL db"
+  desc "OpenStreetMap data to PostgreSQL converter"
   homepage "https://wiki.openstreetmap.org/wiki/Osm2pgsql"
-  url "https://github.com/openstreetmap/osm2pgsql/archive/0.87.0.tar.gz"
-  sha256 "6f5538d098e17a578a384f70f61b335f10edb04114d5cdc5233ca97f868ad0f6"
+  url "https://github.com/openstreetmap/osm2pgsql/archive/0.88.1.tar.gz"
+  sha256 "08ec33c833768dec9856f537bbf4416ad45837ee0851eeeab0081c7bbed3449e"
   revision 1
 
   bottle do
-    sha256 "6b1bc9ca723e3c8bf23c9bb5704fa99205a1037085d408102050da03ac703a5c" => :yosemite
-    sha256 "2835cacfecdbca3f00255cfc5b95107d54fa640e1eb1ca728520f4c252da983f" => :mavericks
-    sha256 "63c279201caf3f6c0359dbe27eb1c2e2a144cdf0cfd130ef6d218b95a9d009fe" => :mountain_lion
+    sha256 "7f388ee56a6bf0d685434823d238ebbd8ca01e74320c862892e61e21b24b9a08" => :el_capitan
+    sha256 "17c80db14f36b5831b03a4026d3d970ae29c782344c11c5fbec9cf19716a3e6d" => :yosemite
+    sha256 "ef2655f802ca66c3cb137d80be9fcbe9fae64743c0f67c0b0e3944faddbc8913" => :mavericks
   end
 
   depends_on :postgresql
@@ -18,15 +18,8 @@ class Osm2pgsql < Formula
   depends_on "boost"
   depends_on "geos"
   depends_on "proj"
-  depends_on "protobuf-c" => :optional
-
-  # Fixes an upstream issue:
-  #   https://github.com/openstreetmap/osm2pgsql/issues/196
-  # Remove the patch when upgrading
-  patch do
-    url "https://github.com/openstreetmap/osm2pgsql/commit/943684a9b86bee46d245970b3e5870f83afc9208.diff"
-    sha256 "608b702d79fd53f2af98e9651634377126778ff91087cf35a81b65150d8cd963"
-  end
+  depends_on "protobuf-c" => :recommended
+  depends_on "lua" => :recommended
 
   def install
     args = [
@@ -35,14 +28,16 @@ class Osm2pgsql < Formula
       "--with-proj=#{Formula["proj"].opt_prefix}",
       "--with-boost=#{Formula["boost"].opt_prefix}",
       "--with-zlib=/usr",
-      "--with-bzip2=/usr",
-      # Related to the patch, remove this line when upgrading
-      "--without-lockfree"
+      "--with-bzip2=/usr"
     ]
     puts args
     if build.with? "protobuf-c"
       args << "--with-protobuf-c=#{Formula["protobuf-c"].opt_prefix}"
     end
+    # Mountain Lion has some problems with C++11.
+    # This is probably going to be a fatal issue for 0.89 and 0.90, but
+    # for now it can be worked around.
+    args << "--without-cxx11" if MacOS.version < :mavericks
     system "./autogen.sh"
     system "./configure", *args
     system "make"

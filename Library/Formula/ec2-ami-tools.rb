@@ -4,6 +4,8 @@ class Ec2AmiTools < Formula
   url "https://ec2-downloads.s3.amazonaws.com/ec2-ami-tools-1.5.7.zip"
   sha256 "5a45d9f393d2e144124d23d2312b3a8918c5a3f7463b48d55f8db3d56a3fb29f"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

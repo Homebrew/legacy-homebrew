@@ -1,5 +1,5 @@
 class Bash < Formula
-  desc "Bash (Bourne-again SHell) is a UNIX command interpreter"
+  desc "Bourne-Again SHell, a UNIX command interpreter"
   homepage "https://www.gnu.org/software/bash/"
 
   head "http://git.savannah.gnu.org/r/bash.git"
@@ -8,21 +8,28 @@ class Bash < Formula
     url "http://ftpmirror.gnu.org/bash/bash-4.3.tar.gz"
     mirror "https://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz"
     sha256 "afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4"
-    version "4.3.39"
+    version "4.3.42"
 
     # Vendor the patches. The mirrors are unreliable for getting the patches,
     # and the more patches there are, the more unreliable they get. Upstream
     # patches can be found in: http://git.savannah.gnu.org/cgit/bash.git
     patch do
-      url "https://gist.githubusercontent.com/dunn/6d64e94f36a4e2416bab/raw/ed7e7fe6e1111d88f5f987a7201de48cfe461a3b/bash-4.3.39.diff"
-      sha256 "9fe461b0d461a3918b32a0fed3bcfef4c2e774e0f867730a1bbfa8d510cfbcfd"
+      url "https://gist.githubusercontent.com/dunn/a8986687991b57eb3b25/raw/76dd864812e821816f4b1c18e3333c8fced3919b/bash-4.3.42.diff"
+      sha256 "2eeb9b3ed71f1e13292c2212b6b8036bc258c58ec9c82eec7a86a091b05b15d2"
     end
   end
 
   bottle do
-    sha256 "ee7ba6eec21b7ff28f7f4af4aa61410e898a332a962890ba427ababff461b476" => :yosemite
-    sha256 "cd77ab76ba9669e9aaa7530d3f8050af402e5216093ac5d601d0bc1e71243ced" => :mavericks
-    sha256 "d02261c71893bcde61fb1b1c84b49e0e7d60df9fd62b4d5af76afd1f4b29de7e" => :mountain_lion
+    sha256 "a767075b636c0964d2eca3c4f87eb679384fcd2eb7a778ea862248717f63b082" => :el_capitan
+    sha256 "e4c37730749adcdbc274fa57b62300f2f2c68078b962cfd196a7e8f0764b543c" => :yosemite
+    sha256 "4078f42a58506e67d25ec0f82f85efd265bf2eac606a9aeca50a7e7bd5b7e025" => :mavericks
+    sha256 "4fded417b56f73ffcf48b5d05bc22e04beb521c7f91f4d6b5671876173584c27" => :mountain_lion
+  end
+
+  devel do
+    url "http://ftpmirror.gnu.org/bash/bash-4.4-beta.tar.gz"
+    mirror "https://ftp.gnu.org/gnu/bash/bash-4.4-beta.tar.gz"
+    sha256 "8273c415b70260baaf7a9fdc9632451cd3987718fd054ee7ee13d7613808d231"
   end
 
   depends_on "readline"
@@ -36,7 +43,11 @@ class Bash < Formula
     # Homebrew's bash instead of /bin/bash.
     ENV.append_to_cflags "-DSSH_SOURCE_BASHRC"
 
-    system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
+    if build.devel? || build.head?
+      system "./configure", "--prefix=#{prefix}"
+    else
+      system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
+    end
     system "make", "install"
   end
 

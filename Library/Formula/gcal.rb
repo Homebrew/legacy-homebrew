@@ -1,15 +1,16 @@
 class Gcal < Formula
-  desc "Gcal is a program for calculating and printing calendars"
+  desc "Program for calculating and printing calendars"
   homepage "https://www.gnu.org/software/gcal/"
-  url "http://ftpmirror.gnu.org/gcal/gcal-3.6.3.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gcal/gcal-3.6.3.tar.xz"
-  sha256 "6742913a1d011ac109ad713ef4a8263eaf4c5cfd315471626a92f094e3e4b31b"
+  url "http://ftpmirror.gnu.org/gcal/gcal-4.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gcal/gcal-4.tar.xz"
+  sha256 "59c5c876b12ec70649d90e2ce76afbe2f4ed93503d49ec39e5c575b3aef8ff6e"
 
   bottle do
-    cellar :any
-    sha256 "2298293a8e7a4ee03bc66d072e29d6e5b64d2f2ff40527bf5d6cb5cbcaf8d03b" => :yosemite
-    sha256 "7080b2c3ab5e8f71a9ad76e42be2c6725c3178f0ccdcb849f1df7b2e557fd55c" => :mavericks
-    sha256 "831f243692973ba051631f48001f5ddc2cee42302929f605e4e245f5b0e4031a" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "32c335802cde011da010be16d71198be297309c6b9fefe0a6940271e037dceb1" => :el_capitan
+    sha256 "e7f8fa3ae065b6ba9f1b231228dd498a7154098433249c565165da3713870ece" => :yosemite
+    sha256 "3b6cef64c1612a4e2858d8562972ba8aaf382968a4d92a790e814d581750807a" => :mavericks
   end
 
   def install

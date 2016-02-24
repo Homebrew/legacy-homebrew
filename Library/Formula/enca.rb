@@ -1,14 +1,14 @@
 class Enca < Formula
   desc "Charset analyzer and converter"
-  homepage "http://cihar.com/software/enca/"
-  url "http://dl.cihar.com/enca/enca-1.16.tar.gz"
-  sha256 "de63ce06b373964ee5fbb3fea8286876de03ee095b1a2e3b7d28a940a13aff6f"
+  homepage "https://cihar.com/software/enca/"
+  url "https://dl.cihar.com/enca/enca-1.18.tar.gz"
+  sha256 "b69373cb73d9704dfc5b5b1c6f9121339f6a75f6094c918ad8f7fd8708935ebf"
   head "https://github.com/nijel/enca.git"
 
   bottle do
-    sha1 "d5714f14f7075feb1a74f5975709cab64981d8ea" => :yosemite
-    sha1 "7e1c1698456b4aecc16f2f1c6f4dbdf48d0e44b0" => :mavericks
-    sha1 "a71d75fa0a058b3eb57cf2885cfe57cabc842d6e" => :mountain_lion
+    sha256 "65a9ac8920d85badc80ef73cf0db7dba94886cbc7db87a91f74be568d58da23b" => :el_capitan
+    sha256 "20af1bcf2cac192ac229cd70737aef6ca187c6b608c285e442a0e3b82d156050" => :yosemite
+    sha256 "130ada8011b7479f4fbc04779ba41ac636bbd769138a3e63ba092404ea3099a7" => :mavericks
   end
 
   def install

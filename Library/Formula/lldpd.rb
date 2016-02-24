@@ -1,13 +1,13 @@
 class Lldpd < Formula
   desc "Implementation library for LLDP"
   homepage "https://vincentbernat.github.io/lldpd/"
-  url "http://media.luffy.cx/files/lldpd/lldpd-0.7.15.tar.gz"
-  sha256 "c891d6d4480a6a890561ac43d8cc923bd027deb82a3999d65f37d96ca368c246"
+  url "http://media.luffy.cx/files/lldpd/lldpd-0.9.0.tar.gz"
+  sha256 "300e4a590f7bf21c79d5ff94c2d6a69d0b2c34dbc21e17281496462a04ca80bc"
 
   bottle do
-    sha256 "168901752a250081bcfb46a44ec627fc5694716a1a5c76ad85685777f50d3adb" => :yosemite
-    sha256 "712cc05430e9af6156f6e9148bbf33a082bcbd2bae2b74dc118384e7d65ca9dd" => :mavericks
-    sha256 "08e223c0809438da4762a568518b3b86a28fe3d30dc245fb9318c75514b923bc" => :mountain_lion
+    sha256 "717fafc9f90bfdacec93668de504cec1b8a8a9fe521159250c8839272a97462c" => :el_capitan
+    sha256 "3c29352edb4ecc5471a6d9b315008d93c80fcc2e95e492a801d9af56b11bcc97" => :yosemite
+    sha256 "2224ad79d6e12c6b8527b1b84fc195a0d257485f2cf093c51451b4ee8b7a50e6" => :mavericks
   end
 
   option "with-snmp", "Build SNMP subagent support"
@@ -17,25 +17,33 @@ class Lldpd < Formula
   depends_on "readline"
   depends_on "libevent"
   depends_on "net-snmp" if build.with? "snmp"
-  depends_on "jansson"  if build.with? "json"
+  depends_on "jansson" if build.with? "json"
 
   def install
     readline = Formula["readline"]
-    args = ["--prefix=#{prefix}",
-            "--with-xml",
-            "--with-readline",
-            "--with-privsep-chroot=/var/empty",
-            "--with-privsep-user=nobody",
-            "--with-privsep-group=nogroup",
-            "--with-launchddaemonsdir=no",
-            "CPPFLAGS=-I#{readline.include} -DRONLY=1",
-            "LDFLAGS=-L#{readline.lib}"]
-    args << "--with-snmp" if build.with? "snmp"
-    args << "--with-json" if build.with? "json"
+    args = [
+      "--prefix=#{prefix}",
+      "--sysconfdir=#{etc}",
+      "--localstatedir=#{var}",
+      "--with-xml",
+      "--with-readline",
+      "--with-privsep-chroot=/var/empty",
+      "--with-privsep-user=nobody",
+      "--with-privsep-group=nogroup",
+      "--with-launchddaemonsdir=no",
+      "CPPFLAGS=-I#{readline.include} -DRONLY=1",
+      "LDFLAGS=-L#{readline.lib}",
+    ]
+    args << (build.with?("snmp") ? "--with-snmp" : "--without-snmp")
+    args << (build.with?("json") ? "--with-json" : "--without-json")
 
     system "./configure", *args
     system "make"
     system "make", "install"
+  end
+
+  def post_install
+    (var/"run").mkpath
   end
 
   plist_options :startup => true

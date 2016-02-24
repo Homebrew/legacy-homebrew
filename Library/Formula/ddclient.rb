@@ -1,10 +1,11 @@
 class Ddclient < Formula
   desc "Update dynamic DNS entries"
-  homepage "http://sourceforge.net/p/ddclient/wiki/Home"
-  url "https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.2/ddclient-3.8.2.tar.bz2"
-  sha256 "f343d2297b97b769949d4d6c3f603a8c52433acf2104245538808a2ea003ed5e"
-
+  homepage "https://sourceforge.net/p/ddclient/wiki/Home"
+  url "https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.3/ddclient-3.8.3.tar.bz2"
+  sha256 "d40e2f1fd3f4bff386d27bbdf4b8645199b1995d27605a886b8c71e44d819591"
   head "https://github.com/wimpunk/ddclient.git"
+
+  bottle :unneeded
 
   def install
     # Adjust default paths in script
@@ -80,5 +81,18 @@ class Ddclient < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    begin
+      pid = fork do
+        exec sbin/"ddclient", "-file", doc/"sample-etc_ddclient.conf", "-debug", "-verbose", "-noquiet"
+      end
+      sleep 1
+    ensure
+      Process.kill "TERM", pid
+      Process.wait
+    end
+    $?.success?
   end
 end

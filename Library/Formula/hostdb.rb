@@ -4,6 +4,8 @@ class Hostdb < Formula
   url "https://hostdb.googlecode.com/files/hostdb-1.004.tgz"
   sha256 "beea7cfcdc384eb40d0bc8b3ad2eb094ee81ca75e8eef7c07ea4a47e9f0da350"
 
+  bottle :unneeded
+
   def install
     bin.install Dir["bin/*"]
     doc.install Dir["docs/*"]

@@ -6,9 +6,10 @@ class BerkeleyDb4 < Formula
 
   bottle do
     cellar :any
-    sha1 "20e65ac304a3faa61b84051344e73a4e8ea14e66" => :yosemite
-    sha1 "633a40046bb6e34e55a8781bc4dd0261ac0defa4" => :mavericks
-    sha1 "2f4fe7ea4983f9d8f671fa5ea59e826e5d093e2e" => :mountain_lion
+    sha256 "598c8cc77263920589169c413c1b40cad1f02774bc889aeb0c1406d6b46ccfa3" => :el_capitan
+    sha256 "9e4fd0da37c849e00a5bead14e64c8a71168287d957f71a96be96e4bd3000985" => :yosemite
+    sha256 "45c3212a6755c7a6bda099b8fcd7c5f92014a350849f310ca3ca8cde63cc705b" => :mavericks
+    sha256 "04fc8d3b03381d87b3852ac1756dd144a10e7ac47444fa3e81dec0fc8ea33d25" => :mountain_lion
   end
 
   keg_only "BDB 4.8.30 is provided for software that doesn't compile against newer versions."

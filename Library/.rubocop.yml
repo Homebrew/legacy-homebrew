@@ -23,6 +23,11 @@ Style/CommandLiteral:
 Style/RegexpLiteral:
     EnforcedStyle: slashes
 
+# our current conditional style is established, clear and
+# requiring users to change that now would be confusing.
+Style/ConditionalAssignment:
+    Enabled: false
+
 # no metrics for formulas
 Metrics/AbcSize:
     Enabled: false
@@ -106,15 +111,6 @@ Style/WordArray:
 Style/UnneededCapitalW:
     Enabled: false
 
-# TODO: rubocop bug regarding __END__
-# see https://github.com/bbatsov/rubocop/issues/1541
-Style/TrailingWhitespace:
-    Enabled: false
-Style/Tab:
-    Enabled: false
-Style/TrailingBlankLines:
-    Enabled: false
-
 # we use raise, not fail
 Style/SignalException:
   EnforcedStyle: only_raise
@@ -132,3 +128,9 @@ Style/PerlBackrefs:
 # this is required for Ruby 1.8
 Style/DotPosition:
   EnforcedStyle: trailing
+
+# makes diffs nicer
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: no_comma
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma

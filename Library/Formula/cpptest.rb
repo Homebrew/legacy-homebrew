@@ -7,9 +7,10 @@ class Cpptest < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "5848e63c76547c2caada10bc0c13a8fe5fe57ac3" => :yosemite
-    sha1 "690ac2342b37b3849da30d289e04c13e1430db3e" => :mavericks
-    sha1 "ec143d787f9f5dd0ba295d1fbb80c1a7d54fa780" => :mountain_lion
+    sha256 "216442c844ddb2886e6877cd129fda3c589dadf8ac07572e6aa05c1c3cff4669" => :el_capitan
+    sha256 "e6b364e203c882063362e4a0ef6e6482420ab57b1ec24699b6da31b50f792f14" => :yosemite
+    sha256 "c1f68d40bd58366d28846395169868d86a012b8d65473aa8845401619052d568" => :mavericks
+    sha256 "a3f5cf0532bf9b72b73bf2fa52862b88fbc318ebd0ee9712a09771a071371fbc" => :mountain_lion
   end
 
   def install

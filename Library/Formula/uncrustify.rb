@@ -7,10 +7,11 @@ class Uncrustify < Formula
   head "https://github.com/bengardner/uncrustify.git"
 
   bottle do
-    cellar :any
-    sha1 "82e6f950648e0a04411e84a563ff96a50b2b8efc" => :yosemite
-    sha1 "9040d701020412937138be6e1521d136d44961b3" => :mavericks
-    sha1 "999421447b999f73f5850e3275e5f47775e0cc27" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0d6c1d92a813e4a27140bf85e5f859749573b715c73c77f1efb381f95b304f47" => :el_capitan
+    sha256 "dbe3a584778aa7139d560abe1400417f7fa4e83e363a414d4f9d9990a066ed73" => :yosemite
+    sha256 "2d6b33c9397482a3b5013563262ea62737dcc4d2a9a77416ffd646e3842f2e15" => :mavericks
+    sha256 "04548fc7f44bd61aadad55e3dc8a69634783e349ca4156d605953779aecaf8b8" => :mountain_lion
   end
 
   def install

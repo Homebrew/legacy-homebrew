@@ -1,7 +1,7 @@
 class Virtualpg < Formula
   desc "Loadable dynamic extension for SQLite and SpatiaLite"
   homepage "https://www.gaia-gis.it/fossil/virtualpg/index"
-  url "http://www.gaia-gis.it/gaia-sins/virtualpg-1.0.1.tar.gz"
+  url "https://www.gaia-gis.it/gaia-sins/virtualpg-1.0.1.tar.gz"
   sha256 "9e6c4c6c1556b2ea2a1e4deda28909626c3a8b047c81d6b82c042abdb9a99ec8"
 
   depends_on "libspatialite"

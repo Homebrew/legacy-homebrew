@@ -4,6 +4,8 @@ class JsdocToolkit < Formula
   url "https://jsdoc-toolkit.googlecode.com/files/jsdoc_toolkit-2.4.0.zip"
   sha256 "82c79957b37b193bc64cc4363220517f1c76700863f1430aef8c94ecd4917b44"
 
+  bottle :unneeded
+
   conflicts_with "jsdoc3", :because => "both install jsdoc"
 
   def install

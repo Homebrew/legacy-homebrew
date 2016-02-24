@@ -9,21 +9,22 @@ class Pstree < Formula
   sha256 "7c9bc3b43ee6f93a9bc054eeff1e79d30a01cac13df810e2953e3fc24ad8479f"
 
   bottle do
-    cellar :any
-    sha256 "e752523adfbaf41841223daecda76a7ba06bff2b16991a1a48ec578089585e8c" => :yosemite
-    sha256 "96bdb89f6795d6299d4b0436726a9f99e986435e1513f4c720c8ac88d1485f06" => :mavericks
-    sha256 "5a179b362495b0ab4af831307f536a97c697db6d3498eca84dc7c2437ea60058" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "624458274db8e826c170121061ad25547c5a245788c8108bd2bf0af4a3678dea" => :el_capitan
+    sha256 "127b605bf4b20cbddf63f875bd15f78ad5fc31eaebb57d9ce2051a3b856a8bd5" => :yosemite
+    sha256 "2334d959beae2171fe10f6781a060eab40d57b841aa1905ead0b0936fb4145ef" => :mavericks
   end
 
   def install
     system "make", "pstree"
     bin.install "pstree"
+    man1.install "pstree.1"
   end
 
   test do
-    lines = `#{bin}/pstree #{Process.pid}`.strip.split("\n")
-    assert lines[0].include?($0)
-    assert lines[1].include?("#{bin}/pstree")
-    assert_equal 0, $?.exitstatus
+    lines = shell_output("#{bin}/pstree #{Process.pid}").strip.split("\n")
+    assert_match $0, lines[0]
+    assert_match "#{bin}/pstree", lines[1]
   end
 end

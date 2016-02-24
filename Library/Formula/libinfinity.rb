@@ -3,12 +3,12 @@ class Libinfinity < Formula
   homepage "https://gobby.github.io"
   url "http://releases.0x539.de/libinfinity/libinfinity-0.6.6.tar.gz"
   sha256 "3df9397b52d61392cbe98084aada9b7362a34811ef21baa0db87fdfd754f92cc"
+  revision 1
 
   bottle do
-    revision 1
-    sha256 "07e6ddb3637ebf634a64af6dae46cde353fc5fa8e89bf0fd5958eb38a305c877" => :yosemite
-    sha256 "c74520bb5b208f9e43390c69682745edeef0ffd8b8d30ec84805a2300e1dce4a" => :mavericks
-    sha256 "75561e4d4ad9a8e35c624442e420a53e4dc521437e985a9531580b2797d24124" => :mountain_lion
+    sha256 "43aed53c6130683c7a2cbc75f72f640ac4a8890f0a4d0d5324802722fb9e595a" => :el_capitan
+    sha256 "f8814b4172c821d45b26edd01fd19ead1e1e3c54b53ebb199b851761dbd9c429" => :yosemite
+    sha256 "a657d5cb68e8dec8efee285e1dc1bb69e9d7753593c49876aaffe2825a136b91" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -19,7 +19,7 @@ class Libinfinity < Formula
 
   # MacPorts patch to fix pam include. This is still applicable to 0.6.4.
   patch :p0 do
-    url "https://trac.macports.org/export/92297/trunk/dports/comms/libinfinity/files/patch-infinoted-infinoted-pam.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/f8e3d2e4/libinfinity/patch-infinoted-infinoted-pam.c.diff"
     sha256 "d5924d6ee90c3aa756e52b97e32345dc1d77afdb5e4e0de8eac2a343d95ade00"
   end
 

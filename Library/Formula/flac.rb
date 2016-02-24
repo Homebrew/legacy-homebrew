@@ -4,18 +4,19 @@ class Flac < Formula
   url "http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz"
   sha256 "4773c0099dba767d963fd92143263be338c48702172e8754b9bc5103efe1c56c"
 
+  bottle do
+    cellar :any
+    sha256 "ba87fb6e7919f334b04745d5c075f5ae12a5374b3b7edd0514cc62d9f8ad28c8" => :el_capitan
+    sha256 "b5c4e452287e0aaf9355fd8f13849450edceca1b63d2401a0aa42d9c3344c143" => :yosemite
+    sha256 "a9caf29aa44208d98d4f885ba78e6d6d3bf56725748007a1cb9e0339631e807e" => :mavericks
+    sha256 "738f8ba2670b9eff4c0ff794813a86841934f6791ce393d9833f1cef56cb8e25" => :mountain_lion
+  end
+
   head do
     url "https://git.xiph.org/flac.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-  end
-
-  bottle do
-    cellar :any
-    sha1 "fcb2c97ae1a204372210e89b49a12cd8f18a14c8" => :yosemite
-    sha1 "ba8cd91c32faddb537929fad6dee7ef363c30f3d" => :mavericks
-    sha1 "0e117a98f7a267b019d7dba31d5b65f5d57c530c" => :mountain_lion
   end
 
   option :universal

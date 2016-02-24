@@ -7,9 +7,9 @@ class Libnatpmp < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "75db0fd068b01482b95c315751bb316d16cb69b0" => :yosemite
-    sha1 "afe8b7fe9baabfa890989697566d20eaa1542c86" => :mavericks
-    sha1 "0f1274f31f8a718d640e72327ecc814af16edef7" => :mountain_lion
+    sha256 "56614258c625a9f98733b0fe0c451cf62725fd874b413f08e45ed93a8fdaa991" => :yosemite
+    sha256 "66441cfb63476b8d74f5b90dccd434b081201cc7e900f7b2da4cba949cf40ef8" => :mavericks
+    sha256 "e653484cb16a9732132635cf784bd7096d647277c017318316d8a442b559ca2a" => :mountain_lion
   end
 
   def install

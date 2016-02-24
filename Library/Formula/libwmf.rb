@@ -7,8 +7,9 @@ class Libwmf < Formula
 
   bottle do
     revision 1
-    sha1 "47baf7411f61408bd715f3f0570531080b3d8665" => :yosemite
-    sha1 "d195e1c4297a0563a021a76a5e1ee61dd2b1be4d" => :mavericks
+    sha256 "a062ace9cbca36cd99122a6389b80a431326de7ef362dc860c74b500ed35e64c" => :el_capitan
+    sha256 "70682294445c1eb98008ffb13264be37f793c507aada2cdc108fcd8cd94ac97d" => :yosemite
+    sha256 "b39df9b3664b7c4e747e1c931628d8bf11b5ad43ecfda5986399e12fdacb1508" => :mavericks
   end
 
   depends_on "pkg-config" => :build

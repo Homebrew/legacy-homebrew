@@ -6,9 +6,9 @@ class Restund < Formula
 
   bottle do
     cellar :any
-    sha1 "ca362fc05e313ac4c2fc5fc761b3c502ff6c7ab9" => :yosemite
-    sha1 "249056f251265110831e938cbb82cedbf294ec65" => :mavericks
-    sha1 "ba868c60ec50840299ae1ae92e98e270ae9956e5" => :mountain_lion
+    sha256 "39260c5e38d471692edc0b140ea1d684bb1b86549a4299d1606256d9165df706" => :yosemite
+    sha256 "6ac6767f9ce4917b089be8545532768fc5318e40feed05c34ca0ea0580c4c749" => :mavericks
+    sha256 "08ec540956dd4491876f7edd6c00bcab38b019579c92de565390efedeac50822" => :mountain_lion
   end
 
   depends_on "libre"

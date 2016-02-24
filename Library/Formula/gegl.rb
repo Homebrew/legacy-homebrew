@@ -1,14 +1,14 @@
 class Gegl < Formula
   desc "Graph based image processing framework"
   homepage "http://www.gegl.org/"
-  url "http://download.gimp.org/pub/gegl/0.3/gegl-0.3.0.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/g/gegl/gegl_0.3.0.orig.tar.bz2"
-  sha256 "f0fec8f2e7b8835979d3cf4e38b05d41bb79f68dc80cf899a846484da693bbf7"
+  url "https://download.gimp.org/pub/gegl/0.3/gegl-0.3.4.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/gegl/gegl_0.3.4.orig.tar.bz2"
+  sha256 "846290a790854d1e6b7c17a2d6f82ad7cb14c72e240bd3b81b98cc0ceddbc3ec"
 
   bottle do
-    sha256 "6082fe8ebabb6dcd94a8efd95dd32072e7f99cc26b36838368fd5c5937259424" => :yosemite
-    sha256 "a94b94d6a7fc27012d3fca0fa665782896e6357deafd5762ecfa31936e20d69c" => :mavericks
-    sha256 "866ed590a4ae9803708e7b2c64f25fdda627781509010eb8bafc66c30ffb7bbc" => :mountain_lion
+    sha256 "8e922b667f68ec27027c3ef756acfd0625b7642a76c389b03cba83fc4e598ce8" => :el_capitan
+    sha256 "433625912481ffb5429be0986e726f03b11292f75dfd864d78340b9915e4411b" => :yosemite
+    sha256 "a9960729dea6a983789a5abf32b3ae1aed304d3264ed084b61f9784680d3b478" => :mavericks
   end
 
   head do
@@ -29,8 +29,8 @@ class Gegl < Formula
   depends_on "glib"
   depends_on "json-glib"
   depends_on "libpng"
+  depends_on "jpeg"
   depends_on "cairo" => :optional
-  depends_on "jpeg" => :optional
   depends_on "librsvg" => :optional
   depends_on "lua" => :optional
   depends_on "pango" => :optional

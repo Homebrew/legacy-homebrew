@@ -6,8 +6,8 @@ class Hashcash < Formula
 
   bottle do
     cellar :any
-    sha1 "c816296851be064a24cfd568acfa485731909877" => :yosemite
-    sha1 "9c6255cf6ca2b0fc0778468119272ecab94308b5" => :mavericks
+    sha256 "b9e7653e9f2c14aad3d4f3589bed6de036e78b766bc01be5ae9f24be0d9696c4" => :yosemite
+    sha256 "5b34b5d7a14ec55622545d823d7a707fcb7b736a88cc531e82799ef85ff8f494" => :mavericks
   end
 
   def install

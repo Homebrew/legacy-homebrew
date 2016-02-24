@@ -1,7 +1,7 @@
 class GnuCobol < Formula
   desc "Implements much of the COBOL 85 and COBOL 2002 standards"
   homepage "http://www.opencobol.org/"
-  revision 1
+  revision 2
 
   stable do
     url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/1.1/gnu-cobol-1.1.tar.gz"
@@ -15,31 +15,33 @@ class GnuCobol < Formula
     end
   end
 
-  devel do
-    version "2.0_nightly_r411"
-    url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/2.0/gnu-cobol-2.0_nightly_r411.tar.gz"
-    sha256 "5d6d767bf0255fa63bc5c26493d53f4749eb0e369b81c626d156f346b3664fe7"
+  bottle do
+    sha256 "012a52adf5bdb3f137afaadafb315bf966f037e1620fee022d98bab3541531cd" => :el_capitan
+    sha256 "62b99b26f9a6e83330ff6b0fc4834c578fecef83d4b49e418a4435b9d2e766d5" => :yosemite
+    sha256 "044fad7cd09f88cdda0c9e84f5af6c45c854749e69a0b481fc6e3868641595f9" => :mavericks
   end
 
-  bottle do
-    revision 2
-    sha256 "2836f2bf3362ff9e9d9578a42e7207a3c29411d481279e46c723df8ac5189292" => :yosemite
-    sha256 "c24443ab3ac33ae5d8f1092cba070e62fdc5fbd4cced94fa813b5494424d8aa4" => :mavericks
-    sha256 "3be8e2c52d16b4a829f8669636d2e13f0346855899605e02cb7c6e8c47234b20" => :mountain_lion
+  devel do
+    version "2.0_nightly_r658"
+    url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/2.0/gnu-cobol-2.0_nightly_r658.tar.gz"
+    sha256 "0a210d10624a53904871526afd69a6bef9feab40c2766386f74477598a313ae8"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "berkeley-db4"
+  depends_on "berkeley-db"
   depends_on "gmp"
   depends_on "gcc"
+
+  conflicts_with "open-cobol",
+    :because => "both install `cob-config`, `cobc` and `cobcrun` binaries"
 
   def install
     # both environment variables are needed to be set
     # the cobol compiler takes these variables for calling cc during its run
     # if the paths to gmp and bdb are not provided, the run of cobc fails
     gmp = Formula["gmp"]
-    bdb = Formula["berkeley-db4"]
+    bdb = Formula["berkeley-db"]
     ENV.append "CPPFLAGS", "-I#{gmp.opt_include} -I#{bdb.opt_include}"
     ENV.append "LDFLAGS", "-L#{gmp.opt_lib} -L#{bdb.opt_lib}"
 

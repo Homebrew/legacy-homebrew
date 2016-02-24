@@ -6,9 +6,9 @@ class Slurm < Formula
 
   bottle do
     cellar :any
-    sha1 "c9e5146835a53aa70ca39ddce836976ae00b699c" => :yosemite
-    sha1 "a1b0d39c0203866ae73fece06fae6fddd60e3531" => :mavericks
-    sha1 "7ca32c2322a9ffa967c28a13a2d386628129c6d2" => :mountain_lion
+    sha256 "10c38d17815ce54307d66dca10ba4941cb177e5cc28a12b242bd89c922146b0c" => :yosemite
+    sha256 "3c1ca846a173a24f4cb5ac82cef839d751087997cf306f6a0a7c697d9fe3dbd4" => :mavericks
+    sha256 "d49d123d14395a089923427c6dfaad3048a7cd277c88a704584e9c3f22d3c783" => :mountain_lion
   end
 
   depends_on "scons" => :build

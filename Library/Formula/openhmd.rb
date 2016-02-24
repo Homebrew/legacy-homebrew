@@ -6,9 +6,10 @@ class Openhmd < Formula
 
   bottle do
     cellar :any
-    sha1 "dac2183e6b2b3e63d8046204fadc727db1eaab3a" => :yosemite
-    sha1 "4e7dcfa3ed6f521d908859251d3e6552e8aa70a2" => :mavericks
-    sha1 "d72136368a6c671711c9a135d4b256813e06c755" => :mountain_lion
+    revision 1
+    sha256 "50917839a2a060a9a350dad6117bc3bc946a37c129774a4c8e2be89aa9ecec16" => :el_capitan
+    sha256 "7d50acf26200c9ef86554a79ec610d745ce6c5b4188cd882b00222ec3faa5fea" => :yosemite
+    sha256 "d3b4293c6c9f9979cf36e259da2775065c8732107f54f12a7bf55d08d9a2ac79" => :mavericks
   end
 
   head do
@@ -17,6 +18,9 @@ class Openhmd < Formula
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
+
+  conflicts_with "cspice", :because => "both install `simple` binaries"
+  conflicts_with "libftdi0", :because => "both install `simple` binaries"
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build

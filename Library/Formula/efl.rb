@@ -3,11 +3,12 @@ class Efl < Formula
   homepage "https://www.enlightenment.org"
   url "https://download.enlightenment.org/rel/libs/efl/efl-1.14.2.tar.gz"
   sha256 "e5699d8183c1540fe45dddaf692254632f9131335e97a09cc313e866a150b42c"
+  revision 1
 
   bottle do
-    sha256 "783d8e344e04e4f36e624d403a312194c1e2868ffbea4dfab97fbbe167f58e48" => :yosemite
-    sha256 "7d2ad69ce6a98cdfd0c4867b8f302dcf1b5504eeec98a284d528e811084f0e39" => :mavericks
-    sha256 "c6e468a5f11395f2989f6001ddf8eb15232521dcba7f5131fa30b08bd57942de" => :mountain_lion
+    sha256 "7e97f7173a21a18e7da2ac673eaf9e44fe14b6455e173ae10166154795385355" => :el_capitan
+    sha256 "dd6dfce0cab67849f5c51697be0610ee385984710b05a8311955df1829e33ac1" => :yosemite
+    sha256 "a516bca511ea00851a41d3294fbfce0352b28eb64239bf499c359fddf37295ec" => :mavericks
   end
 
   conflicts_with "eina", :because => "efl aggregates formerly distinct libs, one of which is eina"
@@ -44,7 +45,8 @@ class Efl < Formula
             "--disable-silent-rules",
             "--enable-cocoa",
             "--enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-aba", # There's currently (1.14) no clean profile for Mac OS, so we need to force passing configure
-            "--prefix=#{prefix}"]
+            "--prefix=#{prefix}",
+           ]
     args << "--with-x11=none" if build.without? "x11"
 
     system "./configure", *args

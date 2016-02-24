@@ -6,12 +6,12 @@ own!
 
 ### We try hard to avoid dupes in Homebrew/homebrew
 Stuff that comes with OS X or libraries that are provided by
-[RubyGems, CPAN or PyPi](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Gems,-Eggs-and-Perl-Modules.md)
+[RubyGems, CPAN or PyPi](Gems,-Eggs-and-Perl-Modules.md)
 should not be duplicated. There are good reasons for this:
 
 * Duplicate libraries regularly break builds
 * Subtle bugs emerge with duplicate libraries, and to a lesser extent,
-duplicate tools
+  duplicate tools
 * We want our formulae to work with what comes with OS X
 
 There are exceptions:
@@ -59,16 +59,19 @@ point it to the downloaded archive in order to avoid loading.
 Our policy is that formulae in the core repository
 ([Homebrew/homebrew](https://github.com/Homebrew/homebrew)) must be built
 from source (or produce cross-platform binaries like e.g. Java). Binary-only
-formulae should go to [Homebrew/homebrew-binary](https://github.com/Homebrew/homebrew-binary).
+formulae should go to [homebrew/binary](https://github.com/Homebrew/homebrew-binary) or [homebrew-cask](https://github.com/caskroom/homebrew-cask).
 
 ### Stable versions
 Formulae in the core repository must have a stable version tagged by
 the upstream project. Tarballs are preferred to git checkouts, and
 tarballs should include the version in the filename whenever possible.
 
-Software that does not provide a stable, tagged version, or had guidance to
-always install the most recent version, should be put in
-[Homebrew/homebrew-head-only](https://github.com/Homebrew/homebrew-headonly) or [homebrew/devel-only](https://github.com/Homebrew/homebrew-devel-only).
+Software that only provides a development/beta, tagged version should be put in
+[homebrew/devel-only](https://github.com/Homebrew/homebrew-devel-only).
+We don’t accept software without a tagged version because they regularly break
+due to upstream changes; we can’t provide [bottles](Bottles.md) for them; and
+we don’t have an automatic update mechanism for `head-only` formulae which
+makes them very quickly outdated.
 
 ### Bindings
 First check that there is not already a binding available via
@@ -92,8 +95,7 @@ get maintained and partly because we have to draw the line somewhere.
 
 We frown on authors submitting their own work unless it is very popular.
 
-Don’t forget Homebrew is all git underneath! Maintain your own fork or
-tap if you have to!
+Don’t forget Homebrew is all `git` underneath! Maintain your tap if you have to!
 
 There may be exceptions to these rules in the main repository, we may
 include things that don't meet these criteria or reject things that do.
@@ -108,13 +110,6 @@ App is just additional to CLI or if the GUI-application is non-native
 for OS X and/or hard to get in binary elsewhere (example: fontforge).
 Check out the [homebrew-cask](https://github.com/caskroom/homebrew-cask)
 project if you’d like to brew native OS X Applications.
-
-### Building under “superenv” is best
-The “superenv” is code Homebrew uses to try to minimize finding
-undeclared dependencies accidentally. Some formulae will only work under
-the original “standard env” which is selected in a formula by adding
-`env :std`. The preference for new formulae is that they be made to
-work under superenv (which is the default) whenever possible.
 
 ### Sometimes there are exceptions
 Even if all criteria are met we may not accept the formula.

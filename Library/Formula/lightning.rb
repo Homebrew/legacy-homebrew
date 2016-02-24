@@ -7,10 +7,10 @@ class Lightning < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "6acd9f1ee9f3762d8e63a1fc2ee63c8ac83b67f4" => :yosemite
-    sha1 "f0a3c6d0415677ad7e741c0e5b954d513f433833" => :mavericks
-    sha1 "15b34af17f282400e8792e74787d7b8cf7308c30" => :mountain_lion
+    revision 2
+    sha256 "34f86d2f39e14f17aaf7fe51e84351f86f23ce4898b1e200694917f24ac7db55" => :el_capitan
+    sha256 "985f3b7ba1060b88eb98698dd912d24c11a874dc949b9ffc221bff310a98736f" => :yosemite
+    sha256 "816ac38c2ef65ba50247b9c31ad310f610ef26c490be12cb3fb03f4ef5418b6e" => :mavericks
   end
 
   depends_on "binutils" => [:build, :optional]
@@ -29,7 +29,7 @@ class Lightning < Formula
   end
 
   test do
-    # from http://www.gnu.org/software/lightning/manual/lightning.html#incr
+    # from https://www.gnu.org/software/lightning/manual/lightning.html#incr
     (testpath/"test.c").write <<-EOS.undent
       #include <stdio.h>
       #include <lightning.h>

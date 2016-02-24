@@ -1,13 +1,14 @@
 class Gtkmm3 < Formula
   desc "C++ interfaces for GTK+ and GNOME"
   homepage "http://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/gtkmm/3.16/gtkmm-3.16.0.tar.xz"
-  sha256 "9b8d4af5e1bb64e52b53bc8ef471ef43e1b9d11a829f16ef54c3a92985b0dd0c"
+  url "https://download.gnome.org/sources/gtkmm/3.18/gtkmm-3.18.0.tar.xz"
+  sha256 "829fa113daed74398c49c3f2b7672807f58ba85d0fa463f5bc726e1b0138b86b"
 
   bottle do
-    sha256 "a07b50d5f0475e3b785400c90ab17912fb036f6c5e04a07f4c63bfb7791bef34" => :yosemite
-    sha256 "b84fc730de0e85f86240c163d74b42ae102d48f2ad86293993b44fa6d6446f6a" => :mavericks
-    sha256 "bd7fdbe8a9da123648398405e4421f9ec0b205b6d9f0850b21400dd7d387a7d3" => :mountain_lion
+    cellar :any
+    sha256 "91c073b5a17bbea4ae29540ebfe99f797ea021f874478d49665815bd4fd9994d" => :el_capitan
+    sha256 "5d790c3d68103e841562ca6121523b64259cefc9c0bc815a932bc026f72da91b" => :yosemite
+    sha256 "5a4111549e565c6ea3aea1161f195cc597e7a6b7a8fda295e77be663968e6c60" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -15,7 +16,10 @@ class Gtkmm3 < Formula
   depends_on "pangomm"
   depends_on "atkmm"
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
@@ -115,7 +119,7 @@ class Gtkmm3 < Formula
       -lpangomm-1.4
       -lsigc-2.0
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end

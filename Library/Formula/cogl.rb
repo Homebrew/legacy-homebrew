@@ -1,15 +1,13 @@
 class Cogl < Formula
   desc "Low level OpenGL abstraction library developed for Clutter"
   homepage "https://developer.gnome.org/cogl/"
-  url "https://download.gnome.org/sources/cogl/1.20/cogl-1.20.0.tar.xz"
-  sha256 "729e35495829e7d31fafa3358e47b743ba21a2b08ff9b6cd28fb74c0de91192b"
-  revision 1
+  url "https://download.gnome.org/sources/cogl/1.22/cogl-1.22.0.tar.xz"
+  sha256 "689dfb5d14fc1106e9d2ded0f7930dcf7265d0bc84fa846b4f03941633eeaa91"
 
   bottle do
-    revision 1
-    sha256 "f1c4bcc7ed92370f25667f619a77201b922f250fefa7a4884d2e3e7d6adcf0fd" => :yosemite
-    sha256 "a92b3f7ce32927fc8a10239c28c24d49d755c0dd4ecc64c40860fccba484c1f3" => :mavericks
-    sha256 "401ec44a470559b23d590427339271f9469e048e1a7160e113875bab35d504c9" => :mountain_lion
+    sha256 "40e791051fe658bfef8c3fd931871e2ed3d5574b99e174eba6f0adeb514328a3" => :el_capitan
+    sha256 "8468cc80cc507b84f176286d86e143e319b0b34c50d34f8b626c36a95f670215" => :yosemite
+    sha256 "ba4d3405e3b3af0b4e40565bae7c84e72b8fe6b96e1aa26567d3c6d77a5f7904" => :mavericks
   end
 
   head do

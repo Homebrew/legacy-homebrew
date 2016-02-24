@@ -1,15 +1,15 @@
 class Mksh < Formula
   desc "MirBSD Korn Shell"
-  homepage "https://mirbsd.org/mksh.htm"
-  url "https://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R50f.tgz"
-  mirror "http://pub.allbsd.org/MirOS/dist/mir/mksh/mksh-R50f.tgz"
-  sha256 "74e051ce92ece9555d91505b956572f64668fc88c5ccabee742099e7f29a2bcb"
+  homepage "https://www.mirbsd.org/mksh.htm"
+  url "https://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R51.tgz"
+  mirror "http://pub.allbsd.org/MirOS/dist/mir/mksh/mksh-R51.tgz"
+  sha256 "9feeaa5ff33d8199c0123675dec29785943ffc67152d58d431802bc20765dadf"
 
   bottle do
-    cellar :any
-    sha1 "4e0335469b6ff8bf83257cda6e00bd3205fff163" => :mavericks
-    sha1 "b93d25d2a9c3f606d44567a2cdf400649b7b6cf4" => :mountain_lion
-    sha1 "52e7568da446b9ea44f23a39b6c6542d6e73beb1" => :lion
+    cellar :any_skip_relocation
+    sha256 "e0535cfd7418370c6292a2dc0d26afce8008c6cd2c2915798d1bfd7e96df9087" => :el_capitan
+    sha256 "1ec672da1a859bdb7138b11e2cbf71a24272e2bc673f11d783401bbb35feea2e" => :yosemite
+    sha256 "5d0a11d6cefb9dc4c54a88adc7b5dd204449d8aadaa716c170a41cd4dc3dbbe9" => :mavericks
   end
 
   def install
@@ -27,6 +27,6 @@ class Mksh < Formula
 
   test do
     assert_equal "honk",
-                 shell_output("mksh -c 'echo honk'").chomp
+      shell_output("mksh -c 'echo honk'").chomp
   end
 end

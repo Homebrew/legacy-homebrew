@@ -7,8 +7,13 @@ class Caveats
 
   def caveats
     caveats = []
-    s = f.caveats.to_s
-    caveats << s.chomp + "\n" if s.length > 0
+    begin
+      build, f.build = f.build, Tab.for_formula(f)
+      s = f.caveats.to_s
+      caveats << s.chomp + "\n" if s.length > 0
+    ensure
+      f.build = build
+    end
     caveats << keg_only_text
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats
@@ -134,14 +139,11 @@ class Caveats
   end
 
   def elisp_caveats
+    return if f.keg_only?
     if keg && keg.elisp_installed?
       <<-EOS.undent
         Emacs Lisp files have been installed to:
-        #{HOMEBREW_PREFIX}/share/emacs/site-lisp/
-
-        Add the following to your init file to have packages installed by Homebrew added to your load-path:
-        (let ((default-directory "#{HOMEBREW_PREFIX}/share/emacs/site-lisp/"))
-          (normal-top-level-add-subdirs-to-load-path))
+          #{HOMEBREW_PREFIX}/share/emacs/site-lisp/#{f.name}
       EOS
     end
   end
@@ -149,8 +151,11 @@ class Caveats
   def plist_caveats
     s = []
     if f.plist || (keg && keg.plist_installed?)
-      destination = f.plist_startup ? "/Library/LaunchDaemons" \
-                                    : "~/Library/LaunchAgents"
+      destination = if f.plist_startup
+        "/Library/LaunchDaemons"
+      else
+        "~/Library/LaunchAgents"
+      end
 
       plist_filename = if f.plist
         f.plist_path.basename
@@ -207,6 +212,6 @@ class Caveats
 
       s << "" << "WARNING: launchctl will fail when run under tmux." if ENV["TMUX"]
     end
-    s.join("\n") unless s.empty?
+    s.join("\n") + "\n" unless s.empty?
   end
 end

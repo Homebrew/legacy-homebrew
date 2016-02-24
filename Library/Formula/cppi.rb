@@ -6,7 +6,8 @@ class Cppi < Formula
   sha256 "12a505b98863f6c5cf1f749f9080be3b42b3eac5a35b59630e67bea7241364ca"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "970e44d2a7a340fe29577f92c4b6dfcbac17f3aef35e6085197b668c4cd9013f" => :el_capitan
     sha256 "f8198f4b6e76d9310d66d20cb0a5b2b6adc70bee83f0bbeaca8b45b6529ccc60" => :yosemite
     sha256 "a37872a422b21892119583f4fe9670ff403d2e40ceb14f50166e2b501938c544" => :mavericks
     sha256 "9924d9e02cf7b197d666ffc8e9a56a5d4e442a5fa8c598872c714c7a2dfb37f3" => :mountain_lion

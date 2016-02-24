@@ -1,9 +1,11 @@
 class TomeePlus < Formula
   desc "Everything in TomEE Web Profile and JAX-RS, plus more"
   homepage "https://tomee.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.2/apache-tomee-1.7.2-plus.tar.gz"
-  version "1.7.2"
-  sha256 "deb551788f56e5051e4f9cd6a642b9543c7635819a58015b72d8506de08c693a"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.3/apache-tomee-1.7.3-plus.tar.gz"
+  version "1.7.3"
+  sha256 "194bf10ca40a14bbea3b32ec37c1144cce3bb642c3338038bed4d35fcd019a1c"
+
+  bottle :unneeded
 
   def install
     # Remove Windows scripts

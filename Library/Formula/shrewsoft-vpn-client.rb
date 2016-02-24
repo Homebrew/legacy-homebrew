@@ -8,9 +8,9 @@ class ShrewsoftVpnClient < Formula
 
   bottle do
     revision 1
-    sha1 "0c66ce2643e19ee8d5188db0cb0218cd1952af2c" => :mavericks
-    sha1 "4ad1e92a897578f2855e475797e603f907a22a4b" => :mountain_lion
-    sha1 "65815ad9210107a12b8c6b5d9dfd92e882d916d1" => :lion
+    sha256 "880667a26f0e7585182afffa6f85a3099b3001cd720953c0dc7152ea95568099" => :mavericks
+    sha256 "999a477986a6cd4c41ef9f8d7d2d899e885e2df54aa7cb3b1b54992c441b42c7" => :mountain_lion
+    sha256 "ede778190666af7d1f7a34c7f0017a486e1e8169c93e4d2fd8593219d1aa0a24" => :lion
   end
 
   option "without-gui", "Don't build Client GUI"

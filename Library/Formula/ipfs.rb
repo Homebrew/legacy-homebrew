@@ -2,24 +2,22 @@ require "language/go"
 
 class Ipfs < Formula
   desc "IPFS is The Permanent Web - A new peer-to-peer hypermedia protocol"
-  homepage "http://ipfs.io/"
+  homepage "https://ipfs.io/"
   url "https://github.com/ipfs/go-ipfs.git",
-    :tag => "v0.3.5",
-    :revision => "952dc9c60fdff27902749222fdc30164e7eea1ee"
+    :tag => "v0.3.11",
+    :revision => "7070b4d878baad57dcc8da80080dd293aa46cabd"
+  head "https://github.com/ipfs/go-ipfs.git"
 
   bottle do
-    cellar :any
-    sha256 "99d7c8ec259245c955fd8445ad12876e63664aa7f3511590159ec45450190b0a" => :yosemite
-    sha256 "8744b3b05caf0de3c3d3a147a5af0abd856868e95058e1b25f8c79fd75ff89f4" => :mavericks
-    sha256 "2b0ca89668c906ed6f3af15e098bf04009695cbc346ef02b363b53acfcc48257" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "6744fb99a312598513e260adbd3b5895db82c0f0b6f447a58b0cc9084bf4b5cc" => :el_capitan
+    sha256 "3b641f107ec102859819afcea8ed5b8265e7b295fba1913af6b1b55593d5956e" => :yosemite
+    sha256 "dd9de372d81abb5e624b320fa4fb00f175c991bf3b6705b12423973b4cafaa97" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-      :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
-  end
+  depends_on "godep" => :build
 
   go_resource "github.com/kr/fs" do
     url "https://github.com/kr/fs.git",
@@ -29,18 +27,15 @@ class Ipfs < Formula
   go_resource "golang.org/x/tools" do
     url "https://go.googlesource.com/tools",
       :using => :git,
-      :revision => "b1aed1a596ad02d2aa2eb5c5af431a7ba2f6afc4"
+      :revision => "d02228d1857b9f49cd0252788516ff5584266eb6"
   end
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO15VENDOREXPERIMENT"] = "0"
     mkdir_p buildpath/"src/github.com/ipfs/"
     ln_sf buildpath, buildpath/"src/github.com/ipfs/go-ipfs"
     Language::Go.stage_deps resources, buildpath/"src"
-
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
 
     cd "cmd/ipfs" do
       system "make", "build"

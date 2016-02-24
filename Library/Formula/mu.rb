@@ -1,18 +1,18 @@
+# Note that odd release numbers indicate unstable releases.
+# Please only submit PRs for [x.x.even] version numbers:
+# https://github.com/djcb/mu/commit/23f4a64bdcdee3f9956a39b9a5a4fd0c5c2370ba
 class Mu < Formula
   desc "Tool for searching e-mail messages stored in the maildir-format"
   homepage "http://www.djcbsoftware.nl/code/mu/"
-  url "https://github.com/djcb/mu/archive/v0.9.12.tar.gz"
-  sha256 "b871124fc7774a2593815f89286671a8f31d7243bb898a8ca454685599f2b9af"
-
+  url "https://github.com/djcb/mu-releases/raw/master/mu-0.9.16.tar.gz"
+  sha256 "55dff47f1ec2ea5a409a882009888c4f1b2b6ef2d81ee29753a649654752ee7e"
   head "https://github.com/djcb/mu.git"
 
   bottle do
-    sha256 "8166a3b3788068a97ceb81cb64cca24bd8b92ff3a1ece722e3a27a304979ea6f" => :yosemite
-    sha256 "8c99800aa123e167c835d05024ac6a3efe435e7e4b05e8ddcc249c5a50805f74" => :mavericks
-    sha256 "d59cf5dce157f19561f3a2575fb7f4498cd16668e1cee8ea28b80aecdc086428" => :mountain_lion
+    sha256 "ea254d8d244906f99306237d988273ba90cd3a82c0aa7101dbffabd8fca79b85" => :el_capitan
+    sha256 "4336bed7c4560b5c810f0a58b82c2a7196196c1699f7f7577e0af36541dad633" => :yosemite
+    sha256 "42367663837d83860c9d3ffbd0b3d744d9d0f61487c653ea4e455f786f458961" => :mavericks
   end
-
-  option "with-emacs", "Build with Emacs support (requires Emacs 23 or higher)"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -35,7 +35,8 @@ class Mu < Formula
 
     system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-lispdir=#{elisp}"
     system "make"
     system "make", "install"
   end

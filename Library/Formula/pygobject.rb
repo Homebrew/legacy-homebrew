@@ -1,25 +1,26 @@
 class Pygobject < Formula
   desc "GLib/GObject/GIO Python bindings for Python 2"
   homepage "https://live.gnome.org/PyGObject"
-  url "http://ftp.gnome.org/pub/GNOME/sources/pygobject/2.28/pygobject-2.28.6.tar.bz2"
+  url "https://download.gnome.org/sources/pygobject/2.28/pygobject-2.28.6.tar.bz2"
   sha256 "e4bfe017fa845940184c82a4d8949db3414cb29dfc84815fb763697dc85bdcee"
 
   bottle do
-    sha1 "41b026312378b3d1cc90135e68e88e72aed68fea" => :yosemite
-    sha1 "5ab93e8961a6645aa4213b5deaf30acf3d7d0011" => :mavericks
-    sha1 "0eb2294d2eff8f0efef2b12c8d7b7e87d0026bee" => :mountain_lion
+    sha256 "2eeb114e8508e6e58a35ac263f39abce53b409f350e3677a0bf49980e4a9920b" => :el_capitan
+    sha256 "f4bbcbe9194e8d36a93575e793cbff1281e28d591175e966a4a5aa1c55cf479c" => :yosemite
+    sha256 "81f190d8f7cf5a97c25041eb17cd3d4540923a7f17926b7b9854a901bea9d7ab" => :mavericks
+    sha256 "0f9ac32001eae1ac15bca6cd81dcf3f27474bf3d16dd3dbcfccdd95e1a676349" => :mountain_lion
   end
+
+  option :universal
 
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on :python
 
-  option :universal
-
   # https://bugzilla.gnome.org/show_bug.cgi?id=668522
   patch do
-    url "http://git.gnome.org/browse/pygobject/patch/gio/gio-types.defs?id=42d01f060c5d764baa881d13c103d68897163a49"
-    sha256 "7bb60636a9731afd030820090062688a6b53af22c276d89d6af8db264d76edcc"
+    url "https://raw.githubusercontent.com/Homebrew/patches/master/pygobject/patch-enum-types.diff"
+    sha256 "99a39c730f9af499db88684e2898a588fdae9cd20eef70675a28c2ddb004cb19"
   end
 
   def install

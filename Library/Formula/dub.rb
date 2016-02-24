@@ -1,22 +1,15 @@
 class Dub < Formula
   desc "Build tool for D projects"
-  homepage "http://code.dlang.org/about"
-  url "https://github.com/D-Programming-Language/dub/archive/v0.9.23.tar.gz"
-  sha256 "7ecbce89c0e48b43705d7c48003394f383556f33562c4b5d884a786cd85814d1"
+  homepage "https://code.dlang.org/about"
+  url "https://github.com/D-Programming-Language/dub/archive/v0.9.24.tar.gz"
+  sha256 "88fe9ff507d47cb74af685ad234158426219b7fdd7609de016fc6f5199def866"
+  head "https://github.com/D-Programming-Language/dub.git", :shallow => false
 
   bottle do
-    sha256 "e2613efeb8173e8f1beb2a4b1bf14baa70a4fa7781919c87be435bb1d55d8ae2" => :yosemite
-    sha256 "b108a54497cf52eb62d4aad877804630a26d47b59e606d300e7becb3a98be877" => :mavericks
-    sha256 "4afe785f25db496f8634c19211d68c7ea05778f9ed1e7e772f8aa9ac701beca1" => :mountain_lion
+    sha256 "bf14b900869d28bc8140731ee81d04d9ee5b456603dea51353863bd76358f49d" => :el_capitan
+    sha256 "5cdd5f8c6729f3acf955afbd8d383daf196318bf1d2278085a28c28af00d33ce" => :yosemite
+    sha256 "33db147c048a39cad51569940ff489e015a08f3d17d0c299efcce89c064a8513" => :mavericks
   end
-
-  devel do
-    url "https://github.com/D-Programming-Language/dub/archive/v0.9.24-rc.2.tar.gz"
-    version "0.9.24-rc2"
-    sha256 "d6ed2ed16cc954aff3595dfdb0a9bb4a73ff64463b455d5baaa4fe2b30dd22c7"
-  end
-
-  head "https://github.com/D-Programming-Language/dub.git", :shallow => false
 
   depends_on "pkg-config" => :build
   depends_on "dmd" => :build

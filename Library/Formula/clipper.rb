@@ -3,6 +3,14 @@ class Clipper < Formula
   homepage "https://wincent.com/products/clipper"
   url "https://github.com/wincent/clipper/archive/0.2.tar.gz"
   sha256 "4c202238e37ed313d467d933c6fd815f095e7e7c225208b2b710f981d58df72a"
+  revision 1
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "ceb6758622ac2c16d9900545062e7ac1f6781bea459eaf3d0d56b39b98e83755" => :el_capitan
+    sha256 "f21cdd8e00ada62a7f0379b89496721a3856878f54de6392c1315f6d51d6a69a" => :yosemite
+    sha256 "c4cb851a2fb01a5874a6678d306c06ba64b4cd8ce8323363236cadd0713e256c" => :mavericks
+  end
 
   depends_on "go" => :build
 

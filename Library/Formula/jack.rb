@@ -13,9 +13,10 @@ class Jack < Formula
 
   bottle do
     revision 2
-    sha1 "d81b70761532c0ab23e4ad05d1637a097a54013d" => :yosemite
-    sha1 "76ccc2252a0fd976c6e90e3473c1e3013646e7b3" => :mavericks
-    sha1 "31a06a65e0b68251172b1816df8c37bfdde7f5bd" => :mountain_lion
+    sha256 "b4c1720c1e79b3d9a71cc79906175b90f6e30a8c2704c94e3c941d288b5453cc" => :el_capitan
+    sha256 "9e793fc1460c67e5209365cdf524face6f66cb1da5ae706da36a6e6c616cfe16" => :yosemite
+    sha256 "bed1d9c87b983abeb5ae57de0402707c6426c2426efee7be3c63c08948a5c5ec" => :mavericks
+    sha256 "56f0c03a6293b616fbc5505d55b2a6ee20f8946f5789bdff005696892129017d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -53,6 +54,11 @@ class Jack < Formula
   end
 
   def install
+    # Makefile hardcodes Carbon header location
+    inreplace Dir["drivers/coreaudio/Makefile.{am,in}"],
+      "/System/Library/Frameworks/Carbon.framework/Headers/Carbon.h",
+      "#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Headers/Carbon.h"
+
     ENV["LINKFLAGS"] = ENV.ldflags
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"

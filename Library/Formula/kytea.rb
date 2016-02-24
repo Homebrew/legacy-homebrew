@@ -5,9 +5,9 @@ class Kytea < Formula
   sha256 "534a33d40c4dc5421f053c71a75695c377df737169f965573175df5d2cff9f46"
 
   bottle do
-    sha1 "7a04bfa95710808c1f0f26e9c384d10705ca367d" => :yosemite
-    sha1 "b1631db9325f7f52c54edbff0712a7b513047c9e" => :mavericks
-    sha1 "5d0b41f2112c6c06ec088c2fc2e32dd8c60a6790" => :mountain_lion
+    sha256 "2f2dda314728cd74750db339ebc2d166b8b611ad54668cc3e7b6225d39aec3f5" => :yosemite
+    sha256 "045d0c9ad0cf35e003b8839cb0213e3f49d9107dfbc955e449b36fd4b6596640" => :mavericks
+    sha256 "3f15b353a447519bfb7f602b29db18e7eff945e0b68998af35cc37a745328182" => :mountain_lion
   end
 
   head do

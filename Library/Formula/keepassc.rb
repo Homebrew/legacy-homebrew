@@ -4,12 +4,13 @@ class Keepassc < Formula
   url "https://github.com/raymontag/keepassc/archive/1.7.0.tar.gz"
   sha256 "218537f6a16f70d907d22a23d1a4dec952d7622c65fae65f03c9ee98e64938dd"
   head "https://github.com/raymontag/keepassc.git", :branch => "development"
+  revision 1
 
   bottle do
-    cellar :any
-    sha1 "fba4d1c078e87272829edb0450d415ba69f65928" => :yosemite
-    sha1 "7a20f233d82f09d1fde95e382e83a321b05d04a7" => :mavericks
-    sha1 "be234b537c09d85d9cc75d4085196f796f0994fa" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "1af4bc97f7d8f7cce8c84ddf604ad5965fa36b42272db522c9d36d075a30249a" => :yosemite
+    sha256 "f728d5979d69d58d4838e8b4140deaaa3b1080c625f36902ac8e6c00734e5fdb" => :mavericks
+    sha256 "b2fbb08796c545c2a3f76de8ea61aa432fc023a06bc15441f87f78031e0be647" => :mountain_lion
   end
 
   depends_on :python3
@@ -27,7 +28,8 @@ class Keepassc < Formula
   end
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python3.4/site-packages"
+    pyver = Language::Python.major_minor_version "python3"
+    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python#{pyver}/site-packages"
     install_args = %W[setup.py install --prefix=#{libexec}]
 
     resource("pycrypto").stage { system "python3", *install_args }

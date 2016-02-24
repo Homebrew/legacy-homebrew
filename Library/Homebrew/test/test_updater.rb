@@ -1,5 +1,5 @@
 require "testing_env"
-require "cmd/update"
+require "cmd/update-ruby"
 require "formula_versions"
 require "yaml"
 
@@ -57,13 +57,15 @@ class UpdaterTests < Homebrew::TestCase
     Formulary.stubs(:factory).returns(stub(:pkg_version => "1.0"))
     FormulaVersions.stubs(:new).returns(stub(:formula_at_revision => "2.0"))
     @updater.diff = fixture(fixture_name)
-    @updater.in_repo_expect("git diff --quiet", true)
-    @updater.in_repo_expect("git symbolic-ref --short HEAD", "master")
+    @updater.in_repo_expect("git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null", "refs/remotes/origin/master")
+    @updater.in_repo_expect("git symbolic-ref --short HEAD 2>/dev/null", "master")
+    @updater.in_repo_expect("git status --untracked-files=all --porcelain 2>/dev/null", "")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
     @updater.in_repo_expect("git config core.autocrlf false")
-    @updater.in_repo_expect("git pull --quiet origin refs/heads/master:refs/remotes/origin/master")
+    @updater.in_repo_expect("git pull --ff --no-rebase --quiet origin refs/heads/master:refs/remotes/origin/master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
     @updater.pull!(:silent => true)
+    @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
     @report.update(@updater.report)
     assert_equal @updater.expected, @updater.called
   end

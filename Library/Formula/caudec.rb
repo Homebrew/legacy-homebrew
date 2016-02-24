@@ -3,13 +3,14 @@ class Caudec < Formula
   homepage "http://caudec.net"
   url "http://caudec.net/downloads/caudec-1.7.5.tar.gz"
   sha256 "5d1f5ab3286bb748bd29cbf45df2ad2faf5ed86070f90deccf71c60be832f3d5"
-  bottle do
-    sha1 "e225732d654439421126d0c4192a0a778dc5c031" => :yosemite
-    sha1 "5005b2e4daf1ffd2f5e84eddb79b8f427f918baf" => :mavericks
-    sha1 "a611215d98ffc01584055b84866e4bee949bfb02" => :mountain_lion
-  end
+  revision 2
 
-  revision 1
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "4a559f4dcbed1881ad445e4b0710f1d831eb6e68d9c2ad04088d94cd0919580c" => :el_capitan
+    sha256 "1b5c7cf4d5db8b361ed5fa4a9009773cd9f92533c5e5fd32472fdb69f03b3d4c" => :yosemite
+    sha256 "69b97ad57eff1b7a58ce4857e7b83550fac6bb5d70c0a766f1ff8f66cbb926c3" => :mavericks
+  end
 
   depends_on "gnu-sed"
   depends_on "shntool"

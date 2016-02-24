@@ -1,19 +1,20 @@
 class Ice < Formula
   desc "Comprehensive RPC framework"
   homepage "https://zeroc.com"
-  url "https://github.com/zeroc-ice/ice/archive/v3.6.0.tar.gz"
-  sha256 "77933580cdc7fade0ebfce517935819e9eef5fc6b9e3f4143b07404daf54e25e"
+  url "https://github.com/zeroc-ice/ice/archive/v3.6.1-el_capitan.tar.gz"
+  sha256 "4a348ba24daceb7694bc23ee91994e2653c5d869918e44b2b1f0d49a360e93fb"
+  version "3.6.1"
 
   bottle do
-    revision 2
-    sha256 "afee4ec276259a24243ce08c848c10c930fecbc3bbd086ca1eec2b9e7863384f" => :yosemite
-    sha256 "0fd42d37aaac81da90b098a6138eac4ade95ddfc6adc5709d0e42f8e91e67c70" => :mavericks
+    sha256 "d6de8a22389eda0100589d1abfe1ed341b3cd2b768a5372adc9035cd2ca3ba21" => :el_capitan
+    sha256 "5becc3d56ac408859947ce7485087370dede96019f0d951960f60a65fd076311" => :yosemite
+    sha256 "65537de34ac6fe8e5691e24c758b1511be8c2a6087acc0df3b8e85ad18a99fcb" => :mavericks
   end
 
   option "with-java", "Build Ice for Java and the IceGrid Admin app"
 
   depends_on "mcpp"
-  depends_on :java => :optional
+  depends_on :java => [ "1.7+", :optional]
   depends_on :macos => :mavericks
 
   resource "berkeley-db" do
@@ -32,7 +33,12 @@ class Ice < Formula
         --enable-cxx
       ]
 
-      args << "--enable-java" if build.with? "java"
+      if build.with? "java"
+        args << "--enable-java"
+
+        # @externl from ZeroC submitted this patch to Oracle through an internal ticket system
+        inreplace "dist/Makefile.in", "@JAVACFLAGS@",  "@JAVACFLAGS@ -source 1.7 -target 1.7"
+      end
 
       # BerkeleyDB requires you to build everything from the build_unix subdirectory
       cd "build_unix" do
@@ -55,15 +61,19 @@ class Ice < Formula
 
     args = %W[
       prefix=#{prefix}
-      embedded_runpath_prefix=#{prefix}
       USR_DIR_INSTALL=yes
       OPTIMIZE=yes
       DB_HOME=#{libexec}
+      MCPP_HOME=#{Formula["mcpp"].opt_prefix}
     ]
 
     cd "cpp" do
       system "make", "install", *args
     end
+
+    # Do not set this for C++ as we need to use various slice compilers to build ice. This will be
+    # unnecessary in the next release
+    args << "embedded_runpath_prefix=#{prefix}"
 
     cd "objective-c" do
       system "make", "install", *args

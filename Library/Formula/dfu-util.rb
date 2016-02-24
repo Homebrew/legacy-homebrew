@@ -1,16 +1,14 @@
 class DfuUtil < Formula
   desc "USB programmer"
   homepage "http://dfu-util.sourceforge.net/"
-  # Upstream moved, no releases yet, using debian mirror until then.
-  # (see #34047 and #39181)
-  url "http://ftp.de.debian.org/debian/pool/main/d/dfu-util/dfu-util_0.8.orig.tar.gz"
-  sha256 "55cbde9be12a212bd84bce9d1e63941d9a16139ed0d4912401367eba1502f058"
+  url "https://downloads.sourceforge.net/project/dfu-util/dfu-util-0.9.tar.gz"
+  sha256 "36428c6a6cb3088cad5a3592933385253da5f29f2effa61518ee5991ea38f833"
 
   bottle do
     cellar :any
-    sha1 "285f3043fe09291b4485fe3c4dac36025489bca8" => :yosemite
-    sha1 "ed8be24bc65f7fc2791c42311be08f67649b6e23" => :mavericks
-    sha1 "cd533314e4700a3d746330b12aa08407f693d7a4" => :mountain_lion
+    sha256 "49975a34b6bacad4549871097effce90e376d3cd26ed24b2d7dfd925a199f0f8" => :el_capitan
+    sha256 "776c3ed14def87511f9280201a95490145a9d469e2c1e29873c335e2c39ed279" => :yosemite
+    sha256 "75c7ffa4e2d5067618c41f999f3d0c8a9aac1080e9eb8cd1f9bec8dd154aa1c1" => :mavericks
   end
 
   head do

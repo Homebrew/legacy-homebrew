@@ -1,15 +1,14 @@
 class Geos < Formula
-  desc "GEOS Geometry Engine"
+  desc "Geometry Engine"
   homepage "https://trac.osgeo.org/geos"
-  url "http://download.osgeo.org/geos/geos-3.4.2.tar.bz2"
-  sha256 "15e8bfdf7e29087a957b56ac543ea9a80321481cef4d4f63a7b268953ad26c53"
+  url "http://download.osgeo.org/geos/geos-3.5.0.tar.bz2"
+  sha256 "49982b23bcfa64a53333dab136b82e25354edeb806e5a2e2f5b8aa98b1d0ae02"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "b4143e5f3a051ffbd88286d204fac02db95956a7" => :yosemite
-    sha1 "b052b96b44f00ceb6fdc94296c257fa93bf2b0c8" => :mavericks
-    sha1 "d1e56b9aa2d39c087bfc4914515954e21b82350d" => :mountain_lion
+    sha256 "9b487c20bca29be6c37ad40cbde11b54f1bf56199006263ce32c1b01911e8fbc" => :el_capitan
+    sha256 "6724b1a1996a44afb65734e28258ba9f7c28cf3ff2eaa9744a821545c3fc6b14" => :yosemite
+    sha256 "c1d0bff59f1c12872dd32327658db11309697819440a027fccaf3350ded15146" => :mavericks
   end
 
   option :universal
@@ -28,7 +27,7 @@ class Geos < Formula
 
     args = [
       "--disable-dependency-tracking",
-      "--prefix=#{prefix}"
+      "--prefix=#{prefix}",
     ]
 
     args << "--enable-php" if build.with?("php")

@@ -7,9 +7,9 @@ class Libcapn < Formula
 
   bottle do
     cellar :any
-    sha1 "7e72854c13412bf987b6c8a81908de2667939cd9" => :yosemite
-    sha1 "7108c97b5710b7a5c90b30051f9a55c6399dd48f" => :mavericks
-    sha1 "0ec5a47c3fb17267eb8d714746195ab9205f057f" => :mountain_lion
+    sha256 "09cbbfc8fb5037b3ec0c5ef70e79dbbf47370fb382284857ea333c3459179f9f" => :yosemite
+    sha256 "1113b788db1d53843e20693d668f5847957c04c83eefb14da41bf57778e61f48" => :mavericks
+    sha256 "eb99972edf809a3d2ea12c56bd7461574f4a108565e9ad75e1341cbf846f2b80" => :mountain_lion
   end
 
   depends_on "cmake" => :build

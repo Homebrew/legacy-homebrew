@@ -6,9 +6,9 @@ class Libslax < Formula
 
   bottle do
     revision 1
-    sha1 "487cc4e9ae3369e3dc0e6b9ba69de00c5918abe2" => :yosemite
-    sha1 "0ddfdfd5b04da4c6199486643a4bcbfc3a60d5b5" => :mavericks
-    sha1 "a30b683ea6284c6e927b37030ab104071180e212" => :mountain_lion
+    sha256 "9faa71033a275aeb2b232543ad61ef09fe069ece4794cc28d2c03b8cd83dc9b5" => :yosemite
+    sha256 "5108fa8d5db98f2a8441bb90c860ea01302afe935089be162f6a5164aa56fedd" => :mavericks
+    sha256 "a29d332d5fd18e9903e891018ed8c3f527efc7fe95029e219b3d5e1e4e4a5c47" => :mountain_lion
   end
 
   head do

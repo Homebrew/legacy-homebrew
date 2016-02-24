@@ -1,17 +1,17 @@
 class Fabric < Formula
   desc "Library and command-line tool for SSH"
   homepage "http://www.fabfile.org"
-  url "https://github.com/fabric/fabric/archive/1.10.1.tar.gz"
-  sha256 "08baf5cfcc9624a907261e5fb177d66430ad810cdb98b022675ca34a06823117"
+  url "https://github.com/fabric/fabric/archive/1.10.2.tar.gz"
+  sha256 "f142aca5a20624036a35faa387dd5c409ad534a130f39172115fd57d7e9c3a8d"
 
   head "https://github.com/fabric/fabric.git"
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "e500fd3a80a2492c2c51792e5f39ff6638416280" => :yosemite
-    sha1 "7fbb18fc9647d46e2b0a18132d38835399f1d55a" => :mavericks
-    sha1 "176cd8c7889ca1dfea0a0c91c628f1919ec13e1b" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "99e1479291e89efe294cdd094741dc70154d644633877add11a9b1a39c7fee62" => :el_capitan
+    sha256 "ddaccc0db8c861b4f1d5d0fec3d845ff440f86af3a28751a299ad7784253ba1d" => :yosemite
+    sha256 "044c9dec4d5021abd8b4c356e8ff0bfc5968115267b030219f010ff5b97abfbf" => :mavericks
+    sha256 "768df88335578704b1029b859ab7d36654cb5b20bfd1b0bc64e487476b7c214e" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -27,8 +27,8 @@ class Fabric < Formula
   end
 
   resource "ecdsa" do
-    url "https://pypi.python.org/packages/source/e/ecdsa/ecdsa-0.11.tar.gz"
-    sha256 "8e3b6c193f91dc94b2f3b0261e3eabbdc604f78ff99fdad324a56fdd0b5e958c"
+    url "https://pypi.python.org/packages/source/e/ecdsa/ecdsa-0.13.tar.gz"
+    sha256 "64cf1ee26d1cde3c73c6d7d107f835fed7c6a2904aef9eac223d57ad800c43fa"
   end
 
   def install

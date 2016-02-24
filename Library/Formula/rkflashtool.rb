@@ -8,9 +8,10 @@ class Rkflashtool < Formula
 
   bottle do
     cellar :any
-    sha1 "a51793a60e27ea73735ccf83a6386f809c34faf2" => :mavericks
-    sha1 "cd08e68dc4fdb0f56fb10b77f78ca13476ac8a63" => :mountain_lion
-    sha1 "4b7f416b735845a43c5a0ed2086d07f2b1a751b1" => :lion
+    revision 1
+    sha256 "6e129daf2945875ed2f3d162cc4705e1643d826e910574d61d7947c96de007e5" => :el_capitan
+    sha256 "6c42ca5e0a23c0e246b6e58baff3a32215ba94e60115c8ef4f38306dadfabbeb" => :yosemite
+    sha256 "1f3260720ba6ca946000f10f3675140d8b5e737e6fd18abe7b5c0cb4f7b2d972" => :mavericks
   end
 
   depends_on "libusb"
@@ -33,6 +34,8 @@ class Rkflashtool < Formula
   test do
     (testpath/"input.file").write "ABCD"
     system bin/"rkcrc", "input.file", "output.file"
-    assert_equal "ABCD\264\366\a\t", `cat output.file`
+    result = shell_output("cat output.file")
+    result.force_encoding("UTF-8") if result.respond_to?(:force_encoding)
+    assert_equal "ABCD\264\366\a\t", result
   end
 end

@@ -1,4 +1,4 @@
-# speed up head clone, see: https://developer.mozilla.org/en-US/docs/Developer_Guide/Source_Code/Mercurial/Bundles
+# Speed up head clone, see: https://developer.mozilla.org/en-US/docs/Developer_Guide/Source_Code/Mercurial/Bundles
 class HgBundleDownloadStrategy < CurlDownloadStrategy
   def stage
     mkdir "mozilla-central"
@@ -25,7 +25,7 @@ class Xulrunner < Formula
 
   stable do
     # Always use direct URLs (releases/<version>/) instead of releases/latest/
-    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/33.0/source/xulrunner-33.0.source.tar.bz2"
+    url "https://archive.mozilla.org/pub/mozilla.org/xulrunner/releases/33.0/source/xulrunner-33.0.source.tar.bz2"
     sha256 "99402cf84949e06bac72d8abbdecde57e8af465727001ed6849a34632f20bcdb"
 
     # https://github.com/Homebrew/homebrew/issues/33558
@@ -34,13 +34,14 @@ class Xulrunner < Formula
 
   bottle do
     cellar :any
-    sha1 "222b1eaabea7a2aaa4712682c9580ed70f78ceb8" => :mavericks
-    sha1 "3eb54b046978536c2161a3961e0e50a624223a0d" => :mountain_lion
+    sha256 "9fd9273cc210ea60b05f6a8be21556ca489c03197bc95581c56fc8909cbecde6" => :mavericks
+    sha256 "b2f6bc8deb5a4f7b860d842212aa3bbe57560ab94f9ef269571dbee64039b76b" => :mountain_lion
   end
 
   head do
-    url "https://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg",
+    url "https://archive.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg",
       :using => HgBundleDownloadStrategy, :repo => "https://hg.mozilla.org/mozilla-central"
+
     depends_on :hg => :build
     depends_on "gettext" => :build
   end

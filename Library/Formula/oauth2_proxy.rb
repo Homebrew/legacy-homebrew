@@ -5,12 +5,15 @@ class Oauth2Proxy < Formula
   homepage "https://github.com/bitly/oauth2_proxy"
   url "https://github.com/bitly/oauth2_proxy/archive/v2.0.1.tar.gz"
   sha256 "febc33244d63f69a4c973e4ff2556fea2bc414308ce9979fb43db5863da87b5a"
+  revision 1
+
+  head "https://github.com/bitly/oauth2_proxy.git"
 
   bottle do
-    cellar :any
-    sha256 "dcb93accc34447cccc4306c42804b8b9adb409556d9922a03be1cced4fe28e9a" => :yosemite
-    sha256 "f6f33eb43df4fd594f0df9bfb3931b66f3e3399152e5021add31bfa41199a439" => :mavericks
-    sha256 "b1b6486c7218d727c911825337c59d2531dedc4219116164d1414610a149fe06" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "98d6783ca3f454f8945ee7c7883fbcfdaaec905b214574d69877e73377de6808" => :el_capitan
+    sha256 "62eb8eb999d08ef5fcbf2fc29880fe8a630dd96d68065d88ed3753f046914b86" => :yosemite
+    sha256 "3da19e1f136c42d9cac3c0a7b3807b113f4c66323fd5b073bd3459749d630907" => :mavericks
   end
 
   depends_on "go" => :build
@@ -73,7 +76,7 @@ class Oauth2Proxy < Formula
     begin
       Timeout.timeout(10) do
         loop do
-          Utils.popen_read "curl", "-s", "http://127.0.0.1:" + port.to_s
+          Utils.popen_read "curl", "-s", "http://127.0.0.1:#{port}"
           break if $?.exitstatus == 0
           sleep 1
         end

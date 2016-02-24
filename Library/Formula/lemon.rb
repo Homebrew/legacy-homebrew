@@ -1,7 +1,7 @@
 class Lemon < Formula
   desc "LALR(1) parser generator like yacc or bison"
   homepage "http://www.hwaci.com/sw/lemon/"
-  url "http://tx97.net/pub/distfiles/lemon-1.69.tar.bz2"
+  url "https://tx97.net/pub/distfiles/lemon-1.69.tar.bz2"
   sha256 "bc7c1cae233b6af48f4b436ee900843106a15bdb1dc810bc463d8c6aad0dd916"
 
   bottle do

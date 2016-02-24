@@ -1,15 +1,15 @@
 class Liblockfile < Formula
   desc "Library providing functions to lock standard mailboxes"
-  homepage "https://packages.qa.debian.org/libl/liblockfile.html"
-  url "https://mirrors.kernel.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz"
-  mirror "http://ftp.us.debian.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz"
+  homepage "https://tracker.debian.org/pkg/liblockfile"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz"
   sha256 "16979eba05396365e1d6af7100431ae9d32f9bc063930d1de66298a0695f1b7f"
 
   bottle do
-    revision 1
-    sha1 "f840a4b8c6243bb9e68e3a2db5fcb833e9e4bf75" => :yosemite
-    sha1 "fa0e7109ca60fbff2592eb90ec5ed449f3187bc1" => :mavericks
-    sha1 "36f0780292a85dced663dd3eefb0dd266226f589" => :mountain_lion
+    revision 2
+    sha256 "e4d6ff7643eebb7fd6726176db9938b0e68526d53909a5cf3a2dd6aff1c1a378" => :el_capitan
+    sha256 "1db90af0082d415223b928d477b6abe2047d9bad9b2f07991ad4eee3e5c0cde6" => :yosemite
+    sha256 "279009f21a530b2350ddc0321e649fe90ff443480522b078e0f082398d740f24" => :mavericks
   end
 
   def install
@@ -26,5 +26,12 @@ class Liblockfile < Formula
     man3.mkpath
     system "make"
     system "make", "install"
+  end
+
+  test do
+    system bin/"dotlockfile", "-l", "locked"
+    assert File.exist?("locked")
+    system bin/"dotlockfile", "-u", "locked"
+    assert !File.exist?("locked")
   end
 end

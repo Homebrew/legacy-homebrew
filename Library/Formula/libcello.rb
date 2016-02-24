@@ -1,20 +1,37 @@
 class Libcello < Formula
   desc "Higher-level programming in C"
   homepage "http://libcello.org/"
+  url "http://libcello.org/static/libCello-2.0.3.tar.gz"
+  sha256 "2ebe995f0175c8397f41a32751e60d1b4907eddae7c1442c67d484a16d1c6b99"
   head "https://github.com/orangeduck/libCello.git"
-  url "http://libcello.org/static/libCello-1.1.7.tar.gz"
-  sha256 "2273fe8257109c2dd19054beecd83ddcc780ec565a1ad02721e24efa74082908"
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "d208cfa93fcd658a225dd46b0eba986f9a30e474" => :yosemite
-    sha1 "f95afa9fb94b09e9c2102932792288fc2352d091" => :mavericks
-    sha1 "507985cc79584569e6c04dfb9b9772a97573b2a9" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "54cfca99a424590796858d57fd1226c763abdf519715b7f7435b812ab504eed6" => :el_capitan
+    sha256 "58f80b859bc0d3f40f4de5f1bf39168dd5560a98471c999f76d0416cca5a29fb" => :yosemite
+    sha256 "28188bd3d10965c1a9e57d4ca3c652642ddb931a5bf0967fd6141b4dc12e2fc6" => :mavericks
   end
 
   def install
     system "make", "check"
     system "make", "install", "PREFIX=#{prefix}"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include "Cello.h"
+
+      int main(int argc, char** argv) {
+        var i0 = $(Int, 5);
+        var i1 = $(Int, 3);
+        var items = new(Array, Int, i0, i1);
+        foreach (item in items) {
+          print("Object %$ is of type %$\\n", item, type_of(item));
+        }
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-lCello", "-o", "test"
+    system "./test"
   end
 end

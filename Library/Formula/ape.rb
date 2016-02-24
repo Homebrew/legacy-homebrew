@@ -5,10 +5,11 @@ class Ape < Formula
   sha256 "c5f6ec0740f20dd5eb26c223149fc4bade3daadff02a851e2abb7e00be97db42"
 
   bottle do
-    cellar :any
-    sha1 "142d7a4e40a2496c922a5ac0eb1aaeab22b25e70" => :yosemite
-    sha1 "db7e3d51666dfe7e9d728c1e37f0f07eb20fc36f" => :mavericks
-    sha1 "bc4cdbc2a6212b4070a06c356982a68b1b4f5867" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "259b19e211ff6d6ffc376db0b3696a912a6ac48dca83cbcbe525c78e56755c82" => :el_capitan
+    sha256 "3859216e566e6faaccc7183d737527dd4785260a698c8344520e7951baebca76" => :yosemite
+    sha256 "83c7ef23309dec2e7bd4bec3ae75b6f0e04fcfecbda489c90810b6948eb3bb28" => :mavericks
+    sha256 "136d65f58cb956b95a6ccb9517a5affe69c3491d283478708ca88091abb3103f" => :mountain_lion
   end
 
   fails_with :clang do

@@ -3,26 +3,27 @@ class Allegro < Formula
   homepage "http://liballeg.org/"
 
   stable do
-    url "https://downloads.sourceforge.net/project/alleg/allegro/5.0.11/allegro-5.0.11.tar.gz"
+    url "http://download.gna.org/allegro/allegro/5.0.11/allegro-5.0.11.tar.gz"
     sha256 "49fe14c9571463ba08db4ff778d1fbb15e49f9c33bdada3ac8599e04330ea531"
   end
+
   bottle do
     cellar :any
-    revision 1
-    sha256 "938c45ba6602727a4b524022387d13622718703f727fa6b1f1d94a0e3e3b357e" => :yosemite
-    sha256 "c75ec1ca7b8b630283f8809607515eb4183d00f3e337ce12b8ef4f05525e1ccb" => :mavericks
-    sha256 "f3cc83adca0beee9fb703f8566ecbffc2fbeba9a0315e09ddad28523b63728e4" => :mountain_lion
+    revision 2
+    sha256 "920e11cc6cbb00016fdd6626aae4a051b38bf97ce8702ffdc11fc567f192601f" => :el_capitan
+    sha256 "53bd9902195241cdddc873a3c9afa92beab73c234e1e337d376bcb8d4b3fd2c6" => :yosemite
+    sha256 "65a04aa3c0901264e54ca91f8982da085ea90bccabcb885fac054ba5219e19bd" => :mavericks
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/alleg/allegro-unstable/5.1.11/allegro-5.1.11.tar.gz"
-    sha256 "7a071635e39105ce52cd82c8641a8f3841efbdfe8fdb39f7a5ae1be6db3be07f"
+    url "http://download.gna.org/allegro/allegro-unstable/5.1.13/allegro-5.1.13.tar.gz"
+    sha256 "f3c5be792bc0fc6e657de473112196823598120cfa2e6e19d6f87543f2a273fd"
 
     depends_on "theora" => :recommended
   end
 
   head do
-    url "git://git.code.sf.net/p/alleg/allegro", :branch => "5.1"
+    url "https://github.com/liballeg/allegro5.git", :branch => "5.1"
 
     depends_on "theora" => :recommended
   end

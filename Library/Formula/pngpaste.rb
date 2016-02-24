@@ -6,9 +6,9 @@ class Pngpaste < Formula
 
   bottle do
     cellar :any
-    sha1 "c1f92f560c8b41b2a76b0b697a836b6ebd583a69" => :yosemite
-    sha1 "7456012df79ad5f465c9e87382fad9fdb7478e1e" => :mavericks
-    sha1 "2da091bd8555367449efeb43a4c92044f26b6bbe" => :mountain_lion
+    sha256 "e134f7bca93ef8e51d1729c145b060f688999f6d3eeda051f836831c6774c2ef" => :yosemite
+    sha256 "eeea5b97cd20b83f7d01fa73d9b8bc98f776dc122769cc682312981dde54b07e" => :mavericks
+    sha256 "c8577460546d1c8f7f4cf9e833a420989b1fb94969dc1fcffd1c8f6d07a78e93" => :mountain_lion
   end
 
   def install

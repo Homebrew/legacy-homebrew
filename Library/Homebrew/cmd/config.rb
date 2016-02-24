@@ -1,5 +1,6 @@
 require "hardware"
 require "software_spec"
+require "rexml/document"
 
 module Homebrew
   def config
@@ -7,23 +8,23 @@ module Homebrew
   end
 
   def llvm
-    @llvm ||= MacOS.llvm_build_version
+    @llvm ||= MacOS.llvm_build_version if MacOS.has_apple_developer_tools?
   end
 
   def gcc_42
-    @gcc_42 ||= MacOS.gcc_42_build_version
+    @gcc_42 ||= MacOS.gcc_42_build_version if MacOS.has_apple_developer_tools?
   end
 
   def gcc_40
-    @gcc_40 ||= MacOS.gcc_40_build_version
+    @gcc_40 ||= MacOS.gcc_40_build_version if MacOS.has_apple_developer_tools?
   end
 
   def clang
-    @clang ||= MacOS.clang_version
+    @clang ||= MacOS.clang_version if MacOS.has_apple_developer_tools?
   end
 
   def clang_build
-    @clang_build ||= MacOS.clang_build_version
+    @clang_build ||= MacOS.clang_build_version if MacOS.has_apple_developer_tools?
   end
 
   def xcode
@@ -53,16 +54,17 @@ module Homebrew
   end
 
   def origin
-    origin = HOMEBREW_REPOSITORY.cd do
-      `git config --get remote.origin.url 2>/dev/null`.chomp
-    end
-    if origin.empty? then "(none)" else origin end
+    Homebrew.git_origin || "(none)"
   end
 
   def describe_path(path)
     return "N/A" if path.nil?
     realpath = path.realpath
-    if realpath == path then path else "#{path} => #{realpath}" end
+    if realpath == path
+      path
+    else
+      "#{path} => #{realpath}"
+    end
   end
 
   def describe_x11
@@ -76,19 +78,26 @@ module Homebrew
 
   def describe_python
     python = which "python"
-    if %r{/shims/python$} =~ python && which("pyenv")
-      "#{python} => #{Pathname.new(`pyenv which python`.strip).realpath}" rescue describe_path(python)
+    return "N/A" if python.nil?
+    python_binary = Utils.popen_read python, "-c", "import sys; sys.stdout.write(sys.executable)"
+    python_binary = Pathname.new(python_binary).realpath
+    if python == python_binary
+      python
     else
-      describe_path(python)
+      "#{python} => #{python_binary}"
     end
   end
 
   def describe_ruby
     ruby = which "ruby"
-    if %r{/shims/ruby$} =~ ruby && which("rbenv")
-      "#{ruby} => #{Pathname.new(`rbenv which ruby`.strip).realpath}" rescue describe_path(ruby)
+    return "N/A" if ruby.nil?
+    ruby_binary = Utils.popen_read ruby, "-rrbconfig", "-e", \
+      'include RbConfig;print"#{CONFIG["bindir"]}/#{CONFIG["ruby_install_name"]}#{CONFIG["EXEEXT"]}"'
+    ruby_binary = Pathname.new(ruby_binary).realpath
+    if ruby == ruby_binary
+      ruby
     else
-      describe_path(ruby)
+      "#{ruby} => #{ruby_binary}"
     end
   end
 
@@ -121,14 +130,13 @@ module Homebrew
   end
 
   def describe_java
-    if which("java").nil?
-      "N/A"
-    elsif !(`/usr/libexec/java_home --failfast &>/dev/null` && $?.success?)
-      "N/A"
-    else
-      java = `java -version 2>&1`.lines.first.chomp
-      java =~ /java version "(.+?)"/ ? $1 : java
+    java_xml = Utils.popen_read("/usr/libexec/java_home", "--xml", "--failfast")
+    return "N/A" unless $?.success?
+    javas = []
+    REXML::XPath.each(REXML::Document.new(java_xml), "//key[text()='JVMVersion']/following-sibling::string") do |item|
+      javas << item.text
     end
+    javas.uniq.join(", ")
   end
 
   def dump_verbose_config(f = $stdout)
@@ -137,10 +145,11 @@ module Homebrew
     f.puts "HEAD: #{head}"
     f.puts "Last commit: #{last_commit}"
     f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
+    f.puts "HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}"
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
     f.puts "HOMEBREW_BOTTLE_DOMAIN: #{BottleSpecification::DEFAULT_DOMAIN}"
     f.puts hardware
-    f.puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
+    f.puts "OS X: #{MacOS.full_version}-#{kernel}"
     f.puts "Xcode: #{xcode ? xcode : "N/A"}"
     f.puts "CLT: #{clt ? clt : "N/A"}"
     f.puts "GCC-4.0: build #{gcc_40}" if gcc_40

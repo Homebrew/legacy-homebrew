@@ -1,39 +1,46 @@
 class Bitlbee < Formula
   desc "IRC to other chat networks gateway"
-  homepage "http://www.bitlbee.org/"
-  url "http://get.bitlbee.org/src/bitlbee-3.4.1.tar.gz"
+  homepage "https://www.bitlbee.org/"
+  url "https://get.bitlbee.org/src/bitlbee-3.4.1.tar.gz"
   sha256 "500a0b19943040d67458eb3beb0a63d004abb2aa54a777addeb2a895d4f5c0e1"
+  revision 1
 
   head "https://github.com/bitlbee/bitlbee.git"
 
   bottle do
-    sha256 "7dc007cc8b1261638f7befb9eb2d13da8b591f8bbd43638cc7135e6b7ccf303d" => :yosemite
-    sha256 "6831944fd930a47850629ded938ab8147e9d931c6f0ae2734d72839dc45be95d" => :mavericks
-    sha256 "6524553e7d8e8f9b1dec0e4f8002dbe20134905b970b05c16266f8d6cbd3d14a" => :mountain_lion
+    sha256 "b736c902609a430ca96856f09d956bdabcb544a8c768e035dbf103e61a5fdc77" => :el_capitan
+    sha256 "4d0f0e8560de296d49ffa340d0b50adfd4eaf1fe86abb332011fc44b283564fc" => :yosemite
+    sha256 "bfd5d013c21129aa2d87e6fff261d7428a8c883f0b2682da0ae4fe8740d76345" => :mavericks
   end
 
   option "with-pidgin", "Use finch/libpurple for all communication with instant messaging networks"
   option "with-libotr", "Build with otr (off the record) support"
+  option "with-libevent", "Use libevent for the event-loop handling rather than glib."
 
   deprecated_option "with-finch" => "with-pidgin"
 
   depends_on "pkg-config" => :build
+  depends_on "gettext"
   depends_on "glib"
   depends_on "gnutls"
   depends_on "libgcrypt"
   depends_on "pidgin" => :optional
   depends_on "libotr" => :optional
+  depends_on "libevent" => :optional
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--debug=0",
-            "--ssl=gnutls",
-            "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
-            "--config=#{var}/bitlbee/lib/",
-            "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
+    args = %W[
+      --prefix=#{prefix}
+      --debug=0
+      --ssl=gnutls
+      --pidfile=#{var}/bitlbee/run/bitlbee.pid
+      --config=#{var}/bitlbee/lib/
+      --ipsocket=#{var}/bitlbee/run/bitlbee.sock
+    ]
 
     args << "--purple=1" if build.with? "pidgin"
     args << "--otr=1" if build.with? "libotr"
+    args << "--events=libevent" if build.with? "libevent"
 
     system "./configure", *args
 
@@ -45,8 +52,8 @@ class Bitlbee < Formula
     # This build has an extra step.
     system "make", "install-etc"
 
-    (var+"bitlbee/run").mkpath
-    (var+"bitlbee/lib").mkpath
+    (var/"bitlbee/run").mkpath
+    (var/"bitlbee/lib").mkpath
   end
 
   plist_options :manual => "bitlbee -D"

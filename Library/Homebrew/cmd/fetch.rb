@@ -19,12 +19,24 @@ module Homebrew
     bucket.each do |f|
       f.print_tap_action :verb => "Fetching"
 
+      fetched_bottle = false
       if fetch_bottle?(f)
-        fetch_formula(f.bottle)
-      else
+        begin
+          fetch_formula(f.bottle)
+        rescue Exception => e
+          raise if ARGV.homebrew_developer? || e.is_a?(Interrupt)
+          fetched_bottle = false
+          onoe e.message
+          opoo "Bottle fetch failed: fetching the source."
+        else
+          fetched_bottle = true
+        end
+      end
+
+      unless fetched_bottle
         fetch_formula(f)
         f.resources.each { |r| fetch_resource(r) }
-        f.patchlist.select(&:external?).each { |p| fetch_patch(p) }
+        f.patchlist.each { |p| fetch_patch(p) if p.external? }
       end
     end
   end
@@ -33,13 +45,6 @@ module Homebrew
     return true if ARGV.force_bottle? && f.bottle
     return false unless f.bottle && f.pour_bottle?
     return false if ARGV.build_from_source? || ARGV.build_bottle?
-    if f.file_modified?
-      filename = f.path.to_s.gsub("#{HOMEBREW_PREFIX}/", "")
-      opoo "Formula file is modified!"
-      puts "Fetching source because #{filename} has local changes"
-      puts "To fetch the bottle instead, run with --force-bottle"
-      return false
-    end
     return false unless f.bottle.compatible_cellar?
     true
   end

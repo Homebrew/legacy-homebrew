@@ -5,10 +5,11 @@ class Byacc < Formula
   sha256 "f517fc21f08c1a1f010177357df58fc64eb1131011e5dcd48c19fe44c47198d0"
 
   bottle do
-    cellar :any
-    sha1 "730c5b32d50fc5ebc21f519ac5828d03c50e57ef" => :yosemite
-    sha1 "76ef279d3d8466aefa7a921aa2cf663e86486156" => :mavericks
-    sha1 "69414e8c76e803da7b0102e6fc4d0096613a0128" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "21dacda27da29077ee9c0bc1d892a0b09c119b4233e4731488a681b87828333b" => :el_capitan
+    sha256 "2aacd30dce05fc6e562149d7ec703cb458ce2b2a1fe77fa0602771cb2c12318f" => :yosemite
+    sha256 "96bebc234ef0c1d7d69a9c84df6106f1352dddf6523194acd251d7d1127c581d" => :mavericks
+    sha256 "c92db788a5f26ff6c0d50ff5bba2b2d1bb2c715c9ceab0a638874774959918f1" => :mountain_lion
   end
 
   def install

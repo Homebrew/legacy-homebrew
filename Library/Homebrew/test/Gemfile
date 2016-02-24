@@ -3,4 +3,16 @@ source "https://rubygems.org"
 gem "mocha", "~> 1.1"
 gem "minitest", "~> 5.3"
 gem "rake", "~> 10.3"
-gem "simplecov", "~> 0.10.0", :require => false
+# This is a patched version of the v0.11.2. Switch back to the stable version
+# when #436 has been merged upstream.
+# https://github.com/colszowka/simplecov/pull/436
+# See also https://github.com/Homebrew/homebrew/pull/48250#issuecomment-173171990
+gem "simplecov", "0.11.2",
+  :git => "https://github.com/Homebrew/simplecov.git",
+  :branch => "tracked-files-root-fix",
+  :require => false
+gem "coveralls", "0.8.10", :require => false
+# We need to pin these versions because those are the last supporting Ruby 1.8.
+# Remove these lines when we've stopped supporting it.
+gem "mime-types", "~> 1.16"
+gem "rest-client", "1.6.9"

@@ -1,14 +1,14 @@
 class Commonmark < Formula
   desc "Strongly specified, highly compatible implementation of Markdown"
   homepage "http://commonmark.org"
-  url "https://github.com/jgm/cmark/archive/0.21.0.tar.gz"
-  sha256 "dc852412e45489b823392dee334f2db47adbd757b0ac08bc026383627fc13f6e"
+  url "https://github.com/jgm/cmark/archive/0.24.1.tar.gz"
+  sha256 "7566d307ffff07567faa0381b248f60164eddcc0e0f5eb6e27d6f58e1269ab2a"
 
   bottle do
     cellar :any
-    sha256 "4df14ae8b336a43671f6282118a484f0977b0401e178a5e6b087ed75a0d561d3" => :yosemite
-    sha256 "c834a27b2ad8dcd0fb853f1e08db8b2fa8e2b32bdc7e868b80b2688cf6a385f5" => :mavericks
-    sha256 "d5b423c3fec6ead12a244aed47f277bb5dd284939409d8d4704cd89663af30ed" => :mountain_lion
+    sha256 "6615a070dbfd8291dd878ea633350bd53039f7861bd2f429e28972a89104ffeb" => :el_capitan
+    sha256 "ed171cd2431324f3d58a8ea7199510ec03489223533abbf8debdb80f9c21620d" => :yosemite
+    sha256 "d271dd8964a2b7cbbdcc129e7268a22fc5152fe5209ddbb8f556bdc08d137c87" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -18,7 +18,6 @@ class Commonmark < Formula
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make"
-      system "make", "test"
       system "make", "install"
     end
   end

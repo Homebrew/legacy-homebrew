@@ -1,4 +1,4 @@
-Copyright 2009-2015 Homebrew contributors.
+Copyright 2009-2016 Homebrew contributors.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions

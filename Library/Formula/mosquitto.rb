@@ -1,22 +1,20 @@
 class Mosquitto < Formula
   desc "Message broker implementing MQ telemetry transport protocol"
-  homepage "http://mosquitto.org/"
-  url "http://mosquitto.org/files/source/mosquitto-1.4.2.tar.gz"
-  sha256 "5ebc3800a0018bfbec62dcc3748fb29f628df068acd39c62c4ef651d9276647e"
+  homepage "https://mosquitto.org/"
+  url "https://mosquitto.org/files/source/mosquitto-1.4.8.tar.gz"
+  sha256 "d96eb5610e57cc3e273f4527d3f54358ab7711459941a9e64bc4d0a85c2acfda"
 
   bottle do
-    sha256 "5ddaaa8d6a3b1243e56a401352a30c98baac64912d727db4f1d863c91cde49d5" => :yosemite
-    sha256 "ebf06abb4e01eb008cc77ae09ae3ab2d593d4150398ebe5d25e0a08b0c80f4e5" => :mavericks
-    sha256 "120219f9750c23bc66635222c9f79a4434188fbdb046a5a43b8d1d350eb62bde" => :mountain_lion
+    sha256 "e675921d54e51a7cf9aca154d464cda5a65b64f9c68c18f5d028bc7305c0030c" => :el_capitan
+    sha256 "c2639beb4f71fa7520a017c888b7008bf3c3046343ef742f651dfa671157a132" => :yosemite
+    sha256 "5b86c30729f7d3fc6528564a8b92ac1765e50abb8b0fb59b6896bcf4505503f0" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "cmake" => :build
   depends_on "c-ares"
-  depends_on "libwebsockets" => :recommended
-
-  # mosquitto requires OpenSSL >=1.0 for TLS support
   depends_on "openssl"
+  depends_on "libwebsockets" => :recommended
 
   def install
     args = std_cmake_args
@@ -24,21 +22,17 @@ class Mosquitto < Formula
 
     system "cmake", ".", *args
     system "make", "install"
+  end
 
-    # Create the working directory
+  def post_install
     (var/"mosquitto").mkpath
   end
 
-  test do
-    quiet_system "#{sbin}/mosquitto", "-h"
-    assert_equal 3, $?.exitstatus
-  end
-
-  def caveats; <<-EOD.undent
+  def caveats; <<-EOS.undent
     mosquitto has been installed with a default configuration file.
     You can make changes to the configuration by editing:
         #{etc}/mosquitto/mosquitto.conf
-    EOD
+    EOS
   end
 
   plist_options :manual => "mosquitto -c #{HOMEBREW_PREFIX}/etc/mosquitto/mosquitto.conf"
@@ -65,5 +59,10 @@ class Mosquitto < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    quiet_system "#{sbin}/mosquitto", "-h"
+    assert_equal 3, $?.exitstatus
   end
 end
