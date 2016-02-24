@@ -6,7 +6,8 @@ class Groovyserv < Formula
   head "https://github.com/kobo/groovyserv.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "31f32f93dac174aa311922516715111469adb33ab44e4c7ecdf7787bbb8fe429" => :el_capitan
     sha256 "574847450b751be607198f21d470b5e7cd4693d1dafd634474700d121fc2b4eb" => :yosemite
     sha256 "891d92de6d33ca81ec885640a3a30b37749c272a2c69a37126e31bac2659b59c" => :mavericks
     sha256 "58a7a2dbd1327dd88b5a010b570140c479a1b28940769ac0cff644c7f19e11bb" => :mountain_lion
