@@ -1,9 +1,8 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "http://www.musicpd.org/"
-  url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.12.tar.xz"
-  sha256 "7b6fe6c7ce72f5f80a276d680072b524ecb395e546e252b8f3a0756377e1e875"
-  revision 1
+  url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.13.tar.xz"
+  sha256 "f1014838fa7ab2d5fe2ef7f4c101d58fdec2c4c13cfbd2462ee146c8e4919a55"
 
   bottle do
     cellar :any
