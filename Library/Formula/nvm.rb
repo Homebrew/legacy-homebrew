@@ -1,8 +1,8 @@
 class Nvm < Formula
   desc "Manage multiple Node.js versions"
   homepage "https://github.com/creationix/nvm"
-  url "https://github.com/creationix/nvm/archive/v0.30.1.tar.gz"
-  sha256 "c3f063041407845ab4aa4ced6468084f8f63fb96fc8d904f66464e02c0867c5a"
+  url "https://github.com/creationix/nvm/archive/v0.31.0.tar.gz"
+  sha256 "5f9bc1c89c70e852f6bc2688389e6b9822ad851250d25d0910d05fa88b842540"
   head "https://github.com/creationix/nvm.git"
 
   bottle :unneeded
@@ -31,14 +31,19 @@ class Nvm < Formula
     #{prefix} will destroy any nvm-installed Node installations
     upon upgrade/reinstall.
 
+    If upgrading from a previous version, please remember to activate the
+    new version by restarting your shell or by executing the command below:
+
+      . $(brew --prefix nvm)/nvm.sh
+
     Type `nvm help` for further information.
   EOS
   end
 
   test do
-    output = pipe_output("#{prefix}/nvm-exec 2>&1")
+    output = pipe_output("NODE_VERSION=stable #{prefix}/nvm-exec 2>&1")
     assert_no_match /No such file or directory/, output
     assert_no_match /nvm: command not found/, output
-    assert_match /Node Version Manager/, output
+    assert_empty output
   end
 end
