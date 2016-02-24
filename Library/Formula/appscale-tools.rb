@@ -1,8 +1,8 @@
 class AppscaleTools < Formula
   desc "Command-line tools for working with AppScale"
   homepage "https://github.com/AppScale/appscale-tools"
-  url "https://github.com/AppScale/appscale-tools/archive/2.7.0.tar.gz"
-  sha256 "7b3b6ad39ea28bf0bc7f74fdd30b574cbed9fe28cb455dda49fcedd5a4aa6922"
+  url "https://github.com/AppScale/appscale-tools/archive/2.7.1.tar.gz"
+  sha256 "d7ac9ec391d480a16dbaff80bdbb4b308a0e170be220ba423c33bf80246eb31e"
   head "https://github.com/AppScale/appscale-tools.git"
 
   bottle do
@@ -41,8 +41,8 @@ class AppscaleTools < Formula
   end
 
   resource "boto" do
-    url "https://pypi.python.org/packages/source/b/boto/boto-2.38.0.tar.gz"
-    sha256 "d9083f91e21df850c813b38358dc83df16d7f253180a1344ecfedce24213ecf2"
+    url "https://pypi.python.org/packages/source/b/boto/boto-2.39.0.tar.gz"
+    sha256 "950c5bf36691df916b94ebc5679fed07f642030d39132454ec178800d5b6c58a"
   end
 
   resource "argparse" do
@@ -51,18 +51,33 @@ class AppscaleTools < Formula
   end
 
   resource "google-api-python-client" do
-    url "https://pypi.python.org/packages/source/g/google-api-python-client/google-api-python-client-1.4.0.tar.gz"
-    sha256 "695c046789540db5ce4deefe3836e78a2cc002d5e10a41b936c6907f4ec9c96c"
+    url "https://pypi.python.org/packages/source/g/google-api-python-client/google-api-python-client-1.5.0.tar.gz"
+    sha256 "ffb89782c74702bd47d217709741717f0e4812d87f6cea04783f991d3eb51abd"
   end
 
   # dependencies for google-api-python-client
   resource "oauth2client" do
-    url "https://pypi.python.org/packages/source/o/oauth2client/oauth2client-1.4.7.tar.gz"
-    sha256 "b63550a242ea25ec027a261c2f5667d52de268f52c3f0c6ce60850ad45492031"
+    url "https://pypi.python.org/packages/source/o/oauth2client/oauth2client-2.0.0.post1.tar.gz"
+    sha256 "eb14cfe72f0af2b3bbb7c1da3f0f781b61ed89b31e4282313220746798aa7bdd"
   end
+
+  # dependencies for oauth2client
+  resource "pyasn1" do
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.9.tar.gz"
+    sha256 "853cacd96d1f701ddd67aa03ecc05f51890135b7262e922710112f12a2ed2a7f"
+  end
+  resource "pyasn1-modules" do
+    url "https://pypi.python.org/packages/source/p/pyasn1-modules/pyasn1-modules-0.0.8.tar.gz"
+    sha256 "10561934f1829bcc455c7ecdcdacdb4be5ffd3696f26f468eb6eb41e107f3837"
+  end
+  resource "rsa" do
+    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.3.tar.gz"
+    sha256 "03f3d9bebad06681771016b8752a40b12f615ff32363c7aa19b3798e73ccd615"
+  end
+
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
   resource "uritemplate" do
     url "https://pypi.python.org/packages/source/u/uritemplate/uritemplate-0.6.tar.gz"
@@ -70,8 +85,8 @@ class AppscaleTools < Formula
   end
 
   resource "httplib2" do
-    url "https://pypi.python.org/packages/source/h/httplib2/httplib2-0.9.1.tar.gz"
-    sha256 "bc6339919a5235b9d1aaee011ca5464184098f0c47c9098001f91c97176583f5"
+    url "https://pypi.python.org/packages/source/h/httplib2/httplib2-0.9.2.tar.gz"
+    sha256 "c3aba1c9539711551f4d83e857b316b5134a1c4ddce98a875b7027be7dd6d988"
   end
 
   def install
