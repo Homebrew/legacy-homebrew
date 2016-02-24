@@ -14,13 +14,15 @@ class Hbase < Formula
     libexec.install %w[bin conf docs lib hbase-webapps]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
 
-    inreplace "#{libexec}/conf/hbase-env.sh",
-      "export HBASE_OPTS=\"-XX:+UseConcMarkSweepGC\"",
-      "export HBASE_OPTS=\"-Djava.net.preferIPv4Stack=true -XX:+UseConcMarkSweepGC\""
-
-    inreplace "#{libexec}/conf/hbase-env.sh",
-      "# export JAVA_HOME=/usr/java/jdk1.6.0/",
-      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+    inreplace "#{libexec}/conf/hbase-env.sh" do |s|
+      # upstream bugs for ipv6 incompatibility:
+      # https://issues.apache.org/jira/browse/HADOOP-8568
+      # https://issues.apache.org/jira/browse/HADOOP-3619
+      s.gsub!("export HBASE_OPTS=\"-XX:+UseConcMarkSweepGC\"",
+              "export HBASE_OPTS=\"-Djava.net.preferIPv4Stack=true -XX:+UseConcMarkSweepGC\"")
+      s.gsub!("# export JAVA_HOME=/usr/java/jdk1.6.0/",
+              "export JAVA_HOME=\"$(/usr/libexec/java_home)\"")
+    end
   end
 
   def caveats; <<-EOS.undent
