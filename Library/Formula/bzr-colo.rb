@@ -5,6 +5,7 @@ class BzrColo < Formula
   sha256 "f61c1abaf80f1e4a573fefd492b70938d27c4b8ca5611cdb0e0a4dc0ed71bbb3"
 
   bottle :unneeded
+
   depends_on "bazaar"
 
   def install
@@ -27,7 +28,7 @@ class BzrColo < Formula
         system "bzr", "colo-branch", "branch1"
         assert_match(/\* branch1/, shell_output("bzr colo-branches"))
 
-        file_path.open("a") { |f| f.puts "change" }
+        file_path.append_lines("change")
         system "bzr", "commit", "-m", "some change in branch1"
         assert_match(/some change in branch1/, shell_output("bzr log -l1"))
 
