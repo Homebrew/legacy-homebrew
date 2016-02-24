@@ -319,6 +319,8 @@ class Duplicity < Formula
       r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
     end
 
+    chmod 0644, Dir[vendor_site_packages/"prettytable-*-py*.egg-info/*"]
+    
     # ndg is a namespace package
     touch vendor_site_packages/"ndg/__init__.py"
 
