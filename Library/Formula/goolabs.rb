@@ -5,7 +5,8 @@ class Goolabs < Formula
   sha256 "9078bf8d26b69860cf6b9f1e6143014a596ee122743130b082ba2daea8a10e26"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "2a5a8ef2bca8afbf4365a7dd41f19953c08f97821cba760d3a8b0036188debbf" => :el_capitan
     sha256 "230a91451668d15d4f2d7b2692e9c3cc0560cdd0b16cc9b72921f9e0fcbffbb7" => :yosemite
     sha256 "8715f757af55c268e1ee6e0a96b2531d4ebe4ae73104c91b6be458b59e9d890c" => :mavericks
     sha256 "c8424cc191a170ceff37db65bc23793f1a4f3d8320d8df7ce25e5d6964e745d4" => :mountain_lion
