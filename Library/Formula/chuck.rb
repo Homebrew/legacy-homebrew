@@ -6,11 +6,9 @@ class Chuck < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "7b51eee3ac7ac860b2cc4f99c00508250bdbf14c4a72e6e7cc2cade99690c26f" => :el_capitan
-    sha256 "e90d7190c6f06ba2107d4f3bf85ca798840642f00c6bb1f3872cc0a05efa3b83" => :yosemite
-    sha256 "ae23a194badab407ea3489991314f295f2ec7c6942dd60f0e81925eb94333dec" => :mavericks
-    sha256 "87d6cc4e3a3b868ee1a98f2e148060ed4a69d2cd593944ebed83fe887c7cd080" => :mountain_lion
+    sha256 "3babc57b6bd458d31ffdf632d0402e9e2d6c014a217b45b1d0c121ad4916e8e9" => :el_capitan
+    sha256 "5a98251b603885026ee3bae389fe35172bd3b69abd8a54d35d457b825bcadfda" => :yosemite
+    sha256 "cdaf6db6aa64715c6fa3aee979fa233a9fb9a2ff9d5d17650d0e3cc70290fcb0" => :mavericks
   end
 
   depends_on :xcode => :build
