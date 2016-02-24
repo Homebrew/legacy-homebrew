@@ -6,7 +6,7 @@ class Libqxt < Formula
     url "https://bitbucket.org/libqxt/libqxt/get/v0.6.2.tar.gz"
     sha256 "582426d6c81958dd1ac5ca4a9d49807e0a2204b7343e7d49c6613bcb148b5cb8"
     patch do
-      url "https://raw.githubusercontent.com/szechyjs/patches/master/libqxt/qxtglobalshortcut_mac.cpp.diff"
+      url "https://raw.githubusercontent.com/Homebrew/patches/master/libqxt/qxtglobalshortcut_mac.cpp.diff"
       sha256 "5713b32c32843a503d33f80e7e0e2646a66012ff66130304932870c5e0e90541"
     end
   end
