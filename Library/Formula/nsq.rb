@@ -3,8 +3,8 @@ require "language/go"
 class Nsq < Formula
   desc "Realtime distributed messaging platform"
   homepage "http://nsq.io"
-  url "https://github.com/nsqio/nsq/archive/v0.3.6.tar.gz"
-  sha256 "2cf00ddfd63508ab98d052cb36ac7ec5b591abe1896b92d158c04964e2c6cb97"
+  url "https://github.com/nsqio/nsq/archive/v0.3.7.tar.gz"
+  sha256 "fb71e28c757dd485b43b9bc75d90eb44ff9166ccb3d8a928c5e655b483da316e"
   revision 1
 
   head "https://github.com/nsqio/nsq.git"
@@ -35,7 +35,7 @@ class Nsq < Formula
 
   go_resource "github.com/bitly/go-simplejson" do
     url "https://github.com/bitly/go-simplejson.git",
-      :revision => "fc395a5db941cf38922b1ccbc083640cd76fe4bc"
+      :revision => "18db6e68d8fd9cbf2e8ebe4c81a78b96fd9bf05a"
   end
 
   go_resource "github.com/bmizerany/perks" do
@@ -66,6 +66,11 @@ class Nsq < Formula
   go_resource "github.com/julienschmidt/httprouter" do
     url "https://github.com/julienschmidt/httprouter.git",
       :revision => "6aacfd5ab513e34f7e64ea9627ab9670371b34e7"
+  end
+
+  go_resource "github.com/judwhite/go-svc" do
+    url "https://github.com/judwhite/go-svc.git",
+      :revision => "53bd3020e68399b23994ce23d1130801aa674226"
   end
 
   def install
