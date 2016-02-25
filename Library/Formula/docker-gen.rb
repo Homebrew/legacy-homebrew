@@ -4,12 +4,7 @@ class DockerGen < Formula
   url "https://github.com/jwilder/docker-gen/releases/download/0.7.0/docker-gen-darwin-amd64-0.7.0.tar.gz"
   sha256 "2778638defc63ed66d42e4dd099bd462eae1048492434b49b04b54453fc4b9f7"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "2818b78c3f09503c3a6e73cec25fc2f8904ec6f446b322772d6683c2f4048459" => :el_capitan
-    sha256 "fb9a79daa051f526f414f36e6e2b609bc767699da385030a49767d14035b40b6" => :yosemite
-    sha256 "5e006090106182a3c7f8cac8feb128a90c7d9fc17fa749a786a7118f1e9f9369" => :mavericks
-  end
+  bottle :unneeded
 
   def install
     bin.install "docker-gen"
