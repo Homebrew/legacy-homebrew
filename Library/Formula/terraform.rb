@@ -3,8 +3,8 @@ require "language/go"
 class Terraform < Formula
   desc "Tool to build, change, and version infrastructure"
   homepage "https://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.6.12.tar.gz"
-  sha256 "a8c4877547f8f02887c03328582ad2a43ea113a351f545e073f32e74d172e8a2"
+  url "https://github.com/hashicorp/terraform/archive/v0.6.11.tar.gz"
+  sha256 "374f69a5b2c32073a493a88cd9c55580b30dcf345437f4a8f6c46d87bdc5f0eb"
 
   bottle do
     cellar :any_skip_relocation
@@ -63,8 +63,10 @@ class Terraform < Formula
 
     cd terrapath do
       terraform_files = `go list ./...`.lines.map { |f| f.strip unless f.include? "/vendor/" }.compact
-      # As of release v0.6.12 - source contains failing tests, preventing local build.
-      # system "go", "test", *terraform_files
+      # v0.6.12 - source contains tests which fail if these environment variables are set locally.
+      ENV["AWS_ACCESS_KEY"] = ""
+      ENV["AWS_SECRET_KEY"] = ""
+      system "go", "test", *terraform_files
 
       mkdir "bin"
       arch = MacOS.prefer_64_bit? ? "amd64" : "386"
