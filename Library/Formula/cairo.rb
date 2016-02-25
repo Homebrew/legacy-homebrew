@@ -6,15 +6,15 @@ class Cairo < Formula
   sha256 "613cb38447b76a93ff7235e17acd55a78b52ea84a9df128c3f2257f8eaa7b252"
   revision 1
 
-  devel do
-    url "http://cairographics.org/snapshots/cairo-1.15.2.tar.xz"
-    sha256 "268cc265a7f807403582f440643064bf52896556766890c8df7bad02d230f6c9"
-  end
-
   bottle do
     sha256 "dd4dc801ee427ca2d2305403cacf747a51b58d80a2cd2ebf20a9623229830278" => :el_capitan
     sha256 "3ac3b4af558425ff4c3a9799bfb24ab70e41210d63323195db4a5e6feb790497" => :yosemite
     sha256 "15ec1a777186dc6af988c9d1de94449ce730ec64a1588d63f3a1b95222d75a8d" => :mavericks
+  end
+
+  devel do
+    url "http://cairographics.org/snapshots/cairo-1.15.2.tar.xz"
+    sha256 "268cc265a7f807403582f440643064bf52896556766890c8df7bad02d230f6c9"
   end
 
   keg_only :provided_pre_mountain_lion
