@@ -975,7 +975,7 @@ class Formula
       end
 
       if older_or_same_tap_versions.all? { |v| pkg_version > v }
-        all_versions
+        all_versions.sort!
       else
         []
       end
