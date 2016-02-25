@@ -117,10 +117,10 @@ then
   set -- "$@" -v
 fi
 
+HOMEBREW_ARG_COUNT="$#"
 HOMEBREW_COMMAND="$1"
 shift
 case "$HOMEBREW_COMMAND" in
-  '')          HOMEBREW_COMMAND="help";;
   ls)          HOMEBREW_COMMAND="list";;
   homepage)    HOMEBREW_COMMAND="home";;
   -S)          HOMEBREW_COMMAND="search";;
@@ -169,5 +169,7 @@ then
   source "$HOMEBREW_BASH_COMMAND"
   { "homebrew-$HOMEBREW_COMMAND" "$@"; exit $?; }
 else
-  exec "$HOMEBREW_RUBY_PATH" -W0 "$HOMEBREW_LIBRARY/brew.rb" "$HOMEBREW_COMMAND" "$@"
+  # Unshift command back into argument list (unless argument list was empty).
+  [[ "$HOMEBREW_ARG_COUNT" -gt 0 ]] && set -- "$HOMEBREW_COMMAND" "$@"
+  exec "$HOMEBREW_RUBY_PATH" -W0 "$HOMEBREW_LIBRARY/brew.rb" "$@"
 fi
