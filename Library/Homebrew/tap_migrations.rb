@@ -123,7 +123,6 @@ TAP_MIGRATIONS = {
   "latex-mk" => "homebrew/tex",
   "libdlna" => "homebrew/boneyard",
   "libgtextutils" => "homebrew/science",
-  "libqxt" => "homebrew/boneyard",
   "librets" => "homebrew/boneyard",
   "libspotify" => "homebrew/binary",
   "lilypond" => "homebrew/tex",
