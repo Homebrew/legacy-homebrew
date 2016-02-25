@@ -7,7 +7,7 @@ class Pkt2flow < Formula
   depends_on "scons" => :build
 
   def install
-    "scons"
+    scons
     bin.install "pkt2flow"
   end
 
