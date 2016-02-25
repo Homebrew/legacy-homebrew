@@ -9,25 +9,34 @@ module Homebrew
     # migrate to new directories based tap structure
     migrate_taps
 
-    report = Report.new
-    master_updater = Reporter.new(HOMEBREW_REPOSITORY)
-    master_updated = master_updater.updated?
-    if master_updated
-      initial_short = shorten_revision(master_updater.initial_revision)
-      current_short = shorten_revision(master_updater.current_revision)
-      puts "Updated Homebrew from #{initial_short} to #{current_short}."
+    hub = ReporterHub.new
+
+    begin
+      master_reporter = Reporter.new(CoreFormulaRepository.instance)
+    rescue Reporter::ReporterRevisionUnsetError => e
+      raise e if ARGV.homebrew_developer?
+      odie "update-report should not be called directly!"
     end
-    report.update(master_updater.report)
+
+    if master_reporter.updated?
+      initial_short = shorten_revision(master_reporter.initial_revision)
+      current_short = shorten_revision(master_reporter.current_revision)
+      puts "Updated Homebrew from #{initial_short} to #{current_short}."
+      hub.add(master_reporter)
+    end
 
     updated_taps = []
     Tap.each do |tap|
       next unless tap.git?
-      tap.path.cd do
-        updater = Reporter.new(tap.path)
-        updated_taps << tap.name if updater.updated?
-        report.update(updater.report) do |_key, oldval, newval|
-          oldval.concat(newval)
-        end
+      begin
+        reporter = Reporter.new(tap)
+      rescue Reporter::ReporterRevisionUnsetError => e
+        onoe e if ARGV.homebrew_developer?
+        next
+      end
+      if reporter.updated?
+        updated_taps << tap.name
+        hub.add(reporter)
       end
     end
     unless updated_taps.empty?
@@ -35,81 +44,24 @@ module Homebrew
            "(#{updated_taps.join(", ")})."
     end
 
-    if !master_updated && updated_taps.empty? && !ARGV.verbose?
+    if hub.reporters.empty?
       puts "Already up-to-date."
+    elsif hub.empty?
+      puts "No changes to formulae."
+    else
+      hub.dump
+      hub.reporters.each(&:migrate_tap_migration)
+      hub.reporters.each(&:migrate_formula_rename)
+      Descriptions.update_cache(hub)
     end
 
     Tap.each(&:link_manpages)
-
-    # automatically tap any migrated formulae's new tap
-    report.select_formula(:D).each do |f|
-      next unless (dir = HOMEBREW_CELLAR/f).exist?
-      migration = TAP_MIGRATIONS[f]
-      next unless migration
-      tap = Tap.fetch(*migration.split("/"))
-      tap.install unless tap.installed?
-
-      # update tap for each Tab
-      tabs = dir.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
-      next if tabs.first.source["tap"] != "Homebrew/homebrew"
-      tabs.each { |tab| tab.source["tap"] = "#{tap.user}/homebrew-#{tap.repo}" }
-      tabs.each(&:write)
-    end if load_tap_migrations
-
-    load_formula_renames
-    report.update_renamed
-
-    # Migrate installed renamed formulae from core and taps.
-    report.select_formula(:R).each do |oldname, newname|
-      if oldname.include?("/")
-        user, repo, oldname = oldname.split("/", 3)
-        newname = newname.split("/", 3).last
-      else
-        user = "homebrew"
-        repo = "homebrew"
-      end
-
-      next unless (dir = HOMEBREW_CELLAR/oldname).directory? && !dir.subdirs.empty?
-
-      begin
-        f = Formulary.factory("#{user}/#{repo}/#{newname}")
-      # short term fix to prevent situation like https://github.com/Homebrew/homebrew/issues/45616
-      rescue Exception
-      end
-
-      next unless f
-
-      begin
-        migrator = Migrator.new(f)
-        migrator.migrate
-      rescue Migrator::MigratorDifferentTapsError
-      end
-    end
-
-    if report.empty?
-      puts "No changes to formulae." if master_updated || !updated_taps.empty?
-    else
-      report.dump
-    end
-    Descriptions.update_cache(report)
   end
 
   private
 
   def shorten_revision(revision)
-    `git rev-parse --short #{revision}`.chomp
-  end
-
-  def load_tap_migrations
-    load "tap_migrations.rb"
-  rescue LoadError
-    false
-  end
-
-  def load_formula_renames
-    load "formula_renames.rb"
-  rescue LoadError
-    false
+    Utils.popen_read("git", "-C", HOMEBREW_REPOSITORY, "rev-parse", "--short", revision).chomp
   end
 end
 
