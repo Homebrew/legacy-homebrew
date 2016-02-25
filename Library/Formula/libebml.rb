@@ -1,7 +1,7 @@
 class Libebml < Formula
   desc "Sort of a sbinary version of XML"
-  homepage "http://www.matroska.org/"
-  url "http://dl.matroska.org/downloads/libebml/libebml-1.3.3.tar.bz2"
+  homepage "https://www.matroska.org/"
+  url "https://dl.matroska.org/downloads/libebml/libebml-1.3.3.tar.bz2"
   mirror "https://www.bunkus.org/videotools/mkvtoolnix/sources/libebml-1.3.3.tar.bz2"
   sha256 "35fb44daa41961f94a0ac1b8f06801e88cc9bf2ad6f562ced8ab7c1f1a875499"
 
