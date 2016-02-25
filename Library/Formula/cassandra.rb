@@ -1,9 +1,9 @@
 class Cassandra < Formula
   desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/3.0.3/apache-cassandra-3.0.3-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/3.0.3/apache-cassandra-3.0.3-bin.tar.gz"
-  sha256 "555417f0d3b5c73fda7388a23becba28f2b87b1d6de082b7afde8d56b29ba4dd"
+  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/3.3/apache-cassandra-3.3-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/cassandra/3.3/apache-cassandra-3.3-bin.tar.gz"
+  sha256 "d98e685857d80f9eb93529f7b4f0f2c369ef40974866c8f8ad8edd3d6e0bf7e3"
 
   bottle do
     sha256 "583256e24915ac70e7dd0492ad3c6b5d93dc5561fadf1d30dc2b9bf76c4653cd" => :el_capitan
