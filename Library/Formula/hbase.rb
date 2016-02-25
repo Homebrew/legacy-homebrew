@@ -9,6 +9,10 @@ class Hbase < Formula
   depends_on :java => "1.6+"
   depends_on "hadoop"
 
+  def rundir
+    var/"run/hbase"
+  end
+
   def install
     rm_f Dir["bin/*.cmd", "conf/*.cmd"]
     libexec.install %w[bin conf docs lib hbase-webapps]
@@ -23,6 +27,7 @@ class Hbase < Formula
       s.gsub!("# export JAVA_HOME=/usr/java/jdk1.6.0/",
               "export JAVA_HOME=\"$(/usr/libexec/java_home)\"")
     end
+    rundir.mkpath
   end
 
   def caveats; <<-EOS.undent
@@ -32,6 +37,54 @@ class Hbase < Formula
 
     For more details:
       https://hbase.apache.org/book.html
+    EOS
+  end
+
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/hbase/bin/start-hbase.sh"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>KeepAlive</key>
+      <true/>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>EnvironmentVariables</key>
+      <dict>
+       <key>HBASE_MASTER_OPTS</key><string> -XX:PermSize=128m -XX:MaxPermSize=128m</string>
+       <key>HBASE_LOG_DIR</key><string>#{var}/hbase</string>
+       <key>HBASE_HOME</key><string>#{opt_libexec}</string>
+       <key>HBASE_SECURITY_LOGGER</key><string>INFO,RFAS</string>
+       <key>HBASE_PID_DIR</key><string>#{rundir}</string>
+       <key>HBASE_NICENESS</key><string>0</string>
+       <key>HBASE_IDENT_STRING</key><string>root</string>
+       <key>HBASE_ENV_INIT</key><string>true</string>
+       <key>HBASE_REGIONSERVER_OPTS</key><string> -XX:PermSize=128m -XX:MaxPermSize=128m</string>
+       <key>HBASE_OPTS</key><string>-XX:+UseConcMarkSweepGC</string>
+       <key>HBASE_ROOT_LOGGER</key><string>INFO,RFA</string>
+       <key>HBASE_LOG_PREFIX</key><string>hbase-root-master-#{`hostname`.strip}</string>
+       <key>HBASE_LOGFILE</key><string>hbase-root-master-#{`hostname`.strip}.log</string>
+      </dict>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_bin}/hbase</string>
+        <string>--config</string>
+        <string>#{opt_libexec}/conf</string>
+        <string>master</string>
+        <string>start</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+      <key>StandardOutPath</key>
+      <string>#{var}/hbase/hbase.log</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/hbase/hbase.err</string>
+    </dict>
+    </plist>
     EOS
   end
 
