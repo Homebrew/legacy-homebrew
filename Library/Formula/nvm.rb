@@ -36,9 +36,9 @@ class Nvm < Formula
   end
 
   test do
-    output = pipe_output("NODE_VERSION=stable #{prefix}/nvm-exec 2>&1")
+    output = pipe_output("NODE_VERSION=homebrewtest #{prefix}/nvm-exec 2>&1")
     assert_no_match /No such file or directory/, output
     assert_no_match /nvm: command not found/, output
-    assert_match /N\/A: version \"stable\" is not yet installed/, output
+    assert_match /N\/A: version \"homebrewtest\" is not yet installed/, output
   end
 end
