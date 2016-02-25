@@ -9,4 +9,13 @@ class Clean < Formula
     bin.install "clean"
     man1.install "clean.1"
   end
+
+  test do
+    touch testpath/"backup1234"
+    touch testpath/"backup1234.testing-rm"
+
+    system bin/"clean", "-f", "-l", "-e", "*.testing-rm"
+    assert File.exist?("backup1234")
+    assert !File.exist?("backup1234.testing-rm")
+  end
 end

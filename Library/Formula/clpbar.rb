@@ -10,4 +10,9 @@ class Clpbar < Formula
                           "--program-prefix='clp'"
     system "make", "install"
   end
+
+  test do
+    output = shell_output("dd if=/dev/zero bs=1024 count=5 | #{bin}/clpbar 2>&1")
+    assert_match "Copied: 5120B (5.0KB)", output
+  end
 end
