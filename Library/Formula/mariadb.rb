@@ -1,8 +1,8 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.11/source/mariadb-10.1.11.tar.gz"
-  sha256 "cd32927370343b4f14bcc6073bca163623c27843ae7bc59c8c6a9ebeda0325ce"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.12/source/mariadb-10.1.12.tar.gz"
+  sha256 "795f466ac0e4df148981b85df735855d41614abaedcda51520a513a4ad60f4e7"
 
   bottle do
     sha256 "4e1cce301d858389bbd772f6fa4673290dc5a747c82db47f6f24f80b98b76b84" => :el_capitan
@@ -141,8 +141,6 @@ class Mariadb < Formula
         s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
       end
     end
-    # remove non-executable from bin
-    rm bin+"maria_add_gis_sp.sql"
   end
 
   def post_install
