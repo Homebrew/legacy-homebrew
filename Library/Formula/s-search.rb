@@ -8,6 +8,13 @@ class SSearch < Formula
 
   head "https://github.com/zquestz/s.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "412292df3b6c57ba3111f0671a4040334cfb022c5f84203142f29786e3bedb34" => :el_capitan
+    sha256 "009ad64b5fc9fea55ebf98139c2b3c8af8fb6175f03a9024d716a010a0a83cad" => :yosemite
+    sha256 "5f10f0ddbb727c7f9c2f981e4337fabe255f00274ba9b6455a082df7cc73e765" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/mitchellh/go-homedir" do
