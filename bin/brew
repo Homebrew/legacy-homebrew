@@ -1,4 +1,6 @@
 #!/bin/bash
+set +o posix
+
 chdir() {
   cd "$@" >/dev/null
 }
