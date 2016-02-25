@@ -16,11 +16,12 @@ class Scmpuff < Formula
   def install
     mkdir_p buildpath/"src/github.com/mroth"
     ln_s buildpath, buildpath/"src/github.com/mroth/scmpuff"
+    ENV["GO15VENDOREXPERIMENT"] = "0"
     ENV["GOPATH"] = buildpath
 
     # scmpuff's build script normally does version detection which depends on
     # being checked out via git repo -- instead have homebrew specify version.
-    system "go", "build", "-o", "#{bin}/scmpuff", "-ldflags", "-X main.VERSION #{version}"
+    system ["go", "build", "-o", "#{bin}/scmpuff", "-ldflags", "'-X main.VERSION=#{version}'"].join(" ")
   end
 
   test do
