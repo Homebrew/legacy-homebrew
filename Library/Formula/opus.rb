@@ -11,8 +11,6 @@ class Opus < Formula
     sha256 "8a43607dcf83bc516b823893d3c7f80d2ec9a5a2a7802d314f026858360c9303" => :mavericks
   end
 
-  option "with-custom-modes", "Enable custom-modes for opus see https://www.opus-codec.org/docs/opus_api-1.1.2/group__opus__custom.html"
-
   head do
     url "https://git.xiph.org/opus.git"
 
@@ -20,6 +18,8 @@ class Opus < Formula
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
+
+  option "with-custom-modes", "Enable custom-modes for opus see https://www.opus-codec.org/docs/opus_api-1.1.2/group__opus__custom.html"
 
   def install
     args = ["--disable-dependency-tracking", "--disable-doc", "--prefix=#{prefix}"]

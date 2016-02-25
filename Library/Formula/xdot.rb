@@ -7,7 +7,8 @@ class Xdot < Formula
   head "https://github.com/jrfonseca/xdot.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "fb2840cd83fe13ba5a93832dd5aa605feca8f156121cd1d8beb4772e47ab3801" => :el_capitan
     sha256 "9cf28bdc65d88717d0d7bac2f4aa8d2481dc1fbae3d0bb0ccd3966f27134fa2d" => :yosemite
     sha256 "cc1909be49ac10c929613451862498c817fe691a60c49ae6bb5eeef4ee122d66" => :mavericks
     sha256 "041b79d9ca753ec9005c7485417da74e5595ceadc4a6288dbe5c51d298e2886a" => :mountain_lion

@@ -6,6 +6,7 @@ class Gauche < Formula
 
   bottle do
     revision 1
+    sha256 "abb95196aadd8f233b04d2a14b8bbb4f0dbf3be8fa0ab089834cbc279b074daf" => :el_capitan
     sha256 "4018f9ae2b0a179ef5df0482e6734186f0069e773496f2f6092971f10a4c7b11" => :yosemite
     sha256 "e1258b3e8f0c5a61c8df484e173837e6fb3c7ecad7cd1fee277d1f8da56e98f9" => :mavericks
     sha256 "ffd47c0dcb63a508ae95adfc1e9c7825e75dd40fa10e46c68fcb8bd9b00637d5" => :mountain_lion

@@ -3,17 +3,16 @@ require "language/go"
 class Nsq < Formula
   desc "Realtime distributed messaging platform"
   homepage "http://nsq.io"
-  url "https://github.com/nsqio/nsq/archive/v0.3.6.tar.gz"
-  sha256 "2cf00ddfd63508ab98d052cb36ac7ec5b591abe1896b92d158c04964e2c6cb97"
-  revision 1
+  url "https://github.com/nsqio/nsq/archive/v0.3.7.tar.gz"
+  sha256 "fb71e28c757dd485b43b9bc75d90eb44ff9166ccb3d8a928c5e655b483da316e"
 
   head "https://github.com/nsqio/nsq.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2b74e0f20554251ea1060d4f306770fa658378a9dad34851675f12c15226fb0e" => :el_capitan
-    sha256 "686768ca33222259e4eae655de601119da6621fc10c8a8d30ffa27d7736298f8" => :yosemite
-    sha256 "6829fc7d9d4de5a5ff5ef5629e7f9e41919193436ce9f82159f34e33d4983c59" => :mavericks
+    sha256 "91a000705ffecf918ce61962a624e7420fcd241a528d8682acdf44e47791c4fa" => :el_capitan
+    sha256 "eaebbc4585c48399e709c81a83c29f974dcc237efa80e3b2ee42708da3494149" => :yosemite
+    sha256 "cc993cfc69b4104b71536b1d069cf102e7f11b50410395048ca9f1b88ff48c8b" => :mavericks
   end
 
   depends_on "go" => :build
@@ -35,7 +34,7 @@ class Nsq < Formula
 
   go_resource "github.com/bitly/go-simplejson" do
     url "https://github.com/bitly/go-simplejson.git",
-      :revision => "fc395a5db941cf38922b1ccbc083640cd76fe4bc"
+      :revision => "18db6e68d8fd9cbf2e8ebe4c81a78b96fd9bf05a"
   end
 
   go_resource "github.com/bmizerany/perks" do
@@ -66,6 +65,11 @@ class Nsq < Formula
   go_resource "github.com/julienschmidt/httprouter" do
     url "https://github.com/julienschmidt/httprouter.git",
       :revision => "6aacfd5ab513e34f7e64ea9627ab9670371b34e7"
+  end
+
+  go_resource "github.com/judwhite/go-svc" do
+    url "https://github.com/judwhite/go-svc.git",
+      :revision => "53bd3020e68399b23994ce23d1130801aa674226"
   end
 
   def install
