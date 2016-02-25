@@ -1,8 +1,8 @@
 class Cimg < Formula
   desc "C++ toolkit for image processing"
   homepage "http://cimg.eu/"
-  url "http://cimg.eu/files/CImg_1.6.3.zip"
-  sha256 "c2a3c62d05d1e322afa6afae086cf96df82a3a13b839e9bf1cedcb014d921ce7"
+  url "http://cimg.eu/files/CImg_1.6.9.zip"
+  sha256 "857988d2b4e36989342f475d55f4e3044243831f9fb5d65667de7ab6217a0e04"
 
   bottle do
     cellar :any
@@ -19,12 +19,14 @@ class Cimg < Formula
       Licence_CeCILL-C_V1-en.txt
       Licence_CeCILL_V2-en.txt
       examples
-      plugins]
+      plugins
+    ]
   end
 
   test do
-    cd doc/"examples" do
-      system "make", "mmacosx"
-    end
+    cp_r doc/"examples", testpath
+    cp_r doc/"plugins", testpath
+    system "make", "-C", "examples", "mmacosx"
+    system "examples/image2ascii"
   end
 end
