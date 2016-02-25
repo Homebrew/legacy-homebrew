@@ -1,19 +1,4 @@
 # Bash completion script for brew(1)
-#
-# To use, add the following to your .bashrc:
-#
-#    . $(brew --repository)/Library/Contributions/brew_bash_completion.sh
-#
-# Alternatively, if you have installed the bash-completion package,
-# you can create a symlink to this file in one of the following directories:
-#
-#    $(brew --prefix)/etc/bash_completion.d
-#    $(brew --prefix)/share/bash-completion/completions
-#
-# Installing to etc/bash_completion.d will cause bash-completion to load
-# it automatically at shell startup time. If you choose to install it to
-# share/bash-completion/completions, it will be loaded on-demand (i.e. the
-# first time you invoke the `brew` command in a shell session).
 
 __brewcomp_words_include ()
 {
