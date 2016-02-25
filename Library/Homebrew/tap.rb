@@ -76,6 +76,7 @@ class Tap
     @alias_reverse_table = nil
     @command_files = nil
     @formula_renames = nil
+    @tap_migrations = nil
   end
 
   # The remote path to this {Tap}.
@@ -365,6 +366,17 @@ class Tap
 
     @formula_renames ||= if (rename_file = path/"formula_renames.json").file?
       Utils::JSON.load(rename_file.read)
+    else
+      {}
+    end
+  end
+
+  # Hash with tap migrations
+  def tap_migrations
+    require "utils/json"
+
+    @tap_migrations ||= if (migration_file = path/"tap_migrations.json").file?
+      Utils::JSON.load(migration_file.read)
     else
       {}
     end

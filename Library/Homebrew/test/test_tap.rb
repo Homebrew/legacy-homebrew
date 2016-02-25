@@ -20,6 +20,9 @@ class TapTest < Homebrew::TestCase
     (@path/"formula_renames.json").write <<-EOS.undent
      { "oldname": "foo" }
     EOS
+    (@path/"tap_migrations.json").write <<-EOS.undent
+     { "removed-formula": "homebrew/foo" }
+    EOS
     @cmd_file = @path/"cmd/brew-tap-cmd.rb"
     @cmd_file.parent.mkpath
     FileUtils.touch @cmd_file
@@ -93,6 +96,7 @@ class TapTest < Homebrew::TestCase
     assert_equal @tap.alias_table, "homebrew/foo/bar" => "homebrew/foo/foo"
     assert_equal @tap.alias_reverse_table, "homebrew/foo/foo" => ["homebrew/foo/bar"]
     assert_equal @tap.formula_renames, "oldname" => "foo"
+    assert_equal @tap.tap_migrations, "removed-formula" => "homebrew/foo"
     assert_equal [@cmd_file], @tap.command_files
     assert_kind_of Hash, @tap.to_hash
     assert_equal true, @tap.formula_file?(@formula_file)
