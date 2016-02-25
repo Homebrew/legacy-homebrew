@@ -8,6 +8,12 @@ class Castxml < Formula
 
   head "https://github.com/CastXML/castxml.git"
 
+  bottle do
+    sha256 "c132699f62f6ba49ee0c71a75701a024bacf941ff0d9b48600a2964fb0f522f4" => :el_capitan
+    sha256 "bf45ee81179a7c03503be7ad1e35b44fe9399fcf928ab694eaa69bc058862345" => :yosemite
+    sha256 "2a083561ee404e8548eb4fe75a8b0c496493de3ed2a65c7e0b06264bf07cdc12" => :mavericks
+  end
+
   depends_on "cmake" => :build
   depends_on "llvm" => "with-clang"
 
