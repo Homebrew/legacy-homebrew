@@ -167,7 +167,7 @@ then
   # Hide shellcheck complaint:
   # shellcheck source=/dev/null
   source "$HOMEBREW_BASH_COMMAND"
-  { "homebrew_$HOMEBREW_COMMAND" "$@"; exit $?; }
+  { "homebrew_${HOMEBREW_COMMAND}" "$@"; exit $?; }
 else
   exec "$HOMEBREW_RUBY_PATH" -W0 "$HOMEBREW_LIBRARY/brew.rb" "$HOMEBREW_COMMAND" "$@"
 fi
