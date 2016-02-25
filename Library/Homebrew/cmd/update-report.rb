@@ -128,7 +128,7 @@ class Reporter
       if tap.core_formula_repository?
         new_full_name = new_name
       else
-        new_full_name = "#{tap}/#{new_full_name}"
+        new_full_name = "#{tap}/#{new_name}"
       end
 
       renamed_formulae << [old_full_name, new_full_name] if @report[:A].include? new_full_name
