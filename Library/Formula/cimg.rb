@@ -5,10 +5,10 @@ class Cimg < Formula
   sha256 "857988d2b4e36989342f475d55f4e3044243831f9fb5d65667de7ab6217a0e04"
 
   bottle do
-    cellar :any
-    sha256 "c803b97ca97c11b2adbdda5388c081302a8cb8f543156b63e2897abc5fab4fac" => :yosemite
-    sha256 "0adb11f01b9433ee8a8b0754cb2dcb894c65c2c28cc4d15425d159349c6ebef5" => :mavericks
-    sha256 "2570664e1c28fb05a59b09d566516d7e9429729cd7268dceb8d9b539770ccdb6" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "4279078a6e13098070cc62632596a0f2187115eab197fc093eca49f8c57d175a" => :el_capitan
+    sha256 "df6f99dab3ac2e1046e891d2594d9e9845d4b2164421bd4fccebf50d4a74e0cf" => :yosemite
+    sha256 "066d8e2062bf9b0cfb7b0ff4a4edf24c55e5fdaecb8cf262e549081c281f2fe5" => :mavericks
   end
 
   def install
