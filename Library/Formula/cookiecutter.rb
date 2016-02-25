@@ -55,13 +55,13 @@ class Cookiecutter < Formula
   end
 
   resource "ruamel.base" do
-      url "https://pypi.python.org/packages/source/r/ruamel.base/ruamel.base-1.0.0.tar.gz"
-      sha256 "c041333a0f0f00cd6593eb36aa83abb1a9e7544e83ba7a42aa7ac7476cee5cf3"
+    url "https://pypi.python.org/packages/source/r/ruamel.base/ruamel.base-1.0.0.tar.gz"
+    sha256 "c041333a0f0f00cd6593eb36aa83abb1a9e7544e83ba7a42aa7ac7476cee5cf3"
   end
 
   resource "ruamel.ordereddict" do
-      url "https://pypi.python.org/packages/source/r/ruamel.ordereddict/ruamel.ordereddict-0.4.9.tar.gz"
-      sha256 "7058c470f131487a3039fb9536dda9dd17004a7581bdeeafa836269a36a2b3f6"
+    url "https://pypi.python.org/packages/source/r/ruamel.ordereddict/ruamel.ordereddict-0.4.9.tar.gz"
+    sha256 "7058c470f131487a3039fb9536dda9dd17004a7581bdeeafa836269a36a2b3f6"
   end
 
   resource "whichcraft" do
