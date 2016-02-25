@@ -39,7 +39,6 @@ module Homebrew
       puts "Already up-to-date."
     end
 
-    Tap.clear_cache
     Tap.each(&:link_manpages)
 
     # automatically tap any migrated formulae's new tap
@@ -254,17 +253,22 @@ class Reporter
   end
 end
 
-class Report
+class ReporterHub
+  attr_reader :reporters
+
   def initialize
     @hash = {}
+    @reporters = []
   end
 
-  def fetch(*args, &block)
-    @hash.fetch(*args, &block)
+  def select_formula(key)
+    @hash.fetch(key, [])
   end
 
-  def update(*args, &block)
-    @hash.update(*args, &block)
+  def add(reporter)
+    @reporters << reporter
+    report = reporter.report.delete_if { |k,v| v.empty? }
+    @hash.update(report) { |_key, oldval, newval| oldval.concat(newval) }
   end
 
   def empty?
@@ -280,63 +284,24 @@ class Report
     dump_formula_report :D, "Deleted Formulae"
   end
 
-  def update_renamed
-    renamed_formulae = []
-
-    fetch(:D, []).each do |path|
-      case path.to_s
-      when HOMEBREW_TAP_PATH_REGEX
-        oldname = path.basename(".rb").to_s
-        next unless newname = Tap.fetch($1, $2).formula_renames[oldname]
-      else
-        oldname = path.basename(".rb").to_s
-        next unless newname = CoreFormulaRepository.instance.formula_renames[oldname]
-      end
-
-      if fetch(:A, []).include?(newpath = path.dirname.join("#{newname}.rb"))
-        renamed_formulae << [path, newpath]
-      end
-    end
-
-    unless renamed_formulae.empty?
-      @hash[:A] -= renamed_formulae.map(&:last) if @hash[:A]
-      @hash[:D] -= renamed_formulae.map(&:first) if @hash[:D]
-      @hash[:R] = renamed_formulae
-    end
-  end
-
-  def select_formula(key)
-    fetch(key, []).map do |path, newpath|
-      if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-        tap = Tap.fetch($1, $2)
-        if newpath
-          ["#{tap}/#{path.basename(".rb")}", "#{tap}/#{newpath.basename(".rb")}"]
-        else
-          "#{tap}/#{path.basename(".rb")}"
-        end
-      elsif newpath
-        ["#{path.basename(".rb")}", "#{newpath.basename(".rb")}"]
-      else
-        path.basename(".rb").to_s
-      end
-    end.sort
-  end
+  private
 
   def dump_formula_report(key, title)
-    formula = select_formula(key).map do |name, new_name|
+    formulae = select_formula(key).sort.map do |name, new_name|
       # Format list items of renamed formulae
       if key == :R
-        new_name = pretty_installed(new_name) if installed?(name)
+        name = pretty_installed(name) if installed?(name)
+        new_name = pretty_installed(new_name) if installed?(new_name)
         "#{name} -> #{new_name}"
       else
         installed?(name) ? pretty_installed(name) : name
       end
     end
 
-    unless formula.empty?
+    unless formulae.empty?
       # Dump formula list.
       ohai title
-      puts_columns(formula)
+      puts_columns(formulae)
     end
   end
 
