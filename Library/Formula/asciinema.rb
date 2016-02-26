@@ -3,8 +3,8 @@ require "language/go"
 class Asciinema < Formula
   desc "Record and share terminal sessions"
   homepage "https://asciinema.org/"
-  url "https://github.com/asciinema/asciinema/archive/v1.1.1.tar.gz"
-  sha256 "841b3393a65a4f49a01354aed4e2da6c30822dc83bcd988ff100fabda7038055"
+  url "https://github.com/asciinema/asciinema/archive/v1.2.0.tar.gz"
+  sha256 "64b8c2b034945a99398c5593fd8831c6448fd3b6dd788a979582805bfdcb5746"
 
   head "https://github.com/asciinema/asciinema.git"
 
