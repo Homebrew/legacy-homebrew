@@ -53,6 +53,10 @@ class Makensis < Formula
 
     (share/"nsis").install resource("nsis")
   end
+
+  test do
+    system "#{bin}/makensis", "-v"
+  end
 end
 
 __END__
