@@ -3,8 +3,8 @@ require "language/go"
 class Caddy < Formula
   desc "Alternative general-purpose HTTP/2 web server"
   homepage "https://caddyserver.com/"
-  url "https://github.com/mholt/caddy/archive/v0.8.1.tar.gz"
-  sha256 "360e49087c084ac61498f6cb6acf8f4c2480656f7635672265156136b6ae7474"
+  url "https://github.com/mholt/caddy/archive/v0.8.2.tar.gz"
+  sha256 "daa06cc4ed4485c42c0cda26e72f6b893227dd4e95c94b97996ef0d1986d32a1"
   head "https://github.com/mholt/caddy.git"
 
   bottle do
@@ -18,7 +18,7 @@ class Caddy < Formula
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
-    :revision => "5c4df71dfe9ac89ef6287afc05e4c1b16ae65a1e"
+    :revision => "a4eecd407cf4129fc902ece859a0114e4cf1a7f4"
   end
 
   go_resource "github.com/dustin/go-humanize" do
@@ -33,7 +33,7 @@ class Caddy < Formula
 
   go_resource "github.com/gorilla/websocket" do
     url "https://github.com/gorilla/websocket.git",
-    :revision => "3986be78bf859e01f01af631ad76da5b269d270c"
+    :revision => "5c91b59efa232fa9a87b705d54101832c498a172"
   end
 
   go_resource "github.com/hashicorp/go-syslog" do
@@ -46,9 +46,19 @@ class Caddy < Formula
     :revision => "3eca13d6893afd7ecabe15f4445f5d2872a1b012"
   end
 
+  go_resource "github.com/miekg/dns" do
+    url "https://github.com/miekg/dns.git",
+    :revision => "905106d0e8908efdda8d4519c817622c7e8ee8ec"
+  end
+
+  go_resource "github.com/mitchellh/goamz" do
+    url "https://github.com/mitchellh/goamz.git",
+    :revision => "caaaea8b30ee15616494ee68abd5d8ebbbef05cf"
+  end
+
   go_resource "github.com/russross/blackfriday" do
     url "https://github.com/russross/blackfriday.git",
-    :revision => "c8875c0ed47e07b063c3628e2e4d4c9826721795"
+    :revision => "006144af03eeeff1037240a71865a9fd61f1c25f"
   end
 
   go_resource "github.com/shurcooL/sanitized_anchor_name" do
@@ -58,27 +68,32 @@ class Caddy < Formula
 
   go_resource "github.com/square/go-jose" do
     url "https://github.com/square/go-jose.git",
-    :revision => "37934a899dd03635373fd1e143936d32cfe48d31"
+    :revision => "c3113091ae786777ea1e7ef2489086bcb574891e"
+  end
+
+  go_resource "github.com/vaughan0/go-ini" do
+    url "https://github.com/vaughan0/go-ini.git",
+    :revision => "a98ad7ee00ec53921f08832bc06ecf7fd600e6a1"
+  end
+
+  go_resource "github.com/weppos/dnsimple-go" do
+    url "https://github.com/weppos/dnsimple-go.git",
+    :revision => "65c1ca73cb19baf0f8b2b33219b7f57595a3ccb0"
   end
 
   go_resource "github.com/xenolf/lego" do
     url "https://github.com/xenolf/lego.git",
-    :revision => "db3a956d52bf23cc5201fe98bc9c9787d3b32c2d"
+    :revision => "da7dd0f7b877b4bd9dd6da52d4348940d1ed664e"
   end
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-    :revision => "3760e016850398b85094c4c99e955b8c3dea5711"
-  end
-
-  go_resource "golang.org/x/net" do
-    url "https://go.googlesource.com/net.git",
-    :revision => "72aa00c6241a8013dc9b040abb45f57edbe73945"
+    :revision => "1f22c0103821b9390939b6776727195525381532"
   end
 
   go_resource "gopkg.in/natefinch/lumberjack.v2" do
     url "https://gopkg.in/natefinch/lumberjack.v2.git",
-    :revision => "600ceb4523e5b7ff745f91083c8a023c2bf73af5"
+    :revision => "514cbda263a734ae8caac038dadf05f8f3f9f738"
   end
 
   go_resource "gopkg.in/yaml.v2" do
