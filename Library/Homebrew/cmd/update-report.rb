@@ -1,4 +1,3 @@
-require "cmd/tap"
 require "formula_versions"
 require "migrator"
 require "formulary"
@@ -6,8 +5,7 @@ require "descriptions"
 
 module Homebrew
   def update_report
-    # migrate to new directories based tap structure
-    migrate_taps
+    install_core_tap_if_necessary
 
     hub = ReporterHub.new
 
@@ -62,6 +60,15 @@ module Homebrew
 
   def shorten_revision(revision)
     Utils.popen_read("git", "-C", HOMEBREW_REPOSITORY, "rev-parse", "--short", revision).chomp
+  end
+
+  def install_core_tap_if_necessary
+    core_tap = CoreTap.instance
+    return if core_tap.installed?
+    CoreTap.ensure_installed! :quiet => false
+    revision = core_tap.git_head
+    ENV["HOMEBREW_UPDATE_BEFORE_HOMEBREW_HOMEBREW_CORE"] = revision
+    ENV["HOMEBREW_UPDATE_AFTER_HOMEBREW_HOMEBREW_CORE"] = revision
   end
 end
 
