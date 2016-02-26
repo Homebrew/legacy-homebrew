@@ -1,23 +1,27 @@
 class Abcl < Formula
   desc "Armed Bear Common Lisp: a full implementation of Common Lisp"
   homepage "http://abcl.org"
-  url "http://abcl.org/releases/1.3.3/abcl-bin-1.3.3.tar.gz"
-  sha256 "01e1d05b14eca802c727dea8be9350e22dfddf8a8637ec9fbd8323c4f7f2a954"
+  url "http://abcl.org/releases/1.3.3/abcl-src-1.3.3.tar.gz"
+  sha256 "2186e3670bc9778472f5589109a79f13f0e487444e0602b6fcdc96b7c68f7d0f"
+  head "http://abcl.org/svn/trunk/abcl/", :using => :svn
 
-  bottle :unneeded
-
+  depends_on "ant"
   depends_on :java => "1.5+"
-  depends_on "rlwrap"
+  depends_on "rlwrap" => :recommended
 
   def install
-    libexec.install "abcl.jar", "abcl-contrib.jar"
-    (bin+"abcl").write <<-EOS.undent
+    ENV.java_cache
+    system "ant"
+
+    libexec.install "dist/abcl.jar", "dist/abcl-contrib.jar"
+    (bin/"abcl").write <<-EOS.undent
       #!/bin/sh
-      rlwrap java -jar "#{libexec}/abcl.jar" "$@"
+      #{"rlwrap " if build.with?("rlwrap")}java -cp #{libexec}/abcl.jar:"$CLASSPATH" org.armedbear.lisp.Main "$@"
     EOS
   end
 
   test do
-    assert_match "42", pipe_output("#{bin}/abcl", "(+ 1 1 40)")
+    (testpath/"test.lisp").write "(print \"Homebrew\")\n(quit)"
+    assert_match /"Homebrew"$/, shell_output("#{bin}/abcl --load test.lisp").strip
   end
 end
