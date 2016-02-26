@@ -11,6 +11,11 @@ class Makensis < Formula
     sha256 "df608eed02642d4f9dfbc230e175e460e9769d351acbd9411455ad4333cf1282" => :mavericks
   end
 
+  devel do
+    url "https://downloads.sourceforge.net/project/nsis/NSIS%203%20Pre-release/3.0b3/nsis-3.0b3-src.tar.bz2"
+    sha256 "faf22d6cd4bd46780afcf22524a1de39bcc38c85773719ec7a1ecf002e308d3a"
+  end
+
   depends_on "scons" => :build
 
   # scons appears to have no builtin way to override the compiler selection,
@@ -18,9 +23,17 @@ class Makensis < Formula
   # Use the right compiler by forcibly altering the scons config to set these
   patch :DATA
 
+  if build.devel?
+    resource_url = "https://downloads.sourceforge.net/project/nsis/NSIS%203%20Pre-release/3.0b3/nsis-3.0b3.zip"
+    resource_sum = "8eee1f0f31c5f776cb2aa34197f906220c9ed43918424eb5bced3ca773e58b10"
+  else
+    resource_url = "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.50/nsis-2.50.zip"
+    resource_sum = "36bebcd12ad8ec6b94920b46c4c5a7a9fccdaa5e9aececb9e89aecfdfa35e472"
+  end
+
   resource "nsis" do
-    url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.50/nsis-2.50.zip"
-    sha256 "36bebcd12ad8ec6b94920b46c4c5a7a9fccdaa5e9aececb9e89aecfdfa35e472"
+    url resource_url
+    sha256 resource_sum
   end
 
   def install
@@ -30,8 +43,14 @@ class Makensis < Formula
     ENV.libstdcxx if ENV.compiler == :clang
 
     # Don't strip, see https://github.com/Homebrew/homebrew/issues/28718
-    scons "STRIP=0", "makensis"
-    bin.install "build/release/makensis/makensis"
+    scons "STRIP=0", "SKIPUTILS=all", "makensis"
+
+    if build.stable?
+      bin.install "build/release/makensis/makensis"
+    else
+      bin.install "build/urelease/makensis/makensis"
+    end
+
     (share/"nsis").install resource("nsis")
   end
 end
@@ -56,4 +75,3 @@ index a344456..37c575b 100755
 +
  def AddValuedDefine(define):
    defenv.Append(NSIS_CPPDEFINES = [(define, env[define])])
- 
