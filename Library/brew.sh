@@ -1,4 +1,4 @@
-odie() {
+onoe() {
   if [[ -t 2 ]] # check whether stderr is a tty.
   then
     echo -ne "\033[4;31mError\033[0m: " >&2 # highlight Error with underline and red color
@@ -11,6 +11,10 @@ odie() {
   else
     echo "$*" >&2
   fi
+}
+
+odie() {
+  onoe "$@"
   exit 1
 }
 
@@ -143,18 +147,32 @@ elif [[ -n "$HOMEBREW_DEVELOPER" && -f "$HOMEBREW_LIBRARY/Homebrew/dev-cmd/$HOME
   HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/dev-cmd/$HOMEBREW_COMMAND.sh"
 fi
 
-if [[ "$(id -u)" = "0" && "$(/usr/bin/stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
+if [[ "$(id -u)" = "0" ]]
 then
-  case "$HOMEBREW_COMMAND" in
-    install|reinstall|postinstall|link|pin|update|update-ruby|upgrade|create|migrate|tap|switch)
-      odie <<EOS
+  brew_uid="$(ls -n "$HOMEBREW_BREW_FILE" | awk '{print $3}')"
+  brew_user="$(ls -l "$HOMEBREW_BREW_FILE" | awk '{print $3}')"
+  if [[ "$brew_uid" != "0" ]]
+  then
+    case "$HOMEBREW_COMMAND" in
+      install|reinstall|postinstall|link|pin|update|upgrade|create|migrate|tap|switch)
+      # suppress the warning message if the process is invoked by brew instance
+      parent_command="$(ps -o command= $PPID)"
+      if [[ "$parent_command" != *"$HOMEBREW_BREW_FILE"* &&
+            "$parent_command" != *"$HOMEBREW_LIBRARY/brew.rb"* ]]
+      then
+        onoe <<EOS
 Cowardly refusing to 'sudo brew $HOMEBREW_COMMAND'
 You can use brew with sudo, but only if the brew executable is owned by root.
 However, this is both not recommended and completely unsupported so do so at
 your own risk.
+
+Run 'brew $HOMEBREW_COMMAND' as $brew_user for now.
 EOS
+      fi
+      exec /usr/bin/sudo -u "#$brew_uid" "$HOMEBREW_BREW_FILE" "$HOMEBREW_COMMAND" "$@"
       ;;
-  esac
+    esac
+  fi
 fi
 
 if [[ -n "$HOMEBREW_BASH_COMMAND" ]]
