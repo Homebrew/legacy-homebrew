@@ -52,8 +52,9 @@ class Tab < OpenStruct
       attributes["source"]["tap"] = attributes.delete("tapped_from")
     end
 
-    if attributes["source"]["tap"] == "mxcl/master"
-      attributes["source"]["tap"] = "Homebrew/homebrew"
+    if attributes["source"]["tap"] == "mxcl/master" ||
+       attributes["source"]["tap"] == "Homebrew/homebrew"
+      attributes["source"]["tap"] = "Homebrew/core"
     end
 
     if attributes["source"]["spec"].nil?

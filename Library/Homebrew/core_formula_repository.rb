@@ -1,22 +1,33 @@
 require "tap"
-require "tap_migrations"
-require "formula_renames"
 
-# A specialized {Tap} class to mimic the core formula file system, which shares many
-# similarities with normal {Tap}.
-# TODO Separate core formulae with core codes. See discussion below for future plan:
-#      https://github.com/Homebrew/homebrew/pull/46735#discussion_r46820565
+# A specialized {Tap} class for the core formula file system
 class CoreFormulaRepository < Tap
+  if OS.mac?
+    OFFICIAL_REMOTE = "https://github.com/Homebrew/homebrew-core"
+  else
+    OFFICIAL_REMOTE = "https://github.com/Linuxbrew/homebrew-core"
+  end
+
   # @private
   def initialize
-    @user = "Homebrew"
-    @repo = "homebrew"
-    @name = "Homebrew/homebrew"
-    @path = HOMEBREW_REPOSITORY
+    super "Homebrew", "core"
   end
 
   def self.instance
     @instance ||= CoreFormulaRepository.new
+  end
+
+  def self.ensure_installed!(options = {})
+    return if instance.installed?
+    args = ["tap", instance.name]
+    args << "-q" if options.fetch(:quiet, true)
+    safe_system HOMEBREW_BREW_FILE, *args
+  end
+
+  # @private
+  def install(options = {})
+    options = { :clone_target => OFFICIAL_REMOTE }.merge(options)
+    super options
   end
 
   # @private
@@ -46,7 +57,8 @@ class CoreFormulaRepository < Tap
 
   # @private
   def custom_remote?
-    remote != "https://github.com/#{user}/#{repo}.git"
+    return true unless remote
+    remote != OFFICIAL_REMOTE
   end
 
   # @private
@@ -56,22 +68,26 @@ class CoreFormulaRepository < Tap
 
   # @private
   def formula_dir
-    HOMEBREW_LIBRARY/"Formula"
+    self.class.ensure_installed!
+    super
   end
 
   # @private
   def alias_dir
-    HOMEBREW_LIBRARY/"Aliases"
+    self.class.ensure_installed!
+    super
   end
 
   # @private
   def formula_renames
-    FORMULA_RENAMES
+    self.class.ensure_installed!
+    super
   end
 
   # @private
   def tap_migrations
-    TAP_MIGRATIONS
+    self.class.ensure_installed!
+    super
   end
 
   # @private
