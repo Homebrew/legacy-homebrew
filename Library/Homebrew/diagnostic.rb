@@ -1003,7 +1003,7 @@ module Homebrew
       def check_git_newline_settings
         return unless Utils.git_available?
 
-        autocrlf = `git config --get core.autocrlf`.chomp
+        autocrlf = HOMEBREW_REPOSITORY.cd { `git config --get core.autocrlf`.chomp }
 
         if autocrlf == "true" then <<-EOS.undent
         Suspicious Git newline settings found.
