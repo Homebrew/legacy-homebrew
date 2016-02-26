@@ -28,9 +28,9 @@ class Hbase < Formula
     resource("hadoop-lzo").stage do
       # Fixed upstream: https://github.com/cloudera/hadoop-lzo/blob/master/build.xml#L235
       inreplace "build.xml",
-                /(<class name="com.hadoop.compression.lzo.LzoDecompressor" \/>)/,
+                %r{(<class name="com.hadoop.compression.lzo.LzoDecompressor" />)},
                 "\\1\n<classpath refid=\"classpath\"/>"
-      Kernel.system({ "CLASSPATH"=>"#{libexec}/lib/hadoop-common-*.jar", "CFLAGS"=>"-m64", "CXXFLAGS"=>"-m64","CPPFLAGS"=>"-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers" }, "ant compile-native tar")
+      Kernel.system({ "CLASSPATH"=>"#{libexec}/lib/hadoop-common-*.jar", "CFLAGS"=>"-m64", "CXXFLAGS"=>"-m64", "CPPFLAGS"=>"-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers" }, "ant compile-native tar")
       (libexec/"lib").install Dir["build/hadoop-lzo-*/hadoop-lzo-*.jar"]
       (libexec/"lib/native").mkpath
       (libexec/"lib/native").install Dir["build/hadoop-lzo-*/lib/native/*"]
