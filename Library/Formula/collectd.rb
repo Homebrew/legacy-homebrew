@@ -3,14 +3,9 @@ class Collectd < Formula
   homepage "https://collectd.org/"
 
   stable do
-    url "https://collectd.org/files/collectd-5.5.0.tar.bz2"
-    mirror "http://pkgs.fedoraproject.org/repo/pkgs/collectd/collectd-5.5.0.tar.bz2/c39305ef5514b44238b0d31f77e29e6a/collectd-5.5.0.tar.bz2"
-    sha256 "847684cf5c10de1dc34145078af3fcf6e0d168ba98c14f1343b1062a4b569e88"
-
-    patch do
-      url "https://github.com/collectd/collectd/commit/e0683047a42e217c352c2419532b8e029f9f3f0a.diff"
-      sha256 "7053170a072d27465b69eed269d32190ec810bcb0db59f139a1682e71a326fdd"
-    end
+    url "https://collectd.org/files/collectd-5.5.1.tar.bz2"
+    mirror "http://pkgs.fedoraproject.org/repo/pkgs/collectd/collectd-5.5.1.tar.bz2/fd24b947cef9351ce3e2d6d2a0762e18/collectd-5.5.1.tar.bz2"
+    sha256 "f9c5d526e1f0429a7db1ccd90bdf9e23923a2fd43b7285cfda8f0341e5c0bc3f"
   end
 
   bottle do
@@ -22,15 +17,14 @@ class Collectd < Formula
   end
 
   head do
-    url "git://git.verplant.org/collectd.git"
+    url "https://github.com/collectd/collectd.git"
 
     depends_on "libtool" => :build
     depends_on "automake" => :build
     depends_on "autoconf" => :build
   end
 
-  # Will fail against Java 1.7
-  option "with-java", "Enable Java 1.6 support"
+  option "with-java", "Enable Java support"
   option "with-protobuf-c", "Enable write_riemann via protobuf-c support"
   option "with-debug", "Enable debug support"
 
@@ -39,7 +33,7 @@ class Collectd < Formula
 
   depends_on "pkg-config" => :build
   depends_on "protobuf-c" => :optional
-  depends_on :java => ["1.6", :optional]
+  depends_on :java => :optional
   depends_on "openssl"
 
   fails_with :clang do
@@ -51,10 +45,6 @@ class Collectd < Formula
   end
 
   def install
-    # collectd breaks with makejobs
-    # see: https://github.com/collectd/collectd/issues/1146
-    ENV.deparallelize
-
     args = %W[
       --disable-debug
       --disable-dependency-tracking
