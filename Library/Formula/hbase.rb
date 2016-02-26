@@ -7,7 +7,7 @@ class Hbase < Formula
   bottle :unneeded
 
   depends_on :java => "1.6+"
-  depends_on "hadoop"
+  depends_on "hadoop" => :optional
 
   def rundir
     var/"run/hbase"
@@ -27,11 +27,42 @@ class Hbase < Formula
       s.gsub!("# export JAVA_HOME=/usr/java/jdk1.6.0/",
               "export JAVA_HOME=\"$(/usr/libexec/java_home)\"")
     end
+
+    inreplace "#{libexec}/conf/hbase-site.xml",
+              /<configuration>/,
+              <<-EOS
+<configuration>
+  <property>
+    <name>hbase.rootdir</name>
+    <value>file://#{var}/hbase</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.property.clientPort</name>
+    <value>2181</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.property.dataDir</name>
+    <value>#{var}/zookeeper</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.dns.interface</name>
+    <value>lo0</value>
+  </property>
+  <property>
+    <name>hbase.regionserver.dns.interface</name>
+    <value>lo0</value>
+  </property>
+  <property>
+    <name>hbase.master.dns.interface</name>
+    <value>lo0</value>
+  </property>
+EOS
+
     rundir.mkpath
   end
 
   def caveats; <<-EOS.undent
-    You must edit the configs in:
+    You may want to edit the configs in:
       #{libexec}/conf
     to reflect your environment.
 
