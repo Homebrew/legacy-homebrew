@@ -16,8 +16,9 @@ module Homebrew
     else
       tap = Tap.fetch(ARGV.named[0])
       begin
-        tap.install(:clone_target => ARGV.named[1],
-                    :full_clone   => ARGV.include?("--full"))
+        tap.install :clone_target => ARGV.named[1],
+                    :full_clone   => ARGV.include?("--full"),
+                    :quiet        => ARGV.quieter?
       rescue TapAlreadyTappedError => e
         opoo e
       end
