@@ -1,8 +1,8 @@
 class Cpulimit < Formula
   desc "CPU usage limiter"
   homepage "https://github.com/opsengine/cpulimit"
-  url "https://github.com/opsengine/cpulimit/archive/v0.1.tar.gz"
-  sha256 "6e653150aae18dd72f7dd93d92ee5f200eb8fef89e6c0bed28a2e3233dc29f23"
+  url "https://github.com/opsengine/cpulimit/archive/v0.2.tar.gz"
+  sha256 "64312f9ac569ddcadb615593cd002c94b76e93a0d4625d3ce1abb49e08e2c2da"
 
   head "https://github.com/opsengine/cpulimit.git"
 
@@ -12,6 +12,6 @@ class Cpulimit < Formula
   end
 
   test do
-    system *%W[#{bin}/cpulimit -l 10 ls]
+    system "#{bin}/cpulimit", "--limit=10", "ls"
   end
 end
