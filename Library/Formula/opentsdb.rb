@@ -4,7 +4,10 @@ class Opentsdb < Formula
   url "https://github.com/OpenTSDB/opentsdb/releases/download/v2.2.0/opentsdb-2.2.0.tar.gz"
   sha256 "5689d4d83ee21f1ce5892d064d6738bfa9fdef99f106f45d5c38eefb9476dfb5"
 
-  depends_on "hbase"
+  option "with-lzo", "Use LZO Compression"
+
+  depends_on "hbase" unless build.with? "lzo"
+  depends_on "hbase" => "with-lzo" if build.with? "lzo"
   depends_on :java => "1.6+"
   depends_on "gnuplot" => :optional
 
@@ -14,6 +17,14 @@ class Opentsdb < Formula
 
   def cachedir
     var/"cache/opentsdb"
+  end
+
+  def hbasedir
+    Formula["hbase"].opt_libexec.to_s
+  end
+
+  def hbase_plist
+    Formula["hbase"].plist_name
   end
 
   def install
@@ -40,9 +51,8 @@ class Opentsdb < Formula
     unless File.exist? "#{confdir}/opentsdb.conf"
       confdir.install Dir["#{opt_share}/opentsdb/etc/opentsdb/*"]
     end
-    system "#{Formula["hbase"].opt_libexec.to_s}/bin/start-hbase.sh"
-    envs = {"HBASE_HOME"=>(Formula["hbase"].opt_libexec.to_s), "COMPRESSION"=>"NONE",
-            "JAVA_HOME"=>`/usr/libexec/java_home`.strip}
+    system "#{hbasedir}/bin/start-hbase.sh"
+    envs = {"HBASE_HOME"=>hbasedir, "COMPRESSION"=>(build.with? 'lzo' ? "LZO":"NONE"), "JAVA_HOME"=>`/usr/libexec/java_home`.strip}
     Kernel.system(envs, "#{opt_share}/opentsdb/tools/create_table.sh")
   end
 
@@ -56,7 +66,7 @@ class Opentsdb < Formula
       <key>KeepAlive</key>
       <dict>
         <key>OtherJobEnabled</key>
-        <string>#{Formula["hbase"].plist_name}</string>
+        <string>#{hbase_plist}</string>
       </dict>
       <key>Label</key>
       <string>#{plist_name}</string>
