@@ -16,7 +16,7 @@ end
 class FormularyFactoryTest < Homebrew::TestCase
   def setup
     @name = "testball_bottle"
-    @path = HOMEBREW_PREFIX/"Library/Formula/#{@name}.rb"
+    @path = CoreFormulaRepository.new.formula_dir/"#{@name}.rb"
     @bottle_dir = Pathname.new("#{File.expand_path("..", __FILE__)}/bottles")
     @bottle = @bottle_dir/"testball_bottle-0.1.#{bottle_tag}.bottle.tar.gz"
     @path.write <<-EOS.undent
@@ -144,7 +144,7 @@ end
 class FormularyTapPriorityTest < Homebrew::TestCase
   def setup
     @name = "foo"
-    @core_path = HOMEBREW_PREFIX/"Library/Formula/#{@name}.rb"
+    @core_path = CoreFormulaRepository.new.formula_dir/"#{@name}.rb"
     @tap = Tap.new "homebrew", "foo"
     @tap_path = @tap.path/"#{@name}.rb"
     code = <<-EOS.undent
