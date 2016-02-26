@@ -9,10 +9,11 @@ class Hbase < Formula
   depends_on :java => "1.6+"
   depends_on "hadoop" => :optional
   depends_on "lzo" => :recommended
+  depends_on "ant" => :build if build.with? "lzo"
 
   resource "hadoop-lzo" do
     url "https://github.com/cloudera/hadoop-lzo/archive/0.4.14.tar.gz"
-    sha256 "0f6aadb8aee6d67d78ea06306913e7363a4108181d704c8d4a91b362a1b94eab"
+    sha256 "aa8ddbb8b3f9e1c4b8cc3523486acdb7841cd97c002a9f2959c5b320c7bb0e6c"
   end
 
   def rundir
@@ -24,14 +25,16 @@ class Hbase < Formula
     libexec.install %w[bin conf docs lib hbase-webapps]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
 
-    if build.with? "lzo"
-      resource("hadoop-lzo").stage do
-        Kernel.system({ "CLASSPATH"=>"#{libexec}/lib/hadoop-common-*.jar", "CFLAGS"=>"-m64", "CXXFLAGS"=>"-m64" }, "ant compile-native tar")
-        (libexec/"lib").install Dir["build/hadoop-lzo-*/hadoop-lzo-*.jar"]
-        (libexec/"lib/native").mkpath
-        (libexec/"lib/native").install Dir["build/hadoop-lzo-*/lib/native/*"]
-      end
-    end
+    resource("hadoop-lzo").stage do
+      # Fixed upstream: https://github.com/cloudera/hadoop-lzo/blob/master/build.xml#L235
+      inreplace "build.xml",
+                /(<class name="com.hadoop.compression.lzo.LzoDecompressor" \/>)/,
+                "\\1\n<classpath refid=\"classpath\"/>"
+      Kernel.system({ "CLASSPATH"=>"#{libexec}/lib/hadoop-common-*.jar", "CFLAGS"=>"-m64", "CXXFLAGS"=>"-m64","CPPFLAGS"=>"-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers" }, "ant compile-native tar")
+      (libexec/"lib").install Dir["build/hadoop-lzo-*/hadoop-lzo-*.jar"]
+      (libexec/"lib/native").mkpath
+      (libexec/"lib/native").install Dir["build/hadoop-lzo-*/lib/native/*"]
+    end if build.with? "lzo"
 
     inreplace "#{libexec}/conf/hbase-env.sh" do |s|
       # upstream bugs for ipv6 incompatibility:
