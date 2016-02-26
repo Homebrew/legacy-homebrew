@@ -3,8 +3,8 @@ class DockerCompose < Formula
   homepage "https://docs.docker.com/compose/"
 
   stable do
-    url "https://github.com/docker/compose/archive/1.6.0.tar.gz"
-    sha256 "7616e561cc986073c0ac163e6d64cdf63b0817052560beaa737e1c8fb3886528"
+    url "https://github.com/docker/compose/archive/1.6.2.tar.gz"
+    sha256 "1c318cdf12bdc97e079224fb0cab45ed0f6ec2d1ce87599eff549b1aafa27837"
   end
 
   bottle do
@@ -27,8 +27,8 @@ class DockerCompose < Formula
   depends_on "docker-machine" => :recommended
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.7.0.tar.gz"
-    sha256 "f25335ad9ddd6a257d0948ab3f1cae3dba9156d2df372b7ebd738c1b755985de"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.7.2.tar.gz"
+    sha256 "95b1d14c4ae49dfbb724332cda9c63fb67628b8bdee79c321f2d405cf7a8d04c"
   end
 
   resource "requests" do
