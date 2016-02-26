@@ -35,7 +35,8 @@ class Ffmpeg < Formula
   option "with-dcadec", "Enable dcadec library"
   option "with-rubberband", "Enable rubberband library"
   option "with-zimg", "Enable z.lib zimg library"
-
+  option "with-openh264", "Enable OpenH264 library"
+  
   depends_on "pkg-config" => :build
 
   # manpages won't be built without texi2html
@@ -76,7 +77,8 @@ class Ffmpeg < Formula
   depends_on "dcadec" => :optional
   depends_on "rubberband" => :optional
   depends_on "zimg" => :optional
-
+  depends_on "openh264" => :optional
+  
   def install
     args = ["--prefix=#{prefix}",
             "--enable-shared",
@@ -125,6 +127,7 @@ class Ffmpeg < Formula
     args << "--enable-librubberband" if build.with? "rubberband"
     args << "--enable-libzimg" if build.with? "zimg"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
+    args << "--enable-libopenh264" if build.with? "openh264"
 
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
