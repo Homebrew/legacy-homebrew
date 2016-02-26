@@ -36,24 +36,25 @@ module Homebrew
     do_bump = ARGV.include?("--bump") && !ARGV.include?("--clean")
 
     bintray_fetch_formulae = []
+    tap = nil
 
     ARGV.named.each do |arg|
       if arg.to_i > 0
         issue = arg
-        url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
+        url = "https://github.com/Homebrew/homebrew-core/pull/#{arg}"
         tap = CoreFormulaRepository.instance
       elsif (testing_match = arg.match %r{brew.sh/job/Homebrew.*Testing/(\d+)/})
         _, testing_job = *testing_match
-        url = "https://github.com/Homebrew/homebrew/compare/master...BrewTestBot:testing-#{testing_job}"
+        url = "https://github.com/Homebrew/homebrew-core/compare/master...BrewTestBot:testing-#{testing_job}"
         tap = CoreFormulaRepository.instance
         odie "Testing URLs require `--bottle`!" unless ARGV.include?("--bottle")
       elsif (api_match = arg.match HOMEBREW_PULL_API_REGEX)
         _, user, repo, issue = *api_match
         url = "https://github.com/#{user}/homebrew#{repo}/pull/#{issue}"
-        tap = Tap.fetch(user, "homebrew#{repo}")
+        tap = Tap.fetch(user, "homebrew#{repo}") if repo
       elsif (url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX)
         url, user, repo, issue = *url_match
-        tap = Tap.fetch(user, "homebrew#{repo}")
+        tap = Tap.fetch(user, "homebrew#{repo}") if repo
       else
         odie "Not a GitHub pull request or commit: #{arg}"
       end
@@ -62,8 +63,12 @@ module Homebrew
         raise "No pull request detected!"
       end
 
-      tap.install unless tap.installed?
-      Dir.chdir tap.path
+      if tap
+        tap.install unless tap.installed?
+        Dir.chdir tap.path
+      else
+        Dir.chdir HOMEBREW_REPOSITORY
+      end
 
       # The cache directory seems like a good place to put patches.
       HOMEBREW_CACHE.mkpath
@@ -72,8 +77,12 @@ module Homebrew
       revision = `git rev-parse --short HEAD`.strip
       branch = `git symbolic-ref --short HEAD`.strip
 
-      unless branch == "master" || ARGV.include?("--clean") || ARGV.include?("--branch-okay")
-        opoo "Current branch is #{branch}: do you need to pull inside master?"
+      unless ARGV.include?("--branch-okay")
+        if tap
+          opoo "Current branch is #{branch}: do you need to pull inside master?" if branch != "master"
+        else
+          opoo "Current branch is #{branch}: do you need to pull inside tng?" if branch != "tng"
+        end
       end
 
       patch_puller = PatchPuller.new(url)
@@ -94,16 +103,18 @@ module Homebrew
 
       changed_formulae = []
 
-      Utils.popen_read(
-        "git", "diff-tree", "-r", "--name-only",
-        "--diff-filter=AM", revision, "HEAD", "--", tap.formula_dir.to_s
-      ).each_line do |line|
-        name = "#{tap.name}/#{File.basename(line.chomp, ".rb")}"
-        begin
-          changed_formulae << Formula[name]
-        # Make sure we catch syntax errors.
-        rescue Exception
-          next
+      if tap
+        Utils.popen_read(
+          "git", "diff-tree", "-r", "--name-only",
+          "--diff-filter=AM", revision, "HEAD", "--", tap.formula_dir.to_s
+        ).each_line do |line|
+          name = "#{tap.name}/#{File.basename(line.chomp, ".rb")}"
+          begin
+            changed_formulae << Formula[name]
+          # Make sure we catch syntax errors.
+          rescue Exception
+            next
+          end
         end
       end
 
@@ -167,11 +178,7 @@ module Homebrew
           url
         else
           bottle_branch = "pull-bottle-#{issue}"
-          if tap.core_formula_repository?
-            "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
-          else
-            "https://github.com/BrewTestBot/homebrew-#{tap.repo}/compare/homebrew:master...pr-#{issue}"
-          end
+          "https://github.com/BrewTestBot/homebrew-#{tap.repo}/compare/homebrew:master...pr-#{issue}"
         end
         curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
 
@@ -305,7 +312,7 @@ module Homebrew
       files << $1 if line =~ %r{^\+\+\+ b/(.*)}
     end
     files.each do |file|
-      if tap.formula_file?(file)
+      if tap && tap.formula_file?(file)
         formula_name = File.basename(file, ".rb")
         formulae << formula_name unless formulae.include?(formula_name)
       else
