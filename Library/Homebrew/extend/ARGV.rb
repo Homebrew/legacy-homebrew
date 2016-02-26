@@ -195,7 +195,7 @@ module HomebrewArgvExtension
   # eg. `foo -ns -i --bar` has three switches, n, s and i
   def switch?(char)
     return false if char.length > 1
-    options_only.any? { |arg| arg[1, 1] != "-" && arg.include?(char) }
+    options_only.any? { |arg| arg.scan("-").size == 1 && arg.include?(char) }
   end
 
   def usage
