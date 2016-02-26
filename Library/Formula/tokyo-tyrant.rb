@@ -17,7 +17,7 @@ class TokyoTyrant < Formula
   def install
     system "./configure", "--prefix=#{libexec}"
     system "make"
-    system "make", "install"
+    system "make", "install", "PCDIR=#{lib}/pkgconfig"
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
