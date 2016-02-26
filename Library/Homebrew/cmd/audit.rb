@@ -4,10 +4,8 @@ require "utils"
 require "extend/ENV"
 require "formula_cellar_checks"
 require "official_taps"
-require "tap_migrations"
 require "cmd/search"
 require "date"
-require "formula_renames"
 
 module Homebrew
   def audit
@@ -898,11 +896,11 @@ class FormulaAuditor
   end
 
   def audit_reverse_migration
-    # Only enforce for new formula being re-added to core
+    # Only enforce for new formula being re-added to core and official taps
     return unless @strict
-    return unless formula.core_formula?
+    return unless formula.tap && formula.tap.official?
 
-    if TAP_MIGRATIONS.key?(formula.name)
+    if formula.tap.tap_migrations.key?(formula.name)
       problem <<-EOS.undent
        #{formula.name} seems to be listed in tap_migrations.rb!
        Please remove #{formula.name} from present tap & tap_migrations.rb

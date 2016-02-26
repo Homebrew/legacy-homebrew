@@ -1,5 +1,4 @@
 require "digest/md5"
-require "formula_renames"
 require "tap"
 require "core_formula_repository"
 

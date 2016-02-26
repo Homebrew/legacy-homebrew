@@ -11,7 +11,6 @@ require "install_renamed"
 require "pkg_version"
 require "tap"
 require "core_formula_repository"
-require "formula_renames"
 require "keg"
 require "migrator"
 
