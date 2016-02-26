@@ -1,8 +1,8 @@
 class Sbt < Formula
   desc "Build tool for Scala projects"
   homepage "http://www.scala-sbt.org"
-  url "https://dl.bintray.com/sbt/native-packages/sbt/0.13.9/sbt-0.13.9.tgz"
-  sha256 "148f2801f2993773de6f8859fe0e6520fcabe649d66bb316e13aff8b2fd7f504"
+  url "https://dl.bintray.com/sbt/native-packages/sbt/0.13.11/sbt-0.13.11.tgz"
+  sha256 "a36a6fbf6dd70afd93fb8db16c40e8ac00798fdddfa0b4c678786dc15617afa6"
 
   bottle do
     cellar :any_skip_relocation
