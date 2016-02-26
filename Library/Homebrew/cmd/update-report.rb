@@ -9,21 +9,16 @@ module Homebrew
 
     hub = ReporterHub.new
 
-    begin
-      master_reporter = Reporter.new(CoreFormulaRepository.instance)
-    rescue Reporter::ReporterRevisionUnsetError => e
-      raise e if ARGV.homebrew_developer?
+    initial_revision = ENV["HOMEBREW_UPDATE_BEFORE"].to_s
+    current_revision = ENV["HOMEBREW_UPDATE_AFTER"].to_s
+    if initial_revision.empty? || current_revision.empty?
       odie "update-report should not be called directly!"
     end
 
-    if master_reporter.updated?
-      initial_short = shorten_revision(master_reporter.initial_revision)
-      current_short = shorten_revision(master_reporter.current_revision)
-      puts "Updated Homebrew from #{initial_short} to #{current_short}."
-      hub.add(master_reporter)
+    if core_updated = initial_revision != current_revision
+      puts "Updated Homebrew from #{shorten_revision(initial_revision)} to #{shorten_revision(current_revision)}."
     end
 
-    updated_taps = []
     Tap.each do |tap|
       next unless tap.git?
       begin
@@ -32,25 +27,26 @@ module Homebrew
         onoe e if ARGV.homebrew_developer?
         next
       end
-      if reporter.updated?
-        updated_taps << tap.name
-        hub.add(reporter)
-      end
-    end
-    unless updated_taps.empty?
-      puts "Updated #{updated_taps.size} tap#{plural(updated_taps.size)} " \
-           "(#{updated_taps.join(", ")})."
+      hub.add(reporter) if reporter.updated?
     end
 
-    if hub.reporters.empty?
+    if !core_updated && hub.reporters.empty?
       puts "Already up-to-date."
-    elsif hub.empty?
-      puts "No changes to formulae."
     else
-      hub.dump
-      hub.reporters.each(&:migrate_tap_migration)
-      hub.reporters.each(&:migrate_formula_rename)
-      Descriptions.update_cache(hub)
+      updated_taps = hub.reporters.map(&:tap)
+      unless updated_taps.empty?
+        puts "Updated #{updated_taps.size} tap#{plural(updated_taps.size)} " \
+             "(#{updated_taps.join(", ")})."
+      end
+
+      if hub.empty?
+        puts "No changes to formulae."
+      else
+        hub.dump
+        hub.reporters.each(&:migrate_tap_migration)
+        hub.reporters.each(&:migrate_formula_rename)
+        Descriptions.update_cache(hub)
+      end
     end
 
     Tap.each(&:link_manpages)
@@ -185,14 +181,10 @@ class Reporter
   private
 
   def repo_var
-    @repo_var ||= if tap.path == HOMEBREW_REPOSITORY
-      ""
-    else
-      tap.path.to_s.
-        strip_prefix(Tap::TAP_DIRECTORY.to_s).
-        tr("^A-Za-z0-9", "_").
-        upcase
-    end
+    @repo_var ||= tap.path.to_s.
+      strip_prefix(Tap::TAP_DIRECTORY.to_s).
+      tr("^A-Za-z0-9", "_").
+      upcase
   end
 
   def diff
