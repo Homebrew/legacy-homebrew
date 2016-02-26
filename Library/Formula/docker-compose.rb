@@ -9,9 +9,9 @@ class DockerCompose < Formula
 
   bottle do
     cellar :any
-    sha256 "e79ee7406e6bc8c97f32f232bec1c8570d6f52f91263c8e923459c595510dece" => :el_capitan
-    sha256 "837c9612a068b418f224969f7a06f28adf727c307feaa7f48d0053d7f2276ad6" => :yosemite
-    sha256 "a8a9b0f3ed7491783bb506e6f317df35191e9f7a4052e7b57109ffa7272b98e8" => :mavericks
+    sha256 "2afc4f42c9415f9fb1d159176897f60bd80ad789b483ef6c7fb3d1c7b9b2bd68" => :el_capitan
+    sha256 "ac436c343402cccf56426dfb90643e38cce25cd839b9ee76abd73cb079620217" => :yosemite
+    sha256 "f62e352ec74218779fc6c7d9c3ac5f5f00d49f065b0d304de39cf17904f66caa" => :mavericks
   end
 
   head do
