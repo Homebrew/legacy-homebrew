@@ -21,7 +21,7 @@ class Scmpuff < Formula
 
     # scmpuff's build script normally does version detection which depends on
     # being checked out via git repo -- instead have homebrew specify version.
-    system ["go", "build", "-o", "#{bin}/scmpuff", "-ldflags", "'-X main.VERSION=#{version}'"].join(" ")
+    system "go", "build", "-o", "#{bin}/scmpuff", "-ldflags", "-X main.VERSION=#{version}"
   end
 
   test do
