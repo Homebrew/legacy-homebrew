@@ -4,9 +4,9 @@ class Opentsdb < Formula
   url "https://github.com/OpenTSDB/opentsdb/releases/download/v2.2.0/opentsdb-2.2.0.tar.gz"
   sha256 "5689d4d83ee21f1ce5892d064d6738bfa9fdef99f106f45d5c38eefb9476dfb5"
 
-  option "with-lzo", "Use LZO Compression"
+  option "without-lzo", "Don't use LZO Compression"
 
-  depends_on "hbase" unless build.with? "lzo"
+  depends_on "hbase" if build.without? "lzo"
   depends_on "hbase" => "with-lzo" if build.with? "lzo"
   depends_on :java => "1.6+"
   depends_on "gnuplot" => :optional
@@ -52,7 +52,7 @@ class Opentsdb < Formula
       confdir.install Dir["#{opt_share}/opentsdb/etc/opentsdb/*"]
     end
     system "#{hbasedir}/bin/start-hbase.sh"
-    envs = {"HBASE_HOME"=>hbasedir, "COMPRESSION"=>(build.with? 'lzo' ? "LZO":"NONE"), "JAVA_HOME"=>`/usr/libexec/java_home`.strip}
+    envs = { "HBASE_HOME"=>hbasedir, "COMPRESSION"=>(build.with?("lzo") ? "LZO" : "NONE"), "JAVA_HOME"=>`/usr/libexec/java_home`.strip }
     Kernel.system(envs, "#{opt_share}/opentsdb/tools/create_table.sh")
   end
 
