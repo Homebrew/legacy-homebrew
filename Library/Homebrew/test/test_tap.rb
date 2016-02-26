@@ -44,7 +44,7 @@ class TapTest < Homebrew::TestCase
   end
 
   def teardown
-    Tap::TAP_DIRECTORY.rmtree
+    @path.rmtree
   end
 
   def test_fetch
@@ -57,7 +57,7 @@ class TapTest < Homebrew::TestCase
   end
 
   def test_names
-    assert_equal ["homebrew/foo"], Tap.names
+    assert_equal ["homebrew/core", "homebrew/foo"], Tap.names
   end
 
   def test_attributes
@@ -84,6 +84,8 @@ class TapTest < Homebrew::TestCase
 
     (Tap::TAP_DIRECTORY/"someone/homebrew-no-git").mkpath
     assert_nil Tap.new("someone", "no-git").issues_url
+  ensure
+    path.parent.rmtree
   end
 
   def test_files
@@ -121,6 +123,8 @@ class TapTest < Homebrew::TestCase
       end
     end
     refute_predicate version_tap, :private?
+  ensure
+    version_tap.path.rmtree
   end
 
   def test_private_remote
@@ -180,8 +184,8 @@ class CoreFormulaRepositoryTest < Homebrew::TestCase
 
   def test_attributes
     assert_equal "Homebrew", @repo.user
-    assert_equal "homebrew", @repo.repo
-    assert_equal "Homebrew/homebrew", @repo.name
+    assert_equal "core", @repo.repo
+    assert_equal "homebrew/core", @repo.name
     assert_equal [], @repo.command_files
     assert_predicate @repo, :installed?
     refute_predicate @repo, :pinned?

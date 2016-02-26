@@ -213,7 +213,7 @@ class IntegrationCommandTests < Homebrew::TestCase
 
     assert_match "homebrew/foo", cmd("tap")
     assert_match "homebrew/versions", cmd("tap", "--list-official")
-    assert_match "1 tap", cmd("tap-info")
+    assert_match "2 taps", cmd("tap-info")
     assert_match "https://github.com/Homebrew/homebrew-foo", cmd("tap-info", "homebrew/foo")
     assert_match "https://github.com/Homebrew/homebrew-foo", cmd("tap-info", "--json=v1", "--installed")
     assert_match "Pinned homebrew/foo", cmd("tap-pin", "homebrew/foo")
@@ -224,7 +224,7 @@ class IntegrationCommandTests < Homebrew::TestCase
     assert_equal "", cmd("tap", "homebrew/bar", path/".git", "-q", "--full")
     assert_match "Untapped", cmd("untap", "homebrew/bar")
   ensure
-    Tap::TAP_DIRECTORY.rmtree
+    path.rmtree
   end
 
   def test_missing
@@ -335,13 +335,12 @@ class IntegrationCommandTests < Homebrew::TestCase
   end
 
   def test_tap_readme
-    (HOMEBREW_LIBRARY/"Taps").mkpath
     assert_match "brew install homebrew/foo/<formula>",
                  cmd("tap-readme", "foo", "--verbose")
     readme = HOMEBREW_LIBRARY/"Taps/homebrew/homebrew-foo/README.md"
     assert readme.exist?, "The README should be created"
   ensure
-    (HOMEBREW_LIBRARY/"Taps").rmtree
+    (HOMEBREW_LIBRARY/"Taps/homebrew/homebrew-foo").rmtree
   end
 
   def test_unpack

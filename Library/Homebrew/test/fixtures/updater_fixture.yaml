@@ -7,13 +7,13 @@ update_git_diff_output_without_formulae_changes: |
   M	bin/brew
 update_git_diff_output_with_formulae_changes: |
   M	Library/Contributions/brew_bash_completion.sh
-  A	Library/Formula/antiword.rb
-  A	Library/Formula/bash-completion.rb
-  A	Library/Formula/ddrescue.rb
-  A	Library/Formula/dict.rb
-  A	Library/Formula/lua.rb
-  M	Library/Formula/xar.rb
-  M	Library/Formula/yajl.rb
+  A	Formula/antiword.rb
+  A	Formula/bash-completion.rb
+  A	Formula/ddrescue.rb
+  A	Formula/dict.rb
+  A	Formula/lua.rb
+  M	Formula/xar.rb
+  M	Formula/yajl.rb
   M	Library/Homebrew/ARGV+yeast.rb
   M	Library/Homebrew/beer_events.rb
   M	Library/Homebrew/hardware.rb
@@ -25,23 +25,23 @@ update_git_diff_output_with_formulae_changes: |
   M	README
   M	bin/brew
 update_git_diff_output_with_removed_formulae: |
-  A	Library/Formula/flac123.rb
-  M	Library/Formula/gdal.rb
-  M	Library/Formula/grass.rb
-  M	Library/Formula/json_spirit.rb
-  A	Library/Formula/libbson.rb
-  D	Library/Formula/libgsasl.rb
+  A	Formula/flac123.rb
+  M	Formula/gdal.rb
+  M	Formula/grass.rb
+  M	Formula/json_spirit.rb
+  A	Formula/libbson.rb
+  D	Formula/libgsasl.rb
 update_git_diff_output_with_changed_filetype: |
   A	Library/ENV/4.3/ant
   T	Library/ENV/4.3/bsdmake
   M	Library/ENV/4.3/make
-  M	Library/Formula/elixir.rb
-  A	Library/Formula/libbson.rb
-  D	Library/Formula/libgsasl.rb
+  M	Formula/elixir.rb
+  A	Formula/libbson.rb
+  D	Formula/libgsasl.rb
   M	Library/Homebrew/cmd/update.rb
   M	SUPPORTERS.md
 update_git_diff_output_with_formula_rename: |
-  R100	Library/Formula/cv.rb	Library/Formula/progress.rb
+  R100	Formula/cv.rb	Formula/progress.rb
 update_git_diff_output_with_restructured_tap: |
   R100	git.rb	Formula/git.rb
   R100	lua.rb	Formula/lua.rb
