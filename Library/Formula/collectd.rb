@@ -9,11 +9,9 @@ class Collectd < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "d07cd68645ca83f86ac0b06526a869a89d899fdd1d7211a9884f85e8d682e27a" => :el_capitan
-    sha256 "9e6e01ec3af8ddda0b52756fc1516b4e9dcb68464e3fea414ab3e394f43d926b" => :yosemite
-    sha256 "f964c5b63bc491b136899357923858b066069291e1210a649fa143fa8ba29145" => :mavericks
-    sha256 "62c64c1d76e9c2b37845391b5dd7ec5b534190b5172ac68ca483aa3ef8241c80" => :mountain_lion
+    sha256 "2d0ea64e88be3e27d28e8419c88eda50180d82b4070c4a819bfa54fecad3030d" => :el_capitan
+    sha256 "40e0865b2e465387ead14eedb6ae5f639a60a00e0aaa36380ef9f23966772d4a" => :yosemite
+    sha256 "2626142f0ec513f28faac27c1c81af720a6da37980b994d918fef7ed08da3b16" => :mavericks
   end
 
   head do
