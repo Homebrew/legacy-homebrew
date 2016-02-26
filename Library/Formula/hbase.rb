@@ -8,6 +8,12 @@ class Hbase < Formula
 
   depends_on :java => "1.6+"
   depends_on "hadoop" => :optional
+  depends_on "lzo" => :recommended
+
+  resource "hadoop-lzo" do
+    url "https://github.com/cloudera/hadoop-lzo/archive/0.4.14.tar.gz"
+    sha256 "0f6aadb8aee6d67d78ea06306913e7363a4108181d704c8d4a91b362a1b94eab"
+  end
 
   def rundir
     var/"run/hbase"
@@ -17,6 +23,15 @@ class Hbase < Formula
     rm_f Dir["bin/*.cmd", "conf/*.cmd"]
     libexec.install %w[bin conf docs lib hbase-webapps]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
+
+    if build.with? "lzo"
+      resource("hadoop-lzo").stage do
+        Kernel.system({ "CLASSPATH"=>"#{libexec}/lib/hadoop-common-*.jar", "CFLAGS"=>"-m64", "CXXFLAGS"=>"-m64" }, "ant compile-native tar")
+        (libexec/"lib").install Dir["build/hadoop-lzo-*/hadoop-lzo-*.jar"]
+        (libexec/"lib/native").mkpath
+        (libexec/"lib/native").install Dir["build/hadoop-lzo-*/lib/native/*"]
+      end
+    end
 
     inreplace "#{libexec}/conf/hbase-env.sh" do |s|
       # upstream bugs for ipv6 incompatibility:
