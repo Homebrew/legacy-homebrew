@@ -100,13 +100,7 @@ begin
     end
 
     if possible_tap && !possible_tap.installed?
-      brew_uid = HOMEBREW_BREW_FILE.stat.uid
-      tap_commands = []
-      if Process.uid.zero? && !brew_uid.zero?
-        tap_commands += %W[/usr/bin/sudo -u ##{brew_uid}]
-      end
-      tap_commands += %W[#{HOMEBREW_BREW_FILE} tap #{possible_tap}]
-      safe_system *tap_commands
+      safe_system HOMEBREW_BREW_FILE, "tap", possible_tap
       exec HOMEBREW_BREW_FILE, cmd, *ARGV
     else
       onoe "Unknown command: #{cmd}"
