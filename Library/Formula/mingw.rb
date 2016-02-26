@@ -101,13 +101,6 @@ class Mingw < Formula
     end
 
     mkdir "build64" do
-      # unless MacOS::CLT.installed?
-      #   # For Xcode-only systems, we need to tell the sysroot path.
-      #   # "native-system-headers" will be appended
-      #   args << "--with-native-system-header-dir=/usr/include"
-      #   args << "--with-sysroot=#{MacOS.sdk_path}"
-      # end
-
       # Might need to rebuild binutils first...
 
       system "../configure",
@@ -118,27 +111,6 @@ class Mingw < Formula
 
     end
 
-    # Handle conflicts between GCC formulae and avoid interfering
-    # with system compilers.
-    # Since GCC 4.8 libffi stuff are no longer shipped.
-    # Rename man7.
-    # Dir.glob(man7/"*.7") { |file| add_suffix file, version_suffix }
-    # Even when suffixes are appended, the info pages conflict when
-    # install-info is run. TODO fix this.
-    # info.rmtree
-
-    # Rename java properties
-    # if build.with?("java") || build.with?("all-languages")
-    #   config_files = [
-    #     "#{lib}/gcc/#{version_suffix}/logging.properties",
-    #     "#{lib}/gcc/#{version_suffix}/security/classpath.security",
-    #     "#{lib}/gcc/#{version_suffix}/i386/logging.properties",
-    #     "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security",
-    #   ]
-    #   config_files.each do |file|
-    #     add_suffix file, version_suffix if File.exist? file
-    #   end
-    # end
   end
 
   def add_suffix(file, suffix)
@@ -148,55 +120,4 @@ class Mingw < Formula
     File.rename file, "#{dir}/#{base}-#{suffix}#{ext}"
   end
 
-  # def caveats
-  #   if build.with?("multilib") then <<-EOS.undent
-  #     GCC has been built with multilib support. Notably, OpenMP may not work:
-  #       https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60670
-  #     If you need OpenMP support you may want to
-  #       brew reinstall gcc --without-multilib
-  #     EOS
-  #   end
-  # end
-
-  # test do
-  #   (testpath/"hello-c.c").write <<-EOS.undent
-  #     #include <stdio.h>
-  #     int main()
-  #     {
-  #       puts("Hello, world!");
-  #       return 0;
-  #     }
-  #   EOS
-  #   system "#{bin}/gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
-  #   assert_equal "Hello, world!\n", `./hello-c`
-
-  #   (testpath/"hello-cc.cc").write <<-EOS.undent
-  #     #include <iostream>
-  #     int main()
-  #     {
-  #       std::cout << "Hello, world!" << std::endl;
-  #       return 0;
-  #     }
-  #   EOS
-  #   system "#{bin}/g++-#{version_suffix}", "-o", "hello-cc", "hello-cc.cc"
-  #   assert_equal "Hello, world!\n", `./hello-cc`
-
-  #   if build.with?("fortran") || build.with?("all-languages")
-  #     fixture = <<-EOS.undent
-  #       integer,parameter::m=10000
-  #       real::a(m), b(m)
-  #       real::fact=0.5
-
-  #       do concurrent (i=1:m)
-  #         a(i) = a(i) + fact*b(i)
-  #       end do
-  #       print *, "done"
-  #       end
-  #     EOS
-  #     (testpath/"in.f90").write(fixture)
-  #     system "#{bin}/gfortran", "-c", "in.f90"
-  #     system "#{bin}/gfortran", "-o", "test", "in.o"
-  #     assert_equal "done", `./test`.strip
-  #   end
-  # end
 end
