@@ -205,6 +205,7 @@ class IntegrationCommandTests < Homebrew::TestCase
       shutup do
         system "git", "init"
         system "git", "remote", "add", "origin", "https://github.com/Homebrew/homebrew-foo"
+        FileUtils.touch "readme"
         system "git", "add", "--all"
         system "git", "commit", "-m", "init"
       end
@@ -219,6 +220,8 @@ class IntegrationCommandTests < Homebrew::TestCase
     assert_match "homebrew/foo", cmd("tap", "--list-pinned")
     assert_match "Unpinned homebrew/foo", cmd("tap-unpin", "homebrew/foo")
     assert_match "Tapped", cmd("tap", "homebrew/bar", path/".git")
+    assert_match "Untapped", cmd("untap", "homebrew/bar")
+    assert_equal "", cmd("tap", "homebrew/bar", path/".git", "-q", "--full")
     assert_match "Untapped", cmd("untap", "homebrew/bar")
   ensure
     Tap::TAP_DIRECTORY.rmtree
