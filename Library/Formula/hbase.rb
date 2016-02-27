@@ -4,8 +4,6 @@ class Hbase < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=hbase/1.1.2/hbase-1.1.2-bin.tar.gz"
   sha256 "8ca5bf0203cef86b4a0acbba89afcd5977488ebc73eec097e93c592b16f8bede"
 
-  bottle :unneeded
-
   depends_on :java => "1.6+"
   depends_on "hadoop" => :optional
   depends_on "lzo" => :recommended
