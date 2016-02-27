@@ -38,8 +38,8 @@ class Platformio < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[bottle click colorama lockfile pyserial requests].each do |r|
-      resource(r).stage do
+    resources.each do |r|
+      r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
@@ -52,7 +52,7 @@ class Platformio < Formula
   end
 
   test do
-    system "platformio"
-    system "pio"
+    system bin/"platformio"
+    system bin/"pio"
   end
-end 
+end
