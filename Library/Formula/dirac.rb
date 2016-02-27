@@ -1,7 +1,9 @@
 class Dirac < Formula
   desc "General-purpose video codec aimed at a range of resolutions"
   homepage "http://diracvideo.org/"
-  url "http://diracvideo.org/download/dirac-research/dirac-1.0.2.tar.gz"
+  url "https://downloads.sourceforge.net/project/dirac/dirac-codec/Dirac-1.0.2/dirac-1.0.2.tar.gz"
+  mirror "https://launchpad.net/ubuntu/+archive/primary/+files/dirac_1.0.2.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dirac/dirac_1.0.2.orig.tar.gz"
   sha256 "816b16f18d235ff8ccd40d95fc5b4fad61ae47583e86607932929d70bf1f00fd"
 
   bottle do
