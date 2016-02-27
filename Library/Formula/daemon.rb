@@ -13,6 +13,9 @@ class Daemon < Formula
   end
 
   def install
+    # Parallel build failure reported to raf@raf.org 27th Feb 2016
+    ENV.deparallelize
+
     system "./config"
     system "make"
     system "make", "PREFIX=#{prefix}", "install"
