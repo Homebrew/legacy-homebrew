@@ -21,6 +21,8 @@ class Zorba < Formula
   depends_on "icu4c"
   depends_on "xerces-c"
 
+  conflicts_with "xqilla", :because => "Both supply xqc.h"
+
   needs :cxx11
 
   def install
