@@ -3,6 +3,7 @@ class Tesseract < Formula
   homepage "https://github.com/tesseract-ocr/"
   url "https://github.com/tesseract-ocr/tesseract/archive/3.04.01.tar.gz"
   sha256 "57f63e1b14ae04c3932a2683e4be4954a2849e17edd638ffe91bc5a2156adc6a"
+  revision 1
 
   bottle do
     sha256 "03c047a1b844454c9f02b0b75ef95e851d5e4b017a0d5ab863bfa5b3b44d98f9" => :el_capitan
@@ -69,6 +70,10 @@ class Tesseract < Formula
     ENV["LIBLEPT_HEADERSDIR"] = HOMEBREW_PREFIX/"include"
 
     ENV.cxx11
+
+    # Fix broken pkg-config file
+    # https://github.com/tesseract-ocr/tesseract/issues/241
+    inreplace "tesseract.pc.in", "@OPENCL_LIB@", "@OPENCL_LDFLAGS@"
 
     system "./autogen.sh" if build.head?
 
