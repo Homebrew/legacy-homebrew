@@ -1,8 +1,16 @@
 class Makensis < Formula
   desc "System to create Windows installers"
   homepage "http://nsis.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.50/nsis-2.50-src.tar.bz2"
-  sha256 "3fb674cb75e0237ef6b7c9e8a8e8ce89504087a6932c5d2e26764d4220a89848"
+
+  stable do
+    url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.50/nsis-2.50-src.tar.bz2"
+    sha256 "3fb674cb75e0237ef6b7c9e8a8e8ce89504087a6932c5d2e26764d4220a89848"
+
+    resource "nsis" do
+      url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.50/nsis-2.50.zip"
+      sha256 "36bebcd12ad8ec6b94920b46c4c5a7a9fccdaa5e9aececb9e89aecfdfa35e472"
+    end
+  end
 
   bottle do
     cellar :any_skip_relocation
@@ -14,6 +22,11 @@ class Makensis < Formula
   devel do
     url "https://downloads.sourceforge.net/project/nsis/NSIS%203%20Pre-release/3.0b3/nsis-3.0b3-src.tar.bz2"
     sha256 "faf22d6cd4bd46780afcf22524a1de39bcc38c85773719ec7a1ecf002e308d3a"
+
+    resource "nsis" do
+      url "https://downloads.sourceforge.net/project/nsis/NSIS%203%20Pre-release/3.0b3/nsis-3.0b3.zip"
+      sha256 "8eee1f0f31c5f776cb2aa34197f906220c9ed43918424eb5bced3ca773e58b10"
+    end
   end
 
   depends_on "scons" => :build
@@ -22,19 +35,6 @@ class Makensis < Formula
   # and the only options supported on OS X are 'gcc' and 'g++'.
   # Use the right compiler by forcibly altering the scons config to set these
   patch :DATA
-
-  if build.devel?
-    resource_url = "https://downloads.sourceforge.net/project/nsis/NSIS%203%20Pre-release/3.0b3/nsis-3.0b3.zip"
-    resource_sum = "8eee1f0f31c5f776cb2aa34197f906220c9ed43918424eb5bced3ca773e58b10"
-  else
-    resource_url = "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.50/nsis-2.50.zip"
-    resource_sum = "36bebcd12ad8ec6b94920b46c4c5a7a9fccdaa5e9aececb9e89aecfdfa35e472"
-  end
-
-  resource "nsis" do
-    url resource_url
-    sha256 resource_sum
-  end
 
   def install
     # makensis fails to build under libc++; since it's just a binary with
