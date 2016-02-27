@@ -8,9 +8,10 @@ class Dirac < Formula
 
   bottle do
     cellar :any
-    sha256 "34decd141a76d46080d411c7d593e00d1201e13d1dc774407a745a71a1f5763d" => :yosemite
-    sha256 "853260e2bca9ab2bb87d68ecbdfc31d356d215d811d88a0de36a14ef2da018b4" => :mavericks
-    sha256 "ebb63a9da46bd0f3a019b213d0f7a5ebf6ddf2ba8530da7b852dc4ff107578ca" => :mountain_lion
+    revision 1
+    sha256 "8f4414614755f863d3ba0f43d6415684fbc00976ae24c7e45c88fe736be918d2" => :el_capitan
+    sha256 "1d3049d9dcdbd0116c65c54582601b20cdd17c8b89cf80e74efc79f71b641ca4" => :yosemite
+    sha256 "e7c407545085631c27c77f2d15abe84b3cc0a3645cf5e538aa15f0aacfe6de50" => :mavericks
   end
 
   fails_with :llvm do
