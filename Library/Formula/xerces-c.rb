@@ -1,8 +1,8 @@
 class XercesC < Formula
   desc "Validating XML parser"
   homepage "https://xerces.apache.org/xerces-c/"
-  url "https://www.apache.org/dyn/closer.cgi?path=xerces/c/3/sources/xerces-c-3.1.2.tar.gz"
-  sha256 "743bd0a029bf8de56a587c270d97031e0099fe2b7142cef03e0da16e282655a0"
+  url "https://www.apache.org/dyn/closer.cgi?path=xerces/c/3/sources/xerces-c-3.1.3.tar.gz"
+  sha256 "f3d4f73db7c981e16db2b16d9424b0c75d9fbd30ad81747cac047bc6170b5b49"
 
   bottle do
     cellar :any
@@ -17,7 +17,6 @@ class XercesC < Formula
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
     # Remove a sample program that conflicts with libmemcached
@@ -37,6 +36,7 @@ class XercesC < Formula
       </ducks>
     EOS
 
-    assert_match /(6 elems, 1 attrs, 0 spaces, 37 chars)/, shell_output("#{bin}/SAXCount #{testpath}/ducks.xml")
+    output = shell_output("#{bin}/SAXCount #{testpath}/ducks.xml")
+    assert_match "(6 elems, 1 attrs, 0 spaces, 37 chars)", output
   end
 end
