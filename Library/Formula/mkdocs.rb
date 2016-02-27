@@ -4,14 +4,6 @@ class Mkdocs < Formula
   url "https://github.com/mkdocs/mkdocs/archive/0.15.3.tar.gz"
   sha256 "a5442ae24fd9e6f9daeefaf354c960e5dac27ff388f63e1bb324ed8a1b7edaa9"
 
-  # bottle do
-  #   cellar :any_skip_relocation
-  #   sha256 "b5f24dc1ba2c58e7a9cebd7ae0492be6fbab0c05c3fa96e2f7cf9f9e9513bfd5" => :el_capitan
-  #   sha256 "0b3c9aa68cb0030d466a7791bf20efba2969ba1884f04a96c51503f2e13fb62b" => :yosemite
-  #   sha256 "85b7ad5b70623523729e5211581e5fc3b096b6dff8d6828781df4133f6b9a545" => :mavericks
-  #   sha256 "b4e68781cff4b60490c309a26e66b60860dd0b3b87e580e8d93c0930cd5481c7" => :mountain_lion
-  # end
-
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "tornado" do
