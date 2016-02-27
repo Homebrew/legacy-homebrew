@@ -1,8 +1,8 @@
 class Scmpuff < Formula
   desc "Adds numbered shortcuts for common git commands"
   homepage "https://mroth.github.io/scmpuff/"
-  url "https://github.com/mroth/scmpuff/archive/v0.1.1.tar.gz"
-  sha256 "cec3c9df41acb1735f2e8c1c9840d0481af0d996690f5a19a0a8fc4f06f97370"
+  url "https://github.com/mroth/scmpuff/archive/v0.2.0.tar.gz"
+  sha256 "7ec19d68cfea6babbd2fafff67df0b7c07ed27a9e80dbd01691611038442a1a0"
 
   bottle do
     cellar :any_skip_relocation
@@ -17,12 +17,12 @@ class Scmpuff < Formula
   def install
     mkdir_p buildpath/"src/github.com/mroth"
     ln_s buildpath, buildpath/"src/github.com/mroth/scmpuff"
-    ENV["GO15VENDOREXPERIMENT"] = "0"
+    ENV["GO15VENDOREXPERIMENT"] = "1"
     ENV["GOPATH"] = buildpath
 
     # scmpuff's build script normally does version detection which depends on
     # being checked out via git repo -- instead have homebrew specify version.
-    system "go", "build", "-o", "#{bin}/scmpuff", "-ldflags", "-X main.VERSION #{version}"
+    system "go", "build", "-o", "#{bin}/scmpuff", "-ldflags", "-X main.VERSION=#{version}", "./src/github.com/mroth/scmpuff"
   end
 
   test do
