@@ -55,7 +55,7 @@ class Makensis < Formula
   end
 
   test do
-    system "#{bin}/makensis", "-v"
+    system "#{bin}/makensis", "-VERSION"
   end
 end
 
