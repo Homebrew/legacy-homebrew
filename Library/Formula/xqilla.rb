@@ -13,6 +13,8 @@ class Xqilla < Formula
 
   depends_on "xerces-c"
 
+  conflicts_with "zorba", :because => "Both supply xqc.h"
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--with-xerces=#{HOMEBREW_PREFIX}",
