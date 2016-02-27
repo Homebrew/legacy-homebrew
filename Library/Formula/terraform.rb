@@ -76,6 +76,7 @@ class Terraform < Formula
         "-output", "bin/terraform-{{.Dir}}", *terraform_files
       bin.install "bin/terraform-terraform" => "terraform"
       bin.install Dir["bin/*"]
+      zsh_completion.install "contrib/zsh-completion/_terraform"
     end
   end
 
