@@ -16,6 +16,13 @@ class Snakemake < Formula
   end
 
   test do
-    system "#{bin}/snakemake", "-v"
+    (testpath/"Snakefile").write <<-EOS.undent
+      rule testme:
+          output:
+               "test.out"
+          shell:
+               "touch {output}"
+    EOS
+    system "snakemake"
   end
 end
