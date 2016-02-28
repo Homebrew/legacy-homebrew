@@ -21,30 +21,13 @@ class JpegTurbo < Formula
   end
 
   depends_on "libtool" => :build
+  depends_on "nasm" => :build
 
   keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg."
-
-  # https://github.com/Homebrew/homebrew/issues/41023
-  # http://sourceforge.net/p/libjpeg-turbo/mailman/message/34219546/
-  # Should be safe to remove once nasm 2.11.09 lands - Check first.
-  resource "nasm" do
-    url "http://www.nasm.us/pub/nasm/releasebuilds/2.11.06/nasm-2.11.06.tar.xz"
-    sha256 "90f60d95a15b8a54bf34d87b9be53da89ee3d6213ea739fb2305846f4585868a"
-  end
 
   def install
     cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
     args = %W[--disable-dependency-tracking --prefix=#{prefix} --with-jpeg8 --mandir=#{man}]
-
-    if MacOS.prefer_64_bit?
-      resource("nasm").stage do
-        system "./configure", "--prefix=#{buildpath}/nasm"
-        system "make", "install"
-      end
-
-      ENV.prepend_path "PATH", buildpath/"nasm/bin"
-      args << "NASM=#{buildpath}/nasm/bin/nasm"
-    end
 
     system "autoreconf", "-fvi" if build.head?
     system "./configure", *args
