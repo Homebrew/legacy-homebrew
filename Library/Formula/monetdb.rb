@@ -26,7 +26,7 @@ class Monetdb < Formula
   end
 
   head do
-    url "http://dev.monetdb.org/hg/MonetDB", :using => :hg
+    url "https://dev.monetdb.org/hg/MonetDB", :using => :hg
 
     depends_on "libtool" => :build
     depends_on "gettext" => :build
