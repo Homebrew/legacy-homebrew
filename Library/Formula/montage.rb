@@ -15,4 +15,8 @@ class Montage < Formula
       http://montage.ipac.caltech.edu/docs/download.html
     EOS
   end
+
+  test do
+    system "mHdr", "m31", "1", "template.hdr"
+  end
 end
