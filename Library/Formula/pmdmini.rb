@@ -17,7 +17,7 @@ class Pmdmini < Formula
   depends_on "sdl" if build.without? "lib-only"
 
   resource "test_song" do
-    url "ftp://ftp.modland.com/pub/modules/PMD/Shiori%20Ueno/His%20Name%20Is%20Diamond/dd06.m"
+    url "http://ftp.modland.com/pub/modules/PMD/Shiori%20Ueno/His%20Name%20Is%20Diamond/dd06.m"
     sha256 "36be8cfbb1d3556554447c0f77a02a319a88d8c7a47f9b7a3578d4a21ac85510"
   end
 
