@@ -1,9 +1,9 @@
 class Pass < Formula
   desc "Password manager"
-  homepage "http://www.passwordstore.org/"
-  url "http://git.zx2c4.com/password-store/snapshot/password-store-1.6.5.tar.xz"
+  homepage "https://www.passwordstore.org/"
+  url "https://git.zx2c4.com/password-store/snapshot/password-store-1.6.5.tar.xz"
   sha256 "337a39767e6a8e69b2bcc549f27ff3915efacea57e5334c6068fcb72331d7315"
-  head "http://git.zx2c4.com/password-store", :using => :git
+  head "https://git.zx2c4.com/password-store", :using => :git
 
   bottle do
     cellar :any_skip_relocation
