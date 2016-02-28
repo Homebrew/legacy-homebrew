@@ -5,9 +5,10 @@ class Suil < Formula
   sha256 "787608c1e5b1f5051137dbf77c671266088583515af152b77b45e9c3a36f6ae8"
 
   bottle do
-    sha256 "3852905def7079132a6c9ff4f5de8a8ad6eec2708a20e987a92044acb7753364" => :el_capitan
-    sha256 "0752b6071b7b0aa47605097a07c3b372f3790816f639791318ddeaf366086e46" => :yosemite
-    sha256 "cdf01f1c90d9e540e5f798691554a5ecca4765895db1f3fc4877db3301d72e7d" => :mavericks
+    revision 1
+    sha256 "30069bffb5c8f3903f4888135c3d1939f1329a19fda93b3bc8bf244827413995" => :el_capitan
+    sha256 "30c20891f724dfe103704e1b3c4e17b068a152fb3098560462a156fba29474c7" => :yosemite
+    sha256 "0f82a7cf59da98e7dfbdf437ee22c412eb5e52a821acba2f92b65de4ea7a5fe6" => :mavericks
   end
 
   depends_on "pkg-config" => :build
