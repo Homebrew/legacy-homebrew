@@ -1,7 +1,7 @@
 class Ficy < Formula
   desc "Icecast/Shoutcast stream grabber suite"
-  homepage "http://www.thregr.org/~wavexx/software/fIcy/"
-  url "http://www.thregr.org/~wavexx/software/fIcy/releases/fIcy-1.0.19.tar.gz"
+  homepage "https://www.thregr.org/~wavexx/software/fIcy/"
+  url "https://www.thregr.org/~wavexx/software/fIcy/releases/fIcy-1.0.19.tar.gz"
   sha256 "397df996fd63ce8608e62b195af61e88b0571aac01a51f1935dbf639c5424dcb"
 
   head "https://github.com/wavexx/fIcy.git"
