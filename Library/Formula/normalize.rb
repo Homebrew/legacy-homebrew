@@ -1,7 +1,7 @@
 class Normalize < Formula
   desc "Adjust volume of audio files to a standard level"
   homepage "http://normalize.nongnu.org/"
-  url "http://download.savannah.nongnu.org/releases/normalize/normalize-0.7.7.tar.gz"
+  url "https://savannah.nongnu.org/download/normalize/normalize-0.7.7.tar.gz"
   sha256 "6055a2abccc64296e1c38f9652f2056d3a3c096538e164b8b9526e10b486b3d8"
 
   bottle do
