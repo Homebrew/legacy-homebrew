@@ -1,7 +1,7 @@
 class Racket < Formula
   desc "Modern programming language in the Lisp/Scheme family"
-  homepage "http://racket-lang.org/"
-  url "http://mirror.racket-lang.org/installers/6.3/racket-minimal-6.3-src-builtpkgs.tgz"
+  homepage "https://racket-lang.org/"
+  url "https://mirror.racket-lang.org/installers/6.3/racket-minimal-6.3-src-builtpkgs.tgz"
   version "6.3"
   sha256 "72d79026e1301ee222089fb555b3eb7290b95f4b7541fec21b4ddb5842fff081"
 
@@ -34,7 +34,7 @@ class Racket < Formula
     end
 
     # configure racket's package tool (raco) to do the Right Thing
-    # see: http://docs.racket-lang.org/raco/config-file.html
+    # see: https://docs.racket-lang.org/raco/config-file.html
     inreplace etc/"racket/config.rktd" do |s|
         s.gsub!(
             /\(bin-dir\s+\.\s+"#{Regexp.quote(bin)}"\)/,
