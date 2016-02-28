@@ -22,12 +22,12 @@ class Joshua < Formula
   depends_on :python => :build if MacOS.version <= :snow_leopard
 
   resource "es-en-phrase-pack" do
-    url "http://cs.jhu.edu/~post/language-packs/language-pack-es-en-phrase-2015-03-06.tgz"
+    url "https://cs.jhu.edu/~post/language-packs/language-pack-es-en-phrase-2015-03-06.tgz"
     sha256 "213e05bbdcfbfa05b31e263c31f10a0315695fee26c2f37b0a78fb918bad9b5d"
   end
 
   resource "ar-en-phrase-pack" do
-    url "http://cs.jhu.edu/~post/language-packs/language-pack-ar-en-phrase-2015-03-18.tgz"
+    url "https://cs.jhu.edu/~post/language-packs/language-pack-ar-en-phrase-2015-03-18.tgz"
     sha256 "2b6665b58b11e4c25d48191d3d5b62b7c591851a9767b14f9ccebf1951fddf90"
   end
 
