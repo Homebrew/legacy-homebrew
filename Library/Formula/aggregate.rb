@@ -1,7 +1,7 @@
 class Aggregate < Formula
   desc "Optimizes lists of prefixes to reduce list lengths"
   homepage "http://freecode.com/projects/aggregate/"
-  url "ftp://ftp.isc.org/isc/aggregate/aggregate-1.6.tar.gz"
+  url "https://ftp.isc.org/isc/aggregate/aggregate-1.6.tar.gz"
   sha256 "166503005cd8722c730e530cc90652ddfa198a25624914c65dffc3eb87ba5482"
 
   bottle do
