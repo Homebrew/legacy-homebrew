@@ -86,7 +86,20 @@ class Mkdocs < Formula
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
+  # build a very simple site that uses the "readthedocs" theme.
   test do
-    system "#{bin}/mkdocs", "--version"
+    (testpath/"mkdocs.yml").write <<-EOS.undent
+      site_name: MkLorum
+      pages:
+        - Home: index.md
+      theme: readthedocs
+    EOS
+    mkdir testpath/"docs"
+    (testpath/"docs/index.md").write <<-EOS.undent
+      # A heading
+
+      And some deeply meaningful prose.
+    EOS
+    system "#{bin}/mkdocs", "build", "--clean"
   end
 end
