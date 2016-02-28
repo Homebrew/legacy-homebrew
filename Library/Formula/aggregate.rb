@@ -5,10 +5,11 @@ class Aggregate < Formula
   sha256 "166503005cd8722c730e530cc90652ddfa198a25624914c65dffc3eb87ba5482"
 
   bottle do
-    cellar :any
-    sha256 "6c89bcfc86345dc4367c13ac78ac3a1bfaef5a43d1003afc741882a39496c9c6" => :mavericks
-    sha256 "90f9a420fa1edc97cbaed1471850eba494970eb392874a562c568f94f18832e6" => :mountain_lion
-    sha256 "13616e0a1b9502dd61abebe8a780688f694a777ad48d2bf19cf64f0a70c3d9f6" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "87507a739f2bd5ba57ccd23b34f2b7c41d68a897c128231dbbc32ba23b869ed5" => :el_capitan
+    sha256 "813ccd28b00f94e1574079f7f6816858e32c5d8f9a964b783307d25c7e449d2b" => :yosemite
+    sha256 "169598a0d41382215ba51ed0c377c98857804e82fb1658414dd04ee94ddbb993" => :mavericks
   end
 
   # Note - Freecode is no longer being updated & an alternative homepage should be found if possible.
