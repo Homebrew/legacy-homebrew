@@ -7,10 +7,10 @@ class PdflibLite < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "21bf908f2da229ffce18c4a62a3d950de735983cf49893bb6bba13e5e3dff1ae" => :el_capitan
-    sha256 "472295629b4a72c5d798ab9a80de9a07425b67a3c4edd00fd0fbcdd92369a640" => :yosemite
-    sha256 "29c4882c3931f2e5cff9ed8591dd21ca17371261973aacd8452797873ea2618b" => :mavericks
+    revision 2
+    sha256 "c05f42bfb25d1fa204440a1d421af10f9bf853e94dd17c7325e0382d7683d589" => :el_capitan
+    sha256 "e2e8891b33b4f3f2bab8f809e19d9df0450c1e872d39e6d5090094630210ee45" => :yosemite
+    sha256 "d4506f8523153b8e452c17f2897d10ce526476ed8e27c913a9325aac2f2b4f0f" => :mavericks
   end
 
   def install
