@@ -1,8 +1,8 @@
 class Openrtsp < Formula
   desc "Command-line RTSP client"
   homepage "http://www.live555.com/openRTSP"
-  url "http://www.live555.com/liveMedia/public/live.2015.10.29.tar.gz"
-  sha256 "05bb03b58c9a758a735a2c5bb0b993c5e157d7a60b08df49cc29619d02fbc962"
+  url "http://www.live555.com/liveMedia/public/live.2016.02.22.tar.gz"
+  sha256 "e4571b466547e3ad153e4bd9bbb81b24d838815e9d97176157ecfb18c5414cd5"
 
   bottle do
     cellar :any_skip_relocation
