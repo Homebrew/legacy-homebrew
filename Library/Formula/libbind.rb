@@ -5,11 +5,11 @@ class Libbind < Formula
   sha256 "b98b6aa6e7c403f5a6522ffb68325785a87ea8b13377ada8ba87953a3e8cb29d"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "66bf62df254451780200c48fe1928c0e8c85bb8cda17484453f7801fafdb3460" => :yosemite
-    sha256 "328505be34dca04035cb5a7efa2691c79a88bfb7d46c0d1dfc3a2b35832b3224" => :mavericks
-    sha256 "8ad440bc086210b0e300667ab7c67d88128849d92a97319065d68f28efb0f359" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "d0a71d129904ac0529c6f8e789a41307caaeb0e6d9f33f30f23f4b3dbc61456d" => :el_capitan
+    sha256 "c2eaf992dc37ce98d5936ba7e086c30a5da242bfe834e593dfb40d7d3e546923" => :yosemite
+    sha256 "f59cf59e14f6192c962592a4411391413d929c8dfff81fdd8b4a82ce7c0d3f02" => :mavericks
   end
 
   def install
