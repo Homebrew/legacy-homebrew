@@ -1,7 +1,7 @@
 class Sha2 < Formula
   desc "Implementation of SHA-256, SHA-384, and SHA-512 hash algorithms"
   homepage "http://aarongifford.com/computers/sha.html"
-  url "http://aarongifford.com/computers/sha2-1.0.1.tgz"
+  url "https://aarongifford.com/computers/sha2-1.0.1.tgz"
   sha256 "67bc662955c6ca2fa6a0ce372c4794ec3d0cd2c1e50b124e7a75af7e23dd1d0c"
 
   bottle do
