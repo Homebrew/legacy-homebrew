@@ -1,7 +1,7 @@
 class RdiffBackup < Formula
   desc "Backs up one directory to another--also works over networks"
   homepage "http://rdiff-backup.nongnu.org/"
-  url "http://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.2.8.tar.gz"
+  url "https://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.2.8.tar.gz"
   sha256 "0d91a85b40949116fa8aaf15da165c34a2d15449b3cbe01c8026391310ac95db"
   revision 1
 
@@ -13,7 +13,7 @@ class RdiffBackup < Formula
   end
 
   devel do
-    url "http://download.savannah.nongnu.org/releases/rdiff-backup/rdiff-backup-1.3.3.tar.gz"
+    url "https://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.3.3.tar.gz"
     sha256 "ee030ce638df0eb1047cf72578e0de15d9a3ee9ab24da2dc0023e2978be30c06"
   end
 
