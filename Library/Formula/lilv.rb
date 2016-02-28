@@ -1,7 +1,7 @@
 class Lilv < Formula
   desc "C library to use LV2 plugins"
-  homepage "http://drobilla.net/software/lilv/"
-  url "http://download.drobilla.net/lilv-0.22.0.tar.bz2"
+  homepage "https://drobilla.net/software/lilv/"
+  url "https://download.drobilla.net/lilv-0.22.0.tar.bz2"
   sha256 "cd279321223ef11ca01551767d3c16d68cb31f689e02320a0b2e37b4f7d17ab4"
 
   bottle do
