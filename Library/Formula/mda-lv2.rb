@@ -6,9 +6,10 @@ class MdaLv2 < Formula
 
   bottle do
     cellar :any
-    sha256 "a6715dce4c5c5cef40bd1a2645faf235ed044eb1dd64152381ebeb287625ff79" => :el_capitan
-    sha256 "20351537b304e6d325220518442636df14906a89d0f1c653988d9134b75c5729" => :yosemite
-    sha256 "1394acd4428272eeeee8285fe0e5272cb6db918ff18f74b020db147de3d3a71b" => :mavericks
+    revision 1
+    sha256 "8177c7c9d23fc7daf59c764a36d336f2d7dd3d7617752c33f132ed34a08f37f0" => :el_capitan
+    sha256 "670da0efa727514c30897830e6dc38eef62b29e7f7c540f37821bc3997ecf64d" => :yosemite
+    sha256 "20fafd017914d54441227646c528b951c16adfe5b9ed4522b8d8cf074cc25acd" => :mavericks
   end
 
   depends_on "pkg-config" => :build
