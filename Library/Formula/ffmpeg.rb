@@ -36,7 +36,7 @@ class Ffmpeg < Formula
   option "with-rubberband", "Enable rubberband library"
   option "with-zimg", "Enable z.lib zimg library"
   option "with-openh264", "Enable OpenH264 library"
-  
+
   depends_on "pkg-config" => :build
 
   # manpages won't be built without texi2html
@@ -78,7 +78,7 @@ class Ffmpeg < Formula
   depends_on "rubberband" => :optional
   depends_on "zimg" => :optional
   depends_on "openh264" => :optional
-  
+
   def install
     args = ["--prefix=#{prefix}",
             "--enable-shared",
