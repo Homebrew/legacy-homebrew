@@ -1,7 +1,7 @@
 class Icoutils < Formula
   desc "Create and extract MS Windows icons and cursors"
   homepage "http://www.nongnu.org/icoutils/"
-  url "http://download.savannah.nongnu.org/releases/icoutils/icoutils-0.31.0.tar.bz2"
+  url "https://savannah.nongnu.org/download/icoutils/icoutils-0.31.0.tar.bz2"
   sha256 "a895d9d74a418d65d39a667e58ae38be79c9e726711384551d36531696f3af71"
   revision 1
 
