@@ -1,11 +1,11 @@
 class Launch < Formula
   desc "Command-line launcher for OS X, in the spirit of `open`"
-  homepage "http://web.sabi.net/nriley/software/"
+  homepage "https://sabi.net/nriley/software/"
 
   head "https://github.com/nriley/launch.git"
 
   stable do
-    url "http://sabi.net/nriley/software/launch-1.2.2.tar.gz"
+    url "https://sabi.net/nriley/software/launch-1.2.2.tar.gz"
     sha256 "94509ce5b55a768f3f8da9996193ae01baf78f239a4d0fca637735f2684eed87"
 
     # Upstream commits to fix the build on 10.10+
