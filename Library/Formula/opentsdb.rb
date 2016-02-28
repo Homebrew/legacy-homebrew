@@ -41,12 +41,12 @@ class Opentsdb < Formula
     etc.install Dir["#{opt_share}/opentsdb/etc/opentsdb"]
 
     system "#{Formula["hbase"].opt_libexec}/bin/start-hbase.sh"
-    envs = {
-      "HBASE_HOME"=>Formula["hbase"].opt_libexec.to_s,
-      "COMPRESSION"=>(build.with?("lzo") ? "LZO" : "NONE"),
-      "JAVA_HOME"=>`/usr/libexec/java_home`.strip,
-    }
-    Kernel.system(envs, "#{opt_share}/opentsdb/tools/create_table.sh")
+
+    ENV["HBASE_HOME"]=Formula["hbase"].opt_libexec.to_s
+    ENV["COMPRESSION"]=(build.with?("lzo") ? "LZO" : "NONE")
+    ENV["JAVA_HOME"]=`/usr/libexec/java_home`.strip
+    system "#{opt_share}/opentsdb/tools/create_table.sh"
+
     system "#{Formula["hbase"].opt_libexec}/bin/stop-hbase.sh"
   end
 
