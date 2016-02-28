@@ -11,7 +11,7 @@ class Mcabber < Formula
   end
 
   head do
-    url "http://mcabber.com/hg/", :using => :hg
+    url "https://mcabber.com/hg/", :using => :hg
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
