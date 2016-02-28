@@ -1,4 +1,3 @@
-# coding: utf-8
 class Snakemake < Formula
   desc "Pythonic workflow system"
   homepage "http://snakemake.bitbucket.org"
