@@ -17,7 +17,7 @@ class Mdxmini < Formula
   depends_on "sdl" if build.without? "lib-only"
 
   resource "test_song" do
-    url "ftp://ftp.modland.com/pub/modules/MDX/Popful Mail/pop-00.mdx"
+    url "http://ftp.modland.com/pub/modules/MDX/Popful%20Mail/pop-00.mdx"
     sha256 "86f21fbbaf93eb60e79fa07c759b906a782afe4e1db5c7e77a1640e6bf63fd14"
   end
 
