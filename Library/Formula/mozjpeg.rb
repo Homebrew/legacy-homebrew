@@ -14,10 +14,10 @@ class Mozjpeg < Formula
 
   bottle do
     cellar :any
-    sha256 "4e322ef9c7f878939256827370e02b7a4030b6e24a346671b2a7e4f1b7ee6516" => :el_capitan
-    sha256 "fa4f67ad6ebb94e9322b1e1069468faff113c4ca1dd2313b4b44d2650fdc79c4" => :yosemite
-    sha256 "e5409106429576a5f844a6dfe9bed4999865d3b083ed284ff35dbdd5db263840" => :mavericks
-    sha256 "dd5e4e85a3fbe4c39c78f56280e1e3563c7dd47bdc0bc7b4fb295ff78da9310e" => :mountain_lion
+    revision 1
+    sha256 "3e588bc24506e4b4a15dad591c57b5f937c0bf0c830244b4a9980502bee6c0fd" => :el_capitan
+    sha256 "b9b41960802e6a31de189de73d013c750317fb4b6b64cdab7fc40af8aaecb651" => :yosemite
+    sha256 "4670747d1beb2e197386e7e07ecc6fa3087818d6c305d23b688487d0038faab7" => :mavericks
   end
 
   depends_on "pkg-config" => :build
