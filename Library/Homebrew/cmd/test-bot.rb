@@ -27,7 +27,6 @@
 require "formula"
 require "utils"
 require "date"
-require "json"
 require "rexml/document"
 require "rexml/xmldecl"
 require "rexml/cdata"
@@ -806,11 +805,9 @@ module Homebrew
       unless formula_packaged[formula_name]
         package_url = "#{bintray_repo_url}/#{bintray_package}"
         unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
-          package_blob = {
-            :name => bintray_package,
-            :public_download_numbers => true,
-            :public_stats => true
-          }.to_json
+          package_blob = "{\"name\":\"#{bintray_package}\","\
+            "\"public_download_numbers\":true,"\
+            "\"public_stats\":true}"
           curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
                "-H", "Content-Type: application/json",
                "-d", package_blob, bintray_repo_url
