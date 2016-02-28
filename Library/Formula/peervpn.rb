@@ -1,7 +1,7 @@
 class Peervpn < Formula
   desc "Peer-to-peer VPN"
-  homepage "http://www.peervpn.net"
-  url "http://www.peervpn.net/files/peervpn-0-041.tar.gz"
+  homepage "https://peervpn.net/"
+  url "https://peervpn.net/files/peervpn-0-041.tar.gz"
   version "0.041"
   sha256 "94a7b649a973c1081d3bd9499bd7410b00b2afc5b4fd4341b1ccf2ce13ad8f52"
 
