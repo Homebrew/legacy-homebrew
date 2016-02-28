@@ -5,7 +5,7 @@ class Imagemagick < Formula
   # ImageMagick site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
   url "https://dl.bintray.com/homebrew/mirror/ImageMagick-6.9.3-6.tar.xz"
-  mirror "https://www.imagemagick.org/download/releases/ImageMagick-6.9.3-6.tar.xz"
+  mirror "https://www.imagemagick.org/download/ImageMagick-6.9.3-6.tar.xz"
   sha256 "519b14a5f58f5b55a61bebd378aff63176d8c2e9d1eb23ee332d2cc73d11943f"
 
   head "http://git.imagemagick.org/repos/ImageMagick.git"
