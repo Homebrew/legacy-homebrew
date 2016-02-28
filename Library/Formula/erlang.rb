@@ -3,7 +3,7 @@
 # elixir are compatible.
 class Erlang < Formula
   desc "Programming language for highly scalable real-time systems"
-  homepage "http://www.erlang.org"
+  homepage "https://www.erlang.org/"
   head "https://github.com/erlang/otp.git"
 
   stable do
@@ -20,12 +20,12 @@ class Erlang < Formula
   end
 
   resource "man" do
-    url "http://www.erlang.org/download/otp_doc_man_18.2.1.tar.gz"
+    url "https://www.erlang.org/download/otp_doc_man_18.2.1.tar.gz"
     sha256 "a58005ccd64853e8c79631a3c4c057dd6f92f581d97d00845a0aea817c33afa0"
   end
 
   resource "html" do
-    url "http://www.erlang.org/download/otp_doc_html_18.2.1.tar.gz"
+    url "https://www.erlang.org/download/otp_doc_html_18.2.1.tar.gz"
     sha256 "3576c567b30400fec2b456897d54ba79933ee0f83f6ec57816417b5417ea9723"
   end
 
@@ -81,8 +81,8 @@ class Erlang < Formula
 
     if build.without? "hipe"
       # HIPE doesn't strike me as that reliable on OS X
-      # http://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
-      # http://www.erlang.org/pipermail/erlang-patches/2008-September/000293.html
+      # https://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
+      # https://www.erlang.org/pipermail/erlang-patches/2008-September/000293.html
       args << "--disable-hipe"
     else
       args << "--enable-hipe"
