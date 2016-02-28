@@ -7,9 +7,10 @@ class Joshua < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c373b6ed390b6fdc1f9fca0feb59306539aba04cb95d8f4a72af6215d7bc0969" => :el_capitan
-    sha256 "2e3c7ba471fbd45fa321e2e17f12debe6f3256dfc1e546fe654e4b4942d43f50" => :yosemite
-    sha256 "577237cd1bd6b58e274a78d7dd262440a980319111b9d516f74086aad36b78b5" => :mavericks
+    revision 1
+    sha256 "b649095ea4a944799fbc1ccd8425464b7d2711b0a149049b4d2d5e92d604c5ae" => :el_capitan
+    sha256 "6ac9fb24f8b1bb70a32c72c8436b8ad43717cf83d65499cb011214061b6ce6ba" => :yosemite
+    sha256 "176fa47a6a2722fb5b6bf1e2efba8da32bab6355f3d844424a817882ed7b3a8e" => :mavericks
   end
 
   option "with-es-en-phrase-pack", "Build with Spanish–English phrase-based model [1.9 GB]."
