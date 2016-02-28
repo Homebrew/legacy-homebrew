@@ -11,6 +11,8 @@ class Montage < Formula
     sha256 "30e68dcecc111af10a65b1edd33a0142457b2f2064e1bce45e33a6d3d11539d4" => :mavericks
   end
 
+  conflicts_with "wdiff", :because => "Both install an mdiff executable"
+
   def install
     system "make"
     bin.install Dir["bin/m*"]
