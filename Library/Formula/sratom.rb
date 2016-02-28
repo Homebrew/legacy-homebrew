@@ -6,9 +6,10 @@ class Sratom < Formula
 
   bottle do
     cellar :any
-    sha256 "9023b8427d0e4068c7ca9e9a66a18545c51af3e30fcf9566db74aacceff18d2b" => :yosemite
-    sha256 "9720a29b9fc95760edc5d96a36d89fee9a44403e0ce1cbe76fbf4a805c8c9571" => :mavericks
-    sha256 "4b2acde2a46119ac0d6ae10a0d161b5f644e507296f44defc036ab311d93cf27" => :mountain_lion
+    revision 1
+    sha256 "55a2eb57141d5fa5589206b94113a873df38e298c32b18e135ab689ad209b188" => :el_capitan
+    sha256 "91f3cd1331e6502639eb51755e60581372aaf34944dd4ba4f8884724aae40e1e" => :yosemite
+    sha256 "035d8d79e3ab88f3ae991690d0f1ede056237a3666022436af7355d739b9a635" => :mavericks
   end
 
   depends_on "pkg-config" => :build
