@@ -18,7 +18,7 @@ class Libxslt < Formula
   depends_on "libxml2"
 
   head do
-    url "https://git.gnome.org/browse/libxslt"
+    url "https://git.gnome.org/browse/libxslt.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
