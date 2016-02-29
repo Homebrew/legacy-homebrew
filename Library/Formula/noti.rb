@@ -3,8 +3,8 @@ require "language/go"
 class Noti < Formula
   desc "Displays a notification after a terminal process finishes."
   homepage "https://github.com/variadico/noti"
-  url "https://github.com/variadico/noti/archive/v2.1.0.tar.gz"
-  sha256 "9fedc91e3978240444e0c92ecd4ae99b028bc944dc94f4747d0718069dd3cd8b"
+  url "https://github.com/variadico/noti/archive/v2.1.1.tar.gz"
+  sha256 "c31c763eb92b4600371b2a62f6dc1dbb3390d89c09e0baab7af0dc427b55a8c5"
   head "https://github.com/variadico/noti.git", :branch => "dev"
 
   bottle do
