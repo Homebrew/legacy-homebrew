@@ -1,14 +1,14 @@
 class Rethinkdb < Formula
   desc "The open-source database for the realtime web"
   homepage "https://www.rethinkdb.com/"
-  url "https://download.rethinkdb.com/dist/rethinkdb-2.2.3-1.tgz"
-  sha256 "d2d59532bd46da8d1f947e3ec9028746b4f4bbbc13f215b8314852ab1cd0db95"
+  url "https://download.rethinkdb.com/dist/rethinkdb-2.2.5.tgz"
+  sha256 "4770cc8b1939c700a01f900fa5bca1cb99742c73336c9142656e754e36ea9b47"
 
   bottle do
     cellar :any
-    sha256 "e61864683e159589a6a50a579ddd0ab33103d5a3d697a2189348c736ed9d8a1a" => :el_capitan
-    sha256 "6a38238014c9a83bd553fd982498a9e7dcd7b1d718d9c11b45aa7825346a9167" => :yosemite
-    sha256 "49cbb24b1c75dcb59cb8098e18eb9cbbe76d97091eca8d3c7d5b87a9deb0de39" => :mavericks
+    sha256 "dd31a2b00482629a86b9cf8ef72fd2c0664229ef09a23ade35f51cc21351fd1e" => :el_capitan
+    sha256 "88113120fdfd402b2c292f9c005267d3b9efb112195e3ccb05c7eb11c2942c24" => :yosemite
+    sha256 "742b71b2ba88a59f877b9a5e6a5ed1dd9a1808fc75b00c770b3a812f7295ee06" => :mavericks
   end
 
   depends_on :macos => :lion

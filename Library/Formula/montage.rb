@@ -1,16 +1,22 @@
 class Montage < Formula
   desc "Toolkit for assembling FITS images into custom mosaics"
   homepage "http://montage.ipac.caltech.edu"
-  url "http://montage.ipac.caltech.edu/download/Montage_v3.3.tar.gz"
-  sha256 "5403921ec18e29c2a70c1d42fc45b5a982b8a11fe5aa3cd3aa9fc814fcc16a11"
+  url "http://montage.ipac.caltech.edu/download/Montage_v4.0.tar.gz"
+  sha256 "de143e4d4b65086f04bb75cf482dfa824965a5a402f3431f9bceb395033df5fe"
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "503c3e946aa0d8f277b5e4a5aab75086d5c895551fa679a3129183b95f89b236" => :el_capitan
+    sha256 "7f9bb66eff925f20099f11ee247e4ba4c8b4821b74c7f2a3efd93d474e9a1b3f" => :yosemite
+    sha256 "30e68dcecc111af10a65b1edd33a0142457b2f2064e1bce45e33a6d3d11539d4" => :mavericks
+  end
+
+  conflicts_with "wdiff", :because => "Both install an mdiff executable"
 
   def install
     system "make"
     bin.install Dir["bin/m*"]
   end
-
-  # fix function not being declared void
-  patch :DATA
 
   def caveats; <<-EOS.undent
     Montage is under the Caltech/JPL non-exclusive, non-commercial software
@@ -18,19 +24,8 @@ class Montage < Formula
       http://montage.ipac.caltech.edu/docs/download.html
     EOS
   end
-end
 
-__END__
-diff --git a/lib/src/two_plane_v1.1/initdistdata.c b/lib/src/two_plane_v1.1/initdistdata.c
-index 0a75b24..8c1b9bb 100644
---- a/lib/src/two_plane_v1.1/initdistdata.c
-+++ b/lib/src/two_plane_v1.1/initdistdata.c
-@@ -21,7 +21,7 @@ int openfitsfile(char *fitsfilename)
-   return 0;
- }
- 
--closefitsfile()
-+void closefitsfile()
- { 
-   int I_fits_return_status=0;
-   fits_close_file(ffp_FITS_In, &I_fits_return_status); 
+  test do
+    system bin/"mHdr", "m31", "1", "template.hdr"
+  end
+end

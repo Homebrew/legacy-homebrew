@@ -7,9 +7,10 @@ class TokyoTyrant < Formula
 
   bottle do
     cellar :any
-    sha256 "57a41c1059c3b2d43f7fc8dfc1b3bae442ddf94a5cd2bb8e91015972ba45d483" => :el_capitan
-    sha256 "faeb9efd37fbb0d163f541a3436c3ede81ebcd049094e172a03a0fc7a00e986a" => :yosemite
-    sha256 "5d490b81052af030dcbdfd01b93bc6b8fdc37f52e9a561a62d631ce1fd67f902" => :mavericks
+    revision 1
+    sha256 "86b6cffac71df0a8e49ccfe105a1660575f0172724e5cf022085b3619188e195" => :el_capitan
+    sha256 "679aa39858e5e5d6d10eada454fccc94bee805c82c31f65976646110776df758" => :yosemite
+    sha256 "9454373c1a0cbfe78e3347341fbf0203fb3284023df5e68b3a49939c9c55bf64" => :mavericks
   end
 
   depends_on "tokyo-cabinet"
@@ -17,7 +18,7 @@ class TokyoTyrant < Formula
   def install
     system "./configure", "--prefix=#{libexec}"
     system "make"
-    system "make", "install"
+    system "make", "install", "PCDIR=#{lib}/pkgconfig"
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 

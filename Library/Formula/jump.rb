@@ -3,15 +3,15 @@ require "language/go"
 class Jump < Formula
   desc "Quick and fuzzy directory jumper."
   homepage "https://github.com/gsamokovarov/jump"
-  url "https://codeload.github.com/gsamokovarov/jump/tar.gz/v0.6.0"
-  sha256 "75fb5a56747a3e26b50390eae9218851f42cf9649e18ab363810d65f78932c83"
+  url "https://codeload.github.com/gsamokovarov/jump/tar.gz/v0.7.1"
+  sha256 "ac8cb3e59079e3683f76349ca2da47ddbcc53e68950eb4713e935324ad60614d"
   head "https://github.com/gsamokovarov/jump.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ce9c1818e5baa84d71596caab648b26ee03d7833dc3d727ef659a60980f2fc8b" => :el_capitan
-    sha256 "85976463a23b8434e787aa5ed796b6b9d114ec7f07af619ea02f0dcd8520c62a" => :yosemite
-    sha256 "ef223bce4d90130b89ec1361301b2abfe6bcbe599dae4462f54c555d0acab174" => :mavericks
+    sha256 "ec225dccdd5fb23bdab942bcca183854d985ab1f86509e16bff0ea84dfb2ca9a" => :el_capitan
+    sha256 "24a2f82e121ec0dd7a34c4e3721b7665bfdb116a6caaba035d30f454371fa179" => :yosemite
+    sha256 "007c884a72e7677ff01762ccdebb875f9f325589445c9b46953212346579abee" => :mavericks
   end
 
   depends_on "go" => :build

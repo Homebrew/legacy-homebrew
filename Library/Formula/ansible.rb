@@ -1,22 +1,21 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
   homepage "http://www.ansible.com"
-  url "https://releases.ansible.com/ansible/ansible-2.0.0.2.tar.gz"
-  sha256 "27db0b99113fab85b1430c361c7790a0aa7f5c614c9af13362e2adbba07e5828"
+  url "https://releases.ansible.com/ansible/ansible-2.0.1.0.tar.gz"
+  sha256 "cddc4fa6af4c1be6cd1d6634de1bd0397abad921c76b32cab6722c042744ee5d"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    revision 1
-    sha256 "c218d673fd8e98cbc08e6431d6987ece23724a4cd34aaaad9615c556085c8459" => :el_capitan
-    sha256 "ec1564b7f079c608e952883e00d2cd1132f6db2d7dc771a5e8b62a109274ea72" => :yosemite
-    sha256 "beb6175753b9f105ed475f5b5db738a164cdadb3e8e6408d4c8b98c1b4b525b9" => :mavericks
+    sha256 "347001579d8a5692654f622f820e06f790e28d84517ca41a64c3466f0c6ab156" => :el_capitan
+    sha256 "6000987100534bc9ddf530d071e367cd21a22c569c24ef9781a129a8674384ef" => :yosemite
+    sha256 "b22b007ca66ede18a565c4f9e154cfc1a088f24299cc447275bbb2b86fd1e941" => :mavericks
   end
 
   devel do
-    url "https://releases.ansible.com/ansible/ansible-2.0.1.0-0.1.rc1.tar.gz"
-    sha256 "ab2230f22d742e1379c72a3a59b18779a6aad2b4db69e87e073478028f51b24b"
-    version "2.0.1.0-0.1.rc1"
+    url "https://releases.ansible.com/ansible/ansible-2.0.1.0-0.2.rc2.tar.gz"
+    sha256 "4807f8e4b6c70ea1eca6bb3131c19e17d835d2e8884a63d107a842007430285a"
+    version "2.0.1.0-0.2.rc2"
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -202,6 +201,14 @@ class Ansible < Formula
   resource "python-dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.2.tar.gz"
     sha256 "3e95445c1db500a344079a47b171c45ef18f57d188dffdb0e4165c71bea8eb3d"
+  end
+
+  #
+  # apache libcloud (for Google GCE cupport)
+  #
+  resource "apache-libcloud" do
+    url "https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.20.1.tar.gz"
+    sha256 "f36dcf8e6a4270c86b521ab4868fd762a7ec217195e126a8ccb028a82cf55466"
   end
 
   #

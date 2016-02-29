@@ -6,21 +6,22 @@ class Pypy < Formula
 
   bottle do
     cellar :any
-    sha256 "fc1f5dde107fd9887c49bfbbe6207db6623e162acae98786c4dc37d4c661753d" => :el_capitan
-    sha256 "a299cfdc148e56f982b4573482e589c62c7ae6630538db2d024c8076f0d9252a" => :yosemite
-    sha256 "80225ff2367f678288e2790cc0c265570209f41a2d2fc8f60655d7d5463a08fb" => :mavericks
+    revision 1
+    sha256 "9858ef67776f49023fcc9c9d4dc1d0f9b9fb7aac44b3dc75f068595c81bc1ab2" => :el_capitan
+    sha256 "aa61ea9ffbfd0687050aca6f6e077a73827b07beee93b61a895eb0733201dea6" => :yosemite
+    sha256 "e3e878f72e437a8c6046d8ae45e0c8936405ceebbf143282e901f8beb2a7ee06" => :mavericks
   end
+
+  option "without-bootstrap", "Translate Pypy with system Python instead of " \
+                              "downloading a Pypy binary distribution to " \
+                              "perform the translation (adds 30-60 minutes " \
+                              "to build)"
 
   depends_on :arch => :x86_64
   depends_on "pkg-config" => :build
   depends_on "gdbm" => :recommended
   depends_on "sqlite" => :recommended
   depends_on "openssl"
-
-  option "without-bootstrap", "Translate Pypy with system Python instead of " \
-                              "downloading a Pypy binary distribution to " \
-                              "perform the translation (adds 30-60 minutes " \
-                              "to build)"
 
   resource "bootstrap" do
     url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-osx64.tar.bz2"
@@ -87,6 +88,12 @@ class Pypy < Formula
     prefix_site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
+    unless (libexec/"site-packages").symlink?
+      # fix the case where libexec/site-packages/site-packages was installed
+      rm_rf libexec/"site-packages/site-packages"
+      mv Dir[libexec/"site-packages/*"], prefix_site_packages
+      rm_rf libexec/"site-packages"
+    end
     libexec.install_symlink prefix_site_packages
 
     # Tell distutils-based installers where to put scripts

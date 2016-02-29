@@ -12,11 +12,12 @@ class Pngquant < Formula
     sha256 "2a2735a1773b27297b72bcd278cdbfc8d0aa895976b26c48026379f952ed63e6" => :mavericks
   end
 
+  option "with-openmp", "Enable OpenMP"
+
   depends_on "pkg-config" => :build
   depends_on "libpng"
   depends_on "little-cms2" => :optional
 
-  option "with-openmp", "Enable OpenMP"
   needs :openmp if build.with? "openmp"
 
   def install

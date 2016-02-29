@@ -2,7 +2,6 @@ require "formula"
 require "formula_lock"
 require "keg"
 require "tab"
-require "tap_migrations"
 
 class Migrator
   class MigrationNeededError < RuntimeError
@@ -126,13 +125,11 @@ class Migrator
     if formula.tap == old_tap
       true
     # Homebrew didn't use to update tabs while performing tap-migrations,
-    # so there can be INSTALL_RECEIPT's containing wrong information about
-    # tap (tap is Homebrew/homebrew if installed formula migrates to a tap), so
-    # we check if there is an entry about oldname migrated to tap and if
+    # so there can be INSTALL_RECEIPT's containing wrong information about tap,
+    # so we check if there is an entry about oldname migrated to tap and if
     # newname's tap is the same as tap to which oldname migrated, then we
     # can perform migrations and the taps for oldname and newname are the same.
-    elsif TAP_MIGRATIONS && (rec = TAP_MIGRATIONS[formula.oldname]) \
-        && formula.tap == rec && old_tap == "Homebrew/homebrew"
+    elsif formula.tap && old_tap && formula.tap == old_tap.tap_migrations[formula.oldname]
       fix_tabs
       true
     else

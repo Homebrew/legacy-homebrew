@@ -1,14 +1,14 @@
 class Scmpuff < Formula
   desc "Adds numbered shortcuts for common git commands"
   homepage "https://mroth.github.io/scmpuff/"
-  url "https://github.com/mroth/scmpuff/archive/v0.1.1.tar.gz"
-  sha256 "cec3c9df41acb1735f2e8c1c9840d0481af0d996690f5a19a0a8fc4f06f97370"
+  url "https://github.com/mroth/scmpuff/archive/v0.2.0.tar.gz"
+  sha256 "7ec19d68cfea6babbd2fafff67df0b7c07ed27a9e80dbd01691611038442a1a0"
 
   bottle do
-    cellar :any
-    sha256 "f00364efe1b324301ed9ebac6cf1035d1f021fe58b0a5986d039f849a17e1965" => :yosemite
-    sha256 "3cb9284bdfc2b933422f91d6777b63925c0b9835af887a321709a0170966759b" => :mavericks
-    sha256 "8445d1788508e9dd7fdbb5385f7d3aec5c329f219daecefc9a25bc9bbf97e716" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a4acc59d2d7a47831e9742dde48e0d0dffc028e8f571c7e5f3fe61fe2752af4b" => :el_capitan
+    sha256 "8b07aab86f0cc4fdb7407fce9ebd0e0f75cfb8be4371f9642142d713ae2d3e0c" => :yosemite
+    sha256 "96d22d713a1ba5705bf573a0c14ae8a345b6a5373be489109e6370d542b9dd14" => :mavericks
   end
 
   depends_on "go" => :build
@@ -20,7 +20,7 @@ class Scmpuff < Formula
 
     # scmpuff's build script normally does version detection which depends on
     # being checked out via git repo -- instead have homebrew specify version.
-    system "go", "build", "-o", "#{bin}/scmpuff", "-ldflags", "-X main.VERSION #{version}"
+    system "go", "build", "-o", "#{bin}/scmpuff", "-ldflags", "-X main.VERSION=#{version}", "./src/github.com/mroth/scmpuff"
   end
 
   test do

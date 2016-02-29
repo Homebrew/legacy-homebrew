@@ -12,8 +12,8 @@ class Nginx < Formula
   end
 
   devel do
-    url "http://nginx.org/download/nginx-1.9.10.tar.gz"
-    sha256 "fb14d76844cab0a5a0880768be28965e74f9956790f618c454ef6098e26631d9"
+    url "http://nginx.org/download/nginx-1.9.12.tar.gz"
+    sha256 "1af2eb956910ed4b11aaf525a81bc37e135907e7127948f9179f5410337da042"
   end
 
   env :userpaths

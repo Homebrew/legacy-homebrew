@@ -209,11 +209,20 @@ module Homebrew
         tab.time = nil
         tab.write
 
-        keg.find {|k| File.utime(File.atime(k), tab.source_modified_time, k) }
+        keg.find do |file|
+          if file.symlink?
+            # Ruby does not support `File.lutime` yet.
+            # Shellout using `touch` to change modified time of symlink itself.
+            system "/usr/bin/touch", "-h",
+                   "-t", tab.source_modified_time.strftime("%Y%m%d%H%M.%S"), file
+          else
+            file.utime(tab.source_modified_time, tab.source_modified_time)
+          end
+        end
 
         cd cellar do
           safe_system "tar", "cf", tar_path, "#{f.name}/#{f.pkg_version}"
-          File.utime(File.atime(tar_path), tab.source_modified_time, tar_path)
+          tar_path.utime(tab.source_modified_time, tab.source_modified_time)
           relocatable_tar_path = "#{f}-bottle.tar"
           mv tar_path, relocatable_tar_path
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2

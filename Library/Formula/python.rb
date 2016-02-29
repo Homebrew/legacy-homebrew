@@ -84,8 +84,9 @@ class Python < Formula
 
   # setuptools remembers the build flags python is built with and uses them to
   # build packages later. Xcode-only systems need different flags.
-  def pour_bottle?
-    MacOS::CLT.installed?
+  pour_bottle? do
+    reason "The bottle needs the Xcode CLT to be installed."
+    satisfy { MacOS::CLT.installed? }
   end
 
   def install

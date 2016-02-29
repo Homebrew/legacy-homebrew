@@ -1,15 +1,15 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
   homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.8.1.tar.gz"
-  sha256 "e8602a5df862124351dec92515019b2875616cc90c15499b681d8c6e38a66ea9"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.9.0.tar.gz"
+  sha256 "c5101d8b29c4c0da37ef5542d5bcc53e6ce2266c955fd601ca19989db2e42a69"
   head "https://github.com/untitaker/vdirsyncer.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3e3c80133837612fa01f67ad2aa9e31a223cdce1b9bda5a86e38eb3ff990eb91" => :el_capitan
-    sha256 "d122eba87dd4803ea2bede1e14fd6a2e8b0948304e7ab0fbbaa3e1fa13b9e6d3" => :yosemite
-    sha256 "f86595a99ca075a69a1acaccab1adfb0475bcfa1be1b6a53428b6505d4b154f3" => :mavericks
+    sha256 "8feeab98180fd0fd24f3c761bd24562965ee3311b6b4519bbb67874fcddf6dbe" => :el_capitan
+    sha256 "afca99c2ee95024e41475286cbc16233c9951be5225fd1bd16214afbd491d656" => :yosemite
+    sha256 "8ddb8e2dc53253f59d5e0ecaf73aa21728654d04e8967b44a1765e858c0988a3" => :mavericks
   end
 
   option "with-remotestorage", "Build with support for remote-storage"

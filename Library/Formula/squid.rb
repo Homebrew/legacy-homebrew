@@ -1,13 +1,13 @@
 class Squid < Formula
   desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.13.tar.xz"
-  sha256 "e75d94671895270272883187296f17e26954bf00a090c97bfea8a4fc264a5b40"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.15.tar.xz"
+  sha256 "9cfce3231c7b3b33816fc54414d8720a51ac5e723663e0685a8bb995b9f450d2"
 
   bottle do
-    sha256 "a7f8f41682e8707076b9043a749f7d06aa8e43cbc957ede40638cb26b2f0dff7" => :el_capitan
-    sha256 "d6b11c6c9c58aa1914c08d6b90253ebdb6c654bd06c4b5938dbf5697017c80cc" => :yosemite
-    sha256 "1ffc8de5c4192a0b666348de146a69cb003a49919727eca37f68666c099ed8bc" => :mavericks
+    sha256 "db202eca2558ef39046aec75701778b45c53aadca32323e8754a38e2caeb115f" => :el_capitan
+    sha256 "e771bfc371c6e75adcf6213e082516d21d9f1588bffab4a608fca722caa8c948" => :yosemite
+    sha256 "d7124e081fc9008a50cdd321a9a82e961dfb83227c1dbafda6bf091fc8ceb9aa" => :mavericks
   end
 
   depends_on "openssl"

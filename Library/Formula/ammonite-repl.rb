@@ -1,14 +1,14 @@
 class AmmoniteRepl < Formula
   desc "Ammonite is a cleanroom re-implementation of the Scala REPL"
   homepage "https://lihaoyi.github.io/Ammonite/#Ammonite-REPL"
-  url "https://github.com/lihaoyi/Ammonite/archive/0.5.2.tar.gz"
-  sha256 "78d496e8ad7b8e98aa7005c8160e99c326c8a9b6dba82bd2ae2a171577965237"
+  url "https://github.com/lihaoyi/Ammonite/archive/0.5.5.tar.gz"
+  sha256 "319517ddb76e21116077bc24646c61ec2989c23bb4da85834133dd52bb448ea9"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b9933e8aa1915ae0daffca393779d6a21e675c9c639652a50717211f053f48ae" => :el_capitan
-    sha256 "0ba8b816a6184d82cd25574318da6150e7e19559e82effa39f9e2c314400aa66" => :yosemite
-    sha256 "249e79ee6096295ab85f554a4ee38a1a31b108c437b9bb31df057d5e96adbcc5" => :mavericks
+    sha256 "260453fa12dd1e61d6c4d5674a57b1be7bb421c0bf44a53039c4b9d2bfcf2083" => :el_capitan
+    sha256 "f98cd77971727ace504470aa5c0fa0ea4b1a3dd5b2b5684fbc15a33af6719506" => :yosemite
+    sha256 "d7a89c8db3953dc3aae0dbcd7f5fd3d53070aa2fc92a6ffd8d9e259510bf9a53" => :mavericks
   end
 
   depends_on :java => "1.6+"
@@ -18,7 +18,8 @@ class AmmoniteRepl < Formula
     ENV.java_cache
 
     system "sbt", "repl/assembly"
-    bin.install "repl/target/scala-2.11/ammonite-repl-0.5.2-2.11.7" => "amm"
+
+    bin.install "repl/target/scala-2.11/ammonite-repl-#{version}-2.11.7" => "amm"
   end
 
   test do

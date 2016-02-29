@@ -1,15 +1,15 @@
 class Arangodb < Formula
   desc "Universal open-source database with a flexible data model"
   homepage "https://www.arangodb.com/"
-  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.8.1.tar.gz"
-  sha256 "c5ddfcd33aa935d51085ecd5a52df6872d06fc5c09f645526992a7ba7d5ba985"
+  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.8.3.tar.gz"
+  sha256 "999f24ab97b3820e0acc7c6b89178ebe782a6a0b9804eaf55edc64102115e72c"
 
   head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
 
   bottle do
-    sha256 "e760352be0104bb2903e53062a111df3a34e46b8e59ed8c56f51b88826d04a46" => :el_capitan
-    sha256 "101dc0d14e5fb3aeeea7262a0e69dfe90cfc8026538c0030c25d95a0d21cb868" => :yosemite
-    sha256 "6f88c911eb5b1279eb98dd85d68a96521245b0c07dbfc47b97142352af6a31c7" => :mavericks
+    sha256 "d2ad652b8c553f7d30eb33019fab5339f6aff820fd3d691eb7c17cf3288546af" => :el_capitan
+    sha256 "1b1d2daa70746db5bd819e3265a9ae3ec1588c8c2dfbf248542c4ddf8f97fa03" => :yosemite
+    sha256 "53dd15a9085ad8491fa9fa481f27dbb90005d34235dd936a7bfe9aaac2cfa416" => :mavericks
   end
 
   depends_on "go" => :build
@@ -38,6 +38,10 @@ class Arangodb < Formula
 
     args << "--program-suffix=-unstable" if build.head?
 
+    if ENV.compiler != :clang
+      ENV.append "LDFLAGS", "-static-libgcc -static-libstdc++"
+    end
+
     system "./configure", *args
     system "make", "install"
   end
@@ -47,6 +51,13 @@ class Arangodb < Formula
     (var/"log/arangodb").mkpath
 
     system "#{sbin}/arangod" + (build.head? ? "-unstable" : ""), "--upgrade", "--log.file", "-"
+  end
+
+  def caveats; <<-EOS.undent
+    Please note that clang and/or its standard library 7.0.0 has a severe
+    performance issue. Please consider using '--cc=gcc-5' when installing
+    if you are running on such a system.
+    EOS
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod" + (build.head? ? "-unstable" : "") + " --log.file -"

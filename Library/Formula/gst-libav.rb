@@ -1,7 +1,7 @@
 class GstLibav < Formula
   desc "GStreamer plugins for Libav (a fork of FFmpeg)"
-  homepage "http://gstreamer.freedesktop.org"
-  url "http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.6.3.tar.xz"
+  homepage "https://gstreamer.freedesktop.org/"
+  url "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.6.3.tar.xz"
   sha256 "857b9c060a0337de38c6d26238c47352433c02eabf26c2f860c854dbc35bd4ab"
 
   bottle do
@@ -11,7 +11,7 @@ class GstLibav < Formula
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gst-libav"
+    url "https://anongit.freedesktop.org/git/gstreamer/gst-libav.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -25,17 +25,12 @@ class GstLibav < Formula
   depends_on "xz" # For LZMA
 
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --disable-dependency-tracking
-    ]
-
     if build.head?
       ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
     system "make", "install"
   end

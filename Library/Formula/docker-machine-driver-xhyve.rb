@@ -22,7 +22,6 @@ class DockerMachineDriverXhyve < Formula
     (buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve").install Dir["{*,.git,.gitignore}"]
 
     ENV["GOPATH"] = "#{buildpath}/gopath"
-    ENV["GO15VENDOREXPERIMENT"] = "1"
 
     cd buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve" do
       if build.head?

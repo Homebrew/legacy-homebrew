@@ -6,6 +6,7 @@ class Clisp < Formula
   sha256 "8132ff353afaa70e6b19367a25ae3d5a43627279c25647c220641fed00f8e890"
 
   bottle do
+    sha256 "68169046c3d5465c905375645b363d549812b4d543764a0eee5a7f4aeacba6cc" => :el_capitan
     sha256 "cbd72b99874b8a53da52938f41122e741cccb1e300c2bbf3175f6cefbe48a100" => :yosemite
     sha256 "00d23db5b9accb0072a1b14d6adf1ddfd11112c5c36faa7e68c03f2727aa3be9" => :mavericks
     sha256 "4acc75971d4dd0a316586b38cfa53162887104a9e9a33a0ca26134a3696307e0" => :mountain_lion

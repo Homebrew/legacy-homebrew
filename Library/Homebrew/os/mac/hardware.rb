@@ -1,4 +1,4 @@
-require "os/mac/mach"
+require "os/mac/pathname"
 
 module MacCPUs
   OPTIMIZATION_FLAGS = {
@@ -48,6 +48,8 @@ module MacCPUs
         :haswell
       when 0x582ed09c # Broadwell
         :broadwell
+      when 0x37fc219f # Skylake
+        :skylake
       else
         :dunno
       end

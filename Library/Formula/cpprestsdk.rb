@@ -1,14 +1,16 @@
 class Cpprestsdk < Formula
   desc "C++ libraries for cloud-based client-server communication"
   homepage "https://github.com/Microsoft/cpprestsdk"
-  url "https://github.com/Microsoft/cpprestsdk/archive/v2.7.0.tar.gz"
-  sha256 "d53593fda17bcac8f68af8bc3ba4ac638ea7e7480f43aa7f3350f6f200b0c63e"
+  url "https://github.com/Microsoft/cpprestsdk/archive/v2.8.0.tar.gz"
+  sha256 "3d1c38aa7ef34b3d3e9a6e84d3866554fe48c3d9d9977896d18a7cfb80d5a4ea"
+
+  head "https://github.com/Microsoft/cpprestsdk.git", :branch => "development"
 
   bottle do
     cellar :any
-    sha256 "f3d0e1fa77b872b9f0bf58ea363d5a6dce656e6f68e90cdb584d090f419d27e4" => :el_capitan
-    sha256 "85ecc71b5bb39cd4b29d0d4510b51bdbf0e2dad0e38022b221439b20cf472a7d" => :yosemite
-    sha256 "19b2c820dcc1671778bacad7b33f9f58b97c707f6f536c97b3e2518def239e4d" => :mavericks
+    sha256 "aaf11100fd9698a5776a4cd9a5f73610e927d87135c40a1824007cc16d3d9cab" => :el_capitan
+    sha256 "1ac888c82773474dd4c43dd7f637d60ff180a50797c4d33acd02ab773a4f05d2" => :yosemite
+    sha256 "afd80c1df6c5cb0497006a277d94fd344e6831a99c0545a96a7e05979888e16e" => :mavericks
   end
 
   depends_on "boost"
@@ -16,7 +18,7 @@ class Cpprestsdk < Formula
   depends_on "cmake" => :build
 
   def install
-    system "cmake", "-DBUILD_SAMPLES=OFF", "Release", *std_cmake_args
+    system "cmake", "-DBUILD_SAMPLES=OFF", "-DBUILD_TESTS=OFF", "Release", *std_cmake_args
     system "make", "install"
   end
 

@@ -5,7 +5,8 @@ class Envv < Formula
   sha256 "1db05b46904e0cc4d777edf3ea14665f6157ade0567359e28663b5b00f6fa59a"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "3b2fb0b35749280461b3982797ceea34bfa42d63cb5c6547986cf106669ee744" => :el_capitan
     sha256 "90a718606ec61e5a0e494d3e41b7d87048de803567f4ba2c65231fe41880bd97" => :yosemite
     sha256 "9ac7617d6475a67c60604fcd72d0ae1a5515df331944e8fb2c2a9223c16e3504" => :mavericks
     sha256 "333dd38f6cc080740ca155abcb6e9aa40be46d83ccdced16435cb9c5faf8b518" => :mountain_lion

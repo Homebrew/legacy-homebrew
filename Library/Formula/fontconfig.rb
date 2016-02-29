@@ -1,17 +1,24 @@
 class Fontconfig < Formula
   desc "XML-based font configuration API for X Windows"
-  homepage "http://fontconfig.org/"
-  url "http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2"
+  homepage "https://wiki.freedesktop.org/www/Software/fontconfig/"
+  url "https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.11.1.tar.bz2"
   sha256 "dc62447533bca844463a3c3fd4083b57c90f18a70506e7a9f4936b5a1e516a99"
-  revision 1
+  revision 2
 
   # The bottle tooling is too lenient and thinks fontconfig
   # is relocatable, but it has hardcoded paths in the executables.
   bottle do
     cellar :any
-    sha256 "dc55bbc7fb428939a0a0c54d581752112061a6f60cb4ca4166be8cbf4463c903" => :el_capitan
-    sha256 "16409ed563d66f9b61a2a26affbd9fc2334381e036b56b64b950dba67c9d9719" => :yosemite
-    sha256 "40c1882bd1fd1da8ce4e24ff677604aa1a09dcae9ecbe3e131a1c4f8eb3822dd" => :mavericks
+    sha256 "6a2492b8e02a1b17cb2b2090917a5957934a25d24b13fe33cc213f07c7119955" => :el_capitan
+    sha256 "23574b814f3cd34dbbc00151038e50eee7d7db2cb0db9a581a06155a30b31b91" => :yosemite
+    sha256 "36104e396d373ff8c593ee61053534007f4436bf5c2d9ebbf29843aaccc51064" => :mavericks
+  end
+
+  pour_bottle? do
+    reason "The bottle needs to be installed into /usr/local."
+    # c.f. the identical hack in lua
+    # https://github.com/Homebrew/homebrew/issues/47173
+    satisfy { HOMEBREW_PREFIX.to_s == "/usr/local" }
   end
 
   keg_only :provided_pre_mountain_lion

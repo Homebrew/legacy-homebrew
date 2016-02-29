@@ -78,17 +78,29 @@ class FormulaInstaller
     return false if @pour_failed
 
     bottle = formula.bottle
-    return true  if force_bottle? && bottle
+    return false unless bottle
+    return true  if force_bottle?
     return false if build_from_source? || build_bottle? || interactive?
     return false if ARGV.cc
     return false unless options.empty?
     return false if formula.bottle_disabled?
     return true  if formula.local_bottle_path
-    return false unless bottle && formula.pour_bottle?
+    unless formula.pour_bottle?
+      if install_bottle_options[:warn] && formula.pour_bottle_check_unsatisfied_reason
+        opoo <<-EOS.undent
+          Building #{formula.full_name} from source:
+            #{formula.pour_bottle_check_unsatisfied_reason}
+        EOS
+      end
+      return false
+    end
 
     unless bottle.compatible_cellar?
       if install_bottle_options[:warn]
-        opoo "Building source; cellar of #{formula.full_name}'s bottle is #{bottle.cellar}"
+        opoo <<-EOS.undent
+          Building #{formula.full_name} from source:
+            The bottle needs a #{bottle.cellar} Cellar (yours is #{HOMEBREW_CELLAR}).
+        EOS
       end
       return false
     end
@@ -106,6 +118,7 @@ class FormulaInstaller
   end
 
   def prelude
+    Tab.clear_cache
     verify_deps_exist unless skip_deps_check?
     lock
     check_install_sanity

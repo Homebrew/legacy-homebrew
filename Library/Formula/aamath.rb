@@ -4,6 +4,13 @@ class Aamath < Formula
   url "http://fuse.superglue.se/aamath/aamath-0.3.tar.gz"
   sha256 "9843f4588695e2cd55ce5d8f58921d4f255e0e65ed9569e1dcddf3f68f77b631"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "8b805e37fd5f4536b4fbf7f3ae6251b645b4b132027d56ccd015a6036c304744" => :el_capitan
+    sha256 "1e22022e621e7d2337edf4a80ae2c1618a89089132656d85cc141774565e34d7" => :yosemite
+    sha256 "0212e0b5844ea1a491bc7d4fcab2b590921042b28bc50e79c36cd9e15d08e2aa" => :mavericks
+  end
+
   # Fix build on clang; patch by Homebrew team
   # https://github.com/Homebrew/homebrew/issues/23872
   patch :DATA

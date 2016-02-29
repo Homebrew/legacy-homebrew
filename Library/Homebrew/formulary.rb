@@ -1,5 +1,4 @@
 require "digest/md5"
-require "formula_renames"
 require "tap"
 require "core_formula_repository"
 
@@ -148,15 +147,17 @@ class Formulary
     def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
       @tap = Tap.fetch user, repo
-      name = @tap.formula_renames.fetch(name, name)
-      path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
+      formula_dir = @tap.formula_dir || @tap.path
+      path = formula_dir/"#{name}.rb"
 
-      unless path
+      unless path.file?
         if (possible_alias = @tap.alias_dir/name).file?
           path = possible_alias.resolved_path
           name = path.basename(".rb").to_s
-        else
-          path = @tap.path/"#{name}.rb"
+        elsif (new_name = @tap.formula_renames[name]) &&
+              (new_path = formula_dir/"#{new_name}.rb").file?
+          path = new_path
+          name = new_name
         end
       end
 

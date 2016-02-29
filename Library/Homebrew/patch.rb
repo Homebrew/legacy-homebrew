@@ -130,7 +130,7 @@ class ExternalPatch
       patch_dir = Pathname.pwd
       if patch_files.empty?
         children = patch_dir.children
-        if (children.count == 1 && children.first.file?)
+        if (children.length == 1 && children.first.file?)
           patch_files << children.first.basename
         else
           raise MissingApplyError, <<-EOS.undent

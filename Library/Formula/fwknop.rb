@@ -1,14 +1,14 @@
 class Fwknop < Formula
   desc "Single Packet Authorization and Port Knocking"
   homepage "https://www.cipherdyne.org/fwknop/"
-  url "https://github.com/mrash/fwknop/archive/2.6.7.tar.gz"
-  sha256 "e96c13f725a4c3829c842743b14aedf591d30570df5c06556862a900b64def86"
+  url "https://github.com/mrash/fwknop/archive/2.6.8.tar.gz"
+  sha256 "96e6ba8b7e29aaf65bd06eaa823896ab66169b2aaced8123375378ff4b76a2d6"
   head "https://github.com/mrash/fwknop.git"
 
   bottle do
-    sha256 "d00d233db7cb2cb04c50ee792756d76cfda37f2c6bc210e313375dca01d8f4d1" => :yosemite
-    sha256 "a69bbd4435378eb2b6b5a8046d3562aef0f22152b50521c106700aa53f221724" => :mavericks
-    sha256 "c003419be9572eab4fa791bb43b4faa63235caadac15f3cb1d1f38b555b927ef" => :mountain_lion
+    sha256 "fd2b5c7e993a76dc242e75b69776a2228a7eb1e6721756c9a978478e2fa14828" => :el_capitan
+    sha256 "4c4ef1ddfcf4c59dde5c1bf31571917c699db67b08c5ca03002be82ede022302" => :yosemite
+    sha256 "60bc661b9d289ae9f20b7f80b8d11e0d2823994358d329bd6439006f9b94ce1a" => :mavericks
   end
 
   depends_on "automake" => :build

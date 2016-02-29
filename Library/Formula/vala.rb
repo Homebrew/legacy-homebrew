@@ -10,6 +10,11 @@ class Vala < Formula
     sha256 "bf422cf5802d09413482943afac7cd0b7d19e2defa1955330acb11d644d61299" => :mavericks
   end
 
+  devel do
+    url "https://download.gnome.org/sources/vala/0.31/vala-0.31.1.tar.xz"
+    sha256 "c3cbff1cc29f3fca3939c3994b8591ec3d9aca4d85d042353ee46c00ddf4055f"
+  end
+
   depends_on "pkg-config" => :run
   depends_on "gettext"
   depends_on "glib"
@@ -37,7 +42,7 @@ class Vala < Formula
       # Save generated C source code.
       "--save-temps",
       # Vala source code path.
-      "#{path}",]
+      path.to_s]
     system "#{bin}/valac", *valac_args
     assert File.exist?(testpath/"hello.c")
 

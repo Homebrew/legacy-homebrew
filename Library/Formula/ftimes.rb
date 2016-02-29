@@ -6,6 +6,7 @@ class Ftimes < Formula
   revision 1
 
   bottle do
+    sha256 "7c782808f555c9f8afa2bca44c064f9898bcf3a66a14e7b859124f0afc85c97e" => :el_capitan
     sha256 "0cc52b1c4396b5adca1a3adc4a2942f0beef27392f23cb6533db79c54a3657ca" => :yosemite
     sha256 "214b8092f738542005f77d146cc6b85ee69f2f100469dc6e2b78b5f2f0b5c132" => :mavericks
     sha256 "fbe09e2f091d3b828a2f3802674203f4f72b6e0136fe6f442bf8313234be5373" => :mountain_lion

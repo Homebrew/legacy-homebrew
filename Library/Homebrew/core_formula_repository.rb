@@ -69,6 +69,12 @@ class CoreFormulaRepository < Tap
   end
 
   # @private
+  def tap_migrations
+    require "tap_migrations"
+    TAP_MIGRATIONS
+  end
+
+  # @private
   def formula_file_to_name(file)
     file.basename(".rb").to_s
   end

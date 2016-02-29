@@ -1,8 +1,8 @@
 class Chisel < Formula
   desc "Collection of LLDB commands to assist debugging iOS apps"
   homepage "https://github.com/facebook/chisel"
-  url "https://github.com/facebook/chisel/archive/1.3.0.tar.gz"
-  sha256 "6e8f64a1cb48b0937a98a7d62dc0c6de8cea5afa0040088b426d166e188a6f59"
+  url "https://github.com/facebook/chisel/archive/1.4.0.tar.gz"
+  sha256 "94d695cbc24343f8002c2b68a68bcc00601ab161ef24d16ee0718c93a2889493"
 
   bottle :unneeded
 

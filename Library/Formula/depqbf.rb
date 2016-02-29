@@ -7,6 +7,7 @@ class Depqbf < Formula
 
   bottle do
     cellar :any
+    sha256 "5ef5545d3de7419cc366343b7acaf6d6bcc1c11c435d98b999285d21b48feaba" => :el_capitan
     sha256 "d006dbbf545986f9d193b311c5c4dc126866188bdda63c9e3eecc396a8bb9d37" => :yosemite
     sha256 "d03768d1c826f6f6b962ff7f397eac00dd4e0177abda5c520a43c1b0109b816f" => :mavericks
     sha256 "fa17129bcb7ff4927330dfa1b25148cca21681b687811962402ab142914b9edd" => :mountain_lion

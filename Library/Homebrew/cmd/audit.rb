@@ -4,10 +4,8 @@ require "utils"
 require "extend/ENV"
 require "formula_cellar_checks"
 require "official_taps"
-require "tap_migrations"
 require "cmd/search"
 require "date"
-require "formula_renames"
 
 module Homebrew
   def audit
@@ -411,7 +409,7 @@ class FormulaAuditor
       problem "Description shouldn't start with an indefinite article (#{$1})"
     end
 
-    if desc =~ /^#{formula.name}\s/i
+    if desc.downcase.start_with? "#{formula.name} "
       problem "Description shouldn't include the formula name"
     end
   end
@@ -512,9 +510,9 @@ class FormulaAuditor
     end
 
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
-    if (metadata["forks_count"] < 10) && (metadata["subscribers_count"] < 10) &&
-       (metadata["stargazers_count"] < 20)
-      problem "GitHub repository not notable enough (<10 forks, <10 watchers and <20 stars)"
+    if (metadata["forks_count"] < 20) && (metadata["subscribers_count"] < 20) &&
+       (metadata["stargazers_count"] < 50)
+      problem "GitHub repository not notable enough (<20 forks, <20 watchers and <50 stars)"
     end
 
     if Date.parse(metadata["created_at"]) > (Date.today - 30)
@@ -879,11 +877,11 @@ class FormulaAuditor
         problem "`#{$1}` is now unnecessary"
       end
 
-      if line =~ %r{#\{share\}/#{formula.name}[/'"]}
+      if line =~ %r{#\{share\}/#{Regexp.escape(formula.name)}[/'"]}
         problem "Use \#{pkgshare} instead of \#{share}/#{formula.name}"
       end
 
-      if line =~ %r{share/"#{formula.name}[/'"]}
+      if line =~ %r{share/"#{Regexp.escape(formula.name)}[/'"]}
         problem "Use pkgshare instead of (share/\"#{formula.name}\")"
       end
     end
@@ -898,11 +896,11 @@ class FormulaAuditor
   end
 
   def audit_reverse_migration
-    # Only enforce for new formula being re-added to core
+    # Only enforce for new formula being re-added to core and official taps
     return unless @strict
-    return unless formula.core_formula?
+    return unless formula.tap && formula.tap.official?
 
-    if TAP_MIGRATIONS.key?(formula.name)
+    if formula.tap.tap_migrations.key?(formula.name)
       problem <<-EOS.undent
        #{formula.name} seems to be listed in tap_migrations.rb!
        Please remove #{formula.name} from present tap & tap_migrations.rb
@@ -1126,6 +1124,7 @@ class ResourceAuditor
            %r{^http://www\.mirrorservice\.org/},
            %r{^http://launchpad\.net/},
            %r{^http://bitbucket\.org/},
+           %r{^http://hackage\.haskell\.org/},
            %r{^http://(?:[^/]*\.)?archive\.org}
         problem "Please use https:// for #{p}"
       when %r{^http://search\.mcpan\.org/CPAN/(.*)}i

@@ -7,13 +7,13 @@ class MysqlSandbox < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "80088acc66e7ab210d452e78a8d33bfef4edc70616647b2159355a4629282123" => :el_capitan
-    sha256 "233476fc5143899aca3763ac7588902e9424c5fff829417ccf7d9200b5e6aea0" => :yosemite
-    sha256 "4a9798abe3d89ac7d540ed6ed88b063dd4af82cba417a31375626c00198c5eae" => :mavericks
+    revision 1
+    sha256 "c0355a4d90c4e4a4a6b78bf033d984c63d4836e95cb93844eecf2e439cc2071c" => :el_capitan
+    sha256 "e2bc35919240846dd45a6d215f072060380d517c822b95049e683fdca7d08c0e" => :yosemite
+    sha256 "2b845b6fe0df229ef598f6743a613773a15d05f3861a117d9102f268a7e6e435" => :mavericks
   end
 
   def install
-    ENV.delete "PERL_MM_OPT"
     ENV["PERL_LIBDIR"] = libexec/"lib/perl5"
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5/site_perl/"
 

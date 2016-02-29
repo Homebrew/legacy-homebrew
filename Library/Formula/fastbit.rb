@@ -8,6 +8,7 @@ class Fastbit < Formula
 
   bottle do
     cellar :any
+    sha256 "2805a5e4739ab396077fad99782174b25def6d0c8ce3d3728ed39fed2160f286" => :el_capitan
     sha256 "33aa7e0a593b07b6d1615200b06ccd6eecd742beac345bd94b262f1b386d3591" => :yosemite
     sha256 "f2da8bed14e66f334f870cec65c678961f925d519bddefc74ef806b493346833" => :mavericks
     sha256 "d62226b902928b479e2835848a8eafdcd52557cb4249c59bd15cc1bd23d1e67e" => :mountain_lion

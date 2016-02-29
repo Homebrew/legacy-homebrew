@@ -26,8 +26,9 @@ undef cache
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
 
-HOMEBREW_BREW_FILE = ENV["HOMEBREW_BREW_FILE"]
-unless HOMEBREW_BREW_FILE
+if ENV["HOMEBREW_BREW_FILE"]
+  HOMEBREW_BREW_FILE = Pathname.new(ENV["HOMEBREW_BREW_FILE"])
+else
   odie "HOMEBREW_BREW_FILE was not exported! Please call bin/brew directly!"
 end
 
@@ -49,7 +50,7 @@ HOMEBREW_LOGS = Pathname.new(ENV["HOMEBREW_LOGS"] || "~/Library/Logs/Homebrew/")
 HOMEBREW_TEMP = Pathname.new(ENV.fetch("HOMEBREW_TEMP", "/tmp"))
 
 unless defined? HOMEBREW_LIBRARY_PATH
-  HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent.join("Homebrew")
+  HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent
 end
 
 HOMEBREW_LOAD_PATH = HOMEBREW_LIBRARY_PATH
