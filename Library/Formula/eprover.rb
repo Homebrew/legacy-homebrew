@@ -1,7 +1,7 @@
 class Eprover < Formula
   desc "Theorem prover for full first-order logic with equality"
   homepage "http://eprover.org"
-  url "http://wwwlehre.dhbw-stuttgart.de/~sschulz/WORK/E_DOWNLOAD/V_1.9/E.tgz"
+  url "https://wwwlehre.dhbw-stuttgart.de/~sschulz/WORK/E_DOWNLOAD/V_1.9/E.tgz"
   version "1.9"
   sha256 "c4365661a6a4519b21b895fafe60c6b39b8acadf77a3c42e4d638027f155376e"
 
