@@ -10,17 +10,27 @@ class Silk < Formula
     sha256 "add00c8ccdbf6c9ad91f015be30191ab73bc0b834add1214353c55f8780dc4fb" => :mountain_lion
   end
 
+  option "with-python", "Build with the PySiLK python interface"
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libfixbuf"
   depends_on "yaf"
+  depends_on :python => :optional
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--enable-ipv6",
-                          "--enable-data-rootdir=#{var}/silk"
+    args = %W[
+      --prefix=#{prefix}
+      --disable-dependency-tracking
+      --mandir=#{man}
+      --enable-ipv6
+      --enable-data-rootdir=#{var}/silk
+    ]
+
+    if build.with? "python"
+      args << "--with-python" << "--with-python-prefix=#{prefix}"
+    end
+    system "./configure", *args
     system "make"
     system "make", "install"
 
