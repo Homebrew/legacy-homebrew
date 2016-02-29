@@ -4,6 +4,7 @@ class Cassandra < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/3.3/apache-cassandra-3.3-bin.tar.gz"
   mirror "https://archive.apache.org/dist/cassandra/3.3/apache-cassandra-3.3-bin.tar.gz"
   sha256 "d98e685857d80f9eb93529f7b4f0f2c369ef40974866c8f8ad8edd3d6e0bf7e3"
+  revision 1
 
   bottle do
     sha256 "777d1ea1337fcb90bc436546a18f1090f7557395eeb5ba3306bf60df1f3398df" => :el_capitan
@@ -86,6 +87,38 @@ class Cassandra < Formula
               %r{`dirname "?\$0"?`/cassandra.in.sh},
               "#{share}/cassandra.in.sh"
 
+    # Prepare tools path
+    mkpath "#{libexec}/tools/bin"
+    rm Dir["#{buildpath}/tools/bin/*.bat"]
+
+    copy Dir["#{buildpath}/tools/bin/*"], "#{libexec}/tools/bin"
+    copy Dir["#{buildpath}/tools/lib/*.jar"], "#{libexec}/tools"
+
+    # Tools use different cassandra.in.sh and should be changed differently
+    move "#{libexec}/tools/bin/cassandra.in.sh", "#{libexec}/tools/bin/cassandra-tools.in.sh"
+    inreplace "#{libexec}/tools/bin/cassandra-tools.in.sh" do |s|
+        # Tools have slightly different path to CASSANDRA_HOME
+        s.gsub! "CASSANDRA_HOME=\"`dirname $0`/../..\"", "CASSANDRA_HOME=\"#{libexec}\""
+        # Store configs in etc, outside of keg
+        s.gsub! "CASSANDRA_CONF=\"$CASSANDRA_HOME/conf\"", "CASSANDRA_CONF=\"#{etc}/cassandra\""
+        # Core Jars installed to prefix, no longer in a lib folder
+        s.gsub! "\"$CASSANDRA_HOME\"/lib/*.jar", "\"$CASSANDRA_HOME\"/*.jar"
+        # Tools Jars are under tools folder
+        s.gsub! "\"$CASSANDRA_HOME\"/tools/lib/*.jar", "\"$CASSANDRA_HOME\"/tools/*.jar"
+        # Storage path
+        s.gsub! "cassandra_storagedir\=\"$CASSANDRA_HOME/data\"", "cassandra_storagedir\=\"#{var}/lib/cassandra\""
+    end
+
+    share.install ["#{libexec}/tools/bin/cassandra-tools.in.sh"]
+
+    # Update tools script files
+    inreplace Dir["#{libexec}/tools/bin/*"],
+              "`dirname \"$0\"`/cassandra.in.sh",
+              "#{share}/cassandra-tools.in.sh"
+
+    # Make sure tools are available
+    bin.install Dir["#{libexec}/tools/bin/*"]
+
     bin.write_exec_script Dir["#{libexec}/bin/*"]
     rm bin/"cqlsh" # Remove existing exec script
     (bin/"cqlsh").write_env_script libexec/"bin/cqlsh", :PYTHONPATH => pypath
@@ -116,5 +149,7 @@ class Cassandra < Formula
 
   test do
     system "#{bin}/cassandra", "-v"
+    system "#{bin}/cassandra-stressd", "-v"
+    system "#{bin}/sstablesplit", "-h"
   end
 end
