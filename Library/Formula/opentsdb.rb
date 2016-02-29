@@ -1,4 +1,5 @@
 require "socket"
+
 class Opentsdb < Formula
   desc "Scalable, distributed Time Series Database."
   homepage "http://opentsdb.net/"
@@ -33,24 +34,26 @@ class Opentsdb < Formula
       system "make", "install-exec-am"
       system "make", "install-data-am"
     end
-
-    (var/"cache/opentsdb").mkpath
   end
 
   def post_install
-    etc.install Dir["#{opt_share}/opentsdb/etc/opentsdb"]
+    (var/"cache/opentsdb").mkpath
+    etc.install Dir["#{opt_pkgshare}/etc/opentsdb"]
 
     system "#{Formula["hbase"].opt_libexec}/bin/start-hbase.sh"
 
-    ENV["HBASE_HOME"]=Formula["hbase"].opt_libexec.to_s
-    ENV["COMPRESSION"]=(build.with?("lzo") ? "LZO" : "NONE")
-    ENV["JAVA_HOME"]=`/usr/libexec/java_home`.strip
-    system "#{opt_share}/opentsdb/tools/create_table.sh"
+    ENV["HBASE_HOME"] = Formula["hbase"].opt_libexec.to_s
+    ENV["COMPRESSION"] = (build.with?("lzo") ? "LZO" : "NONE")
+    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.strip
+    system "#{opt_pkgshare}/tools/create_table.sh"
 
     system "#{Formula["hbase"].opt_libexec}/bin/stop-hbase.sh"
   end
 
-  plist_options :manual => "tsdb tsd --config=#{HOMEBREW_PREFIX}/etc/opentsdb/opentsdb.conf --staticroot=#{HOMEBREW_PREFIX}/opt/opentsdb/share/opentsdb/static/ --cachedir=#{HOMEBREW_PREFIX}/var/cache/opentsdb --port=4242 --zkquorum=localhost:2181 --zkbasedir=/hbase --auto-metric"
+  plist_options :manual => "tsdb tsd --config=#{HOMEBREW_PREFIX}/etc/opentsdb/opentsdb.conf"\
+                           "--staticroot=#{HOMEBREW_PREFIX}/opt/opentsdb/share/opentsdb/static/"\
+                           "--cachedir=#{HOMEBREW_PREFIX}/var/cache/opentsdb --port=4242"\
+                           "--zkquorum=localhost:2181 --zkbasedir=/hbase --auto-metric"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -69,7 +72,7 @@ class Opentsdb < Formula
         <string>#{opt_bin}/tsdb</string>
         <string>tsd</string>
         <string>--config=#{etc}/opentsdb/opentsdb.conf</string>
-        <string>--staticroot=#{opt_share}/opentsdb/static/</string>
+        <string>--staticroot=#{opt_pkgshare}/static/</string>
         <string>--cachedir=#{var}/cache/opentsdb</string>
         <string>--port=4242</string>
         <string>--zkquorum=localhost:2181</string>
@@ -88,7 +91,8 @@ class Opentsdb < Formula
   end
 
   test do
-    system "start-hbase.sh"
+    system "#{Formula["hbase"].opt_bin}/start-hbase.sh"
+
     pid = Process.spawn "tsdb tsd --config=#{HOMEBREW_PREFIX}/etc/opentsdb/opentsdb.conf --staticroot=#{HOMEBREW_PREFIX}/opt/opentsdb/share/opentsdb/static/ --cachedir=#{HOMEBREW_PREFIX}/var/cache/opentsdb --port=4242 --zkquorum=localhost:2181 --zkbasedir=/hbase --auto-metric"
 
     Socket.tcp("localhost", 4242) do |s|
@@ -99,6 +103,6 @@ class Opentsdb < Formula
 
     Process.kill(9, pid)
 
-    system "stop-hbase.sh"
+    system "#{Formula["hbase"].opt_bin}/stop-hbase.sh"
   end
 end
