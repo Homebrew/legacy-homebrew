@@ -47,6 +47,10 @@ class AwsShell < Formula
       url "https://github.com/sybrenstuvel/python-rsa.git"
     end
 
+    resource "s3transfer" do
+      url "https://github.com/boto/s3transfer.git", :branch => "develop"
+    end
+
     resource "wcwidth" do
       url "https://github.com/jquast/wcwidth.git"
     end
@@ -124,6 +128,11 @@ class AwsShell < Formula
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
     sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+  end
+
+  resource "s3transfer" do
+    url "https://pypi.python.org/packages/source/s/s3transfer/s3transfer-0.0.1.tar.gz"
+    sha256 "990322078da427c405e24ddfd937947a0370488c12f5f1b9bac632fa82f97a18"
   end
 
   resource "wcwidth" do
