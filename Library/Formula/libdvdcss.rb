@@ -12,7 +12,7 @@ class Libdvdcss < Formula
   end
 
   head do
-    url "git://git.videolan.org/libdvdcss"
+    url "https://git.videolan.org/git/libdvdcss.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
