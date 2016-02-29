@@ -14,7 +14,7 @@ class Libaacs < Formula
   end
 
   head do
-    url "git://git.videolan.org/libaacs.git"
+    url "https://git.videolan.org/git/libaacs.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
