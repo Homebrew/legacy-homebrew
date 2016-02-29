@@ -13,7 +13,7 @@ class Libbluray < Formula
   end
 
   head do
-    url "git://git.videolan.org/libbluray.git"
+    url "https://git.videolan.org/git/libbluray.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
