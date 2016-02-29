@@ -14,6 +14,7 @@ class AppscaleTools < Formula
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
+  depends_on "ssh-copy-id"
 
   resource "termcolor" do
     url "https://pypi.python.org/packages/source/t/termcolor/termcolor-1.1.0.tar.gz"
