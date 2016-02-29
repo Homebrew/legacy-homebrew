@@ -5,7 +5,7 @@ class Libdvdnav < Formula
   sha256 "5097023e3d2b36944c763f1df707ee06b19dc639b2b68fb30113a5f2cbf60b6d"
 
   head do
-    url "git://git.videolan.org/libdvdnav.git"
+    url "https://git.videolan.org/git/libdvdnav.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
