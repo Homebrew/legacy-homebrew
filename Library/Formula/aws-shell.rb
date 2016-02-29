@@ -20,7 +20,9 @@ class AwsShell < Formula
     end
 
     resource "colorama" do
-      url "https://github.com/tartley/colorama.git", :tag => "v0.3.3", :revision => "5906b2604223f3a3bdf4497244fc8861b89dbda6"
+      url "https://github.com/tartley/colorama.git",
+      :tag => "v0.3.3",
+      :revision => "5906b2604223f3a3bdf4497244fc8861b89dbda6"
     end
 
     resource "configobj" do
@@ -31,38 +33,19 @@ class AwsShell < Formula
       url "https://github.com/chevah/docutils.git", :branch => "docutils-0.12-chevah"
     end
 
-    # resource "futures" do
-    #   url "http://code.google.com/p/pythonfutures"
-    # end
-
     resource "jmespath" do
       url "https://github.com/boto/jmespath.git", :branch => "develop"
     end
 
-    # not working with current master, no tags available for versions
-    # resource "prompt_toolkit" do
-    #   url "https://github.com/jonathanslenders/python-prompt-toolkit.git"
-    # end
-
-    # resource "pyasn1" do
-    #   url "http://sourceforge.net/projects/pyasn1"
-    # end
-
-    # resource "Pygments" do
-    #   url "https://bitbucket.org/birkenfeld/pygments-main"
-    # end
-
     resource "python-dateutil" do
-      url "https://github.com/dateutil/dateutil.git", :tag => "2.4.2", :revision => "248106da8e5f4023210d7a18d30b176577916b4f"
+      url "https://github.com/dateutil/dateutil.git",
+      :tag => "2.4.2",
+      :revision => "248106da8e5f4023210d7a18d30b176577916b4f"
     end
 
     resource "rsa" do
       url "https://github.com/sybrenstuvel/python-rsa.git"
     end
-
-    # resource "six" do
-    #   url "https://bitbucket.org/gutworth/six"
-    # end
 
     resource "wcwidth" do
       url "https://github.com/jquast/wcwidth.git"
