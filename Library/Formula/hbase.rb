@@ -107,7 +107,6 @@ EOS
        <key>HBASE_PID_DIR</key><string>#{rundir}</string>
        <key>HBASE_NICENESS</key><string>0</string>
        <key>HBASE_IDENT_STRING</key><string>root</string>
-       <key>HBASE_ENV_INIT</key><string>true</string>
        <key>HBASE_REGIONSERVER_OPTS</key><string> -XX:PermSize=128m -XX:MaxPermSize=128m</string>
        <key>HBASE_OPTS</key><string>-XX:+UseConcMarkSweepGC</string>
        <key>HBASE_ROOT_LOGGER</key><string>INFO,RFA</string>
