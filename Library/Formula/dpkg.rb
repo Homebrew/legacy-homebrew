@@ -6,9 +6,9 @@ class Dpkg < Formula
   sha256 "fe89243868888ce715bf45861f26264f767d4e4dbd0d6f1a26ce60bbbbf106da"
 
   bottle do
-    sha256 "a75ff82d4c12df36a0c14b3b0d0ffd3dd5a984141ee5148f83cfbb124e167e9f" => :el_capitan
-    sha256 "dfeb8b88f4802bffcdf5effa72602252bed2e9394c3e285b403beda9127ab024" => :yosemite
-    sha256 "03d0aa6f0c97835ca906134d0b0f555481e1fc3f03a6dfae88c27fb1c7451b54" => :mavericks
+    sha256 "012bcb1fc4095615f2c5694ac16e12ad17448708794b74517b69249b2dff49ea" => :el_capitan
+    sha256 "81e8e27dc155bbfc3b2a5f106f1caddc8960f562dc8dea00920d9bf8235c5cc3" => :yosemite
+    sha256 "6e7977501e3f923d0177796509cb59b67f31dc88d0f0fbae91b97df4becf45f5" => :mavericks
   end
 
   depends_on "pkg-config" => :build
