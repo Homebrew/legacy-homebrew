@@ -23,6 +23,6 @@ class Snakemake < Formula
           shell:
                "touch {output}"
     EOS
-    system "snakemake"
+    system "#{bin}/snakemake"
   end
 end
