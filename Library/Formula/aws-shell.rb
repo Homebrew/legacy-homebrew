@@ -132,7 +132,7 @@ class AwsShell < Formula
 
   resource "s3transfer" do
     url "https://pypi.python.org/packages/source/s/s3transfer/s3transfer-0.0.1.tar.gz"
-    sha256 "990322078da427c405e24ddfd937947a0370488c12f5f1b9bac632fa82f97a18"
+    sha256 "2bb9ed8db58af94dfa78f75f554d646dfe4b4741fc87f63a20c2bfb3f70f4355"
   end
 
   resource "wcwidth" do
