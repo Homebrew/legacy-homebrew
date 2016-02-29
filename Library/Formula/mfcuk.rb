@@ -1,8 +1,8 @@
 class Mfcuk < Formula
   desc "MiFare Classic Universal toolKit"
-  homepage "https://code.google.com/p/mfcuk/"
-  url "https://mfcuk.googlecode.com/files/mfcuk-0.3.8.tar.gz"
-  sha256 "977595765b4b46e4f47817e9500703aaf5c1bcad39cb02661f862f9d83f13a55"
+  homepage "https://github.com/nfc-tools/mfcuk"
+  url "https://github.com/nfc-tools/mfcuk/archive/mfcuk-0.3.8.tar.gz"
+  sha256 "C7091D1A16B132E1A4917EBC705065B60F3D1A0B449A776411BA39612A62EE89"
 
   depends_on "pkg-config" => :build
   depends_on "libnfc"
