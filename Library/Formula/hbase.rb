@@ -136,5 +136,8 @@ EOS
 
   test do
     assert_match /#{version}/, shell_output("#{bin}/hbase mapredcp")
+    system "hbase-start.sh"
+    system "echo stats | nc localhost 2181"
+    system "hbase-stop.sh"
   end
 end
