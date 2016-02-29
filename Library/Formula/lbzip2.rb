@@ -1,8 +1,8 @@
 class Lbzip2 < Formula
   desc "Parallel bzip2 utility"
   homepage "https://github.com/kjn/lbzip2"
-  url "https://github.com/downloads/kjn/lbzip2/lbzip2-2.2.tar.gz"
-  sha256 "b905f763a5859670e36b15d016fb6bb73d6718905fc0e2a9fa1dbc11f30b0d80"
+  url "http://archive.lbzip2.org/lbzip2-2.5.tar.bz2"
+  sha256 "eec4ff08376090494fa3710649b73e5412c3687b4b9b758c93f73aa7be27555b"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
