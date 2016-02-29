@@ -5,7 +5,7 @@ class Libdvdread < Formula
   sha256 "321cdf2dbdc83c96572bc583cd27d8c660ddb540ff16672ecb28607d018ed82b"
 
   head do
-    url "git://git.videolan.org/libdvdread.git"
+    url "https://git.videolan.org/git/libdvdread.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
