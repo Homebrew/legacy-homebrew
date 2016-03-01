@@ -6,10 +6,10 @@ class Atool < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "e7f2a05c1ace127074412298599ca5a195f523e116adcf1235bb1002b9f1c43f" => :el_capitan
-    sha256 "edc0be06f8072965a398708ffa59319d7663f5f4cb3bfd7585ffd5b8239231a5" => :yosemite
-    sha256 "f027ccef0bdaa3f6754810aa8ada837ef136be2bf118eae9815c056f5f5bcc4d" => :mavericks
+    revision 2
+    sha256 "dcfdcb720aa3704b9103aa01bb8efac42d24327bc8664baa420a9a69d75a98b6" => :el_capitan
+    sha256 "efdeeb165e146f4a76477417d2af9c60e2f776d06081bb579ff73ceb296a899d" => :yosemite
+    sha256 "4eed286344a3a1d4fc6efc908b34062b5cc7c7fdf2449cf85b7767168585fc7a" => :mavericks
   end
 
   def install
