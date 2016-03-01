@@ -6,10 +6,10 @@ class Minizinc < Formula
   head "https://github.com/MiniZinc/libminizinc.git", :branch => "develop"
 
   bottle do
-    cellar :any
-    sha256 "57ecab3e20c9353ba8e0945c20885469b8e4890f4f931346f27398458c7241dd" => :yosemite
-    sha256 "661e0eb3d7b3cb601ba4a1d08ebc277cfc42ab0d05370a6d9c9989e03abf7dd1" => :mavericks
-    sha256 "6e450774291e5065beaef7337e66869cb698f1cb8bd07089d7d9ffe3188fca96" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "f5a9e238379a27d47918610ea07f67a1bf5c94096b2fdd83e30ff33981536ca0" => :el_capitan
+    sha256 "5f1c47c90e9a3123d0e0a5fcc7d2ef287144efb603955a55ca9424ae2cb6379f" => :yosemite
+    sha256 "4308e012879a9996ab133b36c15ab6ff1a81bd69115f7561b4d87498a188831e" => :mavericks
   end
 
   depends_on :arch => :x86_64
