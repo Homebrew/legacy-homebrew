@@ -5,9 +5,10 @@ class Mcabber < Formula
   sha256 "579a45a2bc944455012ca9b308f7f3454efabbe0c36c6723af761aa1f3092d93"
 
   bottle do
+    revision 1
     sha256 "f582dc53fe2e9b1f317885d069ccc1b5ebea671f992bd373223a2d37c998ba23" => :el_capitan
     sha256 "9077d7c748da6ef614f8f0a7c472c32dd9b529c3f759645439f90436215650a5" => :yosemite
-    sha256 "e962fc94951c93707b969f23490407d09effab4637903f88d91347428b125e52" => :mavericks
+    sha256 "edf7c7f55d5d688594052203aa0341285faa4c128cf4274a525520d41f50a3e5" => :mavericks
   end
 
   head do
