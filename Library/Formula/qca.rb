@@ -15,11 +15,10 @@ class Qca < Formula
   end
 
   bottle do
-    revision 2
-    sha256 "11790127f8db171aa22c1a2aa3ff1df1759ece3b2d7ff0d6d6a907a74656e8d3" => :el_capitan
-    sha256 "556b8c9ce8b5e9a965bdd8a2059e0760a511d73d44f89458c02383a0870b44bc" => :yosemite
-    sha256 "0e205cfd42678597f2c346d6a4025a81e5dae49dc2e675f5528b6862333eacfc" => :mavericks
-    sha256 "4f4ebcfb9719b4a7d58c8f39e54b4680132c32c88cab7adf7bef9a252823189d" => :mountain_lion
+    revision 3
+    sha256 "62846de848b7e7c4f0b3eb5a045940c8b80554ef388d9646dd7b02b195b1a5c8" => :el_capitan
+    sha256 "a2afc96b7058b81e6b640c480b621434c7b6ba5e82cc0af4e38766d7efe42251" => :yosemite
+    sha256 "c948a6d95b7ff4da029eedeaca69e5b51d9227e9a7cf369daa98cfda5cf73528" => :mavericks
   end
 
   option "with-api-docs", "Build API documentation"
