@@ -21,6 +21,7 @@ class Ola < Formula
   option :universal
   option "with-ftdi", "Install FTDI USB plugin for OLA."
   option "with-rdm-tests", "Install RDM Tests for OLA."
+  # RDM tests require protobuf-c --with-python to work
 
   depends_on "pkg-config" => :build
   depends_on "cppunit"
@@ -37,7 +38,11 @@ class Ola < Formula
     depends_on "libftdi0"
   end
 
-  depends_on :python if MacOS.version <= :snow_leopard if build.with? "rdm-tests"
+  if build.with? "rdm-tests"
+    depends_on :python if MacOS.version <= :snow_leopard
+  else
+    depends_on :python => :optional
+  end
 
   def install
     ENV.universal_binary if build.universal?
