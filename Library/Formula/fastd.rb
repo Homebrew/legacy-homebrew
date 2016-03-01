@@ -3,7 +3,7 @@ class Fastd < Formula
   homepage "https://projects.universe-factory.net/projects/fastd"
   url "https://projects.universe-factory.net/attachments/download/81/fastd-17.tar.xz"
   sha256 "26d4a8bf2f8cc52872f836f6dba55f3b759f8c723699b4e4decaa9340d3e5a2d"
-  head "git://git.universe-factory.net/fastd/"
+  head "https://git.universe-factory.net/fastd/", :using => :git
 
   bottle do
     cellar :any
