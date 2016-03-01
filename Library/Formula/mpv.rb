@@ -6,9 +6,9 @@ class Mpv < Formula
   head "https://github.com/mpv-player/mpv.git"
 
   bottle do
-    sha256 "a3d21313d06b52496137c069510c96c45378d61803a2f6162f85dedd5f9e378c" => :el_capitan
-    sha256 "784bc8e5120e3f7cc66a66d8bb4df27404479de6ae129b9298a8a16290800065" => :yosemite
-    sha256 "21ccab77a46d159f9eb8ebe4a57e2d93e3f29c18a5cb6f22658353cc2e6de8bd" => :mavericks
+    sha256 "3fb87a6d4dae9530c8042789f5f39d8f4b7d13baf7b160767e0c04e6f2f314b6" => :el_capitan
+    sha256 "48b8fd0a7e1c67b661d9ba37b4eb4207e9c5902afce8f4eac3e6d380b960ef24" => :yosemite
+    sha256 "8c991d92065e29fcb109568010774a2f635e9e5c84a0cb300e53192800275911" => :mavericks
   end
 
   option "with-shared", "Build libmpv shared library."
