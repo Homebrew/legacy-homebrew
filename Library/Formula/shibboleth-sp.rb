@@ -5,8 +5,9 @@ class ShibbolethSp < Formula
   sha256 "024739a7b5190aebecac913d9445719912c6e4e401bfe256a25ca75ab4e67ad5"
 
   bottle do
-    sha256 "036fdf34a05f6881e59c1777eb09b95d80e2fdd3731c88607e0b30146592be38" => :el_capitan
-    sha256 "fcc030d620227847f6ca0b045ed0346ce9f23da4a179cd18fd86f03f64028004" => :yosemite
+    revision 1
+    sha256 "8c59bf2a970e23c72e9c2bb3e2a84a534d184acee65e4b9ffca0dccfc16018e4" => :el_capitan
+    sha256 "ec99fed7eee7454a6ddb0640aa160fbb5c7eb0215c15a9e35eb231882a2def18" => :yosemite
   end
 
   option "with-apache-22", "Build mod_shib_22.so instead of mod_shib_24.so"
