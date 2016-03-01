@@ -151,5 +151,6 @@ class Cassandra < Formula
     system "#{bin}/cassandra", "-v"
     system "#{bin}/cassandra-stressd", "-v"
     system "#{bin}/sstablesplit", "-h"
+    system "#{bin}/nodetool", "help"
   end
 end
