@@ -6,9 +6,10 @@ class Aldo < Formula
 
   bottle do
     cellar :any
-    sha256 "dbe8d5416db24547081eb1428342d6bcf213f186daa6b1bdeff88fc59e44c54a" => :el_capitan
-    sha256 "6d76ffaca85b04c3c24005b34d88f19b949b856db2007bc0e35d0fb241142734" => :yosemite
-    sha256 "103b5ae277885d3f2fb8b33fe71eb667b73c1d12614c95a1c184d454f7cf66bb" => :mavericks
+    revision 1
+    sha256 "0691c4b9b7ae5b6f104c5b5205f731d4348563b8a9a8c3631395f619ce00aabf" => :el_capitan
+    sha256 "f5d55cefcfc65033f50bf2aedb30298db1540a8dd5f5c028feb3b4b1c7e5610b" => :yosemite
+    sha256 "fea59d120862f6a04da3993dde1b2f6db60183fc6d7f90f77bb622efdf8a16ac" => :mavericks
   end
 
   depends_on "libao"
