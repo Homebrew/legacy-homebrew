@@ -1,8 +1,8 @@
 class Watson < Formula
   desc "Command-line tool to track (your) time"
   homepage "https://tailordev.github.io/Watson/"
-  url "https://github.com/TailorDev/Watson/archive/1.3.1.tar.gz"
-  sha256 "de7190f8cb304004b096be1b5992eb826306da75cbaa04fd588ab113c08e0250"
+  url "https://pypi.python.org/packages/source/t/td-watson/td-watson-1.3.2.tar.gz"
+  sha256 "f92f3b33595f3e31bb0417b6443541f036bd7dabea19daf471fe5c3ac75b9c8d"
 
   head "https://github.com/TailorDev/Watson.git"
 
@@ -23,11 +23,6 @@ class Watson < Formula
   resource "click" do
     url "https://pypi.python.org/packages/source/c/click/click-6.2.tar.gz"
     sha256 "fba0ff70f5ebb4cebbf64c40a8fbc222fb7cf825237241e548354dabe3da6a82"
-  end
-
-  resource "pytest-runner" do
-    url "https://pypi.python.org/packages/source/p/pytest-runner/pytest-runner-2.6.2.tar.gz"
-    sha256 "e775a40ee4a3a1d45018b199c44cc20bbe7f3df2dc8882f61465bb4141c78cdb"
   end
 
   resource "python-dateutil" do
