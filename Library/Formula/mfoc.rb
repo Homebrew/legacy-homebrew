@@ -2,7 +2,7 @@ class Mfoc < Formula
   desc "Implementation of 'offline nested' attack by Nethemba"
   homepage "https://github.com/nfc-tools/mfoc"
   url "https://github.com/nfc-tools/mfoc/archive/mfoc-0.10.7.tar.gz"
-  sha256 "2DFD8FFA4A8B357807680D190A91C8CF3DB54B4211A781EDC1108AF401DBAAD7"
+  sha256 "2dfd8ffa4a8b357807680d190a91c8cf3db54b4211a781edc1108af401dbaad7"
 
   depends_on "pkg-config" => :build
   depends_on "libnfc"
