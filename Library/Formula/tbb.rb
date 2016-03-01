@@ -7,9 +7,9 @@ class Tbb < Formula
 
   bottle do
     cellar :any
-    sha256 "8132496216419b554d78194f825f043070a4531e205daf9ea3680dc33056876a" => :el_capitan
-    sha256 "5e801aa2f73674a08b4b79608aebc834382e8688fc1c8e009ad53e9e6ebd6ee5" => :yosemite
-    sha256 "6d0bac1c69920ae841e9de18d4123827071f4419043335fbfe246d864c818e22" => :mavericks
+    sha256 "0cf0e393e5a6e1a48fae36e5c3f90bfd23030c9ba190280c1f7eb58ee3890199" => :el_capitan
+    sha256 "e1c15f6313b69d6b214d4dbe6e8d79b53179f3ec649ac51dcb775a2eabccadfb" => :yosemite
+    sha256 "33d6f509064574263767772e3563a1466e4a9c2208b94ae74ef51f1bae694b32" => :mavericks
   end
 
   # requires malloc features first introduced in Lion
