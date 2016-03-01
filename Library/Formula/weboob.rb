@@ -3,7 +3,7 @@ class Weboob < Formula
   homepage "http://weboob.org/"
   url "https://symlink.me/attachments/download/324/weboob-1.1.tar.gz"
   sha256 "cbc0d8a88e402ec71a79f0cf09594fd3a969122111f5cd695f4a4ca67961661c"
-  head "git://git.symlink.me/pub/weboob/stable.git"
+  head "https://git.symlink.me/pub/weboob/stable.git"
 
   bottle do
     cellar :any_skip_relocation
