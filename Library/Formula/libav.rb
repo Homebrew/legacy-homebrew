@@ -5,7 +5,7 @@ class Libav < Formula
   sha256 "0b7dabc2605f3a254ee410bb4b1a857945696aab495fe21b34c3b6544ff5d525"
   revision 2
 
-  head "git://git.libav.org/libav.git"
+  head "https://git.libav.org/libav.git"
 
   bottle do
     sha256 "ed32bdb580f771d661c2e7d5ee449d523b3233c2317207b84c8c102d85dc8e14" => :el_capitan
@@ -78,7 +78,7 @@ class Libav < Formula
       "--enable-vda",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
-      "--host-ldflags=#{ENV.ldflags}"
+      "--host-ldflags=#{ENV.ldflags}",
     ]
 
     args << "--enable-frei0r" if build.with? "frei0r"
