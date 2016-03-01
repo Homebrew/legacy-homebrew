@@ -5,10 +5,11 @@ class SpawnFcgi < Formula
   sha256 "ab327462cb99894a3699f874425a421d934f957cb24221f00bb888108d9dd09e"
 
   bottle do
-    cellar :any
-    sha256 "78c371675767d0a7ccc8b61142b5210bc985eff71f5e7fdb75f095266d4333a9" => :yosemite
-    sha256 "88fa451fef81b0db9540d23a1b13e57c6edeb108c9a414f649b2d78a4d02b228" => :mavericks
-    sha256 "4f846ff99c7b9726d92a5dabe7164005cdbc08c5bd483f08c7b047b10dfd6bba" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "4e6f999ebcad8b7ce84473379b6358ec569559f9e4b772d31ef1a5b0e01fc865" => :el_capitan
+    sha256 "7473e3e2cd5322b2f09011e2b5119622e145d136cd0a8d4ce7adcb255a13d83b" => :yosemite
+    sha256 "a19a14cae6fbacdc5aa1a8132f5d290743ba7385c2d76903dbd172ca07b38680" => :mavericks
   end
 
   option "without-ipv6", "Build without ipv6 support"
