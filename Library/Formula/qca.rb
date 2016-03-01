@@ -1,7 +1,7 @@
 class Qca < Formula
   desc "Qt Cryptographic Architecture (QCA)"
   homepage "http://delta.affinix.com/qca/"
-  head "git://anongit.kde.org/qca.git"
+  head "https://anongit.kde.org/qca.git"
 
   stable do
     url "http://delta.affinix.com/download/qca/2.0/qca-2.1.0.tar.gz"
