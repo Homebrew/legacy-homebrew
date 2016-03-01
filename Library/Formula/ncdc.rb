@@ -13,7 +13,7 @@ class Ncdc < Formula
   end
 
   head do
-    url "git://g.blicky.net/ncdc.git", :shallow => false
+    url "https://g.blicky.net/ncdc.git", :shallow => false
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -32,7 +32,7 @@ class Ncdc < Formula
 
     args = [
       "--disable-dependency-tracking",
-      "--prefix=#{prefix}"
+      "--prefix=#{prefix}",
     ]
     args << "--with-geoip" if build.with? "geoip"
 
