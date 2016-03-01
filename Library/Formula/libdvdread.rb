@@ -13,9 +13,10 @@ class Libdvdread < Formula
 
   bottle do
     cellar :any
-    sha256 "ec4bf18e28993cb210722e2a15fb7c22297e219dfb94d910148c291af59bf6a3" => :el_capitan
-    sha256 "1c77e1abc90ea979e77da169a6a91d1df11e234ac78516bb448486da048d2f01" => :yosemite
-    sha256 "caf2bd44104c46195d80cfd4305c3c24856ff6d2a5018924eac84f9a2f2f8508" => :mavericks
+    revision 1
+    sha256 "9de98e88e99fbcc899a299786575472c93d442b06838f16bb757e09d4ba92593" => :el_capitan
+    sha256 "75006f367876e6ccce744d782f1204ea99d73b55a856ce0afaae2c194eac336c" => :yosemite
+    sha256 "79b919acd8c54956680272a32b106882f90027ce148e54eb937b367564b51e87" => :mavericks
   end
 
   depends_on "libdvdcss"
