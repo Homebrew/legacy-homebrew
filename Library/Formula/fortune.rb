@@ -1,7 +1,8 @@
 class Fortune < Formula
   desc "Infamous electronic fortune-cookie generator"
-  homepage "http://ftp.ibiblio.org/pub/linux/games/amusements/fortune/!INDEX.html"
-  url "http://ftp.ibiblio.org/pub/linux/games/amusements/fortune/fortune-mod-9708.tar.gz"
+  homepage "https://www.ibiblio.org/pub/linux/games/amusements/fortune/!INDEX.html"
+  url "https://www.ibiblio.org/pub/linux/games/amusements/fortune/fortune-mod-9708.tar.gz"
+  mirror "ftp://ftp.ibiblio.org/pub/linux/games/amusements/fortune/fortune-mod-9708.tar.gz"
   sha256 "1a98a6fd42ef23c8aec9e4a368afb40b6b0ddfb67b5b383ad82a7b78d8e0602a"
 
   bottle do
