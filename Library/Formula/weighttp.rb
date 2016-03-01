@@ -15,6 +15,7 @@ class Weighttp < Formula
   end
 
   test do
-    system "#{bin}/weighttp", "-n", "1", "https://redmine.lighttpd.net/projects/weighttp/wiki"
+    # Stick with HTTP to avoid 'error: no ssl support yet'
+    system "#{bin}/weighttp", "-n", "1", "http://redmine.lighttpd.net/projects/weighttp/wiki"
   end
 end
