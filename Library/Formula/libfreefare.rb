@@ -2,7 +2,7 @@ class Libfreefare < Formula
   desc "API for MIFARE card manipulations"
   homepage "https://github.com/nfc-tools/libfreefare/"
   url "https://github.com/nfc-tools/libfreefare/releases/download/libfreefare-0.4.0/libfreefare-0.4.0.tar.bz2"
-  sha256 "BFA31D14A99A1247F5ED49195D6373DE512E3EB75BF1627658B40CF7F876BC64"
+  sha256 "bfa31d14a99a1247f5ed49195d6373de512e3eb75bf1627658b40cf7f876bc64"
   revision 1
 
   bottle do
