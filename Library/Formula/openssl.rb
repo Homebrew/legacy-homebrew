@@ -1,10 +1,10 @@
 class Openssl < Formula
   desc "SSL/TLS cryptography library"
   homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-1.0.2f.tar.gz"
-  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2f.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2f.tar.gz"
-  sha256 "932b4ee4def2b434f85435d9e3e19ca8ba99ce9a065a61524b429a9d5e9b2e9c"
+  url "https://www.openssl.org/source/openssl-1.0.2g.tar.gz"
+  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2g.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2g.tar.gz"
+  sha256 "b784b1b3907ce39abf4098702dade6365522a253ad1552e267a9a0e89594aa33"
 
   bottle do
     sha256 "24ed49675f690666749444306357dff828bf9770a89b044a0653b7d7dccc92f3" => :el_capitan
@@ -21,26 +21,6 @@ class Openssl < Formula
   deprecated_option "without-check" => "without-test"
 
   depends_on "makedepend" => :build
-
-  # 1.0.2f: fix typo in macro BIO_get_conn_int_port()
-  # https://github.com/openssl/openssl/issues/595
-  # https://github.com/openssl/openssl/pull/596
-  patch do
-    url "https://github.com/openssl/openssl/commit/da7947e8c6915d86616425ecbc4906f079ef122f.diff"
-    sha256 "00bc58f9949baf592fb0caf63cd754f5407453cc4b61a1accb89040fa17b05b9"
-  end
-
-  # 1.0.2f: fix a typo in constant value DH_CHECK_PUBKEY_INVALID
-  patch do
-    url "https://github.com/openssl/openssl/commit/7107798ae6c5e19f581915928a69073d17cc21ab.diff"
-    sha256 "a13d63f0e5b5bcebe27eca7c20286843e105bc794e9b2bfa5f6e162174a0e135"
-  end
-
-  # 1.0.2f: add required checks in DH_check_pub_key()
-  patch do
-    url "https://github.com/openssl/openssl/commit/83ab6e55a1f8de9b3e45d13dcc78eb739dc66dea.diff"
-    sha256 "98443034f57e5c4fd1bd89dbf64e9b150184522d10b6a6f7bb7e67cc397615c2"
-  end
 
   def arch_args
     {
