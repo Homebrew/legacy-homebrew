@@ -16,7 +16,7 @@ class Telegraf < Formula
   depends_on "go" => :build
 
   go_resource "git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git" do
-    url "git://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git",
+    url "https://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git",
     :revision => "617c801af238c3af2d9e72c5d4a0f02edad03ce5"
   end
 
