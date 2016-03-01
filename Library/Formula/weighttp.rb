@@ -6,6 +6,13 @@ class Weighttp < Formula
 
   head "https://git.lighttpd.net/weighttp.git"
 
+  bottle do
+    cellar :any
+    sha256 "780fcf598211fddb69395f7836cf9abb9fd79f57bbd003eca3530b6e73f40646" => :el_capitan
+    sha256 "38db09ba5004c81b26a23722c34ce2db054dd680e2e0478e86357389f85a11eb" => :yosemite
+    sha256 "0ad4b1d507dc011b9e0dc3410771af9ecab322b4fe7c98121b6266c613360eb3" => :mavericks
+  end
+
   depends_on "libev"
 
   def install
