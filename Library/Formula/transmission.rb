@@ -1,8 +1,8 @@
 class Transmission < Formula
   desc "Lightweight BitTorrent client"
   homepage "http://www.transmissionbt.com/"
-  url "https://transmission.cachefly.net/transmission-2.84.tar.xz"
-  sha256 "a9fc1936b4ee414acc732ada04e84339d6755cd0d097bcbd11ba2cfc540db9eb"
+  url "https://transmission.cachefly.net/transmission-2.90.tar.xz"
+  sha256 "69ff8caf81684155926f437f46bf7df1b1fb304f52c7809f546257e8923f2fd2"
 
   bottle do
     sha256 "ad78662725cb4b924a7c1f7ad2fe1de2e9b8bf998233aee26b0f51c23d53b4de" => :yosemite
@@ -32,13 +32,7 @@ class Transmission < Formula
 
     args << "--disable-nls" if build.without? "nls"
 
-    # fixes issue w/ webui files not being found #21151
-    # submitted upstream: https://trac.transmissionbt.com/ticket/5304
-    inreplace "libtransmission/platform.c", "SYS_DARWIN", "BUILD_MAC_CLIENT"
-    inreplace "libtransmission/utils.c", "SYS_DARWIN", "BUILD_MAC_CLIENT"
-
     system "./configure", *args
-    system "make" # Make and install in one step fails
     system "make", "install"
 
     (var/"transmission").mkpath
@@ -80,5 +74,10 @@ class Transmission < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/transmission-create", "-o", "#{testpath}/test.mp3.torrent", test_fixtures("test.mp3")
+    assert_match /^magnet:/, shell_output("#{bin}/transmission-show -m #{testpath}/test.mp3.torrent")
   end
 end
