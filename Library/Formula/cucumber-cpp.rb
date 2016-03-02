@@ -20,6 +20,12 @@ class CucumberCpp < Formula
   end
 
   test do
+    home = ENV["HOME"]
+    ENV["GEM_HOME"] = home
+    ENV["BUNDLE_PATH"] = home
+    ENV.prepend_path "PATH", "#{home}/bin"
+    system "gem", "install", "cucumber"
+
     (testpath/"features/test.features").write <<-EOS.undent
       Feature: Test
       Scenario Outline: Just for test
@@ -40,9 +46,10 @@ class CucumberCpp < Formula
       THEN("^A then statement$") {
       }
     EOS
-    system ENV.cc, "test.cpp", "-L#{lib}", "-lcucumber-cpp", "-o", "test", "-stdlib=libstdc++", "-std=c++11",
-      "-lboost_unit_test_framework", "-lboost_regex", "-lboost_system"
-    system "./test&"
-    system "cucumber"
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-lcucumber-cpp", "-o", "test",
+      "-lboost_regex", "-lboost_system"
+#    system "./test&;"
+#    system "cucumber"
+    system "#{home}/bin/cucumber"
   end
 end
