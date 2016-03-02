@@ -8,9 +8,9 @@ class Gdm < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "374cbb6f58775ee4dc077aa08ab12b984e74d56cdd949ab00667766bc88c5631" => :el_capitan
-    sha256 "4f9a0d3677a9f414a385e705b87a6e4a6773f822d932e88271f9d546d8c1fb55" => :yosemite
-    sha256 "508ea36fab42e9ee3fde2c7e07add3567c7b7a7b786d098bfcfa432e07b17442" => :mavericks
+    sha256 "aba6293bdbb344d907821d55946f322c265f86fbc30ea09a6e013f37085371dc" => :el_capitan
+    sha256 "64659933d888ce34a9e84376c2d941c65dd4a369c07a1f9bb28a821e2512a8ab" => :yosemite
+    sha256 "86f810b913f609316854d7254e55b9969bc058fb5fa6dc9fb88b05d2434be726" => :mavericks
   end
 
   depends_on "go"
