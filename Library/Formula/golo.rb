@@ -5,9 +5,9 @@ class Golo < Formula
   sha256 "e7d350148a3a7492348f0214679b282858ced58e4063a17bbf53f9ec2ae5f288"
 
   devel do
-    url "https://bintray.com/artifact/download/golo-lang/downloads/golo-3.1.0-incubation-M1.zip"
-    sha256 "f0a58d4602c417c0351759eaa8787e757c5dc095604a07887c1179c007c8304a"
-    version "3.1.0-incubation-M1"
+    url "https://bintray.com/artifact/download/golo-lang/downloads/golo-3.1.0-incubation-M2.zip"
+    sha256 "ffc8789c23c5d38fed3da246ec0741d9fc265a5d51d56b75a56046264ef90975"
+    version "3.1.0-incubation-M2"
   end
 
   head do
