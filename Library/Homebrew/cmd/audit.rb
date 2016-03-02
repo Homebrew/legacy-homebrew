@@ -187,6 +187,7 @@ class FormulaAuditor
       [/^  (go_)?resource/,                "resource"],
       [/^  def install/,                   "install method"],
       [/^  def caveats/,                   "caveats method"],
+      [/^  (plist_options|def plist)/,     "plist block"],
       [/^  test do/,                       "test block"],
     ]
 
