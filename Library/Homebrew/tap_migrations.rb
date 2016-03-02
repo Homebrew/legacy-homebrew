@@ -30,7 +30,6 @@ TAP_MIGRATIONS = {
   "clusterit" => "homebrew/x11",
   "cmucl" => "homebrew/binary",
   "comparepdf" => "homebrew/boneyard",
-  "connect" => "homebrew/boneyard",
   "coremod" => "homebrew/boneyard",
   "curlftpfs" => "homebrew/x11",
   "cwm" => "homebrew/x11",
