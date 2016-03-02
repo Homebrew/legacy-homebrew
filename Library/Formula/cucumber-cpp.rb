@@ -2,7 +2,6 @@ class CucumberCpp < Formula
   desc "Support for writing Cucumber step definitions in C++"
   homepage "https://cucumber.io"
   url "https://github.com/cucumber/cucumber-cpp/archive/v0.3.tar.gz"
-  version "0.3"
   sha256 "1c0f9949627e7528017bf00cbe49693ba9cbc3e11087f70aa33b21df93f341d6"
 
   depends_on "cmake" => :build
@@ -49,8 +48,7 @@ class CucumberCpp < Formula
       "-lboost_regex", "-lboost_system"
     begin
       pid = fork { exec "./test" }
-#    system "cucumber"
-      assert_match /Feature: Test
+      assert_match %r{^Feature: Test
 
   Scenario: Just for test   # features\/test.feature:2
     Given A given statement # test.cpp:2
@@ -58,7 +56,7 @@ class CucumberCpp < Formula
     Then A then statement   # test.cpp:6
 
 1 scenario \(1 passed\)
-3 steps \(3 passed\)/,
+3 steps \(3 passed\)},
         shell_output(testpath/"bin/cucumber")
     ensure
       Process.kill("SIGINT", pid)
