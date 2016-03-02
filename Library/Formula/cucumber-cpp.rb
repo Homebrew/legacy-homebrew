@@ -11,6 +11,8 @@ class CucumberCpp < Formula
   def install
     system "cmake", "-DCUKE_DISABLE_GTEST=on",
                     "-DCUKE_DISABLE_CPPSPEC=on",
+                    "-DCUKE_DISABLE_FUNCTIONAL=on",
+                    "-DCUKE_DISABLE_BOOST_TEST=on",
                     "."
     system "cmake", "--build", "."
     include.install "include/cucumber-cpp"
