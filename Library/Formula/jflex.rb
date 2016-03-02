@@ -4,15 +4,18 @@ class Jflex < Formula
   url "http://jflex.de/release/jflex-1.6.1.zip"
   sha256 "6da3c573db065f535c9b544e46ab4d49caa629b0354f8340df027f35e3368a51"
 
+  bottle :unneeded
+
   depends_on :java => "1.7+"
 
   def install
+    pkgshare.install "examples"
     libexec.install "lib/jflex-#{version}.jar"
     bin.write_jar_script libexec/"jflex-#{version}.jar", "jflex"
   end
 
   test do
-    # jflex returns non-zero exit code on success, see https://github.com/jflex-de/jflex/issues/194
-    assert_equal "This is JFlex #{version}", shell_output("#{bin}/jflex --version", 1).strip
+    system bin/"jflex", "-d", testpath, pkgshare/"examples/java/java.flex"
+    assert_match /public static void/, (testpath/"Scanner.java").read
   end
 end
