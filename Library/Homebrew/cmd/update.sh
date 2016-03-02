@@ -52,7 +52,7 @@ git_init_if_necessary() {
     git config remote.origin.url https://github.com/Homebrew/homebrew.git
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
     git fetch origin
-    git reset --hard origin/master
+    git reset --hard origin/tng
     SKIP_FETCH_HOMEBREW_REPOSITORY=1
   fi
 
@@ -63,6 +63,11 @@ git_init_if_necessary() {
   then
     git remote set-url origin https://github.com/Homebrew/homebrew.git &&
     git remote set-url --delete origin ".*mxcl\/homebrew.*"
+  fi
+
+  if [[ "$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null)" != "tng" ]]
+  then
+    git symbolic-ref refs/remotes/origin/HEAD tng
   fi
 }
 
@@ -338,7 +343,7 @@ EOS
       then
         UPSTREAM_REPOSITORY="${UPSTREAM_REPOSITORY_URL#https://github.com/}"
         UPSTREAM_REPOSITORY="${UPSTREAM_REPOSITORY%.git}"
-        UPSTREAM_BRANCH_LOCAL_SHA="$(git rev-parse "refs/remotes/origin/$UPSTREAM_BRANCH")"
+        UPSTREAM_BRANCH_LOCAL_SHA="$(git rev-parse "refs/remotes/origin/$UPSTREAM_BRANCH" -- 2>/dev/null)"
         # Only try to `git fetch` when the upstream branch is at a different SHA
         # (so the API does not return 304: unmodified).
         UPSTREAM_SHA_HTTP_CODE="$(curl --silent '--max-time' 3 \
