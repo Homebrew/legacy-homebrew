@@ -5,14 +5,14 @@ class GnuTar < Formula
   mirror "https://ftp.gnu.org/gnu/tar/tar-1.28.tar.gz"
   sha256 "6a6b65bac00a127a508533c604d5bf1a3d40f82707d56f20cefd38a05e8237de"
 
-  option "with-default-names", "Do not prepend 'g' to the binary"
-
   bottle do
     revision 3
     sha256 "e454d4acb5d791a70b9f00658c1f2397f7a52e28657ea55a67b4f1d469222d98" => :el_capitan
     sha256 "eacc46c8c80c5223cf77ff88ff16dc698b6e30927f7f3599b3af4222050d5a0c" => :yosemite
     sha256 "b21d9afff94eba7d94b7e3fb886ab781e6bd3e3acc1615092788143b08384f49" => :mavericks
   end
+
+  option "with-default-names", "Do not prepend 'g' to the binary"
 
   # Fix for xattrs bug causing build failures on OS X:
   # https://lists.gnu.org/archive/html/bug-tar/2014-08/msg00001.html
