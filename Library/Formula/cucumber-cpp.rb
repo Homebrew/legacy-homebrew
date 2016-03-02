@@ -25,14 +25,14 @@ class CucumberCpp < Formula
     ENV.prepend_path "PATH", testpath/"bin"
     system "gem", "install", "cucumber"
 
-    (testpath/"features/test.features").write <<-EOS.undent
+    (testpath/"features/test.feature").write <<-EOS.undent
       Feature: Test
-      Scenario Outline: Just for test
-        Given A given statement
-        When A when statement
-        Then A then statement
+        Scenario: Just for test
+          Given A given statement
+          When A when statement
+          Then A then statement
     EOS
-    (testpath/"features/step_definiations/cucumber.wire").write <<-EOS.undent
+    (testpath/"features/step_definitions/cucumber.wire").write <<-EOS.undent
       host: localhost
       port: 3902
     EOS
