@@ -29,16 +29,6 @@ class Irssi < Formula
   depends_on "dante" => :optional
 
   def install
-    if build.stable?
-      # Make paths in man page Homebrew-specific
-      # (https://github.com/irssi/irssi/issues/251); can be removed in
-      # next stable release
-      inreplace "docs/irssi.1" do |s|
-        s.gsub! "/usr/share", "#{HOMEBREW_PREFIX}/share"
-        s.gsub! "/etc/irssi.conf", "#{HOMEBREW_PREFIX}/etc/irssi.conf"
-      end
-    end
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
