@@ -9,7 +9,13 @@ class DropboxUploader < Formula
   end
 
   test do
-    (testpath/".dropbox_uploader").write("APPKEY=a\nAPPSECRET=b\nACCESS_LEVEL=sandbox\nOAUTH_ACCESS_TOKEN=c\nOAUTH_ACCESS_TOKEN_SECRET=d")
-    system("yes | dropbox_uploader.sh unlink")
+    (testpath/".dropbox_uploader").write <<-EOS.undent
+      APPKEY=a
+      APPSECRET=b
+      ACCESS_LEVEL=sandbox
+      OAUTH_ACCESS_TOKEN=c
+      OAUTH_ACCESS_TOKEN_SECRET=d
+    EOS
+    pipe_output("#{bin}/dropbox_uploader.sh unlink", "y\n")
   end
 end
