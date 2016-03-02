@@ -5,13 +5,17 @@ class Connect < Formula
   sha256 "6ca5291ea8e4a402d875a5507ac78d635373584fd1912f2838b93e03b99730c8"
 
   def install
+    # make throws an error looking for the version of windows shell, can be ignored
     # gcc will produce warnings but the application will work as expected
-    system ENV.cc, "connect.c", "-o", "connect", "-lresolv"
+    system "make"
     bin.install "connect"
   end
 
   test do
-    # A poor test but a good test would require user configuration
+    # A poor test, but proper testing requires:
+    #  - a SOCKS proxy
+    #  - an SSH server
+    #  - authentication details
     system "connect"
   end
 end
