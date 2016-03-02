@@ -34,6 +34,9 @@ class Libxslt < Formula
       system "./autogen.sh"
     end
 
+    # https://bugzilla.gnome.org/show_bug.cgi?id=762967
+    inreplace "configure", /PYTHON_LIBS=.*/, 'PYTHON_LIBS="-undefined dynamic_lookup"'
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libxml-prefix=#{Formula["libxml2"].opt_prefix}"
