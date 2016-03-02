@@ -7,9 +7,9 @@ class Rdup < Formula
 
   bottle do
     cellar :any
-    sha256 "9ea24b36882c48e95dd8c8f8653ee9568ce1bc73e5feaf1cc0c815939776f1bf" => :el_capitan
-    sha256 "163ee2ee0b3a2ada8119779d071d5dd52bbf26c242f0114e39b42d5ce47bb352" => :yosemite
-    sha256 "955fc1c20fd4d9daddef07f0cc4f8475f310040ed797ba0e00e1a76f91a74a46" => :mavericks
+    sha256 "c9afd06e3d3cfb9628c9618723d1913916f2563d2b18159cffe2b2586ce0c508" => :el_capitan
+    sha256 "0b83116666ac22439d46a6d92f6d75eb3dd7f231021dbc441c2388b4bd076e00" => :yosemite
+    sha256 "ddfd0b0a7116c618739caffb054a0b149e17c7bf517c512ccb1543c3e7784275" => :mavericks
   end
 
   option "with-test", "Verify the build with `make check`"
