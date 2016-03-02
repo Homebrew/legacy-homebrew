@@ -20,10 +20,9 @@ class CucumberCpp < Formula
   end
 
   test do
-    home = ENV["HOME"]
-    ENV["GEM_HOME"] = home
-    ENV["BUNDLE_PATH"] = home
-    ENV.prepend_path "PATH", "#{home}/bin"
+    ENV["GEM_HOME"] = testpath
+    ENV["BUNDLE_PATH"] = testpath
+    ENV.prepend_path "PATH", testpath/"bin"
     system "gem", "install", "cucumber"
 
     (testpath/"features/test.features").write <<-EOS.undent
