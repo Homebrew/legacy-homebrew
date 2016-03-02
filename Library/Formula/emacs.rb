@@ -13,8 +13,8 @@ class Emacs < Formula
   end
 
   devel do
-    url "http://alpha.gnu.org/gnu/emacs/pretest/emacs-25.0.91.tar.xz"
-    sha256 "d77ebd310dd8c978e15f29af33186646989534ae483aa8acafe6963244930193"
+    url "http://alpha.gnu.org/gnu/emacs/pretest/emacs-25.0.92.tar.xz"
+    sha256 "c29733959ae2c6a7c1d5f9465b4d06c93977cc1f3905313d992051a16590568e"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
