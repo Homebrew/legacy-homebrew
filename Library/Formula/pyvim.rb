@@ -1,8 +1,8 @@
 class Pyvim < Formula
   desc "Pure Python Vim clone"
   homepage "https://pypi.python.org/pypi/pyvim"
-  url "https://pypi.python.org/packages/source/p/pyvim/pyvim-0.0.13.tar.gz"
-  sha256 "efc4054d2fae78df13182ad78e018d479963833a990d7e99d58ee4fe2db2c1cd"
+  url "https://pypi.python.org/packages/source/p/pyvim/pyvim-0.0.15.tar.gz"
+  sha256 "60ed07d8bd668e3a56f4510c95289b0a60cc8c51a2049c1845f6ad4523d918b4"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,18 +14,18 @@ class Pyvim < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "ptpython" do
-    url "https://pypi.python.org/packages/source/p/ptpython/ptpython-0.28.tar.gz"
-    sha256 "f4bc7c4b129925be316c60669b5c0a5cc97edc0fb381fd007aa0ecc81758ee1d"
+    url "https://pypi.python.org/packages/source/p/ptpython/ptpython-0.30.tar.gz"
+    sha256 "50efef571dbfc12c2b33c0b9ac29407e380ffb9dda948a0650aa382588736e72"
   end
 
   resource "prompt_toolkit" do
-    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.57.tar.gz"
-    sha256 "de6019e1ebe99647d1b6640f09a02961b26144a91d9964ed93a41ccada9a9fae"
+    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.59.tar.gz"
+    sha256 "efbec5350b0f61d27253c60fb20683c546ef4e8cac2b27239e335a8444ce21f3"
   end
 
   resource "pyflakes" do
-    url "https://pypi.python.org/packages/source/p/pyflakes/pyflakes-1.0.0.tar.gz"
-    sha256 "f39e33a4c03beead8774f005bd3ecf0c3f2f264fa0201de965fce0aff1d34263"
+    url "https://pypi.python.org/packages/source/p/pyflakes/pyflakes-1.1.0.tar.gz"
+    sha256 "e5f959931987e2be178781554b485d52342ec9f1b43f891d2dad07a691c7a89a"
   end
 
   resource "docopt" do
@@ -44,8 +44,8 @@ class Pyvim < Formula
   end
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.1.tar.gz"
-    sha256 "13a0ef5fafd7b16cf995bc28fe7aab0780dab1b2fda0fc89e033709af8b8a47b"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.1.2.tar.gz"
+    sha256 "82fc63b161043db20cba034abd43fa4cc10f73db91099355fa0d04043b4593d2"
   end
 
   resource "six" do
