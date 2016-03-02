@@ -54,8 +54,8 @@ class Duplicity < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.1.tar.gz"
-    sha256 "a13217a03a47e743d26edff7299e4be7358c2fd12a223ac5d6de3229690b6ee5"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "debtcollector" do
