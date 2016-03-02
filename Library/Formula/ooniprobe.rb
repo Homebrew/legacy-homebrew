@@ -21,8 +21,8 @@ class Ooniprobe < Formula
   # these 4 need to come first or else cryptography will let setuptools
   # easy_install them (which is bad)
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.2.1.tar.gz"
-    sha256 "eab571deb0a152e2f53c404c08a94870a131526896cad08cd43bf86ce3771e3d"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.5.2.tar.gz"
+    sha256 "da9bde99872e46f7bb5cff40a9b1cc08406765efafb583c704de108b6cb821dd"
   end
 
   resource "enum34" do
@@ -47,8 +47,8 @@ class Ooniprobe < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.0.1.tar.gz"
-    sha256 "cfe3092a6a929bc3a97c3b752044b79d09c9b210860c7b4eb5061aea29dcbfd3"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "GeoIP" do
