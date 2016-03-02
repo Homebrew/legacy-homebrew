@@ -1,14 +1,14 @@
 class DiffSoFancy < Formula
   desc "Good-lookin' diffs with diff-highlight and more"
   homepage "https://github.com/so-fancy/diff-so-fancy"
-  url "https://github.com/so-fancy/diff-so-fancy/archive/v0.5.1.tar.gz"
-  sha256 "63c264f3a2989446713bd9ad6669fb5d71825c62c5716c2e27dc3803d5b8c7a0"
+  url "https://github.com/so-fancy/diff-so-fancy/archive/v0.5.2.tar.gz"
+  sha256 "ef91042af8197396be037f0bd8b5a362b57c82041c19179d6e0ac8a687e7f8b5"
 
   bottle :unneeded
 
   def install
-    bin.install "third_party/diff-highlight/diff-highlight"
-    bin.install "diff-so-fancy"
+    prefix.install Dir["third_party", "libs", "diff-so-fancy"]
+    bin.install_symlink prefix/"diff-so-fancy"
   end
 
   test do
