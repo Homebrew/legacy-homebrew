@@ -47,8 +47,22 @@ class CucumberCpp < Formula
     EOS
     system ENV.cxx, "test.cpp", "-L#{lib}", "-lcucumber-cpp", "-o", "test",
       "-lboost_regex", "-lboost_system"
-#    system "./test&;"
+    begin
+      pid = fork { exec "./test" }
 #    system "cucumber"
-    system "#{home}/bin/cucumber"
+      assert_match /Feature: Test
+
+  Scenario: Just for test   # features\/test.feature:2
+    Given A given statement # test.cpp:2
+    When A when statement   # test.cpp:4
+    Then A then statement   # test.cpp:6
+
+1 scenario \(1 passed\)
+3 steps \(3 passed\)/,
+        shell_output(testpath/"bin/cucumber")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
