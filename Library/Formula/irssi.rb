@@ -4,7 +4,13 @@ class Irssi < Formula
   url "https://github.com/irssi-import/irssi/releases/download/0.8.17/irssi-0.8.17.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/i/irssi/irssi_0.8.17.orig.tar.gz"
   sha256 "0ae01f76797fb6d6b8e0f2268b39c7afb90ac62658ec754c82acfc344b8203e9"
-  revision 2
+
+  bottle do
+    revision 3
+    sha256 "3c70f0936f14cf71dcefdbd635e825ef0941a9c44e6693ae495cc68382c751bc" => :el_capitan
+    sha256 "b55f35cd938692dd577d553c3a6b48f89b5923125a96fa23697ab162d2a7cb61" => :yosemite
+    sha256 "1b30b5687ad71c6cb74ba6264673bc6244c053c30773a145f3cb008500989c9f" => :mavericks
+  end
 
   head do
     url "https://github.com/irssi/irssi.git"
@@ -12,13 +18,6 @@ class Irssi < Formula
     depends_on "autoconf" => :build
     depends_on "libtool" => :build
     depends_on "lynx" => :build
-  end
-
-  bottle do
-    revision 3
-    sha256 "3c70f0936f14cf71dcefdbd635e825ef0941a9c44e6693ae495cc68382c751bc" => :el_capitan
-    sha256 "b55f35cd938692dd577d553c3a6b48f89b5923125a96fa23697ab162d2a7cb61" => :yosemite
-    sha256 "1b30b5687ad71c6cb74ba6264673bc6244c053c30773a145f3cb008500989c9f" => :mavericks
   end
 
   option "with-dante", "Build with SOCKS support"
