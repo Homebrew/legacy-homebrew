@@ -1,9 +1,9 @@
 class Sslscan < Formula
   desc "Test SSL/TLS enabled services to discover supported cipher suites."
   homepage "https://github.com/rbsec/sslscan"
-  url "https://github.com/rbsec/sslscan/archive/1.11.1-rbsec.tar.gz"
-  version "1.11.1"
-  sha256 "0631713b16cea51df49b9666aa17e742e8177d79e85bdb13f66105657c98f169"
+  url "https://github.com/rbsec/sslscan/archive/1.11.2-rbsec.tar.gz"
+  version "1.11.2"
+  sha256 "d75201af01554827f6aac99fd21ce8eb9469c985fceabd18053098b283679ef7"
   head "https://github.com/rbsec/sslscan.git"
 
   bottle do
@@ -17,10 +17,8 @@ class Sslscan < Formula
   depends_on "openssl"
 
   def install
-    # Note: when next version (>1.11.1) comes out, revise this per https://github.com/Homebrew/homebrew/pull/47229
-    rm "INSTALL"
     system "make"
-    system "make", "install", "BINPATH=#{bin}", "MANPATH=#{man}/"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
