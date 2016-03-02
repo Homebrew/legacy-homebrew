@@ -29,7 +29,7 @@ class CucumberCpp < Formula
     EOS
     (testpath/"features/step_definiations/cucumber.wire").write <<-EOS.undent
       host: localhost
-      port:3902
+      port: 3902
     EOS
     (testpath/"test.cpp").write <<-EOS.undent
       #include <cucumber-cpp/defs.hpp>
