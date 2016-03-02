@@ -4,7 +4,7 @@ class Weighttp < Formula
   url "https://github.com/lighttpd/weighttp/archive/weighttp-0.3.tar.gz"
   sha256 "376e2311af2decb8f6051e4f968d7c0ba92ca60cd563d768beb4868eb9679f45"
 
-  head "git://git.lighttpd.net/weighttp"
+  head "https://git.lighttpd.net/weighttp.git"
 
   depends_on "libev"
 
@@ -15,6 +15,7 @@ class Weighttp < Formula
   end
 
   test do
-    system "#{bin}/weighttp", "-n", "1", "https://redmine.lighttpd.net/projects/weighttp/wiki"
+    # Stick with HTTP to avoid 'error: no ssl support yet'
+    system "#{bin}/weighttp", "-n", "1", "http://redmine.lighttpd.net/projects/weighttp/wiki"
   end
 end

@@ -13,7 +13,7 @@ class Ncdu < Formula
   end
 
   head do
-    url "git://g.blicky.net/ncdu.git"
+    url "https://g.blicky.net/ncdu.git"
 
     depends_on "automake" => :build
     depends_on "autoconf" => :build
