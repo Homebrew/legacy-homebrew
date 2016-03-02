@@ -1,8 +1,8 @@
 class Mitmproxy < Formula
   desc "Intercept, modify, replay, save HTTP/S traffic"
   homepage "https://mitmproxy.org"
-  url "https://mitmproxy.org/download/mitmproxy-0.15.tar.gz"
-  sha256 "3565086026b5ca0b048e826498a9ed9b37489f5b5639a728d280f73783914aac"
+  url "https://github.com/mitmproxy/mitmproxy/archive/v0.16.tar.gz"
+  sha256 "d4ed9b27377431fc3d6241b43588279cb7e41e64a134a981938e162143c1ec72"
   head "https://github.com/mitmproxy/mitmproxy.git"
 
   bottle do
@@ -20,6 +20,12 @@ class Mitmproxy < Formula
   depends_on "openssl"
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "protobuf" => :optional
+
+  # needs a recent setuptools
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-20.2.2.tar.gz"
+    sha256 "24fcfc15364a9fe09a220f37d2dcedc849795e3de3e4b393ee988e66a9cbd85a"
+  end
 
   resource "argh" do
     url "https://pypi.python.org/packages/source/a/argh/argh-0.26.1.tar.gz"
@@ -42,18 +48,18 @@ class Mitmproxy < Formula
   end
 
   resource "certifi" do
-    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.11.20.1.tar.gz"
-    sha256 "30b0a7354a1b32caa8b4705d3f5fb2dadefac7ba4bf8af8a2176869f93e38f16"
+    url "https://pypi.python.org/packages/source/c/certifi/certifi-2016.2.28.tar.gz"
+    sha256 "5e8eccf95924658c97b990b50552addb64f55e1e3dfe4880456ac1f287dc79d0"
   end
 
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.5.0.tar.gz"
-    sha256 "44f76f6c3fc654860821785192eca29bd66531af57d09b681e6d52584604a7e7"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.5.2.tar.gz"
+    sha256 "da9bde99872e46f7bb5cff40a9b1cc08406765efafb583c704de108b6cb821dd"
   end
 
   resource "click" do
-    url "https://pypi.python.org/packages/source/c/click/click-6.2.tar.gz"
-    sha256 "fba0ff70f5ebb4cebbf64c40a8fbc222fb7cf825237241e548354dabe3da6a82"
+    url "https://pypi.python.org/packages/source/c/click/click-6.3.tar.gz"
+    sha256 "b720d9faabe193287b71e3c26082b0f249501288e153b7e7cfce3bb87ac8cc1c"
   end
 
   resource "ConfigArgParse" do
@@ -67,8 +73,8 @@ class Mitmproxy < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.1.2.tar.gz"
-    sha256 "7f51459f84d670444275e615839f4542c93547a12e938a0a4906dafe5f7de153"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "enum34" do
@@ -76,14 +82,24 @@ class Mitmproxy < Formula
     sha256 "2475d7fcddf5951e92ff546972758802de5260bf409319a9f1934e6bbc8b1dc7"
   end
 
+  resource "h2" do
+    url "https://pypi.python.org/packages/source/h/h2/h2-2.1.2.tar.gz"
+    sha256 "e507c31e0647b262011470747e531b55aabcdb1522f87b92a01ee1dfa9569d1f"
+  end
+
   resource "hpack" do
-    url "https://pypi.python.org/packages/source/h/hpack/hpack-2.0.1.tar.gz"
-    sha256 "0d7eaafeecfb60c18cbfd1c8ffb032bca4524862d0d89540e8a62d5118529ccc"
+    url "https://pypi.python.org/packages/source/h/hpack/hpack-2.1.0.tar.gz"
+    sha256 "535e0628e7b44f6eb76d2acf908b6537c6819f6aad400bcaebb8bde161de7cd9"
   end
 
   resource "html2text" do
-    url "https://pypi.python.org/packages/source/h/html2text/html2text-2015.11.4.tar.gz"
-    sha256 "44531c00fd125d0d987adf4e5ab6b4a8a2b44bfa5c4dc8896f50aa0e35c33708"
+    url "https://pypi.python.org/packages/source/h/html2text/html2text-2016.1.8.tar.gz"
+    sha256 "088046f9b126761ff7e3380064d4792279766abaa5722d0dd765d011cf0bb079"
+  end
+
+  resource "hyperframe" do
+    url "https://pypi.python.org/packages/source/h/hyperframe/hyperframe-3.2.0.tar.gz"
+    sha256 "05f0e063e117c16fcdd13c12c93a4424a2c40668abfac3bb419a10f57698204e"
   end
 
   resource "idna" do
@@ -97,13 +113,13 @@ class Mitmproxy < Formula
   end
 
   resource "lxml" do
-    url "https://pypi.python.org/packages/source/l/lxml/lxml-3.4.4.tar.gz"
-    sha256 "b3d362bac471172747cda3513238f115cbd6c5f8b8e6319bf6a97a7892724099"
+    url "https://pypi.python.org/packages/source/l/lxml/lxml-3.5.0.tar.gz"
+    sha256 "349f93e3a4b09cc59418854ab8013d027d246757c51744bf20069bc89016f578"
   end
 
   resource "netlib" do
-    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.15.1.tar.gz"
-    sha256 "f55ad129b770fcf82786fb59d3e4f4291ea4c6dca4e4850bce1977bd9e99492e"
+    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.16.tar.gz"
+    sha256 "c70ed1915a5662c9ffce4dc97d143209e009cf0035a2f692031a6c47e87e6002"
   end
 
   resource "passlib" do
@@ -117,8 +133,8 @@ class Mitmproxy < Formula
   end
 
   resource "Pillow" do
-    url "https://pypi.python.org/packages/source/P/Pillow/Pillow-3.0.0.tar.gz"
-    sha256 "ad50bef540fe5518a4653c3820452a881b6a042cb0f8bb7657c491c6bd3654bb"
+    url "https://pypi.python.org/packages/source/P/Pillow/Pillow-3.1.1.tar.gz"
+    sha256 "486f4ccddee09429cb1c63ea56c02894aecf9d69acdcaf006c53835df2549fff"
   end
 
   resource "pyasn1" do
@@ -137,8 +153,8 @@ class Mitmproxy < Formula
   end
 
   resource "pyparsing" do
-    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.0.7.tar.gz"
-    sha256 "2ce0db3c70ec0413603d4aea389e4ece34ff93c265649b1c5c7d56e3c2cf19c4"
+    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.1.0.tar.gz"
+    sha256 "f6cb2bc85a491347c3c699db47f7ecc02903959156b4f92669ebf82395982901"
   end
 
   resource "pyperclip" do
@@ -177,14 +193,14 @@ class Mitmproxy < Formula
   end
 
   # Optional resources
-  resource "pyamf" do
-    url "https://pypi.python.org/packages/source/P/PyAMF/PyAMF-0.7.2.tar.gz"
-    sha256 "3e39d43989f75a4d35f4c2a591d8163637f67eaf856bdae749bd8b64b1c1b672"
+  resource "PyAMF" do
+    url "https://pypi.python.org/packages/source/P/PyAMF/PyAMF-0.8.0.tar.gz"
+    sha256 "0455d68983e3ee49f82721132074877428d58acec52f19697a88c03b5fba74e4"
   end
 
   resource "cssutils" do
-    url "https://pypi.python.org/packages/source/c/cssutils/cssutils-1.0.zip"
-    sha256 "4504762f5d8800b98fa713749c00acfef8419826568f9363c490e45146a891af"
+    url "https://pypi.python.org/packages/source/c/cssutils/cssutils-1.0.1.tar.gz"
+    sha256 "d8a18b2848ea1011750231f1dd64fe9053dbec1be0b37563c582561e7a529063"
   end
 
   def install
@@ -200,12 +216,9 @@ class Mitmproxy < Formula
       system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
-    res = %w[argh backports_abc backports.ssl_match_hostname blinker certifi cffi
-             click ConfigArgParse construct cryptography enum34 hpack html2text idna
-             ipaddress lxml netlib passlib pathtools pyasn1 pycparser pyOpenSSL
-             pyparsing pyperclip PyYAML singledispatch six tornado urwid watchdog]
+    res = resources.map { |r| r.name }.to_set - ["Pillow"]
 
-    res << "pyamf" if build.with? "pyamf"
+    res << "PyAMF" if build.with? "pyamf"
     res << "cssutils" if build.with? "cssutils"
 
     res.each do |r|
