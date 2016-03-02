@@ -13,13 +13,13 @@ class SvtplayDl < Formula
 
   # for request security
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.4.2.tar.gz"
-    sha256 "8f1d177d364ea35900415ae24ca3e471be3d5334ed0419294068c49f45913998"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.5.2.tar.gz"
+    sha256 "da9bde99872e46f7bb5cff40a9b1cc08406765efafb583c704de108b6cb821dd"
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.1.2.tar.gz"
-    sha256 "7f51459f84d670444275e615839f4542c93547a12e938a0a4906dafe5f7de153"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "enum34" do
