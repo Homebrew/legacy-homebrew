@@ -1,4 +1,4 @@
-# Homebrew
+# Homebrew [![codebeat badge](https://codebeat.co/badges/d337b85b-79f5-4037-93af-c5ee9568428f)](https://codebeat.co/projects/github-com-homebrew-homebrew)
 Features, usage and installation instructions are [summarised on the homepage](http://brew.sh).
 
 ## What Packages Are Available?
