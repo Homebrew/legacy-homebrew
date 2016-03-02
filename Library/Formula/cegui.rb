@@ -19,8 +19,9 @@ class Cegui < Formula
   def install
     # TODO: Enable fribidi after build problems are fixed
     args = std_cmake_args
-    args += %w[-DCEGUI_SAMPLES_ENABLED=0 -DCEGUI_USE_FRIBIDI=0 -DCEGUI_BUILD_DATAFILE_TESTS=1]
+    args << "-DCEGUI_SAMPLES_ENABLED=0"
     args << "-DCEGUI_BUILD_DATAFILE_TESTS=1"
+    args << "-DCEGUI_USE_FRIBIDI=0"
     args << "-DCEGUI_BUILD_RENDERER_OPENGL3=1"
     args << "-DCEGUI_BUILD_PYTHON_MODULES=0"
 
