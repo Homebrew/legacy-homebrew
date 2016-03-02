@@ -1,8 +1,8 @@
 class Letsencrypt < Formula
   desc "Tool to automatically receive and install X.509 certificates"
   homepage "https://letsencrypt.org/"
-  url "https://github.com/letsencrypt/letsencrypt/archive/v0.4.0.tar.gz"
-  sha256 "d7df1faedd6f5c1ffc26fd855350fc3a107dd9fe5c1c2aa4c340024fe807a0f3"
+  url "https://github.com/letsencrypt/letsencrypt/archive/v0.4.1.tar.gz"
+  sha256 "750c4a2966ec21009e4f7d510eceb3f97f941f6c19eda8b58b7030ef8518cef9"
 
   bottle do
     cellar :any
@@ -22,8 +22,8 @@ class Letsencrypt < Formula
   end
 
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.5.0.tar.gz"
-    sha256 "44f76f6c3fc654860821785192eca29bd66531af57d09b681e6d52584604a7e7"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.5.2.tar.gz"
+    sha256 "da9bde99872e46f7bb5cff40a9b1cc08406765efafb583c704de108b6cb821dd"
   end
 
   resource "ConfigArgParse" do
@@ -37,8 +37,8 @@ class Letsencrypt < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.2.tar.gz"
-    sha256 "3f219cb9106d9b737ea9c332c4d15d70ac328f91b59fd9d79f78bdea8f826a67"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "enum34" do
@@ -82,8 +82,8 @@ class Letsencrypt < Formula
   end
 
   resource "psutil" do
-    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.4.2.tar.gz"
-    sha256 "b17fa01aa766daa388362d0eda5c215d77e03a8d37676b68971f37bf3913b725"
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-4.0.0.tar.gz"
+    sha256 "1a7c672f9ee79c84ff16b8de6f6040080f0e25002ac47f115f4a54aa88e5cfcd"
   end
 
   resource "pyasn1" do
@@ -101,11 +101,6 @@ class Letsencrypt < Formula
     sha256 "f0a26070d6db0881de8bcc7846934b7c3c930d8f9c79d45883ee48984bc0d672"
   end
 
-  resource "pyparsing" do
-    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.1.0.tar.gz"
-    sha256 "f6cb2bc85a491347c3c699db47f7ecc02903959156b4f92669ebf82395982901"
-  end
-
   resource "pyRFC3339" do
     url "https://pypi.python.org/packages/source/p/pyRFC3339/pyRFC3339-1.0.tar.gz"
     sha256 "8dfbc6c458b8daba1c0f3620a8c78008b323a268b27b7359e92a4ae41325f535"
@@ -121,11 +116,6 @@ class Letsencrypt < Formula
     sha256 "fbd26746772c24cb93c8b97cbdad5cb9e46c86bbdb1b9d8a743ee00e2fb1fc5d"
   end
 
-  resource "python-augeas" do
-    url "https://pypi.python.org/packages/source/p/python-augeas/python-augeas-0.5.0.tar.gz"
-    sha256 "67d59d66cdba8d624e0389b87b2a83a176f21f16a87553b50f5703b23f29bac2"
-  end
-
   resource "requests" do
     url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
     sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
@@ -136,24 +126,31 @@ class Letsencrypt < Formula
     sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
-  resource "Werkzeug" do
-    url "https://pypi.python.org/packages/source/W/Werkzeug/Werkzeug-0.11.3.tar.gz"
-    sha256 "eb5f700a9bfc96420b055635af9002d3662e43d80c3ffd31f224c25bc0d5f462"
-  end
-
   resource "zope.component" do
     url "https://pypi.python.org/packages/source/z/zope.component/zope.component-4.2.2.tar.gz"
     sha256 "282c112b55dd8e3c869a3571f86767c150ab1284a9ace2bdec226c592acaf81a"
   end
 
   resource "zope.event" do
-    url "https://pypi.python.org/packages/source/z/zope.event/zope.event-4.1.0.tar.gz"
-    sha256 "dc7a59a2fd91730d3793131a5d261b29e93ec4e2a97f1bc487ce8defee2fe786"
+    url "https://pypi.python.org/packages/source/z/zope.event/zope.event-4.2.0.tar.gz"
+    sha256 "ce11004217863a4827ea1a67a31730bddab9073832bdb3b9be85869259118758"
   end
 
   resource "zope.interface" do
     url "https://pypi.python.org/packages/source/z/zope.interface/zope.interface-4.1.3.tar.gz"
     sha256 "2e221a9eec7ccc58889a278ea13dcfed5ef939d80b07819a9a8b3cb1c681484f"
+  end
+
+  # Required because augeas formula doesn't ship these.
+  resource "python-augeas" do
+    url "https://pypi.python.org/packages/source/p/python-augeas/python-augeas-0.5.0.tar.gz"
+    sha256 "67d59d66cdba8d624e0389b87b2a83a176f21f16a87553b50f5703b23f29bac2"
+  end
+
+  # Required for the nginx module.
+  resource "pyparsing" do
+    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.1.0.tar.gz"
+    sha256 "f6cb2bc85a491347c3c699db47f7ecc02903959156b4f92669ebf82395982901"
   end
 
   def install
