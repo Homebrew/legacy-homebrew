@@ -87,37 +87,34 @@ class Cassandra < Formula
               %r{`dirname "?\$0"?`/cassandra.in.sh},
               "#{share}/cassandra.in.sh"
 
-    # Prepare tools path
-    mkpath "#{libexec}/tools/bin"
-    rm Dir["#{buildpath}/tools/bin/*.bat"]
-
-    copy Dir["#{buildpath}/tools/bin/*"], "#{libexec}/tools/bin"
-    copy Dir["#{buildpath}/tools/lib/*.jar"], "#{libexec}/tools"
+    # Make sure tools are installed
+    rm Dir[buildpath/"tools/bin/*.bat"] # Delete before install to avoid copying useless files
+    (libexec/"tools").install Dir[buildpath/"tools/lib/*.jar"]
 
     # Tools use different cassandra.in.sh and should be changed differently
-    move "#{libexec}/tools/bin/cassandra.in.sh", "#{libexec}/tools/bin/cassandra-tools.in.sh"
-    inreplace "#{libexec}/tools/bin/cassandra-tools.in.sh" do |s|
-        # Tools have slightly different path to CASSANDRA_HOME
-        s.gsub! "CASSANDRA_HOME=\"`dirname $0`/../..\"", "CASSANDRA_HOME=\"#{libexec}\""
-        # Store configs in etc, outside of keg
-        s.gsub! "CASSANDRA_CONF=\"$CASSANDRA_HOME/conf\"", "CASSANDRA_CONF=\"#{etc}/cassandra\""
-        # Core Jars installed to prefix, no longer in a lib folder
-        s.gsub! "\"$CASSANDRA_HOME\"/lib/*.jar", "\"$CASSANDRA_HOME\"/*.jar"
-        # Tools Jars are under tools folder
-        s.gsub! "\"$CASSANDRA_HOME\"/tools/lib/*.jar", "\"$CASSANDRA_HOME\"/tools/*.jar"
-        # Storage path
-        s.gsub! "cassandra_storagedir\=\"$CASSANDRA_HOME/data\"", "cassandra_storagedir\=\"#{var}/lib/cassandra\""
+    mv buildpath/"tools/bin/cassandra.in.sh", buildpath/"tools/bin/cassandra-tools.in.sh"
+    inreplace buildpath/"tools/bin/cassandra-tools.in.sh" do |s|
+      # Tools have slightly different path to CASSANDRA_HOME
+      s.gsub! "CASSANDRA_HOME=\"`dirname $0`/../..\"", "CASSANDRA_HOME=\"#{libexec}\""
+      # Store configs in etc, outside of keg
+      s.gsub! "CASSANDRA_CONF=\"$CASSANDRA_HOME/conf\"", "CASSANDRA_CONF=\"#{etc}/cassandra\""
+      # Core Jars installed to prefix, no longer in a lib folder
+      s.gsub! "\"$CASSANDRA_HOME\"/lib/*.jar", "\"$CASSANDRA_HOME\"/*.jar"
+      # Tools Jars are under tools folder
+      s.gsub! "\"$CASSANDRA_HOME\"/tools/lib/*.jar", "\"$CASSANDRA_HOME\"/tools/*.jar"
+      # Storage path
+      s.gsub! "cassandra_storagedir\=\"$CASSANDRA_HOME/data\"", "cassandra_storagedir\=\"#{var}/lib/cassandra\""
     end
 
-    share.install ["#{libexec}/tools/bin/cassandra-tools.in.sh"]
+    share.install [buildpath/"tools/bin/cassandra-tools.in.sh"]
 
     # Update tools script files
-    inreplace Dir["#{libexec}/tools/bin/*"],
+    inreplace Dir[buildpath/"tools/bin/*"],
               "`dirname \"$0\"`/cassandra.in.sh",
               "#{share}/cassandra-tools.in.sh"
 
     # Make sure tools are available
-    bin.install Dir["#{libexec}/tools/bin/*"]
+    bin.install Dir[buildpath/"tools/bin/*"]
 
     bin.write_exec_script Dir["#{libexec}/bin/*"]
     rm bin/"cqlsh" # Remove existing exec script
