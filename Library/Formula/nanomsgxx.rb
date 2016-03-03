@@ -7,7 +7,7 @@ class Nanomsgxx < Formula
   option "with-debug", "Compile with debug symbols"
 
   depends_on "pkg-config" => :build
-  depends_on :python
+  depends_on :python => :build if MacOS.version <= :snow_leopard
 
   if build.with? "debug"
     depends_on "nanomsg" => "with-debug"
@@ -30,13 +30,15 @@ class Nanomsgxx < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<-EOS
-#include <iostream>\nint main(int argc, char **argv) {\n\tstd::cout << "Hello Nanomsgxx!" << std::endl;\n}
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <iostream>
+      int main(int argc, char **argv) {
+        std::cout << "Hello Nanomsgxx!" << std::endl;
+      }
     EOS
 
-    system "c++", "-std=c++11", "-lnnxx", "test.cpp"
+    system ENV.cxx, "-std=c++11", "-lnnxx", "test.cpp"
 
-    assert_equal "Hello Nanomsgxx!\n",
-        shell_output("#{testpath}/a.out")
+    assert_equal "Hello Nanomsgxx!\n", shell_output("#{testpath}/a.out")
   end
 end
