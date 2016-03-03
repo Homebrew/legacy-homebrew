@@ -5,9 +5,9 @@ class Omniorb < Formula
   sha256 "9b638c7047a05551c42fe13901194e63b58750d4124654bfa26203d09cb5072d"
 
   bottle do
-    sha256 "8575f53c6de3426c4f640c97fbc966b220869dada8e636494f4a1fe5c1769990" => :yosemite
-    sha256 "2245722bc7b21cecee0bfc4b145d3bab51d79979bfbf9e6cb1a0211b4c166e85" => :mavericks
-    sha256 "0a5e41a4e19fbe4d685822b2da354d8dd9f5bd32e02376d74d7dfed9e9b9f767" => :mountain_lion
+    sha256 "f433740ab82239c1e634f77c90a7657d540df7bcecb8666461b38584e25f76db" => :el_capitan
+    sha256 "a7ec7b6c556d1fa1fa447e07cfddbe30e0c6a0936637c554c43d5162baf8e3af" => :yosemite
+    sha256 "6fdf2acaf82b96459db16f272b97ac8a7ac4088227a2dcfb69331d3b7f672568" => :mavericks
   end
 
   depends_on "pkg-config" => :build
