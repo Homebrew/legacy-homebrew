@@ -1,8 +1,8 @@
 class Planck < Formula
-  desc "Stand-alone ClojureScript REPL for OS X"
+  desc "Stand-alone OS X ClojureScript REPL"
   homepage "http://planck-repl.org/"
-  url "https://github.com/mfikes/planck/archive/1.9.tar.gz"
-  sha256 "3a12e740feda792ccad85e9d1f33798e1af4a6bf2131b41f3be27d3f3489f4be"
+  url "https://github.com/mfikes/planck/archive/1.10.tar.gz"
+  sha256 "4ed7d3aa38d5775002819588cb5a4f0b54aa866587072f07505626d51d7a1b91"
   head "https://github.com/mfikes/planck.git"
 
   bottle do
@@ -13,6 +13,7 @@ class Planck < Formula
   end
 
   depends_on "leiningen" => :build
+  depends_on "maven" => :build
   depends_on :xcode => :build
   depends_on :macos => :lion
 
