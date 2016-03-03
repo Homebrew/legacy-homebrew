@@ -5,6 +5,13 @@ class GnuComplexity < Formula
   mirror "https://ftp.gnu.org/gnu/complexity/complexity-1.5.tar.xz"
   sha256 "1f5194c0dc6e813ea1dc7f36bfd05f15786a8ad6e9b3ab65b53d2263a0d93102"
 
+  bottle do
+    cellar :any
+    sha256 "544d5ebed4cc5f67c8163c235b3395b037b7a3f1ca65a7a9b7933fd0a720372d" => :el_capitan
+    sha256 "8ea7c8980ece29c92bbd61fb0c407d636bbb92f648b2766be2d6b729fdc496f9" => :yosemite
+    sha256 "fe927c4a8849726433828cec20ac0716a543105f2038e030cdf4e4df2085adc0" => :mavericks
+  end
+
   depends_on "autogen" => :run
 
   def install
