@@ -1,10 +1,9 @@
 class Wireshark < Formula
   desc "Graphical network analyzer and capture tool"
   homepage "https://www.wireshark.org"
-  url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.1.tar.bz2"
-  mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.1.tar.bz2"
-  sha256 "c9bd07dd0d0045d6ca7537390a1afbcdf33716d193ea7d7084ae4f6c30b683ab"
-  revision 1
+  url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.2.tar.bz2"
+  mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.2.tar.bz2"
+  sha256 "e921fb072085a5654d899949bb561d0687f4819f7b63ba35777bb949a9b6b9c1"
 
   bottle do
     sha256 "f9251b00cf5ba7e45016e2ce13dccae979e0bf72e0dd47b415920069db3d9eeb" => :el_capitan
