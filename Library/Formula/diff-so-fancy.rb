@@ -7,8 +7,8 @@ class DiffSoFancy < Formula
   bottle :unneeded
 
   def install
-    bin.install "third_party/diff-highlight/diff-highlight"
-    bin.install "diff-so-fancy"
+    prefix.install Dir["third_party", "libs", "diff-so-fancy"]
+    bin.install_symlink prefix/"diff-so-fancy"
   end
 
   test do
