@@ -37,7 +37,7 @@ class Cegui < Formula
         return (804u <= vnum) ? 0 : 1;
       }
     EOS
-    system ENV.cc, "test.cpp", "-I#{prefix}/include/cegui-0", "-L#{lib}", "-lCEGUIBase-0", "-o", "test"
+    system ENV.cc, "test.cpp", "-I#{include}/cegui-0", "-L#{lib}", "-lCEGUIBase-0", "-o", "test"
     system "./test"
   end
 end
