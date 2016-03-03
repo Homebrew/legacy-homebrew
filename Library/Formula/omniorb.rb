@@ -1,8 +1,8 @@
 class Omniorb < Formula
   desc "IOR and naming service utilities for omniORB"
   homepage "http://omniorb.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.2.0/omniORB-4.2.0.tar.bz2"
-  sha256 "74c273fc997c2881b128feb52182dbe067acfecc4cf37475f43c104338eba8bc"
+  url "https://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.2.1/omniORB-4.2.1-2.tar.bz2"
+  sha256 "9b638c7047a05551c42fe13901194e63b58750d4124654bfa26203d09cb5072d"
 
   bottle do
     sha256 "8575f53c6de3426c4f640c97fbc966b220869dada8e636494f4a1fe5c1769990" => :yosemite
@@ -13,12 +13,9 @@ class Omniorb < Formula
   depends_on "pkg-config" => :build
 
   resource "bindings" do
-    url "https://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-4.2.0/omniORBpy-4.2.0.tar.bz2"
-    sha256 "c82b3bafacbb93cfaace41765219155f2b24eb3781369bba0581feb1dc50fe5e"
+    url "https://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-4.2.1/omniORBpy-4.2.1-2.tar.bz2"
+    sha256 "e0d0f89c0fc6e33b480a2bf7acc7d353b9346a7067571a6be8f594c78b161422"
   end
-
-  # http://www.omniorb-support.com/pipermail/omniorb-list/2012-February/031202.html
-  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}"
@@ -36,20 +33,3 @@ class Omniorb < Formula
   end
 end
 
-__END__
-diff --git a/include/omniORB4/CORBA_sysdep.h b/include/omniORB4/CORBA_sysdep.h
-index 3ff1f22..e3b8d3c 100644
---- a/include/omniORB4/CORBA_sysdep.h
-+++ b/include/omniORB4/CORBA_sysdep.h
-@@ -231,6 +231,11 @@
- #endif
-
-
-+#if defined(__clang__)
-+#  define OMNI_NO_INLINE_FRIENDS
-+#endif
-+
-+
- //
- // Windows DLL hell
- //
