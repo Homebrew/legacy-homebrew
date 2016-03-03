@@ -234,8 +234,8 @@ class Duplicity < Formula
   end
 
   resource "pyrax" do
-    url "https://pypi.python.org/packages/source/p/pyrax/pyrax-1.9.6.tar.gz"
-    sha256 "a06b0ae9d0aac091c4287bf65debc64ecd85089c1ac765adbeea26204133a0ea"
+    url "https://pypi.python.org/packages/source/p/pyrax/pyrax-1.9.7.tar.gz"
+    sha256 "6f2e2bbe9d34541db66f5815ee2016a1366a78a5bf518810d4bd81b71a9bc477"
   end
 
   resource "python-keystoneclient" do
