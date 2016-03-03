@@ -14,7 +14,7 @@ class Geos < Formula
   option :universal
   option :cxx11
   option "with-php", "Build the PHP extension"
-  option "with-python", "Build the Python extension"
+  option "without-python", "Do not build the Python extension"
   option "with-ruby", "Build the ruby extension"
 
   depends_on "swig" => :build if build.with?("python") || build.with?("ruby")
@@ -24,6 +24,12 @@ class Geos < Formula
   def install
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?
+
+    # https://trac.osgeo.org/geos/ticket/771
+    inreplace "configure" do |s|
+      s.gsub! /PYTHON_CPPFLAGS=.*/, %(PYTHON_CPPFLAGS="#{`python-config --includes`.strip}")
+      s.gsub! /PYTHON_LDFLAGS=.*/, %(PYTHON_LDFLAGS="-Wl,-undefined,dynamic_lookup")
+    end
 
     args = [
       "--disable-dependency-tracking",
