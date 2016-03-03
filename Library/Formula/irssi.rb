@@ -2,7 +2,7 @@ class Irssi < Formula
   desc "Modular IRC client"
   homepage "https://irssi.org/"
   url "https://github.com/irssi/irssi/releases/download/0.8.18/irssi-0.8.18.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/i/irssi/irssi_0.8.18.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/i/irssi/irssi_0.8.18.orig.tar.gz"
   sha256 "30043784815bb864b1bb66a82c1e659c325be0a18ddcf76fc101812e36c39c20"
 
   bottle do
