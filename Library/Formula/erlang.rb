@@ -20,16 +20,6 @@ class Erlang < Formula
     sha256 "fa32cd20b0e5c28901b431fd6fb9bac30e3f0aca53b2bc6e23ccd0cff251e858" => :mavericks
   end
 
-  resource "man" do
-    url "https://www.erlang.org/download/otp_doc_man_18.2.1.tar.gz"
-    sha256 "a58005ccd64853e8c79631a3c4c057dd6f92f581d97d00845a0aea817c33afa0"
-  end
-
-  resource "html" do
-    url "https://www.erlang.org/download/otp_doc_html_18.2.1.tar.gz"
-    sha256 "3576c567b30400fec2b456897d54ba79933ee0f83f6ec57816417b5417ea9723"
-  end
-
   option "without-hipe", "Disable building hipe; fails on various OS X systems"
   option "with-native-libs", "Enable native library compilation"
   option "with-dirty-schedulers", "Enable experimental dirty schedulers"
@@ -47,6 +37,16 @@ class Erlang < Formula
   depends_on "wxmac" => :recommended # for GUI apps like observer
 
   fails_with :llvm
+
+  resource "man" do
+    url "https://www.erlang.org/download/otp_doc_man_18.2.1.tar.gz"
+    sha256 "a58005ccd64853e8c79631a3c4c057dd6f92f581d97d00845a0aea817c33afa0"
+  end
+
+  resource "html" do
+    url "https://www.erlang.org/download/otp_doc_html_18.2.1.tar.gz"
+    sha256 "3576c567b30400fec2b456897d54ba79933ee0f83f6ec57816417b5417ea9723"
+  end
 
   def install
     # Unset these so that building wx, kernel, compiler and
