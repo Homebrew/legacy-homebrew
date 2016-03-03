@@ -17,6 +17,7 @@ class Cegui < Formula
   def install
     # TODO: Enable fribidi after build problems are fixed
     args = std_cmake_args
+    args << "-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}"
     args << "-DCEGUI_SAMPLES_ENABLED=0"
     args << "-DCEGUI_USE_FRIBIDI=0"
     args << "-DCEGUI_BUILD_RENDERER_OPENGL3=1"
@@ -33,8 +34,11 @@ class Cegui < Formula
     (testpath/"test.cpp").write <<-EOS.undent
       #include <CEGUI/CEGUI.h>
       int main() {
-        unsigned int vnum = 10000 * CEGUI_VERSION_MAJOR + 100 * CEGUI_VERSION_MINOR + CEGUI_VERSION_PATCH;
-        return (804u <= vnum) ? 0 : 1;
+        unsigned int vnum = 10000u * CEGUI::System::getMajorVersion()
+                          +   100u * CEGUI::System::getMinorVersion()
+                          +          CEGUI::System::getPatchVersion();
+
+        if (804u > vnum) { return 1; }
       }
     EOS
     system ENV.cc, "test.cpp", "-I#{include}/cegui-0", "-L#{lib}", "-lCEGUIBase-0", "-o", "test"
