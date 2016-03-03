@@ -1,8 +1,8 @@
 class Libpagemaker < Formula
   desc "Imports file format of Aldus/Adobe PageMaker documents"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libpagemaker"
-  url "http://dev-www.libreoffice.org/src/libpagemaker/libpagemaker-0.0.2.tar.xz"
-  sha256 "cdbdf86605773339caab6477ff694a95a90aaa4d45bb6cdb59e4a7f76c91ef17"
+  url "http://dev-www.libreoffice.org/src/libpagemaker/libpagemaker-0.0.3.tar.xz"
+  sha256 "d896dc55dafd84ee3441e0ca497b810809f9eea44805a495c3843412309036d6"
 
   bottle do
     cellar :any
