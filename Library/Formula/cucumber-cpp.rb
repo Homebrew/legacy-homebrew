@@ -8,7 +8,8 @@ class CucumberCpp < Formula
   depends_on "boost"
 
   def install
-    system "cmake", "-DCUKE_DISABLE_GTEST=on",
+    system "cmake", *std_cmake_args,
+                    "-DCUKE_DISABLE_GTEST=on",
                     "-DCUKE_DISABLE_CPPSPEC=on",
                     "-DCUKE_DISABLE_FUNCTIONAL=on",
                     "-DCUKE_DISABLE_BOOST_TEST=on",
