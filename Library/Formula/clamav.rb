@@ -5,9 +5,9 @@ class Clamav < Formula
   sha256 "e144689122d3f91293808c82cbb06b7d3ac9eca7ae29564c5d148ffe7b25d58a"
 
   bottle do
-    sha256 "713358af050acfb211bfed879f8b49ab310ff51b8ca92a446ff6e9a562c8c1e6" => :el_capitan
-    sha256 "ea7d6586027e16fdf4587a9aadf144d992c9e92951078fcec8d303763bdea796" => :yosemite
-    sha256 "b9829244db5aa864d82d2d1c4f8f26aa23887a26659bc6babd74a8dded4c6061" => :mavericks
+    sha256 "f1febe378c19074dd99542d20156ebed49ebab91ebb5ba27d9a095f6bf9121f0" => :el_capitan
+    sha256 "1b13689bef5dd5afb06da556bea1030f04c4d100bac96dfd83bde0adc135e067" => :yosemite
+    sha256 "a7ca98533a103e466d3724ffe32f28f2891f0a97a1e96e644cd692f16c502590" => :mavericks
   end
 
   head do
