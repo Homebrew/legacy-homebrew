@@ -1,8 +1,8 @@
 class Discount < Formula
   desc "C implementation of Markdown"
   homepage "http://www.pell.portland.or.us/~orc/Code/discount/"
-  url "http://www.pell.portland.or.us/~orc/Code/discount/discount-2.1.8a.tar.bz2"
-  sha256 "c01502f4eedba8163dcd30c613ba5ee238a068f75291be127856261727e03526"
+  url "http://www.pell.portland.or.us/~orc/Code/discount/discount-2.2.0.tar.bz2"
+  sha256 "b25395c29c2c08836199eb2eae87b56e6b545e77f5fbf921678aa1dc0ddab9f3"
 
   bottle do
     cellar :any_skip_relocation
@@ -13,6 +13,7 @@ class Discount < Formula
   end
 
   option "with-fenced-code", "Enable Pandoc-style fenced code blocks."
+  option "with-shared", "Install shared library"
 
   conflicts_with "markdown", :because => "both install `markdown` binaries"
   conflicts_with "multimarkdown", :because => "both install `markdown` binaries"
@@ -22,9 +23,12 @@ class Discount < Formula
       --prefix=#{prefix}
       --mandir=#{man}
       --with-dl=Both
-      --enable-all-features
+      --enable-dl-tag
+      --enable-pandoc-header
+      --enable-superscript
     ]
     args << "--with-fenced-code" if build.with? "fenced-code"
+    args << "--shared" if build.with? "shared"
     system "./configure.sh", *args
     bin.mkpath
     lib.mkpath
