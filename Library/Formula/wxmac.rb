@@ -1,7 +1,7 @@
 class Wxmac < Formula
   desc "wxWidgets, a cross-platform C++ GUI toolkit (for OS X)"
   homepage "https://www.wxwidgets.org"
-  url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
+  url "https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.2/wxWidgets-3.0.2.tar.bz2"
   sha256 "346879dc554f3ab8d6da2704f651ecb504a22e9d31c17ef5449b129ed711585d"
   revision 2
 
