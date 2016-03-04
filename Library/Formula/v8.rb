@@ -3,8 +3,8 @@
 class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://code.google.com/p/v8/"
-  url "https://github.com/v8/v8-git-mirror/archive/4.8.271.20.tar.gz"
-  sha256 "1cc1b3c48dfaed61440181ddaf047cc67df9a36afb79f5fc1455fe5ac656977c"
+  url "https://github.com/v8/v8-git-mirror/archive/4.9.385.28.tar.gz"
+  sha256 "c77c5f9d5b6c77186485a99da459c604738d1d2d299c8224a4781cbe8227a8b9"
 
   bottle do
     cellar :any
@@ -29,22 +29,27 @@ class V8 < Formula
   # Note that we don't require the "test" DEPS because we don't run the tests.
   resource "gyp" do
     url "https://chromium.googlesource.com/external/gyp.git",
-        :revision => "2c1e6cced23554ce84806e570acea637f6473afc"
+        :revision => "b85ad3e578da830377dbc1843aa4fbc5af17a192"
   end
 
   resource "icu" do
     url "https://chromium.googlesource.com/chromium/deps/icu.git",
-        :revision => "42c58d4e49f2250039f0e98d43e0b76e8f5ca024"
+        :revision => "8d342a405be5ae8aacb1e16f0bc31c3a4fbf26a2"
   end
 
   resource "buildtools" do
     url "https://chromium.googlesource.com/chromium/buildtools.git",
-        :revision => "4a95614772d9bcbd8bc197e1d9bd034e088fc740"
+        :revision => "0f8e6e4b126ee88137930a0ae4776c4741808740"
+  end
+
+  resource "common" do
+    url "https://chromium.googlesource.com/chromium/src/base/trace_event/common.git",
+        :revision => "d83d44b13d07c2fd0a40101a7deef9b93b841732"
   end
 
   resource "swarming_client" do
     url "https://chromium.googlesource.com/external/swarming.client.git",
-        :revision => "8fce79620b04bbe5415ace1103db27505bdc4c06"
+        :revision => "9cdd76171e517a430a72dcd7d66ade67e109aa00"
   end
 
   resource "gtest" do
@@ -59,7 +64,7 @@ class V8 < Formula
 
   resource "clang" do
     url "https://chromium.googlesource.com/chromium/src/tools/clang.git",
-        :revision => "66f5328417331216569e8beb244fd887f62e8997"
+        :revision => "24e8c1c92fe54ef8ed7651b5850c056983354a4a"
   end
 
   def install
@@ -86,6 +91,7 @@ class V8 < Formula
     (buildpath/"build/gyp").install resource("gyp")
     (buildpath/"third_party/icu").install resource("icu")
     (buildpath/"buildtools").install resource("buildtools")
+    (buildpath/"base/trace_event/common").install resource("common")
     (buildpath/"tools/swarming_client").install resource("swarming_client")
     (buildpath/"testing/gtest").install resource("gtest")
     (buildpath/"testing/gmock").install resource("gmock")
