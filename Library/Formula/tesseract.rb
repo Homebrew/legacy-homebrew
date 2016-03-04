@@ -72,6 +72,7 @@ class Tesseract < Formula
     ENV.cxx11
 
     # Fix broken pkg-config file
+    # Can probably be removed with next version bump
     # https://github.com/tesseract-ocr/tesseract/issues/241
     inreplace "tesseract.pc.in", "@OPENCL_LIB@", "@OPENCL_LDFLAGS@"
 
