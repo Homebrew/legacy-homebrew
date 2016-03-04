@@ -20,7 +20,8 @@ class Capstone < Formula
 
     ENV["HOMEBREW_CAPSTONE"] = "1"
     system "./make.sh"
-    system "./make.sh", "install"
+    system "./make.sh", "install" if OS.mac?
+    system "make", "install", "PREFIX=#{prefix}" if OS.linux?
 
     # As per the above inreplace, the pkgconfig file needs fixing as well.
     inreplace lib/"pkgconfig/capstone.pc" do |s|
