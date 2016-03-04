@@ -8,11 +8,12 @@ class CucumberCpp < Formula
   depends_on "boost"
 
   def install
-    system "cmake", *std_cmake_args, "-DCUKE_DISABLE_GTEST=on",
-                    "-DCUKE_DISABLE_CPPSPEC=on",
-                    "-DCUKE_DISABLE_FUNCTIONAL=on",
-                    "-DCUKE_DISABLE_BOOST_TEST=on",
-                    "."
+    args = std_cmake_args
+    args << "-DCUKE_DISABLE_GTEST=on"
+    args << "-DCUKE_DISABLE_CPPSPEC=on"
+    args << "-DCUKE_DISABLE_FUNCTIONAL=on"
+    args << "-DCUKE_DISABLE_BOOST_TEST=on"
+    system "cmake", ".", *std_cmake_args
     system "cmake", "--build", "."
     include.install "include/cucumber-cpp"
     lib.install Dir["src/*.a"]
