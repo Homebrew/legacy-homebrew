@@ -3,17 +3,17 @@ class Radare2 < Formula
   homepage "http://radare.org"
 
   stable do
-    url "http://radare.org/get/radare2-0.10.0.tar.xz"
-    sha256 "f7a755e4ff2d5fb9258be6c9b7ffa708b0533e0d1efce4ced177785a9270befd"
+    url "http://radare.org/get/radare2-0.10.1.tar.xz"
+    sha256 "5ac02717786f2ff3b5326927351d5ca38464da89675c8edfb4ded43addb22987"
 
     resource "bindings" do
-      url "http://radare.org/get/radare2-bindings-0.10.0.tar.xz"
-      sha256 "f7f10e308c7bd6edc3ddf8d2229fa9647cdee0474134ba9120ee163723e475cf"
+      url "http://radare.org/get/radare2-bindings-0.10.1.tar.xz"
+      sha256 "6cb91f4135b5e490185e25629850cb48c08c06882e2c870fa5ab1425cc84106f"
     end
 
     resource "extras" do
-      url "http://radare.org/get/radare2-extras-0.10.0.tar.xz"
-      sha256 "363fef80e39dff18c4b8263f3f4eb355c7f89aba3339505b3a37acb82fea053e"
+      url "http://radare.org/get/radare2-extras-0.10.1.tar.xz"
+      sha256 "c330210c8e6ce5fa8113c455e98c994fb5ecbb5d2f1c15c40c0d1bcbc24d5092"
     end
   end
 
@@ -81,7 +81,8 @@ class Radare2 < Formula
       make_install_args = ["R2_PLUGIN_PATH=#{lib}/radare2/#{version}",
                            "LUAPKG=lua-#{lua_version}",
                            "PERLPATH=#{lib}/perl5/site_perl/#{perl_version}",
-                           "PYTHON_PKGDIR=#{lib}/python2.7/site-packages",]
+                           "PYTHON_PKGDIR=#{lib}/python2.7/site-packages",
+                           "RUBYPATH=#{lib}/ruby/#{RUBY_VERSION}",]
 
       system "./configure", "--prefix=#{prefix}"
       ["lua", "perl", "python"].each do |binding|
