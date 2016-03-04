@@ -1,4 +1,6 @@
 require "tap"
+require "tap_migrations"
+require "formula_renames"
 
 # A specialized {Tap} class to mimic the core formula file system, which shares many
 # similarities with normal {Tap}.
@@ -64,13 +66,11 @@ class CoreFormulaRepository < Tap
 
   # @private
   def formula_renames
-    require "formula_renames"
     FORMULA_RENAMES
   end
 
   # @private
   def tap_migrations
-    require "tap_migrations"
     TAP_MIGRATIONS
   end
 
