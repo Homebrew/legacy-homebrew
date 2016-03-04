@@ -7,6 +7,7 @@ require "global"
 
 if ARGV == %w[--version] || ARGV == %w[-v]
   puts "Homebrew #{Homebrew.homebrew_version_string}"
+  puts "Homebrew/homebrew-core #{Homebrew.core_formula_repository_version_string}"
   exit 0
 end
 
