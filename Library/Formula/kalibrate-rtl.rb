@@ -1,20 +1,23 @@
-class Foo < Formula
-    head "https://github.com/steve-m/kalibrate-rtl.git"
+class KalibrateRtl < Formula
+  desc "Tool to Kalibrate RTL devices"
+  homepage "https://github.com/steve-m/kalibrate-rtl"
+  url "https://github.com/steve-m/kalibrate-rtl.git", :revision => "aae11c8a8dc79692a94ccfee39ba01e8c8c05d38"
 
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "pkg-config" => :build
 
-    depends_on "librtlsdr"
-    depends_on "fftw3"
+  depends_on "fftw"
+  depends_on "librtlsdr"
 
-    patch :DATA
+  patch :DATA
 
-    def install
-      system "autoreconf", "-fvi"
-      system "./configure"
-      system "make", "install"
-    end
+  def install
+    system "./bootstrap"
+    system "./configure", "--prefix=#{prefix}"
+    system "make"
+    system "make", "install"
+  end
 end
 
 __END__
