@@ -1,8 +1,8 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.3.tar.gz"
-  sha256 "f2e720d3147b259de2bb763f0854fbd2d12da70669bb3958f0dffffd34f95e81"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.4.tar.gz"
+  sha256 "4e1a6e8ea154d7aae67f0935e5eeab1b243451a5537b70e919fec6f823a680b6"
 
   head "https://github.com/nvbn/thefuck.git"
 
@@ -45,10 +45,26 @@ class Thefuck < Formula
     sha256 "1a089279d5de2471c47624d4463f2e5b3fc6a2cf65045c39bf714fc461a25206"
   end
 
+  resource "pip" do
+    url "https://pypi.python.org/packages/source/p/pip/pip-8.0.3.tar.gz"
+    sha256 "30f98b66f3fe1069c529a491597d34a1c224a68640c82caf2ade5f88aa1405e8"
+  end
+
+  # FIXME: Remove this patch in 3.5!
+  #
+  # Patch sent to upstream: https://github.com/nvbn/thefuck/pull/473
+  #
+  # Why this patch is needed: when switching to/from a virtualenv while using
+  # this software might turn its cache file incompatible between system's and
+  # virtualenv's Python. The database packages used when creating and reading
+  # the cache file must be the very same. If this package – e.g. gdbm – isn't
+  # available – mostly when using system's Python – an ImportError is raised.
+  patch :DATA
+
   def install
     xy = Language::Python.major_minor_version "python"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
-    %w[setuptools pathlib psutil colorama six decorator].each do |r|
+    %w[setuptools pathlib psutil colorama six decorator pip].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -79,3 +95,18 @@ class Thefuck < Formula
     assert_match /^Seems like .+fuck.+ alias isn't configured.+/, shell_output("#{bin}/fuck").chomp
   end
 end
+
+__END__
+diff --git a/thefuck/utils.py b/thefuck/utils.py
+index b1bbd42..4ae5898 100644
+--- a/thefuck/utils.py
++++ b/thefuck/utils.py
+@@ -228,7 +228,7 @@ def cache(*depends_on):
+                     value = fn(*args, **kwargs)
+                     db[key] = {'etag': etag, 'value': value}
+                     return value
+-        except shelve_open_error:
++        except (shelve_open_error, ImportError):
+             # Caused when going from Python 2 to Python 3 and vice-versa
+             warn("Removing possibly out-dated cache")
+             os.remove(cache_path)
