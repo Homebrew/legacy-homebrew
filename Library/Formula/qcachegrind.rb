@@ -6,9 +6,9 @@ class Qcachegrind < Formula
 
   bottle do
     cellar :any
-    sha256 "084e512f593f3656a053d34eef5ec79065d7e4d3a394a6b6b26b02b50aff1ddd" => :yosemite
-    sha256 "c31b8eaef2e375d28f343186710480c73faf65719ca013164b1a0983c7622112" => :mavericks
-    sha256 "37441c27aa9dafa08648a1035220e98cfd4e9493ba60c354f4ac5d61ab294201" => :mountain_lion
+    sha256 "0cea2d593204c50bc842a46bf2963447f374eb57b6bb0edd47d8db9473be7316" => :el_capitan
+    sha256 "240c97e6d9f83416ac0ea50a7ccc03c295e6fc3937e9bd9066b6bed3fd2fa81f" => :yosemite
+    sha256 "097cf0dfa43c444b17637ea69d1127d8e5c4e94545fb1107f3dbb71ea219d6f6" => :mavericks
   end
 
   depends_on "graphviz" => :optional
