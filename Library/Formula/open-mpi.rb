@@ -22,6 +22,7 @@ class OpenMpi < Formula
   deprecated_option "enable-mpi-thread-multiple" => "with-mpi-thread-multiple"
 
   option "with-mpi-thread-multiple", "Enable MPI_THREAD_MULTIPLE"
+  option "with-mpi-java", "Enable Java bindings in Open MPI"
   option :cxx11
 
   conflicts_with "mpich", :because => "both install mpi__ compiler wrappers"
@@ -29,6 +30,7 @@ class OpenMpi < Formula
 
   depends_on :fortran => :recommended
   depends_on "libevent"
+  depends_on :java if build.with? "mpi-java"
 
   def install
     ENV.cxx11 if build.cxx11?
@@ -44,6 +46,7 @@ class OpenMpi < Formula
     args << "--with-platform-optimized" if build.head?
     args << "--disable-mpi-fortran" if build.without? "fortran"
     args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
+    args << "--enable-mpi-java" if build.with? "mpi-java"
 
     system "./autogen.pl" if build.head?
     system "./configure", *args
