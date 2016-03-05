@@ -1,24 +1,14 @@
 class Libswiften < Formula
   desc "C++ library for implementing XMPP applications"
   homepage "https://swift.im/swiften"
-  revision 2
 
   stable do
-    url "https://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz"
-    sha256 "cbcdbe527dc4d112a38f3cdec5f1051d3beba0b97f8082f90debd04a5b45a41f"
+    url "https://swift.im/downloads/releases/swift-3.0/swift-3.0.tar.gz"
+    sha256 "8aa490431190294e62a9fc18b69ccc63dd0f561858d7d0b05c9c65f4d6ba5397"
 
-    # Patch to include lock from boost. Taken from
-    # http://comments.gmane.org/gmane.linux.redhat.fedora.extras.cvs/957411
+    # Patch to fix build error of dynamic library with Apple's Secure Transport API
+    # Fixed upstream: http://swift.im/git/swift/commit/?id=1d545a4a7fb877f021508094b88c1f17b30d8b4e
     patch :DATA
-
-    # boost 1.56 compatibility
-    # backported from upstream HEAD at
-    # https://swift.im/git/swift/commit/?id=381b22fc365c27b9cd585f4b78f53ebc698d9f54 and
-    # https://swift.im/git/swift/commit/?id=dc48cc3f34e3e229172202717520e77233c37ed7
-    patch do
-      url "https://gist.githubusercontent.com/tdsmith/278e6bdaa5502bc5a5f3/raw/0ca7358786751e1e6b5298f3831c407bdfb4b509/libswiften-boost-156.diff"
-      sha256 "70f0263d9cd1d8be87c2a034c5b9046f74f20c7bf38e6ac7a1d09f87acc42436"
-    end
   end
 
   bottle do
@@ -27,15 +17,10 @@ class Libswiften < Formula
     sha256 "057cf8764fa8688615b8e925519c1155b1bdb8ba3c3c8dc18a38a060e4847b33" => :mavericks
   end
 
-  head do
-    url "git://swift.im/swift"
-    depends_on "lua" => :recommended
-  end
-
   depends_on "scons" => :build
   depends_on "boost"
   depends_on "libidn"
-  depends_on "openssl"
+  depends_on "lua" => :recommended
 
   def install
     boost = Formula["boost"]
@@ -52,7 +37,7 @@ class Libswiften < Formula
       libidn_includedir=#{libidn.include}
       libidn_libdir=#{libidn.lib}
       SWIFTEN_INSTALLDIR=#{prefix}
-      openssl=#{Formula["openssl"].opt_prefix}
+      openssl=no
     ]
 
     if build.with? "lua"
@@ -74,13 +59,32 @@ class Libswiften < Formula
 end
 
 __END__
---- a/Swiften/EventLoop/EventLoop.cpp
-+++ b/Swiften/EventLoop/EventLoop.cpp
-@@ -12,6 +12,7 @@
- #include <cassert>
+diff --git a/Swiften/TLS/SConscript b/Swiften/TLS/SConscript
+index f5eb053..c1ff425 100644
+--- a/Swiften/TLS/SConscript
++++ b/Swiften/TLS/SConscript
+@@ -20,7 +20,7 @@ if myenv.get("HAVE_OPENSSL", 0) :
+ 	myenv.Append(CPPDEFINES = "HAVE_OPENSSL")
+ elif myenv.get("HAVE_SCHANNEL", 0) :
+ 	swiften_env.Append(LIBS = ["Winscard"])
+-	objects += myenv.StaticObject([
++	objects += myenv.SwiftenObject([
+ 			"CAPICertificate.cpp",
+ 			"Schannel/SchannelContext.cpp",
+ 			"Schannel/SchannelCertificate.cpp",
+@@ -29,7 +29,7 @@ elif myenv.get("HAVE_SCHANNEL", 0) :
+ 	myenv.Append(CPPDEFINES = "HAVE_SCHANNEL")
+ elif myenv.get("HAVE_SECURETRANSPORT", 0) :
+ 	#swiften_env.Append(LIBS = ["Winscard"])
+-	objects += myenv.StaticObject([
++	objects += myenv.SwiftenObject([
+ 			"SecureTransport/SecureTransportContext.mm",
+ 			"SecureTransport/SecureTransportCertificate.mm",
+ 			"SecureTransport/SecureTransportContextFactory.cpp",
+@@ -38,6 +38,4 @@ elif myenv.get("HAVE_SECURETRANSPORT", 0) :
  
- #include <Swiften/Base/Log.h>
-+#include <boost/thread/locks.hpp>
+ objects += myenv.SwiftenObject(["PlatformTLSFactories.cpp"])
  
- 
- namespace Swift {
+-		
+-
+ swiften_env.Append(SWIFTEN_OBJECTS = [objects])
