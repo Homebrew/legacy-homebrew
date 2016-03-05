@@ -83,7 +83,7 @@ class Tap
   # e.g. `https://github.com/user/homebrew-repo`
   def remote
     @remote ||= if installed?
-      if git?
+      if git? && Utils.git_available?
         path.cd do
           Utils.popen_read("git", "config", "--get", "remote.origin.url").chomp
         end
@@ -96,6 +96,34 @@ class Tap
   # True if this {Tap} is a git repository.
   def git?
     (path/".git").exist?
+  end
+
+  # git HEAD for this {Tap}.
+  def git_head
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "rev-parse", "--verify", "-q", "HEAD").chuzzle }
+  end
+
+  # git HEAD in short format for this {Tap}.
+  def git_short_head
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "rev-parse", "--short=4", "--verify", "-q", "HEAD").chuzzle }
+  end
+
+  # time since git last commit for this {Tap}.
+  def git_last_commit
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "show", "-s", "--format=%cr", "HEAD").chuzzle }
+  end
+
+  # git last commit date for this {Tap}.
+  def git_last_commit_date
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "show", "-s", "--format=%cd", "--date=short", "HEAD").chuzzle }
   end
 
   # The issues URL of this {Tap}.
