@@ -157,6 +157,7 @@ class Influxdb < Formula
 
     bin.install "bin/influxd"
     bin.install "bin/influx"
+    bin.install "bin/influx_tsm"
     etc.install influxdb_path/"etc/config.sample.toml" => "influxdb.conf"
 
     (var/"influxdb/data").mkpath
