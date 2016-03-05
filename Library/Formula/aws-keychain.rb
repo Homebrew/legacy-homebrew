@@ -12,6 +12,6 @@ class AwsKeychain < Formula
     # aws-keychain is a simple shell script wrapper around built-in
     # keychain utilities. It is not possible to create a new
     # keychain without triggering a keychain prompt.
-    system "aws-keychain --help || true"
+    shell_output("aws-keychain --help", 1)
   end
 end
