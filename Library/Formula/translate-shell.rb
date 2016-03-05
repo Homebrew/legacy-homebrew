@@ -5,6 +5,13 @@ class TranslateShell < Formula
   sha256 "7b5a2404ead919570cfa4d741c521ed7e124bbf27d6f5de1a6a598e7e713c2a6"
   head "https://github.com/soimort/translate-shell.git", :branch => "develop"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "d8623a978baf2ac631125f1eacb5f5d28492a8bab08bede0c454b4d27e52c847" => :el_capitan
+    sha256 "caec9cbcdc3590f1af1e668b3da4e26ff4782a9698f4e03f42a9fe42d0de0f1d" => :yosemite
+    sha256 "7057ee2ec32e7aae09b55b652f3c6f7b89375c89debcf0d338ee319c133faa96" => :mavericks
+  end
+
   depends_on "fribidi"
   depends_on "gawk"
   depends_on "rlwrap"
