@@ -13,7 +13,7 @@ class CucumberCpp < Formula
     args << "-DCUKE_DISABLE_CPPSPEC=on"
     args << "-DCUKE_DISABLE_FUNCTIONAL=on"
     args << "-DCUKE_DISABLE_BOOST_TEST=on"
-    system "cmake", ".", *std_cmake_args
+    system "cmake", ".", *args
     system "cmake", "--build", "."
     include.install "include/cucumber-cpp"
     lib.install Dir["src/*.a"]
