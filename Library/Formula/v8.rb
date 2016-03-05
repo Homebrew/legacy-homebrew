@@ -42,6 +42,11 @@ class V8 < Formula
         :revision => "14288a03a92856fe1fc296d39e6a25c2d83cd6cf"
   end
 
+  resource "common" do
+    url "https://chromium.googlesource.com/chromium/src/base/trace_event/common.git",
+        :revision => "e40c41030f44cbd5b6f54081436620f43c3bb08a"
+  end
+
   resource "swarming_client" do
     url "https://chromium.googlesource.com/external/swarming.client.git",
         :revision => "df6e95e7669883c8fe9ef956c69a544154701a49"
@@ -86,6 +91,7 @@ class V8 < Formula
     (buildpath/"build/gyp").install resource("gyp")
     (buildpath/"third_party/icu").install resource("icu")
     (buildpath/"buildtools").install resource("buildtools")
+    (buildpath/"base/trace_event/common").install resource("common")
     (buildpath/"tools/swarming_client").install resource("swarming_client")
     (buildpath/"testing/gtest").install resource("gtest")
     (buildpath/"testing/gmock").install resource("gmock")
