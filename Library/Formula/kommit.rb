@@ -1,8 +1,8 @@
 class Kommit < Formula
   desc "More detailed commit messages without committing!"
   homepage "https://github.com/bilgi-webteam/kommit"
-  url "https://github.com/bilgi-webteam/kommit/archive/v1.0.0.tar.gz"
-  sha256 "d079ba1dcfdf31a35e3d42dbd6adf2450d305e998adb679fb9dc8ea68fa23c22"
+  url "https://github.com/bilgi-webteam/kommit/archive/v1.1.0.tar.gz"
+  sha256 "c51e87c9719574feb9841fdcbd6d1a43b73a45afeca25e1312d2699fdf730161"
 
   bottle do
     cellar :any_skip_relocation
