@@ -6,9 +6,9 @@ class Kommit < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "aa29f910aeabcacfd983a71079429d76a2cf9a7c6fb05e1a016b0e98cdb28ee1" => :el_capitan
-    sha256 "de33756a9282dfb3730f98734c4fc3866241e96203be19519caed9a75e2efcff" => :yosemite
-    sha256 "8d6df0933386b06b6495d9143167bcc5db02460915602c858ccaca7902f1e99c" => :mavericks
+    sha256 "2797509de1497eeae3a3cac0381822019e471e878f5082b1a79fa40bc2f6f768" => :el_capitan
+    sha256 "b15cf7fe56aceade3a06d52e467cdb08640f4d907d1a29dcef0e374815dee203" => :yosemite
+    sha256 "8f7d60cb1b837a3a1e1e7ae86d339c1a950ba3577e3053819ac9922144a6d0d3" => :mavericks
   end
 
   def install
