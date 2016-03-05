@@ -13,6 +13,6 @@ class Connect < Formula
   end
 
   test do
-    system "bin/connect"
+    system bin/"connect"
   end
 end
