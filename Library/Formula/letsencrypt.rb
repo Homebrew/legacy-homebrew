@@ -1,8 +1,8 @@
 class Letsencrypt < Formula
   desc "Tool to automatically receive and install X.509 certificates"
   homepage "https://letsencrypt.org/"
-  url "https://github.com/letsencrypt/letsencrypt/archive/v0.4.1.tar.gz"
-  sha256 "750c4a2966ec21009e4f7d510eceb3f97f941f6c19eda8b58b7030ef8518cef9"
+  url "https://github.com/letsencrypt/letsencrypt/archive/v0.4.2.tar.gz"
+  sha256 "0f55c0f292829a9c6c1da7a57860290285cfa5da8615a87b8c268a946ab656b2"
 
   bottle do
     cellar :any
