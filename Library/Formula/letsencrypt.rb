@@ -6,9 +6,9 @@ class Letsencrypt < Formula
 
   bottle do
     cellar :any
-    sha256 "16e5d6093fcd2564d5f99f73a3ea3ed8771880e35721c9184d7acdbc13de54f0" => :el_capitan
-    sha256 "7369949a542bbdebb4b5006bb51fbfabde2f8f441f106e22382e9be48f6f2cde" => :yosemite
-    sha256 "ba35b80e6201c8f15249bdeb3c92e18292a55f6090ffff885614cb77f0eaf8c9" => :mavericks
+    sha256 "8631713f5fc5e75175f9e29023f78df552424ce8e96eec4f298a71e83d60bf0c" => :el_capitan
+    sha256 "d2d7ca7a003a04d923bcb83742cfefaaa50e534517a07e87ead9df8089b6af1a" => :yosemite
+    sha256 "8f7e29608bc8e7ad04a8f3411851369b9ad746bc49074644be2404ba2aa8fd01" => :mavericks
   end
 
   depends_on "augeas"
