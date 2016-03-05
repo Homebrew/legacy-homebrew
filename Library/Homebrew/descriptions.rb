@@ -33,25 +33,14 @@ class Descriptions
     self.save_cache
   end
 
-  # Return true if the cache exists, and neither Homebrew nor any of the Taps
+  # Return true if the cache exists, and none of the Taps
   # repos were updated more recently than it was.
   def self.cache_fresh?
     return false unless CACHE_FILE.exist?
-    cache_mtime = File.mtime(CACHE_FILE)
-    ref_master = ".git/refs/heads/master"
-
-    master = HOMEBREW_REPOSITORY/ref_master
-
-    # If ref_master doesn't exist, it means brew update is never run.
-    # Since cache is found, we can assume it's fresh.
-    if master.exist?
-      core_mtime = File.mtime(master)
-      return false if core_mtime > cache_mtime
-    end
 
     Tap.each do |tap|
       next unless tap.git?
-      repo_mtime = File.mtime(tap.path/ref_master)
+      repo_mtime = File.mtime(tap.path/".git/refs/heads/master")
       return false if repo_mtime > cache_mtime
     end
 

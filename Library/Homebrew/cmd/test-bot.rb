@@ -767,11 +767,7 @@ module Homebrew
     safe_system "brew", "update"
 
     if pr
-      pull_pr = if tap.core_formula_repository?
-        pr
-      else
-        "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
-      end
+      pull_pr = "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
       safe_system "brew", "pull", "--clean", pull_pr
     end
 
@@ -779,7 +775,7 @@ module Homebrew
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
     system "brew", "bottle", *bottle_args
 
-    remote_repo = tap.core_formula_repository? ? "homebrew" : "homebrew-#{tap.repo}"
+    remote_repo = "homebrew-#{tap.repo}"
     remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"

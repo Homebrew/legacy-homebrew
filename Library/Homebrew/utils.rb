@@ -229,6 +229,18 @@ module Homebrew
     end
   end
 
+  def self.core_formula_repository_version_string
+    require "core_formula_repository"
+    tap = CoreFormulaRepository.instance
+    return "N/A" unless tap.installed?
+    if pretty_revision = tap.git_short_head
+      last_commit = tap.git_last_commit_date
+      "(git revision #{pretty_revision}; last commit #{last_commit})"
+    else
+      "(no git repository)"
+    end
+  end
+
   def self.install_gem_setup_path!(gem, version = nil, executable = gem)
     require "rubygems"
 

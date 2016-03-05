@@ -202,7 +202,7 @@ class FormulaTests < Homebrew::TestCase
 
   def test_path
     name = "foo-bar"
-    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formulary.core_path(name)
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Taps/homebrew/homebrew-core/Formula/#{name}.rb"), Formulary.core_path(name)
   end
 
   def test_class_specs_are_always_initialized

@@ -345,7 +345,7 @@ class Formulary
       if core_path(ref).file?
         opoo <<-EOS.undent
           #{ref} is provided by core, but is now shadowed by #{selected_formula.full_name}.
-          To refer to the core formula, use Homebrew/homebrew/#{ref} instead.
+          To refer to the core formula, use Homebrew/core/#{ref} instead.
         EOS
       end
       selected_formula

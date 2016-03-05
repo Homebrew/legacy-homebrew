@@ -112,7 +112,7 @@ class FormularyTapFactoryTest < Homebrew::TestCase
   end
 
   def teardown
-    @tap.path.parent.parent.rmtree
+    @tap.path.rmtree
   end
 
   def test_factory_tap_formula
@@ -138,6 +138,8 @@ class FormularyTapFactoryTest < Homebrew::TestCase
     another_tap = Tap.new "homebrew", "bar"
     (another_tap.path/"#{@name}.rb").write @code
     assert_raises(TapFormulaAmbiguityError) { Formulary.factory(@name) }
+  ensure
+    another_tap.path.rmtree
   end
 end
 
@@ -158,7 +160,7 @@ class FormularyTapPriorityTest < Homebrew::TestCase
 
   def teardown
     @core_path.unlink
-    @tap.path.parent.parent.rmtree
+    @tap.path.rmtree
   end
 
   def test_find_with_priority_core_formula

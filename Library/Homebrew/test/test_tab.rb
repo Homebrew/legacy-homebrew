@@ -17,7 +17,7 @@ class TabTests < Homebrew::TestCase
                    "compiler"             => "clang",
                    "stdlib"               => "libcxx",
                    "source"               => {
-                     "tap" => "Homebrew/homebrew",
+                     "tap" => "homebrew/core",
                      "path" => nil,
                      "spec" => "stable"
                    })
@@ -60,7 +60,7 @@ class TabTests < Homebrew::TestCase
 
   def test_other_attributes
     assert_equal TEST_SHA1, @tab.HEAD
-    assert_equal "Homebrew/homebrew", @tab.tap.name
+    assert_equal "homebrew/core", @tab.tap.name
     assert_nil @tab.time
     refute_predicate @tab, :built_as_bottle
     assert_predicate @tab, :poured_from_bottle
@@ -74,7 +74,7 @@ class TabTests < Homebrew::TestCase
     assert_equal @unused.sort, tab.unused_options.sort
     refute_predicate tab, :built_as_bottle
     assert_predicate tab, :poured_from_bottle
-    assert_equal "Homebrew/homebrew", tab.tap.name
+    assert_equal "homebrew/core", tab.tap.name
     assert_equal :stable, tab.spec
     refute_nil tab.time
     assert_equal TEST_SHA1, tab.HEAD
@@ -90,7 +90,7 @@ class TabTests < Homebrew::TestCase
     assert_equal @unused.sort, tab.unused_options.sort
     refute_predicate tab, :built_as_bottle
     assert_predicate tab, :poured_from_bottle
-    assert_equal "Homebrew/homebrew", tab.tap.name
+    assert_equal "homebrew/core", tab.tap.name
     assert_equal :stable, tab.spec
     refute_nil tab.time
     assert_equal TEST_SHA1, tab.HEAD

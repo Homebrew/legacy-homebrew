@@ -1074,13 +1074,13 @@ class Formula
   # an array of all tap {Formula} names
   # @private
   def self.tap_names
-    @tap_names ||= Tap.flat_map(&:formula_names).sort
+    @tap_names ||= Tap.reject(&:core_formula_repository?).flat_map(&:formula_names).sort
   end
 
   # an array of all tap {Formula} files
   # @private
   def self.tap_files
-    @tap_files ||= Tap.flat_map(&:formula_files)
+    @tap_files ||= Tap.reject(&:core_formula_repository?).flat_map(&:formula_files)
   end
 
   # an array of all {Formula} names
@@ -1153,7 +1153,7 @@ class Formula
   # an array of all tap aliases
   # @private
   def self.tap_aliases
-    @tap_aliases ||= Tap.flat_map(&:aliases).sort
+    @tap_aliases ||= Tap.reject(&:core_formula_repository?).flat_map(&:aliases).sort
   end
 
   # an array of all aliases

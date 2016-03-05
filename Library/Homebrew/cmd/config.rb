@@ -1,5 +1,6 @@
 require "hardware"
 require "software_spec"
+require "core_formula_repository"
 require "rexml/document"
 
 module Homebrew
@@ -55,6 +56,18 @@ module Homebrew
 
   def origin
     Homebrew.git_origin || "(none)"
+  end
+
+  def core_formula_repository_head
+    CoreFormulaRepository.instance.git_head || "(none)"
+  end
+
+  def core_formula_repository_last_commit
+    CoreFormulaRepository.instance.git_last_commit || "never"
+  end
+
+  def core_formula_repository_origin
+    CoreFormulaRepository.instance.remote || "(none)"
   end
 
   def describe_path(path)
@@ -144,6 +157,13 @@ module Homebrew
     f.puts "ORIGIN: #{origin}"
     f.puts "HEAD: #{head}"
     f.puts "Last commit: #{last_commit}"
+    if CoreFormulaRepository.instance.installed?
+      f.puts "Homebrew/homebrew-core ORIGIN: #{core_formula_repository_origin}"
+      f.puts "Homebrew/homebrew-core HEAD: #{core_formula_repository_head}"
+      f.puts "Homebrew/homebrew-core Last commit: #{core_formula_repository_last_commit}"
+    else
+      f.puts "Homebrew/homebrew-core: N/A"
+    end
     f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
     f.puts "HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}"
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"

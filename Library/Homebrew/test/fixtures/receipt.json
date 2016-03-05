@@ -14,8 +14,8 @@
   "stdlib": "libcxx",
   "compiler": "clang",
   "source": {
-      "path": "/usr/local/Library/Formula/foo.rb",
-      "tap": "Homebrew/homebrew",
+      "path": "/usr/local/Library/Taps/hombrew/homebrew-core/Formula/foo.rb",
+      "tap": "homebrew/core",
       "spec": "stable"
   }
 }

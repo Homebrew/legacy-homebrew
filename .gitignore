@@ -28,11 +28,21 @@
 # Ignore `share` contents (again).
 /share
 /share/doc
+/share/zsh
+/share/zsh/site-functions
 
 # Unignore our documentation.
 !/.github
 !/share/doc/homebrew
 !/share/man/man1/brew.1
+
+# Ignore `etc` contents (again)
+/etc
+/etc/bash_completion.d
+
+# Unignore our shell completion
+!/etc/bash_completion.d/brew
+!/share/zsh/site-functions/_brew
 
 # Unignore our root-level metadata files.
 !/.gitignore
