@@ -767,11 +767,7 @@ module Homebrew
     safe_system "brew", "update"
 
     if pr
-      pull_pr = if tap.core_tap?
-        pr
-      else
-        "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
-      end
+      pull_pr = "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
       safe_system "brew", "pull", "--clean", pull_pr
     end
 
