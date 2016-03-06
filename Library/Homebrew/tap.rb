@@ -30,7 +30,7 @@ class Tap
     user = "Homebrew" if user == "homebrew"
     repo = repo.strip_prefix "homebrew-"
 
-    if user == "Homebrew" && repo == "homebrew"
+    if user == "Homebrew" && (repo == "homebrew" || repo == "core")
       return CoreTap.instance
     end
 
