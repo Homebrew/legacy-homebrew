@@ -17,4 +17,8 @@ class Orc < Formula
                           "--disable-gtk-doc"
     system "make", "install"
   end
+
+  test do
+    system "#{bin}/orcc", "--version"
+  end
 end
