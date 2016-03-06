@@ -8,9 +8,9 @@ class Gtkx < Formula
   end
 
   bottle do
-    sha256 "6fe4412e294c0f935a1d48e01f684ea41c5407ee59272876ac51860e579bfd0e" => :el_capitan
-    sha256 "69d6672184cee248b9a9e336863ae462f2c3795fffb111db4f5ea3f85571691c" => :yosemite
-    sha256 "04a5ac94c8ba358085f7301f287af51a09388d28906e8cc75e1501535c4e83e5" => :mavericks
+    sha256 "2fce410cbdf902f513030a18bc5002ec844bde1b115355e2a168ca2101cd6625" => :el_capitan
+    sha256 "3fe1d4c9e0de77d30e45c88d40de344d829c404abb2af06ef4ca6233f87f25e5" => :yosemite
+    sha256 "995560643ea4d66d24f8147361adf910be6504be8eb58a8c2411a06c17c19944" => :mavericks
   end
 
   head do
