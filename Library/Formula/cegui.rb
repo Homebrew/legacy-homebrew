@@ -15,6 +15,8 @@ class Cegui < Formula
   depends_on "pcre"
 
   def install
+    inreplace "CMakeLists.txt", "CMAKE_OSX_ARCHITECTURES", "IGNORED"
+
     # TODO: Enable fribidi after build problems are fixed
     args = std_cmake_args
     args << "-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}"
@@ -44,7 +46,7 @@ class Cegui < Formula
       cc_args << "-I/usr/local/include"
       cc_args << "-F#{MacOS.sdk_path}/System/Library/Frameworks"
       cc_args << "-DNDEBUG"
-      cc_args << "-arch x86_64"
+      # cc_args << "-arch x86_64"
       cc_args << "-isysroot#{MacOS.sdk_path}"
       cc_args << "-fPIC"
       cc_args << "-c"
