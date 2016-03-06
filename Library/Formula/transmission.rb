@@ -1,8 +1,8 @@
 class Transmission < Formula
   desc "Lightweight BitTorrent client"
   homepage "http://www.transmissionbt.com/"
-  url "https://transmission.cachefly.net/transmission-2.90.tar.xz"
-  sha256 "69ff8caf81684155926f437f46bf7df1b1fb304f52c7809f546257e8923f2fd2"
+  url "https://download.transmissionbt.com/files/transmission-2.92.tar.xz"
+  sha256 "3a8d045c306ad9acb7bf81126939b9594553a388482efa0ec1bfb67b22acd35f"
 
   bottle do
     sha256 "851b3c1e6428ffb1faf9a27254583fd74d0c562a3a4f28526fd0c87acc2cbb04" => :el_capitan
