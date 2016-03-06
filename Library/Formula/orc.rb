@@ -6,9 +6,9 @@ class Orc < Formula
 
   bottle do
     cellar :any
-    sha256 "02b833c92904551374f31c2c05146f1078423d56ddeb3b546035d80fa76f2a11" => :el_capitan
-    sha256 "928226e33f369a084c7e60ca0f60bf218d21ba66bf03f1edc8ebff8e3a1add71" => :yosemite
-    sha256 "655f2e92674e8364a95450dbedb56bbe591def168638fc0c7ba4478929f803a7" => :mavericks
+    sha256 "74f9286ad20ccad5fcb2f855bd2d855b6709fa5a2f804928c710d3e3229d8087" => :el_capitan
+    sha256 "fa8e5bd4d5899fd420a772025005ec8b25e3f446c01ec61a357d4edc64734aba" => :yosemite
+    sha256 "6f998c310042780d4a8deccd9e3aae25362b7904932d45e4944d761f77bf1fe1" => :mavericks
   end
 
   def install
