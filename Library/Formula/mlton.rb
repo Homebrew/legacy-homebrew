@@ -5,6 +5,13 @@ class Mlton < Formula
   version "20130715"
   sha256 "215857ad11d44f8d94c27f75e74017aa44b2c9703304bcec9e38c20433143d6c"
 
+  bottle do
+    cellar :any
+    sha256 "97656e7b1533886252d034c4a6ac0391d386369598f36a72a0033df8bc54a339" => :el_capitan
+    sha256 "96fb444b34e8a605445567482a480fb59be749f5f57f46bc704f44b4763f26ae" => :yosemite
+    sha256 "fb9c2fbc7e1e0e975ef79a061d17d56b8300da5a60c4b347e6726966c30f8fc3" => :mavericks
+  end
+
   depends_on "gmp"
 
   # The corresponding upstream binary release used to bootstrap.
