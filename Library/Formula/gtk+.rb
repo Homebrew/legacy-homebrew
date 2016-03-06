@@ -3,8 +3,8 @@ class Gtkx < Formula
   homepage "http://gtk.org/"
 
   stable do
-    url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.29.tar.xz"
-    sha256 "0741c59600d3d810a223866453dc2bbb18ce4723828681ba24aa6519c37631b8"
+    url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.30.tar.xz"
+    sha256 "0d15cec3b6d55c60eac205b1f3ba81a1ed4eadd9d0f8e7c508bc7065d0c4ca50"
   end
 
   bottle do
