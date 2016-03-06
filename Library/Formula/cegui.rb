@@ -29,6 +29,13 @@ class Cegui < Formula
 
       system "cmake", "..", *args
 
+      (buildpath/"build/test.cpp").write <<-EOS.undent
+        #include <OpenGL/OpenGL.h>
+        int main() {}
+      EOS
+
+      system "cat", "test.cpp"
+
       cc_args = []
       cc_args << "-E"
       cc_args << "-DCEGUI_OPENGLRENDERER_EXPORTS"
@@ -38,10 +45,10 @@ class Cegui < Formula
       cc_args << "-F#{MacOS.sdk_path}/System/Library/Frameworks"
       cc_args << "-DNDEBUG"
       cc_args << "-arch x86_64"
-      cc_args << "-isysroot #{MacOS.sdk_path}"
+      cc_args << "-isysroot#{MacOS.sdk_path}"
       cc_args << "-fPIC"
       cc_args << "-c"
-      cc_args << "../cegui/src/RendererModules/OpenGL/ApplePBTextureTarget.cpp"
+      cc_args << "test.cpp"
       system ENV.cc, *cc_args
 
       system "make"
