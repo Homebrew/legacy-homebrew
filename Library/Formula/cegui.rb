@@ -24,10 +24,26 @@ class Cegui < Formula
     args << "-DCEGUI_BUILD_PYTHON_MODULES=0"
 
     mkdir "build" do
-      system "cat", "#{MacOS.sdk_path}/System/Library/Frameworks/OpenGL.framework/Headers/CGLTypes.h"
       system "cat", "#{MacOS.sdk_path}/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h"
+      system "cat", "#{MacOS.sdk_path}/System/Library/Frameworks/OpenGL.framework/Headers/CGLTypes.h"
+
       system "cmake", "..", *args
+
       system "make"
+
+      cc_args = []
+      cc_args << "-E"
+      cc_args << "-DCEGUI_OPENGLRENDERER_EXPORTS"
+      cc_args << "-Icegui/include"
+      cc_args << "-I../cegui/include"
+      cc_args << "-I/usr/local/include"
+      cc_args << "-F#{MacOS.sdk_path}/System/Library/Frameworks"
+      cc_args << "-DNDEBUG"
+      cc_args << "-arch x86_64"
+      cc_args << "-isysroot#{MacOS.sdk_path}"
+      cc_args << "-fPIC"
+      system ENV.cc, *cc_args, "-c", "../cegui/src/RendererModules/OpenGL/ApplePBTextureTarget.cpp"
+
       system "make", "install"
     end
   end
