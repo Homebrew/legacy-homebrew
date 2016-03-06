@@ -49,16 +49,18 @@ class CucumberCpp < Formula
       "-lboost_regex", "-lboost_system"
     begin
       pid = fork { exec "./test" }
-      assert_match %r{^Feature: Test
+      expected = <<-EOS.undent
+        Feature: Test
 
-  Scenario: Just for test   # features\/test.feature:2
-    Given A given statement # test.cpp:2
-    When A when statement   # test.cpp:4
-    Then A then statement   # test.cpp:6
+          Scenario: Just for test   # features\/test.feature:2
+            Given A given statement # test.cpp:2
+            When A when statement   # test.cpp:4
+            Then A then statement   # test.cpp:6
 
-1 scenario \(1 passed\)
-3 steps \(3 passed\)},
-        shell_output(testpath/"bin/cucumber")
+        1 scenario \(1 passed\)
+        3 steps \(3 passed\)
+      EOS
+      assert_match expected, shell_output(testpath/"bin/cucumber")
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)
