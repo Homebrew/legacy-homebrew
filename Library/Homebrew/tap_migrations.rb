@@ -135,7 +135,6 @@ TAP_MIGRATIONS = {
   "metalua" => "homebrew/boneyard",
   "mit-scheme" => "homebrew/x11",
   "mlkit" => "homebrew/boneyard",
-  "mlton" => "homebrew/boneyard",
   "morse" => "homebrew/x11",
   "mp3fs" => "homebrew/fuse",
   "mpio" => "homebrew/boneyard",
