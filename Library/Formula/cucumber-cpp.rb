@@ -22,7 +22,6 @@ class CucumberCpp < Formula
   test do
     ENV["GEM_HOME"] = testpath
     ENV["BUNDLE_PATH"] = testpath
-    ENV.prepend_path "PATH", testpath/"bin"
     system "gem", "install", "cucumber"
 
     (testpath/"features/test.feature").write <<-EOS.undent
