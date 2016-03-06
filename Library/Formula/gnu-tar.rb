@@ -39,7 +39,10 @@ class GnuTar < Formula
     system "make", "install"
 
     # Symlink the executable into libexec/gnubin as "tar"
-    (libexec/"gnubin").install_symlink bin/"gtar" => "tar" if build.without? "default-names"
+    if build.without? "default-names"
+      (libexec/"gnubin").install_symlink bin/"gtar" =>"tar"
+      (libexec/"gnuman/man1").install_symlink man1/"gtar.1" => "tar.1"
+    end
   end
 
   def caveats
@@ -50,6 +53,12 @@ class GnuTar < Formula
       to your PATH from your bashrc like:
 
           PATH="#{opt_libexec}/gnubin:$PATH"
+
+      Additionally, you can access their man pages with normal names if you add
+      the "gnuman" directory to your MANPATH from your bashrc as well:
+
+          MANPATH="#{opt_libexec}/gnuman:$MANPATH"
+
       EOS
     end
   end
