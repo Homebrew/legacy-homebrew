@@ -4,6 +4,13 @@ class CucumberCpp < Formula
   url "https://github.com/cucumber/cucumber-cpp/archive/v0.3.tar.gz"
   sha256 "1c0f9949627e7528017bf00cbe49693ba9cbc3e11087f70aa33b21df93f341d6"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "3edd3a357ca5f0461e82129ed4a45a79c4561480da164a16b41608090d6eec25" => :el_capitan
+    sha256 "1cb739294fe06cfee8cc3721cee292c9ec066a00a08295bbeb2657b210195a37" => :yosemite
+    sha256 "2fbe84f026a5211bf9573dfe1fed4c334c966b730de14339aca7e5895c4d59eb" => :mavericks
+  end
+
   depends_on "cmake" => :build
   depends_on "boost"
 
