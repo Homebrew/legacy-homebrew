@@ -1,6 +1,7 @@
 require "hardware"
 require "software_spec"
 require "rexml/document"
+require "tap"
 
 module Homebrew
   def config
@@ -55,6 +56,18 @@ module Homebrew
 
   def origin
     Homebrew.git_origin || "(none)"
+  end
+
+  def core_tap_head
+    CoreTap.instance.git_head || "(none)"
+  end
+
+  def core_tap_last_commit
+    CoreTap.instance.git_last_commit || "never"
+  end
+
+  def core_tap_origin
+    CoreTap.instance.remote || "(none)"
   end
 
   def describe_path(path)
@@ -144,6 +157,13 @@ module Homebrew
     f.puts "ORIGIN: #{origin}"
     f.puts "HEAD: #{head}"
     f.puts "Last commit: #{last_commit}"
+    if CoreTap.instance.installed?
+      f.puts "Core tap ORIGIN: #{core_tap_origin}"
+      f.puts "Core tap HEAD: #{core_tap_head}"
+      f.puts "Core tap last commit: #{core_tap_last_commit}"
+    else
+      f.puts "Core tap: N/A"
+    end
     f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
     f.puts "HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}"
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
