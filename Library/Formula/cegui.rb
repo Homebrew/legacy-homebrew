@@ -24,6 +24,8 @@ class Cegui < Formula
     args << "-DCEGUI_BUILD_PYTHON_MODULES=0"
 
     mkdir "build" do
+      system "cat", "#{MacOS.sdk_path}/System/Library/Frameworks/OpenGL.framework/Headers/CGLTypes.h"
+      system "cat", "#{MacOS.sdk_path}/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h"
       system "cmake", "..", *args
       system "make"
       system "make", "install"
