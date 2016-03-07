@@ -52,6 +52,7 @@ class Kafka < Formula
 
     prefix.install "bin"
     bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.7+"))
+    Dir["#{bin}/*.sh"].each {|f| mv f, f.to_s.gsub(/.sh$/, "") }
 
     mv "config", "kafka"
     etc.install "kafka"
@@ -61,11 +62,7 @@ class Kafka < Formula
     (var+"log/kafka").mkpath
   end
 
-  def caveats; <<-EOS.undent
-    To start Kafka, ensure that ZooKeeper is running and then execute:
-      kafka-server-start.sh -daemon #{etc}/kafka/server.properties
-    EOS
-  end
+  plist_options :manual => "zookeeper-server-start #{HOMEBREW_PREFIX}/etc/kafka/zookeeper.properties; kafka-server-start #{HOMEBREW_PREFIX}/etc/kafka/server.properties"
 
   test do
     # This is far from an ideal test, but this is the best we can do, because for whatever reason
@@ -113,7 +110,7 @@ class Kafka < Formula
         <string>#{HOMEBREW_PREFIX}</string>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_bin}/kafka-server-start.sh</string>
+            <string>#{opt_bin}/kafka-server-start</string>
             <string>#{etc}/kafka/server.properties</string>
         </array>
         <key>RunAtLoad</key>
