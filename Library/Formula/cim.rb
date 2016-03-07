@@ -16,11 +16,13 @@ class Cim < Formula
   end
 
   test do
-    File.open("test.sim", "w") do |f|
-      f.puts %{Begin\n  outtext("Hello, world.");\nEnd;}
-    end
+    (testpath/"test.sim").write <<-EOS.undent
+      Begin
+        outtext("Hello, world.");
+      End;
+    EOS
     system "#{bin}/cim", "--output=hello", "test.sim"
-    `./hello`.chomp == "Hello, world."
+    assert_match "Hello, world.", shell_output("./hello")
   end
 end
 __END__
