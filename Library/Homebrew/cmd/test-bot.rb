@@ -31,7 +31,6 @@ require "rexml/document"
 require "rexml/xmldecl"
 require "rexml/cdata"
 require "tap"
-require "core_formula_repository"
 
 module Homebrew
   BYTES_IN_1_MEGABYTE = 1024*1024
@@ -62,7 +61,7 @@ module Homebrew
       end
     end
 
-    CoreFormulaRepository.instance
+    CoreTap.instance
   end
 
   class Step
@@ -209,7 +208,7 @@ module Homebrew
       @added_formulae = []
       @modified_formula = []
       @steps = []
-      @tap = options.fetch(:tap,  CoreFormulaRepository.instance)
+      @tap = options.fetch(:tap, CoreTap.instance)
       @repository = @tap.path
       @skip_homebrew = options.fetch(:skip_homebrew, false)
 
@@ -609,7 +608,7 @@ module Homebrew
       @category = __method__
       return if @skip_homebrew
       test "brew", "tests"
-      if @tap.core_formula_repository?
+      if @tap.core_tap?
         tests_args = ["--no-compat"]
         readall_args = ["--aliases"]
         if RUBY_VERSION.split(".").first.to_i >= 2
@@ -767,7 +766,7 @@ module Homebrew
     safe_system "brew", "update"
 
     if pr
-      pull_pr = if tap.core_formula_repository?
+      pull_pr = if tap.core_tap?
         pr
       else
         "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
@@ -779,7 +778,7 @@ module Homebrew
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
     system "brew", "bottle", *bottle_args
 
-    remote_repo = tap.core_formula_repository? ? "homebrew" : "homebrew-#{tap.repo}"
+    remote_repo = tap.core_tap? ? "homebrew" : "homebrew-#{tap.repo}"
     remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"

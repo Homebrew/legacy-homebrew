@@ -23,7 +23,6 @@ require "utils"
 require "utils/json"
 require "formula"
 require "tap"
-require "core_formula_repository"
 
 module Homebrew
   def pull
@@ -41,11 +40,11 @@ module Homebrew
       if arg.to_i > 0
         issue = arg
         url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
-        tap = CoreFormulaRepository.instance
+        tap = CoreTap.instance
       elsif (testing_match = arg.match %r{brew.sh/job/Homebrew.*Testing/(\d+)/})
         _, testing_job = *testing_match
         url = "https://github.com/Homebrew/homebrew/compare/master...BrewTestBot:testing-#{testing_job}"
-        tap = CoreFormulaRepository.instance
+        tap = CoreTap.instance
         odie "Testing URLs require `--bottle`!" unless ARGV.include?("--bottle")
       elsif (api_match = arg.match HOMEBREW_PULL_API_REGEX)
         _, user, repo, issue = *api_match
@@ -167,7 +166,7 @@ module Homebrew
           url
         else
           bottle_branch = "pull-bottle-#{issue}"
-          if tap.core_formula_repository?
+          if tap.core_tap?
             "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
           else
             "https://github.com/BrewTestBot/homebrew-#{tap.repo}/compare/homebrew:master...pr-#{issue}"

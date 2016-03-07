@@ -24,7 +24,7 @@ class ReportTests < Homebrew::TestCase
   end
 
   def setup
-    @tap = CoreFormulaRepository.new
+    @tap = CoreTap.new
     @reporter = ReporterMock.new(@tap, "12345678", "abcdef12")
     @hub = ReporterHub.new
   end
