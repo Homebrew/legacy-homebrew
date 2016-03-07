@@ -5,6 +5,10 @@ class Cim < Formula
   mirror "https://ftp.gnu.org/gnu/cim/cim-5.1.tar.gz"
   sha256 "b90717b66ec400503bdd69e537e8b7f3e8a9d106c3ba9a08a04ae57369a069a9"
 
+  # patch submitted upstream, no response yet.
+  # corrects some include paths. corrected files compile under gcc but not
+  # clang.  remainder of patch declares non-value-returning functions as void
+  # to permit clang compilation.
   patch :DATA
 
   def install
