@@ -30,6 +30,10 @@ class Squid < Formula
       --enable-pf-transparent
       --with-included-ltdl
       --with-openssl
+      --enable-delay-pools
+      --enable-disk-io=yes
+      --enable-removal-policies=yes
+      --enable-storeio=yes
     ]
 
     system "./configure", *args
