@@ -103,8 +103,6 @@ class Supervisor < Formula
       serverurl=unix://supervisor.sock
     EOS
 
-    ENV["PYTHONDONTWRITEBYTECODE"] = true # otherwise tries to write .pyc files outside of sandbox
-
     begin
       pid = fork do
         exec "#{bin}/supervisord", "--configuration", "supervisord.ini",
