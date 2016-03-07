@@ -82,8 +82,8 @@ class Supervisor < Formula
   def post_install
     # If the directories that supervisord expects to place its runtime files
     # into don't exist, it dies instead of creating them itself.
-    mkdir var/"run" unless (var/"run").exist?
-    mkdir var/"log" unless (var/"log").exist?
+    (var/"run").mkpath
+    (var/"log").mkpath
   end
 
   test do
