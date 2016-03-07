@@ -4,8 +4,6 @@ class Supervisor < Formula
   url "https://github.com/Supervisor/supervisor/archive/3.2.1.tar.gz"
   sha256 "d9c0b17ec42ac6477e7ef0ad2e1f6f1597f855a4d9606c024ac40eb034d6e9ed"
 
-  # Although Supervisor itself doesn't require Python 2.7 (its actual lower
-  # bound is 2.4) this formula only targets 2.7 for simplicity.
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "meld3" do
@@ -14,8 +12,6 @@ class Supervisor < Formula
   end
 
   def install
-    # Before the example Supervisor configuration file gets installed, modify
-    # it to use Homebrew's conventions.
     inreplace buildpath/"supervisor/skel/sample.conf" do |s|
       # A `[unix_http_server]` modification
       s.gsub! %r{(?<=^file=)/tmp/supervisor.sock}, var/"run/supervisor.sock"
@@ -47,8 +43,6 @@ class Supervisor < Formula
     # Q.v. <https://github.com/Supervisor/supervisor/issues/608>.
     touch libexec/"lib/python2.7/site-packages/supervisor/__init__.py"
 
-    # Now that the build is done with the sample configuration file, it's safe
-    # to move it to the `etc` dir.
     etc.install buildpath/"supervisor/skel/sample.conf" => "supervisord.ini"
   end
 
@@ -80,14 +74,11 @@ class Supervisor < Formula
   end
 
   def post_install
-    # If the directories that supervisord expects to place its runtime files
-    # into don't exist, it dies instead of creating them itself.
     (var/"run").mkpath
     (var/"log").mkpath
   end
 
   test do
-    # Create a minimal configuration file for supervisord.
     (testpath/"supervisord.ini").write <<-EOS.undent
       [unix_http_server]
       file=supervisor.sock
