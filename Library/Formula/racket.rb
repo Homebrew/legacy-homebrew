@@ -48,8 +48,11 @@ class Racket < Formula
 
   def caveats; <<-EOS.undent
     This is a minimal Racket distribution.
-    If you want to use the DrRacket IDE, you may run
+    If you want to build the DrRacket IDE, you may run
       raco pkg install --auto drracket
+
+    The full Racket distribution is available as a cask:
+      brew cask install racket
     EOS
   end
 
