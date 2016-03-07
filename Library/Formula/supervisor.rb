@@ -112,7 +112,7 @@ class Supervisor < Formula
       end
       sleep 1
       assert_match(version.to_s,
-                   shell_output("#{bin}/supervisorctl version --configuration supervisord.ini"))
+                   shell_output("#{bin}/supervisorctl --configuration supervisord.ini version"))
     ensure
       Process.kill "TERM", pid
     end
