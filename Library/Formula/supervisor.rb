@@ -4,6 +4,10 @@ class Supervisor < Formula
   url "https://github.com/Supervisor/supervisor/archive/3.2.1.tar.gz"
   sha256 "d9c0b17ec42ac6477e7ef0ad2e1f6f1597f855a4d9606c024ac40eb034d6e9ed"
 
+  # Although Supervisor itself doesn't require Python 2.7 (its actual lower
+  # bound is 2.4) this formula only targets 2.7 for simplicity.
+  depends_on :python if MacOS.version <= :snow_leopard
+
   resource "meld3" do
     url "https://pypi.python.org/packages/source/m/meld3/meld3-1.0.2.tar.gz"
     sha256 "f7b754a0fde7a4429b2ebe49409db240b5699385a572501bb0d5627d299f9558"
