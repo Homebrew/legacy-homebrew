@@ -49,7 +49,7 @@ module Homebrew
       bot_argv = ENV["UPSTREAM_BOT_PARAMS"].split " "
       bot_argv.extend HomebrewArgvExtension
       if tap = bot_argv.value("tap")
-        return Tap.fetch(tap) if url_path =~ HOMEBREW_TAP_REGEX
+        return Tap.fetch(tap)
       end
     end
 
@@ -57,7 +57,7 @@ module Homebrew
       # Also can get tap from Jenkins GIT_URL.
       url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/").sub(%r{\.git$}, "")
       begin
-        return Tap.fetch(url_path)
+        return Tap.fetch(url_path) if url_path =~ HOMEBREW_TAP_REGEX
       rescue
       end
     end
