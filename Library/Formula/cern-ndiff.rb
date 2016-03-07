@@ -3,7 +3,6 @@ class CernNdiff < Formula
   # Note: ndiff is a sub-project of Mad-X at the moment..
   homepage "https://mad.web.cern.ch/mad/"
   url "http://svn.cern.ch/guest/madx/tags/5.02.08/madX/tools/numdiff"
-  version "5.02.08"
   head "http://svn.cern.ch/guest/madx/trunk/madX/tools/numdiff"
 
   bottle do
