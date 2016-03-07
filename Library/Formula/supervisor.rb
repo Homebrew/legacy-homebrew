@@ -58,16 +58,13 @@ class Supervisor < Formula
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
         <dict>
-
           <key>KeepAlive</key>
           <dict>
             <key>SuccessfulExit</key>
             <false />
           </dict>
-
           <key>Label</key>
           <string>#{plist_name}</string>
-
           <key>ProgramArguments</key>
           <array>
             <string>#{opt_bin}/supervisord</string>
@@ -75,7 +72,6 @@ class Supervisor < Formula
             <string>#{etc}/supervisord.ini</string>
             <string>--nodaemon</string>
           </array>
-
         </dict>
       </plist>
     EOS
