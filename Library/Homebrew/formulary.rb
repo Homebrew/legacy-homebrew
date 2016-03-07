@@ -1,6 +1,5 @@
 require "digest/md5"
 require "tap"
-require "core_formula_repository"
 
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
@@ -278,7 +277,7 @@ class Formulary
       return FormulaLoader.new(ref, formula_with_that_name)
     end
 
-    possible_alias = CoreFormulaRepository.instance.alias_dir/ref
+    possible_alias = CoreTap.instance.alias_dir/ref
     if possible_alias.file?
       return AliasLoader.new(possible_alias)
     end
@@ -292,7 +291,7 @@ class Formulary
       return FormulaLoader.new(name, path)
     end
 
-    if newref = CoreFormulaRepository.instance.formula_renames[ref]
+    if newref = CoreTap.instance.formula_renames[ref]
       formula_with_that_oldname = core_path(newref)
       if formula_with_that_oldname.file?
         return FormulaLoader.new(newref, formula_with_that_oldname)
@@ -321,7 +320,7 @@ class Formulary
   end
 
   def self.core_path(name)
-    CoreFormulaRepository.instance.formula_dir/"#{name.downcase}.rb"
+    CoreTap.instance.formula_dir/"#{name.downcase}.rb"
   end
 
   def self.tap_paths(name, taps = Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"])

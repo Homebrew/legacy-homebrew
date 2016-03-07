@@ -1,5 +1,4 @@
 require "tap"
-require "core_formula_repository"
 
 module Homebrew
   def tap
