@@ -81,6 +81,13 @@ class Supervisor < Formula
     EOS
   end
 
+  def post_install
+    # If the directories that supervisord expects to place its runtime files
+    # into don't exist, it dies instead of creating them itself.
+    mkdir var/"run"
+    mkdir var/"log"
+  end
+
   test do
     # Create a minimal configuration file for supervisord.
     (testpath/"supervisord.ini").write <<-EOS.undent
