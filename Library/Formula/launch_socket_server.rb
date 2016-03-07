@@ -16,6 +16,67 @@ class LaunchSocketServer < Formula
   end
 
   test do
-    assert_match /usage/, shell_output("#{sbin}/launch_socket_server")
+    launch_port = 9272
+    echo_port = 6752
+
+    (testpath/"launch_socket_server.plist").write <<-EOS.undent
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+        <dict>
+          <key>Label</key>
+          <string>homebrew.mxcl.launch_socket_server_test</string>
+          <key>RunAtLoad</key>
+          <true/>
+          <key>KeepAlive</key>
+          <true/>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{sbin/"launch_socket_server"}</string>
+            <string>/usr/bin/ruby</string>
+            <string>#{testpath/"echo_server.rb"}</string>
+          </array>
+          <key>Sockets</key>
+          <dict>
+            <key>Socket</key>
+            <dict>
+              <key>SockNodeName</key>
+              <string>127.0.0.1</string>
+              <key>SockServiceName</key>
+              <string>#{launch_port}</string>
+            </dict>
+          </dict>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>LAUNCH_PROGRAM_TCP_ADDRESS</key>
+            <string>127.0.0.1:#{echo_port}</string>
+          </dict>
+          <key>StandardErrorPath</key>
+          <string>#{testpath/"launch_socket_server.log"}</string>
+          <key>StandardOutPath</key>
+          <string>#{testpath/"launch_socket_server.log"}</string>
+        </dict>
+      </plist>
+    EOS
+
+    (testpath/"echo_server.rb").write <<-EOS.undent
+      require "socket"
+
+      server = TCPServer.new("127.0.0.1", "#{echo_port}")
+      socket = server.accept
+      socket.puts socket.readline
+    EOS
+
+    system "launchctl", "load", testpath/"launch_socket_server.plist"
+    system "sleep", "1"
+
+    s = TCPSocket.new "127.0.0.1", launch_port
+    s.puts "hello, world"
+    output = s.gets.strip
+    s.close
+
+    system "launchctl", "unload", testpath/"launch_socket_server.plist"
+
+    assert_equal "hello, world", output
   end
 end
