@@ -8,9 +8,9 @@ class Sslscan < Formula
 
   bottle do
     cellar :any
-    sha256 "371acab9705b799d0d8b4513d0e925627bbf5266f468f56bb6ca519d9ffd7bb3" => :el_capitan
-    sha256 "25a6a1627ff94675962d125e09278c808c05ee14ace63b0f2137f1959b6aa60b" => :yosemite
-    sha256 "e1f6ac13e6d326995bb0aa481766f7e693d570b8ecfb783afcb8a5ece5d6dc21" => :mavericks
+    sha256 "b885f2a0a26d764eb80634ffd3834738b498a355704f5f6303f365b4208ae2b2" => :el_capitan
+    sha256 "90f200a5d92d4d2561a31474ca5a17b1014a1945203c9f670c027ef8b67139bd" => :yosemite
+    sha256 "b74ae765db7d73449c4a9231bdb90554171befc13b60c6813bc7069acb039b5d" => :mavericks
   end
 
   depends_on "openssl"
