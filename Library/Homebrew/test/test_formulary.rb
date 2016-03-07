@@ -16,7 +16,7 @@ end
 class FormularyFactoryTest < Homebrew::TestCase
   def setup
     @name = "testball_bottle"
-    @path = CoreFormulaRepository.new.formula_dir/"#{@name}.rb"
+    @path = CoreTap.new.formula_dir/"#{@name}.rb"
     @bottle_dir = Pathname.new("#{File.expand_path("..", __FILE__)}/bottles")
     @bottle = @bottle_dir/"testball_bottle-0.1.#{bottle_tag}.bottle.tar.gz"
     @path.write <<-EOS.undent
@@ -72,7 +72,7 @@ class FormularyFactoryTest < Homebrew::TestCase
   end
 
   def test_factory_from_alias
-    alias_dir = CoreFormulaRepository.instance.alias_dir
+    alias_dir = CoreTap.instance.alias_dir
     alias_dir.mkpath
     FileUtils.ln_s @path, alias_dir/"foo"
     assert_kind_of Formula, Formulary.factory("foo")
@@ -144,7 +144,7 @@ end
 class FormularyTapPriorityTest < Homebrew::TestCase
   def setup
     @name = "foo"
-    @core_path = CoreFormulaRepository.new.formula_dir/"#{@name}.rb"
+    @core_path = CoreTap.new.formula_dir/"#{@name}.rb"
     @tap = Tap.new "homebrew", "foo"
     @tap_path = @tap.path/"#{@name}.rb"
     code = <<-EOS.undent

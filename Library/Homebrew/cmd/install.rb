@@ -3,7 +3,6 @@ require "diagnostic"
 require "cmd/search"
 require "formula_installer"
 require "tap"
-require "core_formula_repository"
 require "hardware"
 
 module Homebrew

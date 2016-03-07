@@ -247,7 +247,7 @@ class FormulaAuditor
       return
     end
 
-    if oldname = CoreFormulaRepository.instance.formula_renames[name]
+    if oldname = CoreTap.instance.formula_renames[name]
       problem "'#{name}' is reserved as the old name of #{oldname}"
       return
     end
