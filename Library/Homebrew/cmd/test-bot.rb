@@ -34,13 +34,14 @@ require "tap"
 
 module Homebrew
   BYTES_IN_1_MEGABYTE = 1024*1024
+  HOMEBREW_TAP_REGEX = %r{^([\w-]+)/homebrew-([\w-]+)$}
 
   def resolve_test_tap
     if tap = ARGV.value("tap")
       return Tap.fetch(tap)
     end
 
-    if tap = ENV["TRAVIS_REPO_SLUG"]
+    if (tap = ENV["TRAVIS_REPO_SLUG"]) && (tap =~ HOMEBREW_TAP_REGEX)
       return Tap.fetch(tap)
     end
 
@@ -48,7 +49,7 @@ module Homebrew
       bot_argv = ENV["UPSTREAM_BOT_PARAMS"].split " "
       bot_argv.extend HomebrewArgvExtension
       if tap = bot_argv.value("tap")
-        return Tap.fetch(tap)
+        return Tap.fetch(tap) if url_path =~ HOMEBREW_TAP_REGEX
       end
     end
 
