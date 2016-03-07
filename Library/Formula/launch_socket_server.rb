@@ -15,14 +15,6 @@ class LaunchSocketServer < Formula
     (libexec/"launch_socket_server").install "libexec/launch_socket_server/login_wrapper"
   end
 
-  def caveats; <<-EOS.undent
-    launch_socket_server is designed to be run under launchd and must be
-    configured before running.
-
-    See https://github.com/sstephenson/launch_socket_server for details.
-    EOS
-  end
-
   test do
     assert_match /usage/, shell_output("#{sbin}/launch_socket_server")
   end
