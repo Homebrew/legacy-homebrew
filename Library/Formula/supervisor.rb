@@ -32,7 +32,6 @@ class Supervisor < Formula
               "files = #{etc}/supervisor.d/*.ini"
     end
 
-    etc.install buildpath/"supervisor/skel/sample.conf" => "supervisord.ini"
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resource("meld3").stage do
@@ -48,6 +47,10 @@ class Supervisor < Formula
 
     # Q.v. <https://github.com/Supervisor/supervisor/issues/608>.
     touch libexec/"lib/python2.7/site-packages/supervisor/__init__.py"
+
+    # Now that the build is done with the sample configuration file, it's safe
+    # to move it to the `etc` dir.
+    etc.install buildpath/"supervisor/skel/sample.conf" => "supervisord.ini"
   end
 
   plist_options :manual => "supervisord -c #{HOMEBREW_PREFIX}/etc/supervisord.ini"
