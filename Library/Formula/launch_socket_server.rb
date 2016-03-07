@@ -68,14 +68,17 @@ class LaunchSocketServer < Formula
     EOS
 
     system "launchctl", "load", testpath/"launch_socket_server.plist"
-    system "sleep", "1"
 
-    s = TCPSocket.new "127.0.0.1", launch_port
-    s.puts "hello, world"
-    output = s.gets.strip
-    s.close
+    sleep 1
 
-    system "launchctl", "unload", testpath/"launch_socket_server.plist"
+    begin
+      socket = TCPSocket.new "127.0.0.1", launch_port
+      socket.puts "hello, world"
+      output = socket.gets.strip
+      socket.close
+    ensure
+      system "launchctl", "unload", testpath/"launch_socket_server.plist"
+    end
 
     assert_equal "hello, world", output
   end
