@@ -34,16 +34,16 @@ class Supervisor < Formula
 
     etc.install buildpath/"supervisor/skel/sample.conf" => "supervisord.ini"
 
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resource("meld3").stage do
       system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir[libexec/"bin/*"]
 
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
     # Q.v. <https://github.com/Supervisor/supervisor/issues/608>.
@@ -99,6 +99,8 @@ class Supervisor < Formula
       [supervisorctl]
       serverurl=unix://supervisor.sock
     EOS
+
+    ENV["PYTHONDONTWRITEBYTECODE"] = true # otherwise tries to write .pyc files outside of sandbox
 
     begin
       pid = fork do
