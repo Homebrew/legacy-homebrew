@@ -1,4 +1,5 @@
 require "compat/fails_with_llvm"
+require "compat/tap"
 require "compat/formula"
 require "compat/formula_specialties"
 require "compat/hardware"
