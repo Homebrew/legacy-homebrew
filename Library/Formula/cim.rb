@@ -7,9 +7,9 @@ class Cim < Formula
 
   # Patch does two things:
   # 1. corrects some include paths; files so corrected compile under gcc but
-  #    not clang 
+  #    not clang
   # 2. explicitly declares non-value-returning functions as void to permit
-  #    clang compilation.  
+  #    clang compilation.
   #
   # patch submitted to bug-cim@gnu.org on Mon,  7 Mar 2016 09:24:27 -0500,
   # Message-ID  <CAA=-s3ygF4b2Zf0Qcg2xny4qm2RkDSnj0BxtLSZ1qse0u+652w@mail.gmail.com>
