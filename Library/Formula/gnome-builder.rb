@@ -31,6 +31,14 @@ class GnomeBuilder < Formula
 
   def install
     ENV.cxx11
+
+    # Fix build failure on case-sensitive volumes for libgit2-glib without vala.
+    # Reported 7th Mar 2016 to https://bugzilla.gnome.org/show_bug.cgi?id=763208
+    unless File.exist?(Formula["libgit2-glib"].share/"vala/vapi/ggit-1.0.vapi")
+      inreplace Dir["libide/{Makefile.am,Makefile.in,libide-1.0.deps}"],
+        "ggit-1.0", "Ggit-1.0"
+    end
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
