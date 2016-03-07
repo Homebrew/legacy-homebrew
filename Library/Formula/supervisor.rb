@@ -14,17 +14,21 @@ class Supervisor < Formula
   def install
     inreplace buildpath/"supervisor/skel/sample.conf" do |s|
       # A `[unix_http_server]` modification
-      s.gsub! %r{(?<=^file=)/tmp/supervisor.sock}, var/"run/supervisor.sock"
+      s.gsub! %r{^file=/tmp/supervisor.sock\b},
+              "file=#{var}/run/supervisor.sock"
 
       # Some `[supervisord]` modifications
-      s.gsub! %r{(?<=^logfile=)/tmp/supervisord.log}, var/"log/supervisord.log"
-      s.gsub! %r{(?<=^pidfile=)/tmp/supervisord.pid}, var/"run/supervisord.pid"
+      s.gsub! %r{^logfile=/tmp/supervisord.log\b},
+              "logfile=#{var}/log/supervisord.log"
+      s.gsub! %r{^pidfile=/tmp/supervisord.pid\b},
+              "pidfile=#{var}/run/supervisord.pid"
 
       # A `[supervisorctl]` modification
-      s.gsub! %r{(?<=serverurl=)unix:///tmp/supervisor.sock}, "unix://#{var}/run/supervisor.sock"
+      s.gsub! %r{^serverurl=unix:///tmp/supervisor.sock\b},
+              "serverurl=unix://#{var}/run/supervisor.sock"
 
       # An `[include]` modification
-      s.gsub! ";files = relative/directory/*.ini",
+      s.gsub! %r{^;files = relative/directory/*.ini\b},
               "files = #{etc}/supervisor.d/*.ini"
     end
 
