@@ -26,11 +26,10 @@ class Prometheus < Formula
   end
 
   test do
-    rules = <<-EOS.undent
+    (testpath/"rules.example").write <<-EOS.undent
     # Saving the per-job HTTP in-progress request count as a new set of time series:
       job:http_inprogress_requests:sum = sum(http_inprogress_requests) by (job)
     EOS
-    (testpath/"rules.example").write(rules)
     system "#{bin}/promtool", "check-rules", testpath/"rules.example"
   end
 end
