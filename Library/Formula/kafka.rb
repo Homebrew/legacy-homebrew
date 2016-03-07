@@ -65,38 +65,37 @@ class Kafka < Formula
   plist_options :manual => "zookeeper-server-start #{HOMEBREW_PREFIX}/etc/kafka/zookeeper.properties; kafka-server-start #{HOMEBREW_PREFIX}/etc/kafka/server.properties"
 
   test do
-    # This is far from an ideal test, but this is the best we can do, because for whatever reason
-    # the test below will not run in Travis 10.9, however will run successfully on any other 10.9 machine
-    # Likewise, the software runs just fine on 10.9.
-    ohai "Ensuring the Kafka 0.9.0.0 JAR exists in the right place"
-    assert File.exists? libexec/"core/build/libs/kafka_2.10-0.9.0.0.jar"
+    ENV["LOG_DIR"] = "#{testpath}/kafkalog"
 
-    # ====== leaving this in, in case someone can get it to work on mavericks
-    #
-    # A REALLY bad test... however Kafka doesn't say its version anywhere so its the best we can do.
-    # Furthermore, we can't just start and stop a ZK and Kafka instance, as theyd need to daemonize, and
-    # in order to daemonize, they need to write access to a place where they expect to put their PID file
-    # but that's impossible inside the sandbox.
-    #
-    # The ZooKeeper client that Kafka uses spits out some key JVM parameters when it is first initialized,
-    # namely "java.class.path", which gets set by kafka-run-class.sh, which is called by kafka-server-start.sh
-    # Thus, a correct java.class.path implies that the correct version of Kafka has been installed and is running when
-    # the command to start are invoked and the fact that it runs to begin with indicates that the
-    # prerequisites for successful environment to run in are met.
-    #
-    # We simply check that the classpath has the JAR of the Kafka version we want to use. But first, we need to
-    # set a few environment variables that kafka-run-class.sh uses for things like figuring out where
-    # to save logs. We need to do this so that Kafka doesnt try to write log files into
-    # /usr/local/Cellar/kafka/version/blahblah and instead into the sandbox's temporary directory, because otherwise
-    # instead of lovely ZooKeeper client debug messages, we just get a bunch of "operation not permitted" IO errors
-    # and Kafka will crash (or worse, livelock) before the ZK client has a chance to start and work its magic.
-    #
-    # ohai "Checking that the correct JAR (kafka_2.10.0-0.9.0.0.jar) is being loaded by kafka-run-class.sh"
-    #
-    # require 'open3'
-    # Open3.popen3("LOG_DIR=#{testpath}/kafkalog kafka-server-start.sh #{etc}/kafka/server.properties --override zookeeper.connect=localhost:-1") do |_, stdout, _, _|
-    #   assert_match /.*environment:java\.class\.path.*kafka_2\.10-0\.9\.0\.0\.jar.*/, stdout.read
-    # end
+    (testpath/"kafka").mkpath
+    cp "#{etc}/kafka/zookeeper.properties", testpath/"kafka"
+    cp "#{etc}/kafka/server.properties", testpath/"kafka"
+    inreplace "#{testpath}/kafka/zookeeper.properties", "#{var}/lib", testpath
+    inreplace "#{testpath}/kafka/server.properties", "#{var}/lib", testpath
+
+    begin
+      fork do
+        exec "#{bin}/zookeeper-server-start #{testpath}/kafka/zookeeper.properties >/dev/null"
+      end
+
+      sleep 5
+
+      fork do
+        exec "#{bin}/kafka-server-start #{testpath}/kafka/server.properties >/dev/null"
+      end
+
+      sleep 5
+
+      @demo_pid = fork do
+        exec "#{libexec}/examples/bin/java-producer-consumer-demo.sh > #{testpath}/kafka/demo.out 2>/dev/null"
+      end
+
+      sleep 5
+    ensure
+      quiet_system "pkill", "-9", "-f", "#{testpath}/kafka/"
+    end
+
+    assert_match "Received message: ", IO.read("#{testpath}/kafka/demo.out")
   end
 
   def plist; <<-EOS.undent
