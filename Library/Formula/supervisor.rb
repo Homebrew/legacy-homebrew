@@ -32,7 +32,6 @@ class Supervisor < Formula
               "files = #{etc}/supervisor.d/*.ini"
     end
 
-
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resource("meld3").stage do
       system "python", *Language::Python.setup_install_args(libexec/"vendor")
