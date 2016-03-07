@@ -50,35 +50,6 @@ class Supervisor < Formula
     touch libexec/"lib/python2.7/site-packages/supervisor/__init__.py"
   end
 
-  test do
-    # Create a minimal configuration file for supervisord.
-    (testpath/"supervisord.ini").write <<-EOS.undent
-      [unix_http_server]
-      file=supervisor.sock
-
-      [supervisord]
-      loglevel=debug
-
-      [rpcinterface:supervisor]
-      supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
-
-      [supervisorctl]
-      serverurl=unix://supervisor.sock
-    EOS
-
-    begin
-      pid = fork do
-        exec "#{bin}/supervisord", "--configuration", "supervisord.ini",
-                                   "--nodaemon"
-      end
-      sleep 1
-      assert_match(version.to_s,
-                   shell_output("#{bin}/supervisorctl version --configuration supervisord.ini"))
-    ensure
-      Process.kill "TERM", pid
-    end
-  end
-
   plist_options :manual => "supervisord -c #{HOMEBREW_PREFIX}/etc/supervisord.ini"
 
   def plist
@@ -108,5 +79,34 @@ class Supervisor < Formula
         </dict>
       </plist>
     EOS
+  end
+
+  test do
+    # Create a minimal configuration file for supervisord.
+    (testpath/"supervisord.ini").write <<-EOS.undent
+      [unix_http_server]
+      file=supervisor.sock
+
+      [supervisord]
+      loglevel=debug
+
+      [rpcinterface:supervisor]
+      supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+      [supervisorctl]
+      serverurl=unix://supervisor.sock
+    EOS
+
+    begin
+      pid = fork do
+        exec "#{bin}/supervisord", "--configuration", "supervisord.ini",
+                                   "--nodaemon"
+      end
+      sleep 1
+      assert_match(version.to_s,
+                   shell_output("#{bin}/supervisorctl version --configuration supervisord.ini"))
+    ensure
+      Process.kill "TERM", pid
+    end
   end
 end
