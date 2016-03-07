@@ -5,9 +5,10 @@ class Squid < Formula
   sha256 "9cfce3231c7b3b33816fc54414d8720a51ac5e723663e0685a8bb995b9f450d2"
 
   bottle do
-    sha256 "db202eca2558ef39046aec75701778b45c53aadca32323e8754a38e2caeb115f" => :el_capitan
-    sha256 "e771bfc371c6e75adcf6213e082516d21d9f1588bffab4a608fca722caa8c948" => :yosemite
-    sha256 "d7124e081fc9008a50cdd321a9a82e961dfb83227c1dbafda6bf091fc8ceb9aa" => :mavericks
+    revision 1
+    sha256 "cc9bd188c13570baf1cbe9027082036938c13a35eca56fce28a52f54e2e0f2b4" => :el_capitan
+    sha256 "172cd259fa8ee17fd97480186e1edbb88b2f89512cddaf883525e2326fbcdcbf" => :yosemite
+    sha256 "2fed545b5a34f0625e657f7347b10be8dc213fa8c9f291a50b7b5886133cf7b7" => :mavericks
   end
 
   depends_on "openssl"
