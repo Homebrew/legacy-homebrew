@@ -6,7 +6,7 @@ module Homebrew
 
     ARGV.named.each do |tapname|
       tap = Tap.fetch(tapname)
-      raise "Homebrew/homebrew is not allowed" if tap.core_tap?
+      raise "#{tap} is not allowed" if tap.core_tap?
       tap.uninstall
     end
   end
