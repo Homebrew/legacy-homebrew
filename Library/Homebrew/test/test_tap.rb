@@ -155,7 +155,7 @@ class TapTest < Homebrew::TestCase
   end
 
   def test_private_remote
-    skip "HOMEBREW_GITHUB_API_TOKEN is required" unless ENV["HOMEBREW_GITHUB_API_TOKEN"]
+    skip "HOMEBREW_GITHUB_API_TOKEN is required" unless GitHub.api_credentials
     assert_predicate @tap, :private?
   end
 
