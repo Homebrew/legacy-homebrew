@@ -1,8 +1,8 @@
 class G3log < Formula
   desc 'asynchronous, "crash safe", logger that is easy to use.'
   homepage "https://github.com/KjellKod/g3log"
-  url "https://github.com/KjellKod/g3log/archive/v1.1.tar.gz"
-  sha256 "b6374819ec9ba56807eeaa6f11e889f33550b1296524a5e7831ce9adc1218a9c"
+  url "https://github.com/KjellKod/g3log/archive/1.2.tar.gz"
+  sha256 "6fd73ac5d07356b3acdde73ad06f2f40cfc1de11b1864a17375c1177b557c1be"
 
   bottle do
     cellar :any
@@ -19,8 +19,7 @@ class G3log < Formula
 
     # No install target yet: https://github.com/KjellKod/g3log/issues/49
     include.install "src/g3log"
-    lib.install "libg3logger.a"
-    lib.install "libg3logger_shared.dylib" => "libg3logger.dylib"
+    lib.install "libg3logger.a", "libg3logger.dylib"
     system "install_name_tool", "-id", "#{lib}/libg3logger.dylib", "#{lib}/libg3logger.dylib"
   end
 
