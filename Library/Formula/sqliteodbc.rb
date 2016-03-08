@@ -16,7 +16,7 @@ class Sqliteodbc < Formula
 
   def install
     lib.mkdir
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--with-odbc=#{Formula["unixodbc"].opt_prefix}"
     system "make"
     system "make", "install"
     lib.install_symlink "#{lib}/libsqlite3odbc.dylib" => "libsqlite3odbc.so"
