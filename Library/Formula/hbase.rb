@@ -46,37 +46,37 @@ class Hbase < Formula
     end
 
     inreplace "#{libexec}/conf/hbase-site.xml",
-              # makes hbase usable out of the box
-              # upstream has been provided this patch
-              # https://issues.apache.org/jira/browse/HBASE-15426
-              /<configuration>/,
-              <<-EOS.undent
-              <configuration>
-                <property>
-                  <name>hbase.rootdir</name>
-                  <value>#{(build.with? "hadoop") ? "hdfs://localhost:9000" : "file://"+var}/hbase</value>
-                </property>
-                <property>
-                  <name>hbase.zookeeper.property.clientPort</name>
-                  <value>2181</value>
-                </property>
-                <property>
-                  <name>hbase.zookeeper.property.dataDir</name>
-                  <value>#{var}/zookeeper</value>
-                </property>
-                <property>
-                  <name>hbase.zookeeper.dns.interface</name>
-                  <value>lo0</value>
-                </property>
-                <property>
-                  <name>hbase.regionserver.dns.interface</name>
-                  <value>lo0</value>
-                </property>
-                <property>
-                  <name>hbase.master.dns.interface</name>
-                  <value>lo0</value>
-                </property>
-              EOS
+      # makes hbase usable out of the box
+      # upstream has been provided this patch
+      # https://issues.apache.org/jira/browse/HBASE-15426
+      /<configuration>/,
+      <<-EOS.undent
+      <configuration>
+        <property>
+          <name>hbase.rootdir</name>
+          <value>#{(build.with? "hadoop") ? "hdfs://localhost:9000" : "file://"+var}/hbase</value>
+        </property>
+        <property>
+          <name>hbase.zookeeper.property.clientPort</name>
+          <value>2181</value>
+        </property>
+        <property>
+          <name>hbase.zookeeper.property.dataDir</name>
+          <value>#{var}/zookeeper</value>
+        </property>
+        <property>
+          <name>hbase.zookeeper.dns.interface</name>
+          <value>lo0</value>
+        </property>
+        <property>
+          <name>hbase.regionserver.dns.interface</name>
+          <value>lo0</value>
+        </property>
+        <property>
+          <name>hbase.master.dns.interface</name>
+          <value>lo0</value>
+        </property>
+      EOS
 
     (var/"run/hbase").mkpath
   end
@@ -131,7 +131,7 @@ class Hbase < Formula
   test do
     assert_match /#{version}/, shell_output("#{bin}/hbase mapredcp")
     system "hbase-start.sh"
-    system "echo stats | nc localhost 2181"
+    assert_match /Zookeeper/, pipe_output("nc localhost 2181", "stats")
     system "hbase-stop.sh"
   end
 end
