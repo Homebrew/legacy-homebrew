@@ -14,25 +14,26 @@ class Hbase < Formula
     sha256 "aa8ddbb8b3f9e1c4b8cc3523486acdb7841cd97c002a9f2959c5b320c7bb0e6c"
   end
 
-  def rundir
-    var/"run/hbase"
-  end
-
   def install
     rm_f Dir["bin/*.cmd", "conf/*.cmd"]
     libexec.install %w[bin conf docs lib hbase-webapps]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
 
-    resource("hadoop-lzo").stage do
-      # Fixed upstream: https://github.com/cloudera/hadoop-lzo/blob/master/build.xml#L235
-      inreplace "build.xml",
-                %r{(<class name="com.hadoop.compression.lzo.LzoDecompressor" />)},
-                "\\1\n<classpath refid=\"classpath\"/>"
-      Kernel.system({ "CLASSPATH"=>"#{libexec}/lib/hadoop-common-*.jar", "CFLAGS"=>"-m64", "CXXFLAGS"=>"-m64", "CPPFLAGS"=>"-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers" }, "ant compile-native tar")
-      (libexec/"lib").install Dir["build/hadoop-lzo-*/hadoop-lzo-*.jar"]
-      (libexec/"lib/native").mkpath
-      (libexec/"lib/native").install Dir["build/hadoop-lzo-*/lib/native/*"]
-    end if build.with? "lzo"
+    if build.with? "lzo"
+      resource("hadoop-lzo").stage do
+        # Fixed upstream: https://github.com/cloudera/hadoop-lzo/blob/master/build.xml#L235
+        inreplace "build.xml",
+                  %r{(<class name="com.hadoop.compression.lzo.LzoDecompressor" />)},
+                  "\\1\n<classpath refid=\"classpath\"/>"
+        ENV["CLASSPATH"] = "#{libexec}/lib/hadoop-common-*.jar"
+        ENV["CFLAGS"] = "-m64"
+        ENV["CXXFLAGS"] = "-m64"
+        ENV["CPPFLAGS"] = "-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers"
+        system "ant", "compile-native", "tar"
+        (libexec/"lib").install Dir["build/hadoop-lzo-*/hadoop-lzo-*.jar"]
+        (libexec/"lib/native").install Dir["build/hadoop-lzo-*/lib/native/*"]
+      end
+    end
 
     inreplace "#{libexec}/conf/hbase-env.sh" do |s|
       # upstream bugs for ipv6 incompatibility:
@@ -45,46 +46,39 @@ class Hbase < Formula
     end
 
     inreplace "#{libexec}/conf/hbase-site.xml",
+              # makes hbase usable out of the box
+              # upstream has been provided this patch
+              # https://issues.apache.org/jira/browse/HBASE-15426
               /<configuration>/,
-              <<-EOS
-<configuration>
-  <property>
-    <name>hbase.rootdir</name>
-    <value>#{ build.with? "hadoop" ? "hdfs://localhost:9000" : "file://"+(var)}/hbase</value>
-  </property>
-  <property>
-    <name>hbase.zookeeper.property.clientPort</name>
-    <value>2181</value>
-  </property>
-  <property>
-    <name>hbase.zookeeper.property.dataDir</name>
-    <value>#{var}/zookeeper</value>
-  </property>
-  <property>
-    <name>hbase.zookeeper.dns.interface</name>
-    <value>lo0</value>
-  </property>
-  <property>
-    <name>hbase.regionserver.dns.interface</name>
-    <value>lo0</value>
-  </property>
-  <property>
-    <name>hbase.master.dns.interface</name>
-    <value>lo0</value>
-  </property>
-EOS
+              <<-EOS.undent
+              <configuration>
+                <property>
+                  <name>hbase.rootdir</name>
+                  <value>#{ build.with? "hadoop" ? "hdfs://localhost:9000" : "file://"+(var)}/hbase</value>
+                </property>
+                <property>
+                  <name>hbase.zookeeper.property.clientPort</name>
+                  <value>2181</value>
+                </property>
+                <property>
+                  <name>hbase.zookeeper.property.dataDir</name>
+                  <value>#{var}/zookeeper</value>
+                </property>
+                <property>
+                  <name>hbase.zookeeper.dns.interface</name>
+                  <value>lo0</value>
+                </property>
+                <property>
+                  <name>hbase.regionserver.dns.interface</name>
+                  <value>lo0</value>
+                </property>
+                <property>
+                  <name>hbase.master.dns.interface</name>
+                  <value>lo0</value>
+                </property>
+              EOS
 
-    rundir.mkpath
-  end
-
-  def caveats; <<-EOS.undent
-    You may want to edit the configs in:
-      #{libexec}/conf
-    to reflect your environment.
-
-    For more details:
-      https://hbase.apache.org/book.html
-    EOS
+    (var/"run/hbase").mkpath
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/hbase/bin/start-hbase.sh"
@@ -104,14 +98,14 @@ EOS
        <key>HBASE_LOG_DIR</key><string>#{var}/hbase</string>
        <key>HBASE_HOME</key><string>#{opt_libexec}</string>
        <key>HBASE_SECURITY_LOGGER</key><string>INFO,RFAS</string>
-       <key>HBASE_PID_DIR</key><string>#{rundir}</string>
+       <key>HBASE_PID_DIR</key><string>#{var}/run/hbase</string>
        <key>HBASE_NICENESS</key><string>0</string>
        <key>HBASE_IDENT_STRING</key><string>root</string>
        <key>HBASE_REGIONSERVER_OPTS</key><string> -XX:PermSize=128m -XX:MaxPermSize=128m</string>
        <key>HBASE_OPTS</key><string>-XX:+UseConcMarkSweepGC</string>
        <key>HBASE_ROOT_LOGGER</key><string>INFO,RFA</string>
-       <key>HBASE_LOG_PREFIX</key><string>hbase-root-master-#{`hostname`.strip}</string>
-       <key>HBASE_LOGFILE</key><string>hbase-root-master-#{`hostname`.strip}.log</string>
+       <key>HBASE_LOG_PREFIX</key><string>hbase-root-master</string>
+       <key>HBASE_LOGFILE</key><string>hbase-root-master.log</string>
       </dict>
       <key>ProgramArguments</key>
       <array>
