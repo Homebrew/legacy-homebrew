@@ -15,6 +15,7 @@ class Hbase < Formula
   end
 
   def install
+    ENV.java_cache if build.with? "lzo"
     rm_f Dir["bin/*.cmd", "conf/*.cmd"]
     libexec.install %w[bin conf docs lib hbase-webapps]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
