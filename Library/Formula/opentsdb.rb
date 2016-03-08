@@ -34,6 +34,9 @@ class Opentsdb < Formula
       system "make", "install-exec-am"
       system "make", "install-data-am"
     end
+
+    env = Language::Java.java_home_env.merge(:HBASE_HOME => Formula["hbase"].opt_libexec, :COMPRESSION => (build.with?("lzo") ? "LZO" : "NONE"))
+    (bin/"create_table.sh").write_env_script opt_pkgshare/"tools/create_table.sh", env
   end
 
   def post_install
@@ -42,10 +45,7 @@ class Opentsdb < Formula
 
     system "#{Formula["hbase"].opt_libexec}/bin/start-hbase.sh"
 
-    ENV["HBASE_HOME"] = Formula["hbase"].opt_libexec.to_s
-    ENV["COMPRESSION"] = (build.with?("lzo") ? "LZO" : "NONE")
-    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.strip
-    system "#{opt_pkgshare}/tools/create_table.sh"
+    system "#{bin}/create_table.sh"
 
     system "#{Formula["hbase"].opt_libexec}/bin/stop-hbase.sh"
   end
@@ -93,7 +93,7 @@ class Opentsdb < Formula
   test do
     system "#{Formula["hbase"].opt_bin}/start-hbase.sh"
 
-    pid = Process.spawn "tsdb tsd --config=#{HOMEBREW_PREFIX}/etc/opentsdb/opentsdb.conf --staticroot=#{HOMEBREW_PREFIX}/opt/opentsdb/share/opentsdb/static/ --cachedir=#{HOMEBREW_PREFIX}/var/cache/opentsdb --port=4242 --zkquorum=localhost:2181 --zkbasedir=/hbase --auto-metric"
+    pid = Process.spawn "#{bin}/tsdb tsd --config=#{HOMEBREW_PREFIX}/etc/opentsdb/opentsdb.conf --staticroot=#{HOMEBREW_PREFIX}/opt/opentsdb/share/opentsdb/static/ --cachedir=#{HOMEBREW_PREFIX}/var/cache/opentsdb --port=4242 --zkquorum=localhost:2181 --zkbasedir=/hbase --auto-metric"
 
     Socket.tcp("localhost", 4242) do |s|
       s.puts "put homebrew.install.test 1356998400 42.5 host=webserver01 cpu=0"
