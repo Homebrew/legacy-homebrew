@@ -25,7 +25,7 @@ class Hbase < Formula
         inreplace "build.xml",
                   %r{(<class name="com.hadoop.compression.lzo.LzoDecompressor" />)},
                   "\\1\n<classpath refid=\"classpath\"/>"
-        ENV["CLASSPATH"] = "#{libexec}/lib/hadoop-common-*.jar"
+        ENV["CLASSPATH"] = Dir["#{libexec}/lib/hadoop-common-*.jar"].first
         ENV["CFLAGS"] = "-m64"
         ENV["CXXFLAGS"] = "-m64"
         ENV["CPPFLAGS"] = "-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers"
