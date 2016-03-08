@@ -12,7 +12,7 @@ require "rbconfig"
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = "0.9.5"
+HOMEBREW_VERSION = "0.9.6"
 HOMEBREW_WWW = "http://brew.sh"
 
 require "config"
@@ -27,7 +27,6 @@ end
 RUBY_BIN = RUBY_PATH.dirname
 
 HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
-HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
 
 HOMEBREW_CURL_ARGS = "-f#LA"
 

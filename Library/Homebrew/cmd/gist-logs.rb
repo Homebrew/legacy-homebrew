@@ -116,7 +116,7 @@ module Homebrew
 
   def make_request(path, data, auth)
     headers = {
-      "User-Agent"   => HOMEBREW_USER_AGENT,
+      "User-Agent"   => homebrew_user_agent,
       "Accept"       => "application/vnd.github.v3+json",
       "Content-Type" => "application/json"
     }

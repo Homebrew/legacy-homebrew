@@ -308,7 +308,7 @@ def curl(*args)
   flags = HOMEBREW_CURL_ARGS
   flags = flags.delete("#") if ARGV.verbose?
 
-  args = [flags, HOMEBREW_USER_AGENT, *args]
+  args = [flags, homebrew_user_agent, *args]
   args << "--verbose" if ENV["HOMEBREW_CURL_VERBOSE"]
   args << "--silent" if !$stdout.tty? || ENV["TRAVIS"]
 
@@ -513,7 +513,7 @@ module GitHub
     require "net/https"
 
     headers = {
-      "User-Agent" => HOMEBREW_USER_AGENT,
+      "User-Agent" => homebrew_user_agent,
       "Accept"     => "application/vnd.github.v3+json"
     }
 
@@ -639,4 +639,14 @@ def number_readable(number)
   numstr = number.to_i.to_s
   (numstr.size - 3).step(1, -3) { |i| numstr.insert(i, ",") }
   numstr
+end
+
+def homebrew_user_agent
+  parentheticals = [
+    "Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}",
+    OS_VERSION,
+  ]
+  is_ci = ["CI", "JENKINS_URL"].any? { |var| ENV.include? var }
+  parentheticals << "CI" if is_ci
+  "Homebrew #{HOMEBREW_VERSION} (#{parentheticals.join("; ")})"
 end
