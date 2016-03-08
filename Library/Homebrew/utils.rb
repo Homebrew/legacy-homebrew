@@ -511,7 +511,7 @@ module GitHub
       if ENV["HOMEBREW_GITHUB_API_TOKEN"]
         ENV["HOMEBREW_GITHUB_API_TOKEN"]
       else
-        github_credentials = IO.popen(["git", "credential-osxkeychain", "get"], "w+") do |io|
+        github_credentials = IO.popen("git credential-osxkeychain get", "w+") do |io|
           io.puts "protocol=https\nhost=github.com"
           io.close_write
           io.read
