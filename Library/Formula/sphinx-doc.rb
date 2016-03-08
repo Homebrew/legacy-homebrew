@@ -1,8 +1,8 @@
 class SphinxDoc < Formula
   desc "Tool to create intelligent and beautiful documentation"
   homepage "http://sphinx-doc.org"
-  url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.4.tar.gz"
-  sha256 "8aacc3f34aa758751fdb44ab9238eab024c66b57d67200f9a35efebf0e368057"
+  url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.6.tar.gz"
+  sha256 "0b3be9221220af36090d139192347bb5f42b13401e4c53a4de8f5329a7a3ff8a"
 
   bottle do
     cellar :any_skip_relocation
@@ -44,8 +44,8 @@ class SphinxDoc < Formula
   end
 
   resource "Pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.1.tar.gz"
-    sha256 "13a0ef5fafd7b16cf995bc28fe7aab0780dab1b2fda0fc89e033709af8b8a47b"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.1.3.tar.gz"
+    sha256 "88e4c8a91b2af5962bfa5ea2447ec6dd357018e86e94c7d14bd8cacbc5b55d81"
   end
 
   resource "pytz" do
