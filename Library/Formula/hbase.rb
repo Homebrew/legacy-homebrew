@@ -54,7 +54,7 @@ class Hbase < Formula
               <configuration>
                 <property>
                   <name>hbase.rootdir</name>
-                  <value>#{ build.with? "hadoop" ? "hdfs://localhost:9000" : "file://"+(var)}/hbase</value>
+                  <value>#{(build.with? "hadoop") ? "hdfs://localhost:9000" : "file://"+var}/hbase</value>
                 </property>
                 <property>
                   <name>hbase.zookeeper.property.clientPort</name>
@@ -89,7 +89,7 @@ class Hbase < Formula
     <plist version="1.0">
     <dict>
       <key>KeepAlive</key>
-      #{ build.without? "hadoop" ? "<true/>" : "<dict>\n        <key>OtherJobEnabled</key>\n        <string>"+(Formula["hadoop"].plist_name)+"</string>\n      </dict>"}
+      #{(build.without? "hadoop") ? "<true/>" : "<dict>\n        <key>OtherJobEnabled</key>\n        <string>"+Formula["hadoop"].plist_name+"</string>\n      </dict>"}
       <key>Label</key>
       <string>#{plist_name}</string>
       <key>EnvironmentVariables</key>
