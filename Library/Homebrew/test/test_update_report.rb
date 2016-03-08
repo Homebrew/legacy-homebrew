@@ -7,10 +7,10 @@ class ReportTests < Homebrew::TestCase
   class ReporterMock < ::Reporter
     attr_accessor :diff
 
-    def initialize(tap, init_rev, cur_rev)
+    def initialize(tap)
       @tap = tap
-      ENV["HOMEBREW_UPDATE_BEFORE#{repo_var}"] = init_rev
-      ENV["HOMEBREW_UPDATE_AFTER#{repo_var}"] = cur_rev
+      ENV["HOMEBREW_UPDATE_BEFORE#{repo_var}"] = "12345678"
+      ENV["HOMEBREW_UPDATE_AFTER#{repo_var}"] = "abcdef12"
       super(tap)
     end
   end
@@ -25,7 +25,7 @@ class ReportTests < Homebrew::TestCase
 
   def setup
     @tap = CoreTap.new
-    @reporter = ReporterMock.new(@tap, "12345678", "abcdef12")
+    @reporter = ReporterMock.new(@tap)
     @hub = ReporterHub.new
   end
 
@@ -41,7 +41,8 @@ class ReportTests < Homebrew::TestCase
   end
 
   def test_update_report_without_revision_var
-    assert_raises(Reporter::ReporterRevisionUnsetError) { ReporterMock.new(@tap, nil, nil) }
+    ENV.delete_if { |k,v| k.start_with? "HOMEBREW_UPDATE" }
+    assert_raises(Reporter::ReporterRevisionUnsetError) { Reporter.new(@tap) }
   end
 
   def test_update_homebrew_without_any_changes
@@ -84,7 +85,7 @@ class ReportTests < Homebrew::TestCase
 
   def test_update_homebrew_with_restructured_tap
     tap = Tap.new("foo", "bar")
-    @reporter = ReporterMock.new(tap, "12345678", "abcdef12")
+    @reporter = ReporterMock.new(tap)
     tap.path.join("Formula").mkpath
 
     perform_update("update_git_diff_output_with_restructured_tap")
@@ -94,7 +95,7 @@ class ReportTests < Homebrew::TestCase
 
   def test_update_homebrew_simulate_homebrew_php_restructuring
     tap = Tap.new("foo", "bar")
-    @reporter = ReporterMock.new(tap, "12345678", "abcdef12")
+    @reporter = ReporterMock.new(tap)
     tap.path.join("Formula").mkpath
 
     perform_update("update_git_diff_simulate_homebrew_php_restructuring")
@@ -104,7 +105,7 @@ class ReportTests < Homebrew::TestCase
 
   def test_update_homebrew_with_tap_formulae_changes
     tap = Tap.new("foo", "bar")
-    @reporter = ReporterMock.new(tap, "12345678", "abcdef12")
+    @reporter = ReporterMock.new(tap)
     tap.path.join("Formula").mkpath
 
     perform_update("update_git_diff_output_with_tap_formulae_changes")
