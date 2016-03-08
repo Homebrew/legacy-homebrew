@@ -349,7 +349,7 @@ EOS
         [[ "$UPSTREAM_SHA_HTTP_CODE" = "304" ]] && exit
       fi
 
-      git fetch "${QUIET_ARGS[@]}" origin \
+      git fetch --force "${QUIET_ARGS[@]}" origin \
         "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" || \
           odie "Fetching $DIR failed!"
     ) &
