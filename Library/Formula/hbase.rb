@@ -80,6 +80,7 @@ class Hbase < Formula
       EOS
 
     (var/"run/hbase").mkpath
+    (libexec/"logs").mkpath
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/hbase/bin/start-hbase.sh"
