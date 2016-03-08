@@ -11,11 +11,18 @@ class Rssh < Formula
     sha256 "abd625a8dc24f3089b177fd0318ffc1cf4fcb08d0c149191bb45943ad55f6934"
   end
 
+  patch do
+    url "https://gist.github.com/kaazoo/1358e893033f536802f9/raw/e2bec9c1608ba18977bbea82a1ef8329dc55904d/rssh-2.3.4_zfs_support.patch"
+    sha256 "ea843389e402d79e2d62fb37da2c3bc3d16ead0cd84bc28824e2133635159603"
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+                          "--mandir=#{man}",
+                          # ZFS from https://openzfsonosx.org/ provides /usr/local/bin/zfs
+                          "--with-zfs=/usr/local/bin/zfs"
     system "make"
     system "make", "install"
   end
