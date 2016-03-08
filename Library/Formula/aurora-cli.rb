@@ -1,8 +1,8 @@
 class AuroraCli < Formula
   desc "Apache Aurora Scheduler Client"
   homepage "https://aurora.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=aurora/0.11.0/apache-aurora-0.11.0.tar.gz"
-  sha256 "578775be7e16ff33f861956eb281d77a19f4caf23d27d9d6f8e6ce1f03ef63e9"
+  url "https://www.apache.org/dyn/closer.cgi?path=/aurora/0.12.0/apache-aurora-0.12.0.tar.gz"
+  sha256 "682e953237811d4fb0c94a08fd027c967de637be4260a32c19ee1e77c0f930e9"
 
   bottle do
     cellar :any_skip_relocation
@@ -22,7 +22,7 @@ class AuroraCli < Formula
   end
 
   test do
-    ENV["AURORA_CONFIG_ROOT"] = "#{testpath}"
+    ENV["AURORA_CONFIG_ROOT"] = "#{testpath}/"
     (testpath/"clusters.json").write <<-EOS.undent
         [{
           "name": "devcluster",
