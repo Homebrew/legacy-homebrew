@@ -45,7 +45,7 @@ class Supervisor < Formula
 
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
-    # Q.v. <https://github.com/Supervisor/supervisor/issues/608>.
+    # For an explanation, see https://github.com/Supervisor/supervisor/issues/608.
     touch libexec/"lib/python2.7/site-packages/supervisor/__init__.py"
 
     etc.install buildpath/"supervisor/skel/sample.conf" => "supervisord.ini"
