@@ -17,6 +17,10 @@ class Hyperscan < Formula
   depends_on "cmake" => :build
 
   def install
+    # -march=native is actually the build system's default, but setting it
+    # directly in HOMEBREW_OPTFLAGS can cause build failure.
+    ENV.delete("HOMEBREW_OPTFLAGS") if ENV["HOMEBREW_OPTFLAGS"] == "-march=native"
+
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make", "install"
