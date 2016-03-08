@@ -30,7 +30,7 @@ class Supervisor < Formula
       s.gsub! /^;\[include\]$/,
               "[include]"
       s.gsub! %r{^;files = relative/directory/\*\.ini$},
-              "files = #{etc}/supervisor.d/\.ini"
+              "files = #{etc}/supervisor.d/*.ini"
     end
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
