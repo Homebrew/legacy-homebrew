@@ -131,8 +131,8 @@ class Hbase < Formula
 
   test do
     assert_match /#{version}/, shell_output("#{bin}/hbase mapredcp")
-    system "hbase-start.sh"
+    system "start-hbase.sh"
     assert_match /Zookeeper/, pipe_output("nc localhost 2181", "stats")
-    system "hbase-stop.sh"
+    system "stop-hbase.sh"
   end
 end
