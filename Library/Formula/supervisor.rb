@@ -4,6 +4,13 @@ class Supervisor < Formula
   url "https://github.com/Supervisor/supervisor/archive/3.2.1.tar.gz"
   sha256 "d9c0b17ec42ac6477e7ef0ad2e1f6f1597f855a4d9606c024ac40eb034d6e9ed"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "b3c866f998dc05c9cbab8d5b7561e7fe4c14d5f786525b02e50ca78438b1c701" => :el_capitan
+    sha256 "752e757102b2040b0e36add68b4e5481bdd511f37b9a8fa61dfa463b3f0c0ed7" => :yosemite
+    sha256 "8b5cfa44ab4c77ff668210a0330dce12711c08c18d32c5137cfbe228bf0bc2a1" => :mavericks
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "meld3" do
