@@ -22,7 +22,7 @@ class AuroraCli < Formula
   end
 
   test do
-    ENV["AURORA_CONFIG_ROOT"] = "#{testpath}"
+    ENV["AURORA_CONFIG_ROOT"] = "#{testpath}/"
     (testpath/"clusters.json").write <<-EOS.undent
         [{
           "name": "devcluster",
