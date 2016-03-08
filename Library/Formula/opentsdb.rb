@@ -50,9 +50,9 @@ class Opentsdb < Formula
     system "#{Formula["hbase"].opt_libexec}/bin/stop-hbase.sh"
   end
 
-  plist_options :manual => "tsdb tsd --config=#{HOMEBREW_PREFIX}/etc/opentsdb/opentsdb.conf"\
-                           "--staticroot=#{HOMEBREW_PREFIX}/opt/opentsdb/share/opentsdb/static/"\
-                           "--cachedir=#{HOMEBREW_PREFIX}/var/cache/opentsdb --port=4242"\
+  plist_options :manual => "tsdb tsd --config=#{HOMEBREW_PREFIX}/etc/opentsdb/opentsdb.conf "\
+                           "--staticroot=#{HOMEBREW_PREFIX}/opt/opentsdb/share/opentsdb/static/ "\
+                           "--cachedir=#{HOMEBREW_PREFIX}/var/cache/opentsdb --port=4242 "\
                            "--zkquorum=localhost:2181 --zkbasedir=/hbase --auto-metric"
 
   def plist; <<-EOS.undent
