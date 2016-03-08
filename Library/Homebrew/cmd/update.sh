@@ -211,16 +211,13 @@ pull() {
     STASHED="1"
   fi
 
-  if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
+  # Recreate and check out `#{upstream_branch}` if unable to fast-forward
+  # it to `origin/#{@upstream_branch}`. Otherwise, just check it out.
+  if git merge-base --is-ancestor "$UPSTREAM_BRANCH" "origin/$UPSTREAM_BRANCH" &>/dev/null
   then
-    # Recreate and check out `#{upstream_branch}` if unable to fast-forward
-    # it to `origin/#{@upstream_branch}`. Otherwise, just check it out.
-    if git merge-base --is-ancestor "$UPSTREAM_BRANCH" "origin/$UPSTREAM_BRANCH" &>/dev/null
-    then
-      git checkout --force "$UPSTREAM_BRANCH" "${QUIET_ARGS[@]}"
-    else
-      git checkout --force -B "$UPSTREAM_BRANCH" "origin/$UPSTREAM_BRANCH" "${QUIET_ARGS[@]}"
-    fi
+    git checkout --force "$UPSTREAM_BRANCH" "${QUIET_ARGS[@]}"
+  else
+    git checkout --force -B "$UPSTREAM_BRANCH" "origin/$UPSTREAM_BRANCH" "${QUIET_ARGS[@]}"
   fi
 
   INITIAL_REVISION="$(read_current_revision)"
