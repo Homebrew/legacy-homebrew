@@ -6,11 +6,12 @@ class Lbdb < Formula
   homepage "https://github.com/tgray/lbdb/"
   url "https://github.com/tgray/lbdb/archive/v0.38.2.tar.gz"
   sha256 "a125fc304ca17b2ef82e00e59e0480adc9f3beb06ef5448b9010ed39027bc78e"
+  head "https://github.com/tgray/lbdb.git"
 
   bottle do
   end
 
-  head "https://github.com/tgray/lbdb.git"
+  depends_on :xcode => :build
 
   if MacOS.version >= :mountain_lion
     patch do
@@ -31,7 +32,8 @@ class Lbdb < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--libdir=#{libexec}"
     system "make", "install"
   end
 
@@ -44,5 +46,9 @@ class Lbdb < Formula
 
     The homepage of this version is <https://github.com/tgray/lbdb/>
     EOS
+  end
+
+  test do
+    assert_match version.to_s, shell_output(bin/"lbdbq -v")
   end
 end
