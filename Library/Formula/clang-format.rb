@@ -1,20 +1,20 @@
 class ClangFormat < Formula
   desc "Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2016-01-05"
+  version "2016-03-08"
 
   stable do
-    url "http://llvm.org/releases/3.7.1/llvm-3.7.1.src.tar.xz"
-    sha256 "be7794ed0cec42d6c682ca8e3517535b54555a3defabec83554dbc74db545ad5"
+    url "http://llvm.org/releases/3.8.0/llvm-3.8.0.src.tar.xz"
+    sha256 "555b028e9ee0f6445ff8f949ea10e9cd8be0d084840e21fbbe1d31d51fc06e46"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.7.1/cfe-3.7.1.src.tar.xz"
-      sha256 "56e2164c7c2a1772d5ed2a3e57485ff73ff06c97dff12edbeea1acc4412b0674"
+      url "http://llvm.org/releases/3.8.0/cfe-3.8.0.src.tar.xz"
+      sha256 "04149236de03cf05232d68eb7cb9c50f03062e339b68f4f8a03b650a11536cf9"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.7.1/libcxx-3.7.1.src.tar.xz"
-      sha256 "357fbd4288ce99733ba06ae2bec6f503413d258aeebaab8b6a791201e6f7f144"
+      url "http://llvm.org/releases/3.8.0/libcxx-3.8.0.src.tar.xz"
+      sha256 "36804511b940bc8a7cefc7cb391a6b28f5e3f53f6372965642020db91174237b"
     end
   end
 
@@ -33,8 +33,8 @@ class ClangFormat < Formula
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.7.1/libcxx-3.7.1.src.tar.xz"
-      sha256 "357fbd4288ce99733ba06ae2bec6f503413d258aeebaab8b6a791201e6f7f144"
+      url "http://llvm.org/releases/3.8.0/libcxx-3.8.0.src.tar.xz"
+      sha256 "36804511b940bc8a7cefc7cb391a6b28f5e3f53f6372965642020db91174237b"
     end
   end
 
