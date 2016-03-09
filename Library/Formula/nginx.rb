@@ -26,6 +26,8 @@ class Nginx < Formula
   option "with-debug", "Compile with support for debug log"
   option "with-spdy", "Compile with support for either SPDY or HTTP/2 module"
   option "with-gunzip", "Compile with support for gunzip module"
+  option "with-mp4", "Compile with support for MP4 module"
+  option "with-flv", "Compile with support for FLV module"
 
   depends_on "pcre"
   depends_on "passenger" => :optional
@@ -78,6 +80,8 @@ class Nginx < Formula
     args << "--with-http_dav_module" if build.with? "webdav"
     args << "--with-debug" if build.with? "debug"
     args << "--with-http_gunzip_module" if build.with? "gunzip"
+    args << "--with-http_mp4_module" if build.with? "mp4"
+    args << "--with-http_flv_module" if build.with? "flv"
 
     # This became "with-http_v2_module" in 1.9.5
     # http://nginx.org/en/docs/http/ngx_http_spdy_module.html
