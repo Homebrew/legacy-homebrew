@@ -1,6 +1,6 @@
 class Khard < Formula
-  homepage "https://github.com/scheibler/khard/"
   desc "Console carddav client."
+  homepage "https://github.com/scheibler/khard/"
   url "https://pypi.python.org/packages/source/k/khard/khard-0.8.1.tar.gz"
   sha256 "00324a0faf87d8ca80be0a24e7d84a5faf763af3146565ac6b57db8a49d20f25"
 
