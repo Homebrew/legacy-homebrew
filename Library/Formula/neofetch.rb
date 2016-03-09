@@ -6,10 +6,7 @@ class Neofetch < Formula
   head "https://github.com/dylanaraps/neofetch.git"
 
   def install
-    bin.install "neofetch"
-    prefix.install "ascii"
-    prefix.install "config"
-    man.install "neofetch.1"
+    system "PREFIX=#{prefix} make install"
   end
 
   test do
