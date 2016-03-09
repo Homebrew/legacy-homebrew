@@ -5,10 +5,10 @@ class Libwebm < Formula
   sha256 "1332f43742aeae215fd8df1be6e363e753b17abb37447190e789299fe3edec77"
 
   bottle do
-    cellar :any
-    sha256 "857027173cb56069854f03e25ca0a3c4cce4dc2bed404ab78af3f41344c52a05" => :yosemite
-    sha256 "005679e6d2de745d49c4867dcfbc4490be235a3ba25275ff88e0d518b494e4c7" => :mavericks
-    sha256 "3e2c2a2fd1854c158c33bd6667a2e0ae17838eb88a0f839ee48316f59d105c7e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "784418b8fc6006788c3a7c867cf675532fb7b86299ff9f8fb85d946c2e8cbc38" => :el_capitan
+    sha256 "c6c99d02e47ed6ec17821ab9386e49b40ffad45e30f58fdbae62395dc16def18" => :yosemite
+    sha256 "944eb5c9802b3f676e39e29b9eff89f2d5e1dcbeac1b2595f52b5df21369e561" => :mavericks
   end
 
   depends_on "cmake" => :build
