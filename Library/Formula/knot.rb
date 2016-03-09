@@ -8,9 +8,9 @@ class Knot < Formula
 
   bottle do
     cellar :any
-    sha256 "d50cdf56ab983378103904777db2561f26735b5dd54cec6a8e42b0aca4fd0c40" => :el_capitan
-    sha256 "f33daf162fb1f7d48eed000c855312a0c5890a13b83bfd91ae4e7b3272e64a5f" => :yosemite
-    sha256 "f0ad7de6798ae89ce64618345265ea345c404868c869fbaccb9d6060c4329465" => :mavericks
+    sha256 "89f74b85b5a6f42a5051d279d087bf446b42c99ddd89bfd14154d431b3cc94bb" => :el_capitan
+    sha256 "f8377f2c37094fc446f167f954bfc0c3202e4d845317b0e7a140f455b9959f7a" => :yosemite
+    sha256 "8295bd95060e9f067613d3c9742d231b841694afdff96eae13f448e00f1a3d13" => :mavericks
   end
 
   depends_on "automake" => :build
