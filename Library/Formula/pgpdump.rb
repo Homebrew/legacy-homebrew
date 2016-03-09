@@ -1,8 +1,8 @@
 class Pgpdump < Formula
   desc "PGP packet visualizer"
   homepage "http://www.mew.org/~kazu/proj/pgpdump/en/"
-  url "http://www.mew.org/~kazu/proj/pgpdump/pgpdump-0.29.tar.gz"
-  sha256 "6215d9af806399fec73d81735cf20ce91033a7a89a82c4318c4d1659083ff663"
+  url "https://github.com/kazu-yamamoto/pgpdump/archive/v0.29.tar.gz"
+  sha256 "b2b3ffe998eda901f4f888a62354730fb53840e68493cfff76962524c43e1d11"
 
   head "https://github.com/kazu-yamamoto/pgpdump.git"
 
@@ -22,7 +22,7 @@ class Pgpdump < Formula
     (testpath/"sig.pgp").write <<-EOS.undent
       -----BEGIN PGP MESSAGE-----
       Version: GnuPG v1.2.6 (NetBSD)
-      Comment: For info see http://www.gnupg.org
+      Comment: For info see https://www.gnupg.org
 
       owGbwMvMwCSYq3dE6sEMJU7GNYZJLGmZOanWn4xaQzIyixWAKFEhN7W4ODE9VaEk
       XyEpVaE4Mz0vNUUhqVIhwD1Aj6vDnpmVAaQeZogg060chvkFjPMr2CZNmPnwyebF
