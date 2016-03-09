@@ -7,10 +7,11 @@ class Pgpdump < Formula
   head "https://github.com/kazu-yamamoto/pgpdump.git"
 
   bottle do
-    cellar :any
-    sha256 "6498e4961fca95045a658fd53f8259e5ef4f1fa29cbf6e98c400ba7936fe423b" => :yosemite
-    sha256 "776f42e2b4f27dfdfb1ef2700428bd32b4ad12cb2408537a32b3b488aea6f273" => :mavericks
-    sha256 "8a4a87acaa4bd684365fdf9cef4cf58fcef591ba5230c5ff7f02db4ca3738d53" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "a8780ac54e115fc857b596515a81252ae8812b65008d1a39d537c28d4a90c4d6" => :el_capitan
+    sha256 "a89324c5488f5f697bfe37cac80ea1cb0bde0d59895a526db0c2ee1031ef29e4" => :yosemite
+    sha256 "8563fa2ae51f0138d070489f8501d3141c549e7e3e88db39e97c3e08524286fa" => :mavericks
   end
 
   def install
