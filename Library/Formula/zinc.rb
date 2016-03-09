@@ -11,4 +11,8 @@ class Zinc < Formula
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/zinc"
   end
+
+  test do
+    system "#{bin}/zinc", "-version"
+  end
 end
