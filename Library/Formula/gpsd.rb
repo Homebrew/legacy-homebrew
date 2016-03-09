@@ -6,9 +6,9 @@ class Gpsd < Formula
 
   bottle do
     cellar :any
-    sha256 "3217799db940813d04dafecb52efd5b1a00ff8afd8245979728b82a9227c7269" => :el_capitan
-    sha256 "ac0aa5f2d768a113587eb7cb5ce07bd268aeaaecde5fc60f39330bfdff54999d" => :yosemite
-    sha256 "a2905cf71c569793fafb1d5c5000bd25851499d66c3b4ebea1ec2b241800834b" => :mavericks
+    sha256 "67983abcb7de346346850eaaa3e007e2eb5bb25eb2e7fbc275a72781966892b0" => :el_capitan
+    sha256 "676e8b9d1bddafc02863e1bdc64262ae09ec8a63e4fc3c1abdd930e6eeb28ee3" => :yosemite
+    sha256 "843afd054bb63bc058173cd8a9bfbe529e01e331ae3680bb170406204b16f889" => :mavericks
   end
 
   depends_on "scons" => :build
