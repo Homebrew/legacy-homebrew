@@ -3,19 +3,19 @@ class Scala < Formula
   homepage "http://www.scala-lang.org/"
 
   stable do
-    url "http://www.scala-lang.org/files/archive/scala-2.11.7.tgz"
-    sha256 "ffe4196f13ee98a66cf54baffb0940d29432b2bd820bd0781a8316eec22926d0"
+    url "http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.tgz"
+    sha256 "87fc86a19d9725edb5fd9866c5ee9424cdb2cd86b767f1bb7d47313e8e391ace"
 
     depends_on :java => "1.6+"
 
     resource "docs" do
-      url "http://www.scala-lang.org/files/archive/scala-docs-2.11.7.zip"
-      sha256 "90981bf388552465ce07761c8f991c13be332ee07e97ff44f4b8be278f489667"
+      url "http://downloads.lightbend.com/scala/2.11.8/scala-docs-2.11.8.zip"
+      sha256 "73bd44375ebffd5f401950a11d78addc52f8164c30d8528d26c82c1f819cfc16"
     end
 
     resource "src" do
-      url "https://github.com/scala/scala/archive/v2.11.7.tar.gz"
-      sha256 "1679ee604bc4e881b0d325e164c39c02dcfa711d53cd3115f5a6c9676c5915ef"
+      url "https://github.com/scala/scala/archive/v2.11.8.tar.gz"
+      sha256 "4f11273b4b3c771019253b2c09102245d063a7abeb65c7b1c4519bd57605edcf"
     end
   end
 
