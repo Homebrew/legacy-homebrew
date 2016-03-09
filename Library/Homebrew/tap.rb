@@ -1,6 +1,4 @@
 require "extend/string"
-require "tap_migrations"
-require "formula_renames"
 
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
@@ -447,21 +445,33 @@ class Tap
   end
 end
 
-# A specialized {Tap} class to mimic the core formula file system, which shares many
-# similarities with normal {Tap}.
-# TODO Separate core formulae with core codes. See discussion below for future plan:
-#      https://github.com/Homebrew/homebrew/pull/46735#discussion_r46820565
+# A specialized {Tap} class for the core formulae
 class CoreTap < Tap
+  if OS.mac?
+    OFFICIAL_REMOTE = "https://github.com/Homebrew/homebrew-core"
+  else
+    OFFICIAL_REMOTE = "https://github.com/Linuxbrew/homebrew-core"
+  end
+
   # @private
   def initialize
-    @user = "Homebrew"
-    @repo = "homebrew"
-    @name = "Homebrew/homebrew"
-    @path = HOMEBREW_REPOSITORY
+    super "Homebrew", "core"
   end
 
   def self.instance
     @instance ||= CoreTap.new
+  end
+
+  def self.ensure_installed!(options = {})
+    return if instance.installed?
+    args = ["tap", instance.name]
+    args << "-q" if options.fetch(:quiet, true)
+    safe_system HOMEBREW_BREW_FILE, *args
+  end
+
+  def install(options = {})
+    options = { :clone_target => OFFICIAL_REMOTE }.merge(options)
+    super options
   end
 
   # @private
@@ -485,13 +495,8 @@ class CoreTap < Tap
   end
 
   # @private
-  def command_files
-    []
-  end
-
-  # @private
   def custom_remote?
-    remote != "https://github.com/#{user}/#{repo}.git"
+    remote != OFFICIAL_REMOTE
   end
 
   # @private
@@ -501,22 +506,34 @@ class CoreTap < Tap
 
   # @private
   def formula_dir
-    @formula_dir ||= HOMEBREW_LIBRARY/"Formula"
+    @formula_dir ||= begin
+      self.class.ensure_installed!
+      super
+    end
   end
 
   # @private
   def alias_dir
-    @alias_dir ||= HOMEBREW_LIBRARY/"Aliases"
+    @alias_dir ||= begin
+      self.class.ensure_installed!
+      super
+    end
   end
 
   # @private
   def formula_renames
-    FORMULA_RENAMES
+    @formula_renames ||= begin
+      self.class.ensure_installed!
+      super
+    end
   end
 
   # @private
   def tap_migrations
-    TAP_MIGRATIONS
+    @tap_migrations ||= begin
+      self.class.ensure_installed!
+      super
+    end
   end
 
   # @private
