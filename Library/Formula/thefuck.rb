@@ -79,7 +79,8 @@ class Thefuck < Formula
 
   def caveats; <<-EOS.undent
     Add the following to your .bash_profile, .bashrc or .zshrc:
-
+      PYTHONIOENCODING="UTF-8"
+      export PYTHONIOENCODING
       eval "$(thefuck --alias)"
 
     For other shells, check https://github.com/nvbn/thefuck/wiki/Shell-aliases
