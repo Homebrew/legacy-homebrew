@@ -3,13 +3,13 @@ class Scala < Formula
   homepage "http://www.scala-lang.org/"
 
   stable do
-    url "http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.tgz"
+    url "https://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.tgz"
     sha256 "87fc86a19d9725edb5fd9866c5ee9424cdb2cd86b767f1bb7d47313e8e391ace"
 
     depends_on :java => "1.6+"
 
     resource "docs" do
-      url "http://downloads.lightbend.com/scala/2.11.8/scala-docs-2.11.8.zip"
+      url "https://downloads.lightbend.com/scala/2.11.8/scala-docs-2.11.8.zip"
       sha256 "73bd44375ebffd5f401950a11d78addc52f8164c30d8528d26c82c1f819cfc16"
     end
 
