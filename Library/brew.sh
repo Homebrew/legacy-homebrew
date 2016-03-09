@@ -1,20 +1,7 @@
 HOMEBREW_VERSION="0.9.5"
 
-odie() {
-  if [[ -t 2 ]] # check whether stderr is a tty.
-  then
-    echo -ne "\033[4;31mError\033[0m: " >&2 # highlight Error with underline and red color
-  else
-    echo -n "Error: " >&2
-  fi
-  if [[ $# -eq 0 ]]
-  then
-    /bin/cat >&2
-  else
-    echo "$*" >&2
-  fi
-  exit 1
-}
+# shellcheck source=/dev/null
+source "$HOMEBREW_LIBRARY/Homebrew/utils.sh"
 
 chdir() {
   cd "$@" >/dev/null || odie "Error: failed to cd to $*!"
