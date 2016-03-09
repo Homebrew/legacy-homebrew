@@ -42,22 +42,21 @@ which_git() {
 }
 
 git_init_if_necessary() {
-  set -e
-  trap '{ rm -rf .git; exit 1; }' EXIT
-
   if [[ ! -d ".git" ]]
   then
+    set -e
+    trap '{ rm -rf .git; exit 1; }' EXIT
     git init
     git config --bool core.autocrlf false
     git config remote.origin.url https://github.com/Homebrew/homebrew.git
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-    git fetch origin
+    git fetch --force --depth=1 origin refs/heads/master:refs/remotes/origin/master
     git reset --hard origin/master
     SKIP_FETCH_HOMEBREW_REPOSITORY=1
+    set +e
+    trap - EXIT
+    return
   fi
-
-  set +e
-  trap - EXIT
 
   if [[ "$(git remote show origin -n)" = *"mxcl/homebrew"* ]]
   then
