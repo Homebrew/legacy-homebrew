@@ -1,8 +1,8 @@
 class Getdns < Formula
   desc "Modern asynchronous DNS API"
   homepage "https://getdnsapi.net"
-  url "https://getdnsapi.net/dist/getdns-0.5.0.tar.gz"
-  sha256 "b0680170249ba9987b8af4c7f2bc64833fe6396ecd66565c991b33775f78ccdb"
+  url "https://getdnsapi.net/dist/getdns-0.9.0.tar.gz"
+  sha256 "b6b73a501ee79c0fafb0721023eb3a5d0e1bfa047fbe65302db278cb956bd1fe"
 
   head "https://github.com/getdnsapi/getdns.git"
 
