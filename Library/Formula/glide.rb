@@ -3,8 +3,8 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.9.2.tar.gz"
-  sha256 "fb5480313cbe933369b3f1e52338bccd786fde274bdd680e48bf5e550732e9b4"
+  url "https://github.com/Masterminds/glide/archive/0.9.3.tar.gz"
+  sha256 "26950ff50e933a5c76baf16202ac80189461ccfe87ee044bda822dcde3cd0f47"
   head "https://github.com/Masterminds/glide.git"
 
   bottle do
