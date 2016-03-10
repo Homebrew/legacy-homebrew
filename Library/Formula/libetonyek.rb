@@ -1,8 +1,8 @@
 class Libetonyek < Formula
   desc "Interpret and import Apple Keynote presentations"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
-  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.5.tar.xz"
-  sha256 "29f8097f77a193511e940f7a70dfc6ac7fad57fbfc6e60b81fa1ee011daea903"
+  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.6.tar.xz"
+  sha256 "df54271492070fbcc6aad9f81ca89658b25dd106cc4ab6b04b067b7a43dcc078"
 
   bottle do
     cellar :any
@@ -16,8 +16,22 @@ class Libetonyek < Formula
   depends_on "librevenge"
   depends_on "glm"
   depends_on "mdds"
+  depends_on "gnu-sed" => :build
+
+  resource "liblangtag" do
+    url "https://bitbucket.org/tagoh/liblangtag/downloads/liblangtag-0.5.8.tar.bz2"
+    sha256 "08e2f64bfe3f750be7391eb0af53967e164b628c59f02be4d83789eb4f036eaa"
+  end
 
   def install
+    resource("liblangtag").stage do
+      ENV.prepend_path "PATH", Formula["gnu-sed"].opt_libexec/"gnubin"
+      system "./configure", "--prefix=#{libexec}", "--enable-modules=no"
+      system "make"
+      system "make install"
+    end
+    ENV["LANGTAG_CFLAGS"] = "-I#{libexec}/include"
+    ENV["LANGTAG_LIBS"] = "-L#{libexec}/lib -llangtag -lxml2"
     system "./configure", "--without-docs",
                           "--disable-dependency-tracking",
                           "--enable-static=no",
