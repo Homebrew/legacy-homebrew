@@ -1,8 +1,8 @@
 class Abduco < Formula
   desc "Provides session management: i.e. separate programs from terminals"
   homepage "http://www.brain-dump.org/projects/abduco"
-  url "http://www.brain-dump.org/projects/abduco/abduco-0.4.tar.gz"
-  sha256 "bda3729df116ce41f9a087188d71d934da2693ffb1ebcf33b803055eb478bcbb"
+  url "http://www.brain-dump.org/projects/abduco/abduco-0.5.tar.gz"
+  sha256 "bf22226a4488355a7001a5dabbd1e8e3b7e7645efd1519274b956fcb8bcff086"
   head "git://repo.or.cz/abduco.git"
 
   bottle do
