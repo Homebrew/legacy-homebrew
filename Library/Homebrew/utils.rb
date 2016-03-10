@@ -511,14 +511,18 @@ module GitHub
       if ENV["HOMEBREW_GITHUB_API_TOKEN"]
         ENV["HOMEBREW_GITHUB_API_TOKEN"]
       else
-        github_credentials = IO.popen("git credential-osxkeychain get", "w+") do |io|
+        github_credentials = Utils.popen("git credential-osxkeychain get", "w+") do |io|
           io.puts "protocol=https\nhost=github.com"
           io.close_write
           io.read
         end
         github_username = github_credentials[/username=(.+)/, 1]
         github_password = github_credentials[/password=(.+)/, 1]
-        [github_password, github_username] if github_username && github_password
+        if github_username && github_password
+          [github_password, github_username]
+        else
+          []
+        end
       end
     end
   end
