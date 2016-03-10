@@ -194,7 +194,8 @@ module Homebrew
             version = f.pkg_version
             curl "-w", '\n', "--silent", "--fail",
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
-              "-d", '{"publish_wait_for_secs": -1}',
+              "-H", "Content-Type: application/json",
+              "-d", '{"publish_wait_for_secs": 0}',
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             bintray_fetch_formulae << f
           end
