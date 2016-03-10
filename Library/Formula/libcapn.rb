@@ -15,9 +15,9 @@ class Libcapn < Formula
 
   bottle do
     cellar :any
-    sha256 "09cbbfc8fb5037b3ec0c5ef70e79dbbf47370fb382284857ea333c3459179f9f" => :yosemite
-    sha256 "1113b788db1d53843e20693d668f5847957c04c83eefb14da41bf57778e61f48" => :mavericks
-    sha256 "eb99972edf809a3d2ea12c56bd7461574f4a108565e9ad75e1341cbf846f2b80" => :mountain_lion
+    sha256 "228057a01ee8f67b8cb4122798d12e19b596c7cb1c5c7bc216ade96a0a632ef4" => :el_capitan
+    sha256 "35071a03d946979792e7ac7792e2bf6e94073c242ccf58066fefd0d49c7d72d4" => :yosemite
+    sha256 "70d7e47ff2ad168c6f26e61d86805b4e0d1c37015c1e3528d589195a66e9d185" => :mavericks
   end
 
   devel do
