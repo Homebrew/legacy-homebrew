@@ -5,9 +5,10 @@ class Adplug < Formula
   sha256 "f95a015268a0dfe9ff5782f3ea7b2a69e09b8d36ccd19ebf4d979d767b6e53ef"
 
   bottle do
-    sha256 "99429f4413c61a3597d48a7ad560230e13360eb46d794b9b662229265290ce5a" => :el_capitan
-    sha256 "04b111e37d9ffbf6abf54903f84369a34f0f6b4984b415e2bd44545684349531" => :yosemite
-    sha256 "6b2c62737467fd217471d7fecb5602ec3d05957106a8f2ad67e86427ba26f484" => :mavericks
+    revision 1
+    sha256 "93e13fe26543c02933533eb1c2f36e500133f3cb685f8b63cd6d3cc452ce1357" => :el_capitan
+    sha256 "565bd6f10cc1be2142e13b0da0fefbbfa338736a36f4f317ba3b3bc440fb2132" => :yosemite
+    sha256 "ffc73557be38d8cb2c886f6b7fa000aeb3b0b9d08afb1f3173fbf74fd005c0b9" => :mavericks
   end
 
   depends_on "pkg-config" => :build
