@@ -9,6 +9,8 @@ class Libodbcxx < Formula
     sha256 "72f4f3330afd79df2346134fa5f28183d5fe3134c65d90395e20cada497d4ca7" => :mountain_lion
   end
 
+  depends_on "unixodbc"
+
   # Two patches are included:
   # The first: Fixes a compilation error on 64bit machines:
   # http://sourceforge.net/tracker/?func=detail&aid=3590196&group_id=19075&atid=319075
