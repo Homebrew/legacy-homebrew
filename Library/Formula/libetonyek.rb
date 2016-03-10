@@ -26,12 +26,12 @@ class Libetonyek < Formula
   def install
     resource("liblangtag").stage do
       ENV.prepend_path "PATH", Formula["gnu-sed"].opt_libexec/"gnubin"
-      system "./configure", "--prefix=#{prefix}", "--enable-modules=no"
+      system "./configure", "--prefix=#{libexec}", "--enable-modules=no"
       system "make"
       system "make install"
     end
-    ENV["LANGTAG_CFLAGS"] = "-I#{include}"
-    ENV["LANGTAG_LIBS"] = "-L#{lib} -llangtag -lxml2"
+    ENV["LANGTAG_CFLAGS"] = "-I#{libexec}/include"
+    ENV["LANGTAG_LIBS"] = "-L#{libexec}/lib -llangtag -lxml2"
     system "./configure", "--without-docs",
                           "--disable-dependency-tracking",
                           "--enable-static=no",
