@@ -5,10 +5,9 @@ class Libetonyek < Formula
   sha256 "df54271492070fbcc6aad9f81ca89658b25dd106cc4ab6b04b067b7a43dcc078"
 
   bottle do
-    cellar :any
-    sha256 "62cccdece5d76f43ac0fd55eaccbd7a186848b962967140e322dbcba54909ce0" => :el_capitan
-    sha256 "f2d6be638e76f14060ff49ae65a5082e9538353e4688e04688129337b64815ae" => :yosemite
-    sha256 "73a38f30705c97a32aade008ac09e26ed51c74bb6146794d07cae0af607e427d" => :mavericks
+    sha256 "f464e2657607f9ad9701f12a1aa820fc91d8f1f5c119913b6f0aaf50baf44bf4" => :el_capitan
+    sha256 "b37902dfeed5ef199c969d51aafef47ca88d4a4f63862e10f95aa002ef15427d" => :yosemite
+    sha256 "87b99a5d084d752b4f4d53f63f7bcbdb6908a5b21a37eb021e16f1b5c3b5e4da" => :mavericks
   end
 
   depends_on "pkg-config" => :build
