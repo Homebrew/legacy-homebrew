@@ -1,9 +1,9 @@
 class Agedu < Formula
   desc "Unix utility for tracking down wasted disk space"
   homepage "http://www.chiark.greenend.org.uk/~sgtatham/agedu/"
-  url "http://www.chiark.greenend.org.uk/~sgtatham/agedu/agedu-20151213.59b0ed3.tar.gz"
-  version "20151213"
-  sha256 "c24eaa0b0e9f9c3474fa6a4aad7baff3b557a82e7b72276b2a557e37afafb612"
+  url "http://www.chiark.greenend.org.uk/~sgtatham/agedu/agedu-20160302.a05fca7.tar.gz"
+  version "20160302"
+  sha256 "2de59dab2c79d119faefb0c34fad26ec07e209d739538f2eaac96ed0f5473c5a"
 
   head "git://git.tartarus.org/simon/agedu.git"
 
