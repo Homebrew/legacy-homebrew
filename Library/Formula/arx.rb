@@ -5,8 +5,8 @@ class Arx < Formula
 
   desc "Bundles files and programs for easy transfer and repeatable execution"
   homepage "https://github.com/solidsnack/arx"
-  url "https://github.com/solidsnack/arx/archive/0.2.1.tar.gz"
-  sha256 "c3e91e4b9f72353061b0a104ee752da88770d695ef6329eca0f1049a56e9c110"
+  url "https://github.com/solidsnack/arx/archive/0.2.2.tar.gz"
+  sha256 "47e7a61a009d43c40ac0ce9c71917b0f967ef880c99d4602c7314b51c270fd0f"
 
   bottle do
     sha256 "5f872b7d40a3c6dd1ea8fd3ee24296e7758c4693d62a2dbc07612688ab55c4a5" => :el_capitan
