@@ -9,9 +9,9 @@ class Arx < Formula
   sha256 "47e7a61a009d43c40ac0ce9c71917b0f967ef880c99d4602c7314b51c270fd0f"
 
   bottle do
-    sha256 "5f872b7d40a3c6dd1ea8fd3ee24296e7758c4693d62a2dbc07612688ab55c4a5" => :el_capitan
-    sha256 "2711faa378132775c5e152d6649a31d6a758006f1fb4fdd60d968466c7a3afee" => :yosemite
-    sha256 "acb50b98723382ab596b4e83aeb1ad3a8a3ad69648244bd3178425bc3a2ecebb" => :mavericks
+    sha256 "3c68700a3ddfaed0ce393599f7709066641a33fba11b718c2b50e12496bc2131" => :el_capitan
+    sha256 "0720dc2fe2b961a38f5c564a47469b941da92c619ef53f9c749cff628f628b93" => :yosemite
+    sha256 "c46582bde1998cd229a5e5361b32eb194386008ff38944eaf663fbe4c53a146d" => :mavericks
   end
 
   depends_on "ghc" => :build
