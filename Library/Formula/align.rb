@@ -1,8 +1,8 @@
 class Align < Formula
   desc "Text column alignment filter"
   homepage "https://www.cs.indiana.edu/~kinzler/align/"
-  url "https://www.cs.indiana.edu/~kinzler/align/align-1.7.4.tgz"
-  sha256 "4775cc92bd7d5d991b32ff360ab74cfdede06c211def2227d092a5a0108c1f03"
+  url "https://www.cs.indiana.edu/~kinzler/align/align-1.7.5.tgz"
+  sha256 "cc692fb9dee0cc288757e708fc1a3b6b56ca1210ca181053a371cb11746969dd"
 
   bottle do
     cellar :any_skip_relocation
