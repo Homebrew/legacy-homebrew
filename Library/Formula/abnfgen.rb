@@ -1,8 +1,8 @@
 class Abnfgen < Formula
   desc "Quickly generate random documents that match an ABFN grammar"
   homepage "http://www.quut.com/abnfgen/"
-  url "http://www.quut.com/abnfgen/abnfgen-0.16.tar.gz"
-  sha256 "c256712a97415c86e1aa1847e2eac00019ca724d56b8ee921d21b258090d333a"
+  url "http://www.quut.com/abnfgen/abnfgen-0.17.tar.gz"
+  sha256 "777a264d91a93bc9cf008d7520abb0470d7280fb38008c5f185cbf2d29640083"
 
   bottle do
     cellar :any_skip_relocation
