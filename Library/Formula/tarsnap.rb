@@ -1,8 +1,8 @@
 class Tarsnap < Formula
   desc "Online backups for the truly paranoid"
   homepage "https://www.tarsnap.com/"
-  url "https://www.tarsnap.com/download/tarsnap-autoconf-1.0.36.1.tgz"
-  sha256 "a2909e01e2f983179d63ef2094c42102c92c716032864e66ef25ae341ea28690"
+  url "https://www.tarsnap.com/download/tarsnap-autoconf-1.0.37.tgz"
+  sha256 "fa999413651b3bd994547a10ffe3127b4a85a88b1b9a253f2de798888718dbfa"
 
   bottle do
     cellar :any
