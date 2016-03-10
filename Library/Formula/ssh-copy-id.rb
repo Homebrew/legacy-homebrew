@@ -6,6 +6,8 @@ class SshCopyId < Formula
   version "7.1p1"
   sha256 "fc0a6d2d1d063d5c66dffd952493d0cda256cad204f681de0f84ef85b2ad8428"
 
+  head "https://github.com/openssh/openssh-portable.git"
+
   bottle :unneeded
 
   def install
