@@ -321,7 +321,7 @@ module Homebrew
     versions = {}
     json = Utils.popen_read(HOMEBREW_BREW_FILE, "info", "--json=v1", formula_name)
     if $?.success?
-      info = Utils::JSON.load(json)
+      info = Utils::JSON.load(json.encode(Encoding::UTF_8, undef: :replace))
       [:stable, :devel, :head].each do |vertype|
         versions[vertype] = info[0]["versions"][vertype.to_s]
       end
