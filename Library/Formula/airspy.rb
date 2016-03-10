@@ -6,9 +6,9 @@ class Airspy < Formula
   head "https://github.com/airspy/host.git"
 
   bottle do
-    sha256 "f427d4d9c4d5f18803b1b7d42380bd78cd9634beab26f9f7846b0058248e3bd6" => :el_capitan
-    sha256 "cce06c58409d0c8c425eed8c85c670320a88b0d645034ae717bbc651b7bfbd26" => :yosemite
-    sha256 "d21d562a1f78c354bda2a90451c73db9526a40f5b9a54c2b9733b2221732c2cf" => :mavericks
+    sha256 "779886bf64def8c0ab4920d54d854d01a341c25e8df112d22eac4d3a65db8f87" => :el_capitan
+    sha256 "e0ac61c9efdb4bea5288f5d096d16d101b239b69e51e77828b824c7b0e84262e" => :yosemite
+    sha256 "e51fa70fe50b431ec4560b1748717c4050999b6eb75c6f60c6412bacb1dcb4ea" => :mavericks
   end
 
   option :universal
