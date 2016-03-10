@@ -6,10 +6,10 @@ class Neofetch < Formula
   head "https://github.com/dylanaraps/neofetch.git"
 
   def install
-    system "PREFIX=#{prefix} make install"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
-    system "neofetch"
+    system "#{bin}/neofetch"
   end
 end
