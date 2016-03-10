@@ -342,8 +342,9 @@ EOS
         # (so the API does not return 304: unmodified).
         UPSTREAM_SHA_HTTP_CODE="$(curl --silent '--max-time' 3 \
            --output /dev/null --write-out "%{http_code}" \
-           -H "Accept: application/vnd.github.chitauri-preview+sha" \
-           -H "If-None-Match: \"$UPSTREAM_BRANCH_LOCAL_SHA\"" \
+           --user-agent "Homebrew $HOMEBREW_VERSION" \
+           --header "Accept: application/vnd.github.chitauri-preview+sha" \
+           --header "If-None-Match: \"$UPSTREAM_BRANCH_LOCAL_SHA\"" \
            "https://api.github.com/repos/$UPSTREAM_REPOSITORY/commits/$UPSTREAM_BRANCH")"
         [[ "$UPSTREAM_SHA_HTTP_CODE" = "304" ]] && exit
       fi
