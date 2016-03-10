@@ -3,9 +3,8 @@ require "language/go"
 class Algernon < Formula
   desc "HTTP/2 web server with Lua support"
   homepage "http://algernon.roboticoverlords.org/"
-  url "https://github.com/xyproto/algernon/archive/0.86.tar.gz"
-  sha256 "f7d283a40b0f71c209d854570214f9b96f3e8e7036402e770e2aa8e93a40ffe3"
-  revision 1
+  url "https://github.com/xyproto/algernon/archive/0.87.tar.gz"
+  sha256 "5179e0f5f0ce7f21e7de6dc467bbcb6b986b325ce3c2ae0d6e75795c73bfd3c3"
 
   head "https://github.com/xyproto/algernon.git"
 
@@ -22,40 +21,39 @@ class Algernon < Formula
   # Generated using: https://github.com/samertm/homebrew-go-resources
   %w[
     github.com/bobappleyard/readline 7e300e02d38ee8b418c0b4841877f1845d392328
-    github.com/boltdb/bolt 0b00effdd7a8270ebd91c24297e51643e370dd52
-    github.com/bradfitz/http2 6608b73ef18668469ee5365431dc3a106502c449
+    github.com/boltdb/bolt b514920f8f2e0a68f857e5a12c774f385a59aef9
+    github.com/bradfitz/http2 aa7658c0e9902e929a9ed0996ef949e59fc0f3ab
     github.com/didip/tollbooth be7d4891cc860c1d3d4004e99b898ddfd419ceb1
     github.com/eknkc/amber 144da19a9994994c069f0693294a66dd310e14a4
-    github.com/fatih/color 9aae6aaa22315390f03959adca2c4d395b02fcef
-    github.com/garyburd/redigo 6ece6e0a09f28cc399b21550cbf37ab39ba63cce
+    github.com/fatih/color 4f7bcef27eec7925456d0c30c5e7b0408b3339be
+    github.com/fsnotify/fsnotify 3c39c22b2c7b0516d5f2553f1608e5d13cb19053
+    github.com/garyburd/redigo 4ed1111375cbeb698249ffe48dd463e9b0a63a7a
     github.com/getwe/figlet4go accc26b01fe9ddb12c1b2ce19c2212551d70af87
-    github.com/go-fsnotify/fsnotify 7be54206639f256967dd82fa767397ba5f8f48f5
-    github.com/go-sql-driver/mysql d512f204a577a4ab037a1816604c48c9c13210be
-    github.com/juju/ratelimit 772f5c38e468398c4511514f4f6aa9a4185bc0a0
-    github.com/klauspost/compress eb073746a16efe36368ed26c1713412cde1d8937
-    github.com/klauspost/cpuid 8d9fe9648674c9699346aa4a5456cc9e1c0a96db
-    github.com/klauspost/crc32 3e5c38b8b170916b332a5ccb25f921314b98ba01
-    github.com/klauspost/pgzip 1e7ece2286a27cc064628f39fda30a48d818d985
-    github.com/mamaar/risotto 2683127f39af835e766a70b203efc6a51dd2ebe6
-    github.com/mattn/go-colorable 51a7e7a8b1665b25ca173debdc8d52d493348f15
-    github.com/mattn/go-isatty d6aaa2f596ae91a0a58d8e7f2c79670991468e4f
-    github.com/mattn/go-runewidth 12e0ff74603c9a3209d8bf84f8ab349fe1ad9477
-    github.com/mitchellh/go-homedir d682a8f0cf139663a984ff12528da460ca963de9
-    github.com/mitchellh/mapstructure 281073eb9eb092240d33ef253c404f1cca550309
-    github.com/natefinch/pie 83bfd1821ee0ba96a47d98cbed424313fb60f57a
-    github.com/nsf/termbox-go da190e1fe57cb6bc60a3d9d407533d944c7c450d
-    github.com/russross/blackfriday 300106c228d52c8941d4b3de6054a6062a86dda3
+    github.com/go-sql-driver/mysql 0f2db9e6c9cff80a97ca5c2c5096242cc1554e16
+    github.com/juju/ratelimit 77ed1c8a01217656d2080ad51981f6e99adaa177
+    github.com/klauspost/compress 2d3d403f37d2e70b722590bc286076a17422e1f2
+    github.com/klauspost/cpuid 09cded8978dc9e80714c4d85b0322337b0a1e5e0
+    github.com/klauspost/crc32 19b0b332c9e4516a6370a0456e6182c3b5036720
+    github.com/klauspost/pgzip 95e8170c5d4da28db9c64dfc9ec3138ea4466fd4
+    github.com/mamaar/risotto c3b4f4dbac6541f11ed5bc1b97d00ef06bbe34c0
+    github.com/mattn/go-runewidth d037b52ae5c0338c2bb18da01fb7ddf0e8be9aa1
+    github.com/mitchellh/go-homedir 981ab348d865cf048eb7d17e78ac7192632d8415
+    github.com/mitchellh/mapstructure d2dd0262208475919e1a362f675cfc0e7c10e905
+    github.com/natefinch/pie 6059396cf8c679e5b6a7c82378e4623ca62f91ff
+    github.com/nsf/termbox-go 362329b0aa6447eadd52edd8d660ec1dff470295
+    github.com/russross/blackfriday 006144af03eeeff1037240a71865a9fd61f1c25f
     github.com/shurcooL/sanitized_anchor_name 10ef21a441db47d8b13ebcc5fd2310f636973c77
-    github.com/sirupsen/logrus a22723f16efea2e89b7bd67d10ed077c47c14eb4
-    github.com/tylerb/graceful 48afeb21e2fcbcff0f30bd5ad6b97747b0fae38e
+    github.com/sirupsen/logrus 219c8cb75c258c552e999735be6df753ffc7afdc
+    github.com/tylerb/graceful c78c8d9dded2ad16ad81b1fa526a81b2bb8049f6
     github.com/xyproto/cookie b84c85ae2aa3e21b2c7fc8c37d5a3081c0c9c83b
     github.com/xyproto/jpath d9213e11ca293e9e2705217ed372f53467d079ab
     github.com/xyproto/mime 58d5c367ee5b5e10f4662848579b8ccd759b280e
-    github.com/xyproto/permissionbolt 2df26b1551692e16594f818198969bde279caaec
-    github.com/xyproto/permissions2 cda148f601f8366aed9ce00669ecd700999a1501
-    github.com/xyproto/permissionsql af2b7c0135a89a396d8486d71821eaa10f5cb62d
+    github.com/xyproto/permissionbolt 45c93aae7044f5ed912843437557c86b15463975
+    github.com/xyproto/permissions2 67cea239db53332cce94945251b9c70e49c35769
+    github.com/xyproto/permissionsql 282767a73a87a51428c00b4b9bf92590cf7fa163
     github.com/xyproto/pinterface d4db92ac11a07dc77faece6d5ec7d64492958f2a
-    github.com/xyproto/recwatch 3c0912279ade9b2d2a2a9c07cfbd41d7f5974393
+    github.com/xyproto/pongo2 6784189431019a8b8fb874cb4b30ee36789e7892
+    github.com/xyproto/recwatch eec3775073f11929973b0d06507a682f8061babb
     github.com/xyproto/simplebolt 736018229d5a2972820bc9d6a8c5a6b0ba6fadc3
     github.com/xyproto/simplemaria 80759a73a6b576479bbf2baf955f7a46e04cb5b5
     github.com/xyproto/simpleredis de7b4cb9d1be983af7e9924394a27b67927e4918
@@ -63,7 +61,7 @@ class Algernon < Formula
     github.com/xyproto/unzip 823950573952ff86553b26381fe7472549873cb4
     github.com/yosssi/gcss 39677598ea4f3ec1da5568173b4d43611f307edb
     github.com/yuin/gluamapper d836955830e75240d46ce9f0e6d148d94f2e1d3a
-    github.com/yuin/gopher-lua f918613776713b6f81c708f3a2126b542c3efdd4
+    github.com/yuin/gopher-lua e5faab4db06a81efb60d8e16c1d205e1d93736a9
   ].each_slice(2) do |resurl, rev|
     go_resource resurl do
       url "https://#{resurl}.git", :revision => rev
@@ -72,12 +70,12 @@ class Algernon < Formula
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-      :revision => "aedad9a179ec1ea11b7064c57cbc6dc30d7724ec"
+      :revision => "5dc8cb4b8a8eb076cbb5a06bc3b8682c15bdbbd3"
   end
 
   go_resource "golang.org/x/net" do
     url "https://go.googlesource.com/net.git",
-      :revision => "db8e4de5b2d6653f66aea53094624468caad15d2"
+      :revision => "3e5cd1ed149001198e582f9d3f5bfd564cde2896"
   end
 
   def install
