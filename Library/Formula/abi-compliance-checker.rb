@@ -1,8 +1,8 @@
 class AbiComplianceChecker < Formula
   desc "Check binary and source compatibility for C/C++"
   homepage "http://ispras.linuxbase.org/index.php/ABI_compliance_checker"
-  url "https://github.com/lvc/abi-compliance-checker/archive/1.99.9.tar.gz"
-  sha256 "52b0daca89fcda73cde126497c8015ca823417074ba02fcff68b7acf2f45e516"
+  url "https://github.com/lvc/abi-compliance-checker/archive/1.99.16.tar.gz"
+  sha256 "e1ecfbe5f97f00ed0858cb33391b0b04be78dff02a052c90bb5eb3ee4fb8cf49"
 
   bottle do
     cellar :any_skip_relocation
@@ -25,7 +25,7 @@ class AbiComplianceChecker < Formula
       <headers>#{Formula["ctags"].include}</headers>
       <libs>#{Formula["ctags"].lib}</libs>
     EOS
-    gcc_suffix = Formula["gcc"].version.to_s.slice(/\d\.\d+/)
+    gcc_suffix = Formula["gcc"].version.to_s.slice(/\d+/)
     system bin/"abi-compliance-checker", "-cross-gcc", "gcc-" + gcc_suffix,
                                          "-lib", "ctags",
                                          "-old", testpath/"test.xml",
