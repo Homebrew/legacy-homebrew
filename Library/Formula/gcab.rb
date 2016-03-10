@@ -4,6 +4,12 @@ class Gcab < Formula
   url "https://download.gnome.org/sources/gcab/0.7/gcab-0.7.tar.xz"
   sha256 "a16e5ef88f1c547c6c8c05962f684ec127e078d302549f3dfd2291e167d4adef"
 
+  bottle do
+    sha256 "7403bfd6a817af92bf1c89c90826e748c909e2ec559f18d708ac48306c5b7431" => :el_capitan
+    sha256 "3200cfd9434dc548094116bf426979978c51cbad8316fd299620ce86baa5acb3" => :yosemite
+    sha256 "1c063054e17f3194d214d5d1a8d01a12932ec8214cca7143956760039db22f2f" => :mavericks
+  end
+
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build
   depends_on "vala" => :build
