@@ -6,9 +6,9 @@ class Tarsnap < Formula
 
   bottle do
     cellar :any
-    sha256 "939f0d1e0d78974b3253175ea0c4f01c2604a8c6345d89fd691c95e0d8b3e716" => :yosemite
-    sha256 "21b78154d96292c8dfb7ebed0d2404d6e7d15859a6341544fd080c50b152a118" => :mavericks
-    sha256 "cbf519589c3e09bfc18c3d8d39db958c52c014dc1fca8b1ad5ab2fa17fb9ae0a" => :mountain_lion
+    sha256 "40965861e708196ec3c18f9a99943f75a54dac2494c88aed96b3df70cd46d4fa" => :el_capitan
+    sha256 "4e256b38d10e905ece1c874a5655612f2f2cc8e7911bfe1d72b07ea2e209244a" => :yosemite
+    sha256 "0c8a97e409b389b5e696330123a1f185ebf17c91728274634a25dc7adfa72866" => :mavericks
   end
 
   head do
