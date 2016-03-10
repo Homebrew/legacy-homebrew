@@ -20,4 +20,8 @@ class Libotr < Formula
                           "--mandir=#{man}"
     system "make", "install"
   end
+  
+  test do     
+    test_from_url
+  end
 end
