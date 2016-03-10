@@ -1,3 +1,5 @@
+HOMEBREW_VERSION="0.9.5"
+
 odie() {
   if [[ -t 2 ]] # check whether stderr is a tty.
   then
@@ -70,6 +72,7 @@ then
   fi
 fi
 
+export HOMEBREW_VERSION
 export HOMEBREW_BREW_FILE
 export HOMEBREW_RUBY_PATH
 export HOMEBREW_PREFIX
