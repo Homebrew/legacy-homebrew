@@ -41,9 +41,18 @@ end
 
 __END__
 diff --git a/time.c b/time.c
-index 9d5cf2c..97611f5 100644
+index 9d5cf2c..7b6e011 100644
 --- a/time.c
 +++ b/time.c
+@@ -392,7 +392,7 @@ summarize (fp, fmt, command, resp)
+ 		       ptok ((UL) resp->ru.ru_ixrss) / MSEC_TO_TICKS (v));
+ 	      break;
+ 	    case 'M':		/* Maximum resident set size.  */
+-	      fprintf (fp, "%lu", ptok ((UL) resp->ru.ru_maxrss));
++	      fprintf (fp, "%lu", (UL) resp->ru.ru_maxrss / 1024);
+ 	      break;
+ 	    case 'O':		/* Outputs.  */
+ 	      fprintf (fp, "%ld", resp->ru.ru_oublock);
 @@ -628,7 +628,7 @@ run_command (cmd, resp)
    signal (SIGQUIT, quit_signal);
  }
