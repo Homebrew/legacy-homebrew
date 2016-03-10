@@ -1,9 +1,9 @@
 class AptCacherNg < Formula
   desc "Caching proxy"
   homepage "https://www.unix-ag.uni-kl.de/~bloch/acng/"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.8.orig.tar.xz"
-  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.8.orig.tar.xz"
-  sha256 "7847f970ed9b3b3b65fe9c302107ede9cd0c5de57e3ddb497a409e8720f1fe58"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.9.1.orig.tar.xz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.9.1.orig.tar.xz"
+  sha256 "24994beac6ce1c51f97ce66f49ea68cac9e30a0162c5c0ae8a36bcb8ed34c8b4"
 
   bottle do
     sha256 "a1df0128f290116cb8e5e9d9bcf899dda1bba6ba4bdc6a4827e0839bd2631854" => :mavericks
@@ -13,26 +13,14 @@ class AptCacherNg < Formula
   depends_on "cmake" => :build
   depends_on :osxfuse => :build
   depends_on "boost" => :build
-  depends_on "openssl"
+  depends_on "libtomcrypt"
   depends_on "xz" # For LZMA
 
   needs :cxx11
 
-  if MacOS.version <= :mavericks
-    # clang++ 3.5 (Mavericks) fails to compile because it cannot deduce the
-    # lambda return type due to multiple returns and, in the case of clang++ 3.5,
-    # lambdas would preserve cv-qualifiers.  These are DRs (defect reports) to
-    # C++11, of which clang++ 3.5 is affected.  A decent summary of thesse issues
-    # can be found in the link below.
-    # https://stackoverflow.com/questions/28955478/when-can-we-omit-the-return-type-in-a-c11-lambda
-    #
-    # Raised https://alioth.debian.org/tracker/index.php?func=detail&aid=315276&group_id=100566&atid=413109
-    # with upstream to address.
-    patch :DATA
-  end
-
   def install
     ENV.cxx11
+    ENV["TOMCRYPT_HOME"] = Formula["libtomcrypt"].opt_prefix
 
     (var/"spool/apt-cacher-ng").mkpath
     (var/"log").mkpath
@@ -42,7 +30,11 @@ class AptCacherNg < Formula
       s.gsub!(/^LogDir: .*/, "LogDir: #{var}/log")
     end
 
-    system "cmake", ".", *std_cmake_args
+    args = std_cmake_args
+    # Build with OpenSSL enabled uses `fmemopen` in glibc and it isn't supported
+    # by OS X. So we use libtomcrypt instead of OpenSSL for now.
+    args << "-DUSE_SSL=OFF"
+    system "cmake", ".", *args
     system "make", "apt-cacher-ng"
     system "make", "install"
   end
@@ -93,18 +85,3 @@ class AptCacherNg < Formula
     end
   end
 end
-
-__END__
-diff --git a/source/acfg.cc b/source/acfg.cc
-index fe9867d..922f16b 100644
---- a/source/acfg.cc
-+++ b/source/acfg.cc
-@@ -180,7 +180,7 @@ tProperty n2pTbl[] =
-		BARF("Invalid proxy specification, aborting...");
-	}
-	return true;
--}, [](bool superUser)
-+}, [](bool superUser) -> string
- {
-	if(!superUser && !proxy_info.sUserPass.empty())
-		return string("#");
