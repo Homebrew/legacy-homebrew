@@ -29,27 +29,27 @@ class V8 < Formula
   # Note that we don't require the "test" DEPS because we don't run the tests.
   resource "gyp" do
     url "https://chromium.googlesource.com/external/gyp.git",
-        :revision => "ed163ce233f76a950dce1751ac851dbe4b1c00cc"
+        :revision => "b85ad3e578da830377dbc1843aa4fbc5af17a192"
   end
 
   resource "icu" do
     url "https://chromium.googlesource.com/chromium/deps/icu.git",
-        :revision => "e466f6ac8f60bb9697af4a91c6911c6fc4aec95f"
+        :revision => "8d342a405be5ae8aacb1e16f0bc31c3a4fbf26a2"
   end
 
   resource "buildtools" do
     url "https://chromium.googlesource.com/chromium/buildtools.git",
-        :revision => "14288a03a92856fe1fc296d39e6a25c2d83cd6cf"
+        :revision => "0f8e6e4b126ee88137930a0ae4776c4741808740"
   end
 
   resource "common" do
     url "https://chromium.googlesource.com/chromium/src/base/trace_event/common.git",
-        :revision => "e40c41030f44cbd5b6f54081436620f43c3bb08a"
+        :revision => "d83d44b13d07c2fd0a40101a7deef9b93b841732"
   end
 
   resource "swarming_client" do
     url "https://chromium.googlesource.com/external/swarming.client.git",
-        :revision => "df6e95e7669883c8fe9ef956c69a544154701a49"
+        :revision => "9cdd76171e517a430a72dcd7d66ade67e109aa00"
   end
 
   resource "gtest" do
@@ -64,7 +64,7 @@ class V8 < Formula
 
   resource "clang" do
     url "https://chromium.googlesource.com/chromium/src/tools/clang.git",
-        :revision => "3183208ae119c48012bed71645cb2ca537120811"
+        :revision => "24e8c1c92fe54ef8ed7651b5850c056983354a4a"
   end
 
   def install
