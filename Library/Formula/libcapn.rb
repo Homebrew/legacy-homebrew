@@ -30,6 +30,16 @@ class Libcapn < Formula
     end
   end
 
+  devel do
+    url "https://github.com/adobkin/libcapn/archive/2.0.0-beta.tar.gz"
+    sha256 "551dccfa66b616a390e3c9fc8ac35869a076c979246728e9343f9eeb50d66551"
+    version "2.0.0-beta"
+
+    resource "jansson" do
+      url "https://github.com/akheron/jansson.git", :revision => "e44b2231b50aea5de78b7ea2debec0d5327cd711"
+    end
+  end
+
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "openssl"
