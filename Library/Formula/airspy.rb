@@ -1,8 +1,8 @@
 class Airspy < Formula
   desc "The usemode driver and associated tools for airspy"
   homepage "http://www.airspy.com"
-  url "https://github.com/airspy/host/archive/v1.0.6.tar.gz"
-  sha256 "58a80db62a178c04f52172e25921f2e1b67f1efaf36e4c808e5b5eeb8f6dbfd9"
+  url "https://github.com/airspy/host/archive/v1.0.7.tar.gz"
+  sha256 "c7efbe3acd5b72ac9cc8ce46651e81c6adecbe3491dddf5a2bf8ef4ad14b2fb2"
   head "https://github.com/airspy/host.git"
 
   bottle do
