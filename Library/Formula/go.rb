@@ -17,6 +17,7 @@ class Go < Formula
   option "without-cgo", "Build without cgo"
   option "without-godoc", "godoc will not be installed for you"
   option "without-vet", "vet will not be installed for you"
+  option "without-race", "Build without race detector"
 
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
@@ -57,6 +58,12 @@ class Go < Formula
     rm_rf "gobootstrap" # Bootstrap not required beyond compile.
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/go*"]
+
+    # Race detector only supported on amd64 platforms.
+    # https://golang.org/doc/articles/race_detector.html
+    if MacOS.prefer_64_bit? && build.with?("race")
+      system "#{bin}/go", "install", "-race", "std"
+    end
 
     if build.with?("godoc") || build.with?("vet")
       ENV.prepend_path "PATH", bin
