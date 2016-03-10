@@ -6,9 +6,9 @@ class Bokken < Formula
 
   bottle do
     cellar :any
-    sha256 "c5b0b1f7e134c37387b9ca3f15ab63c424fe1d7a1c3196c4de583feda002c4d3" => :mavericks
-    sha256 "870b917d0ad42a4a38a057919946ca099c726b181abc3adf1f6a8242d981bdf4" => :mountain_lion
-    sha256 "dcda9a37224afa064e78a0b9575d9e7d1f8032d5b8b44bd95b63fc0768da37c4" => :lion
+    sha256 "8c7620112d4780191a49bd6d45aa79dfec7be1051959af5eb76e2b370b6b0eeb" => :el_capitan
+    sha256 "a08dbad0b91ed9aee3af298e4e493ff9d27960de228bec2b15833d64355814ff" => :yosemite
+    sha256 "75e3e223d233e6340f02a927ebb0c9fdcfbc46ec13e323136724fd971a1078fc" => :mavericks
   end
 
   depends_on :python
