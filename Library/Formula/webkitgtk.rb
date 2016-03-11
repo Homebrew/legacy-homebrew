@@ -5,9 +5,9 @@ class Webkitgtk < Formula
   sha256 "313682b23f03c457b28a7ef2d5bdb70a8174cca1d32e0a853fb36fa4dcf928a9"
 
   bottle do
-    sha256 "a26ad2ef37940f39f1fa2992a46669fb2fb8de2fe9aa3a60852c864fa62935d0" => :el_capitan
-    sha256 "dab593a831964cc410ad00f5138ddb18289539ef02e927393fc4e2014234153e" => :yosemite
-    sha256 "32f58057660aff479d180bbbe1a51e71af742659cb08708db029ee334ef7c2d2" => :mavericks
+    sha256 "7fb9c9698b13d9c803b4f6250aa8385ca4f635e91ad8803d084adc28f2f6e240" => :el_capitan
+    sha256 "4dc1ee0d27af05b8697f1a4dfd10d6f7cb40c202a4bac604fff2470b268aac74" => :yosemite
+    sha256 "bab243e94c3e8a247082f8ba2125567c1f8a34fa634710b68fda541f3fb75152" => :mavericks
   end
 
   depends_on "cmake" => :build
