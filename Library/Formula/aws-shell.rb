@@ -6,10 +6,6 @@ class AwsShell < Formula
     url "https://pypi.python.org/packages/source/a/aws-shell/aws-shell-0.1.0.tar.gz"
     sha256 "2d89e3c51e6cf7da74c8bca8b8a986cc8edcad27ccd6c15678cd84b970f63a16"
 
-    # Use :python on Lion to avoid urllib3 warning
-    # https://github.com/Homebrew/homebrew/pull/37240
-    depends_on :python if MacOS.version <= :lion
-
     resource "awscli" do
       url "https://pypi.python.org/packages/source/a/awscli/awscli-1.10.1.tar.gz"
       sha256 "6b738f7fc6af7ab9c759b7efb5decde71970990061b2df169b14bec89c452c95"
@@ -90,13 +86,13 @@ class AwsShell < Formula
       sha256 "dcb3ec4771066cc15cf6aab5d5c4a499a5f01c677ff5aeb46cf20500dccd920b"
     end
   end
+
   bottle do
     cellar :any_skip_relocation
     sha256 "27087f0726c934e16c3ece2e61aba839527c1ca12a9b34c2619635296b1ae38f" => :el_capitan
     sha256 "cb59ba879e047933abedaf07776a3ce0df0ddcbdf9f6c081dc7df02a8074bd30" => :yosemite
     sha256 "af0a15d42c5e6fb0476041bf56657cd841536dcd1feb42de5f5ca01272cdd81b" => :mavericks
   end
-
 
   head do
     url "https://github.com/awslabs/aws-shell.git"
@@ -149,6 +145,10 @@ class AwsShell < Formula
       url "https://github.com/jquast/wcwidth.git"
     end
   end
+
+  # Use :python on Lion to avoid urllib3 warning
+  # https://github.com/Homebrew/homebrew/pull/37240
+  depends_on :python if MacOS.version <= :lion
 
   def install
     ENV["PYTHONPATH"] = libexec/"lib/python2.7/site-packages"
