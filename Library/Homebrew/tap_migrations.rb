@@ -59,6 +59,7 @@ TAP_MIGRATIONS = {
   "feh" => "homebrew/x11",
   "ffts" => "homebrew/boneyard",
   "figtoipe" => "homebrew/head-only",
+  "fleet-db" => "homebrew/boneyard",
   "fox" => "homebrew/x11",
   "freeglut" => "homebrew/x11",
   "freerdp" => "homebrew/x11",
