@@ -1,10 +1,10 @@
 class Bind < Formula
   desc "Implementation of the DNS protocols"
   homepage "https://www.isc.org/downloads/bind/"
-  url "https://ftp.isc.org/isc/bind9/9.10.3-P3/bind-9.10.3-P3.tar.gz"
-  mirror "https://fossies.org/linux/misc/dns/bind9/9.10.3-P3/bind-9.10.3-P3.tar.gz"
-  version "9.10.3-P3"
-  sha256 "690810d1fbb72afa629e74638d19cd44e28d2b2e5eb63f55c705ad85d1a4cb83"
+  url "https://ftp.isc.org/isc/bind9/9.10.3-P4/bind-9.10.3-P4.tar.gz"
+  mirror "https://fossies.org/linux/misc/dns/bind9/9.10.3-P4/bind-9.10.3-P4.tar.gz"
+  version "9.10.3-P4"
+  sha256 "2ac044b5fbdf45fb45107af0df961b3b7cb5262a3bf1948ed3fe7a170dd13e3e"
   head "https://source.isc.org/git/bind9.git"
 
   bottle do
@@ -33,7 +33,7 @@ class Bind < Formula
     system "make"
     system "make", "install"
 
-    (buildpath+"named.conf").write named_conf
+    (buildpath/"named.conf").write named_conf
     system "#{sbin}/rndc-confgen", "-a", "-c", "#{buildpath}/rndc.key"
     etc.install "named.conf", "rndc.key"
   end
@@ -43,10 +43,10 @@ class Bind < Formula
 
     # Create initial configuration/zone/ca files.
     # (Mirrors Apple system install from 10.8)
-    unless (var+"named").exist?
-      (var+"named").mkpath
-      (var+"named/localhost.zone").write localhost_zone
-      (var+"named/named.local").write named_local
+    unless (var/"named").exist?
+      (var/"named").mkpath
+      (var/"named/localhost.zone").write localhost_zone
+      (var/"named/named.local").write named_local
     end
   end
 
