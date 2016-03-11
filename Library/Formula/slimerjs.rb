@@ -1,6 +1,6 @@
 class FirefoxRequirement < Requirement
   fatal true
-  default_formula "xulrunner" if MacOS.version < :yosemite
+  cask "firefox"
 
   def self.firefox_installation
     paths = ["~/Applications/FirefoxNightly.app", "~/Applications/Firefox.app",
@@ -10,33 +10,29 @@ class FirefoxRequirement < Requirement
     paths.find { |p| File.exist? File.expand_path(p) }
   end
 
-  satisfy(:build_env => false) { Formula["xulrunner"].installed? || FirefoxRequirement.firefox_installation }
+  satisfy(:build_env => false) { FirefoxRequirement.firefox_installation }
 
   def message
-    "Firefox or xulrunner must be available."
+    "Firefox must be available."
   end
 end
 
 class Slimerjs < Formula
   desc "Scriptable browser for Web developers"
   homepage "https://slimerjs.org/"
-  url "https://download.slimerjs.org/releases/0.9.6/slimerjs-0.9.6-mac.tar.bz2"
-  sha256 "5c3ba9a83328a54b1fc6a6106abdd6d6b2117768f36ad43b9b0230a3ad7113cd"
+  url "https://download.slimerjs.org/releases/0.9.6/slimerjs-0.9.6.zip"
+  sha256 "982526f734ae4005f6117b821c1703482f2bc87c6b2e3ceaae6b981d4d123e73"
   head "https://github.com/laurentj/slimerjs.git"
 
-  bottle do
-    cellar :any
-    sha256 "3b9baa7f71e4e3b3472faf8e30d8e21f4a4f54e24fb894d003cb4fe539a6db1a" => :mavericks
-    sha256 "3607fb21371c48b903b5a0ed5c7211b027be3f76e7fbdccb6e44c30d5e341385" => :mountain_lion
-  end
-
   devel do
-    url "https://download.slimerjs.org/nightlies/latest-slimerjs-stable/slimerjs-0.9.7-pre-mac.tar.bz2"
-    sha256 "8817a90333154ecb52415638d418e6d90d6742fec3d80f124b739344a75da5d1"
+    url "https://download.slimerjs.org/nightlies/latest-slimerjs-stable/slimerjs-0.9.7-pre.zip"
     version "0.9.7-pre"
+    sha256 "c2228a163770ef95b41c971cf42fdbab42cf9fd9ee53d1d6891f8e1c3f50592d"
   end
 
-  # Min supported OS X version by Firefox & xulrunner is 10.6
+  bottle :unneeded
+
+  # Min supported OS X version by Firefox is 10.6.
   depends_on :macos => :leopard
   depends_on FirefoxRequirement
 
@@ -66,7 +62,7 @@ class Slimerjs < Formula
     end
     s += <<-EOS.undent
 
-      Note: If you use SlimerJS with an unstable version of Mozilla Firefox/XULRunner (>38.*)
+      Note: If you use SlimerJS with an unstable version of Mozilla Firefox (>38.*)
       you may have to change the [Gecko]MaxVersion in #{libexec}/application.ini
     EOS
 
@@ -74,9 +70,7 @@ class Slimerjs < Formula
   end
 
   test do
-    if build.with?("xulrunner")
-      system "#{bin}/slimerjs", "-v"
-      system "#{bin}/slimerjs", "loadspeed.js", "https://www.google.com"
-    end
+    ENV.delete "SLIMERJSLAUNCHER"
+    assert_match "Set it with the path to Firefox", shell_output("#{bin}/slimerjs", 1)
   end
 end
