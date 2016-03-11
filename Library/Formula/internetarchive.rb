@@ -8,9 +8,9 @@ class Internetarchive < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3e27214dbc22967ff042bca21dad0ac37646c369317a4ef17e6235f8c9a8b839" => :el_capitan
-    sha256 "29ffd79cce847a599d26757f63d59a72e6a7e02e9c6444472925628a2a315003" => :yosemite
-    sha256 "c8541a556cbabb8e3ae77eab1642b4bf1ff54984a796b04fa4daabc2e6eb8f6c" => :mavericks
+    sha256 "4a5d623940b0d930ca573f864ff56ef676df8c8f466f62a1faacc14039ccb7e3" => :el_capitan
+    sha256 "51ec33b894735303bcf2f3223815eeb763e5420f08e11a5dad6aec9818560956" => :yosemite
+    sha256 "905133146b5145deb2af74d47dc19737580e9ab870a76d0f6f919a1d861d894b" => :mavericks
   end
 
   resource "PyYAML" do
