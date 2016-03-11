@@ -1,4 +1,6 @@
 require "extend/string"
+require "tap_migrations"
+require "formula_renames"
 
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
@@ -31,8 +33,7 @@ class Tap
     repo = repo.strip_prefix "homebrew-"
 
     if user == "Homebrew" && repo == "homebrew"
-      require "core_formula_repository"
-      return CoreFormulaRepository.instance
+      return CoreTap.instance
     end
 
     cache_key = "#{user}/#{repo}".downcase
@@ -159,7 +160,7 @@ class Tap
   end
 
   # @private
-  def core_formula_repository?
+  def core_tap?
     false
   end
 
@@ -442,5 +443,88 @@ class Tap
   # @private
   def alias_file_to_name(file)
     "#{name}/#{file.basename}"
+  end
+end
+
+# A specialized {Tap} class to mimic the core formula file system, which shares many
+# similarities with normal {Tap}.
+# TODO Separate core formulae with core codes. See discussion below for future plan:
+#      https://github.com/Homebrew/homebrew/pull/46735#discussion_r46820565
+class CoreTap < Tap
+  # @private
+  def initialize
+    @user = "Homebrew"
+    @repo = "homebrew"
+    @name = "Homebrew/homebrew"
+    @path = HOMEBREW_REPOSITORY
+  end
+
+  def self.instance
+    @instance ||= CoreTap.new
+  end
+
+  # @private
+  def uninstall
+    raise "Tap#uninstall is not available for CoreTap"
+  end
+
+  # @private
+  def pin
+    raise "Tap#pin is not available for CoreTap"
+  end
+
+  # @private
+  def unpin
+    raise "Tap#unpin is not available for CoreTap"
+  end
+
+  # @private
+  def pinned?
+    false
+  end
+
+  # @private
+  def command_files
+    []
+  end
+
+  # @private
+  def custom_remote?
+    remote != "https://github.com/#{user}/#{repo}.git"
+  end
+
+  # @private
+  def core_tap?
+    true
+  end
+
+  # @private
+  def formula_dir
+    HOMEBREW_LIBRARY/"Formula"
+  end
+
+  # @private
+  def alias_dir
+    HOMEBREW_LIBRARY/"Aliases"
+  end
+
+  # @private
+  def formula_renames
+    FORMULA_RENAMES
+  end
+
+  # @private
+  def tap_migrations
+    TAP_MIGRATIONS
+  end
+
+  # @private
+  def formula_file_to_name(file)
+    file.basename(".rb").to_s
+  end
+
+  # @private
+  def alias_file_to_name(file)
+    file.basename.to_s
   end
 end

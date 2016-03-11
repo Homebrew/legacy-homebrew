@@ -1,21 +1,21 @@
 class Khard < Formula
   desc "Console carddav client."
-  homepage "https://github.com/scheibler/khard"
-  url "https://pypi.python.org/packages/source/k/khard/khard-0.6.3.tar.gz"
-  sha256 "88f8962524490b78fd9780fa2abe8f65d59d4bac4bf0b2cf9485434442c01ec7"
+  homepage "https://github.com/scheibler/khard/"
+  url "https://pypi.python.org/packages/source/k/khard/khard-0.8.1.tar.gz"
+  sha256 "00324a0faf87d8ca80be0a24e7d84a5faf763af3146565ac6b57db8a49d20f25"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9122a318179ba49809493701c90b0fcedb67071a7fa6e1b5381d4c1aafc4b14b" => :el_capitan
-    sha256 "6625163c8d9173d8c954caab431a3151cbff8db6e456bec63fbf2b135444d49b" => :yosemite
-    sha256 "b555feb3d97632e4b1693db0463b90c8096de5626c9dbf46c63cb43608462112" => :mavericks
+    sha256 "be3fda519b336bdff13313ad034c8dd966d7cb66cae4f19eb0802ab63f8b278c" => :el_capitan
+    sha256 "00965208aae17f82402f9d7d61b794dd06f6eb6e87e96e14c4bb3f2ba57f46c4" => :yosemite
+    sha256 "e471e4eb7a6966939ea90df23810e0d63b40e197228a0c97596045b6217bd652" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
-  resource "vobject" do
-    url "https://pypi.python.org/packages/source/v/vobject/vobject-0.8.1c.tar.gz"
-    sha256 "594113117f2017ed837c8f3ce727616f9053baa5a5463a7420c8249b8fc556f5"
+  resource "atomicwrites" do
+    url "https://pypi.python.org/packages/source/a/atomicwrites/atomicwrites-0.1.9.tar.gz"
+    sha256 "7cdfcee8c064bc0ba30b0444ba0919ebafccf5b0b1916c8cde07e410042c4023"
   end
 
   resource "configobj" do
@@ -23,19 +23,29 @@ class Khard < Formula
     sha256 "a2f5650770e1c87fb335af19a9b7eb73fc05ccf22144eb68db7d00cd2bcb0902"
   end
 
-  resource "argparse" do
-    url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
-    sha256 "b3a79a23d37b5a02faa550b92cbbbebeb4aa1d77e649c3eb39c19abf5262da04"
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.5.0.tar.gz"
+    sha256 "c1f7a66b0021bd7b206cc60dd47ecc91b931cdc5258972dc56b25186fa9a96a5"
+  end
+
+  resource "PyYAML" do
+    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
+    sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+  end
+
+  resource "vobject" do
+    url "https://pypi.python.org/packages/source/v/vobject/vobject-0.9.1.tar.gz"
+    sha256 "ff25fd924227c4ef9369cfd731e486ccae988a9bc32d1e4417cfa7dcb2959fb3"
   end
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[vobject configobj argparse six].each do |r|
+    %w[atomicwrites configobj python-dateutil PyYAML six vobject].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -44,7 +54,7 @@ class Khard < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
-    bin.install Dir["#{libexec}/bin/*"]
+    bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 

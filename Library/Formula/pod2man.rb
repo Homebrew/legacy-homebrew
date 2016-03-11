@@ -17,6 +17,7 @@ class Pod2man < Formula
     system "perl", "Makefile.PL", "PREFIX=#{prefix}",
                    "INSTALLSCRIPT=#{bin}",
                    "INSTALLMAN1DIR=#{man1}", "INSTALLMAN3DIR=#{man3}"
+    system "make"
     system "make", "install"
   end
 

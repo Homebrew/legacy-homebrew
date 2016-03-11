@@ -9,14 +9,16 @@ class Go < Formula
   head "https://github.com/golang/go.git"
 
   bottle do
-    sha256 "099f9915169facb03b68d2398097d213aac55895429a42230f068c41d099c66b" => :el_capitan
-    sha256 "7adc6b3ef3340c13ab0b1cde9bb870246dc991065aa154dac8b8be5e6bc11585" => :yosemite
-    sha256 "adf969c78e1b224e3d6567d5b0ba061b9a36a43f569ad1a955110e8e840d5b27" => :mavericks
+    revision 1
+    sha256 "d2e7da06183372774fd77ff251e862be8a5e2f7c16294323d977a6931059a928" => :el_capitan
+    sha256 "c40e53d858247ede565ff61412b00164ea3fa40b421ac444f6ac3973b662faa8" => :yosemite
+    sha256 "cd2a70fdfdcfae32d072fae1ac57e8eb4747e6d2737d512cd25bc3d0d13f97fe" => :mavericks
   end
 
   option "without-cgo", "Build without cgo"
   option "without-godoc", "godoc will not be installed for you"
   option "without-vet", "vet will not be installed for you"
+  option "without-race", "Build without race detector"
 
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
@@ -57,6 +59,12 @@ class Go < Formula
     rm_rf "gobootstrap" # Bootstrap not required beyond compile.
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/go*"]
+
+    # Race detector only supported on amd64 platforms.
+    # https://golang.org/doc/articles/race_detector.html
+    if MacOS.prefer_64_bit? && build.with?("race")
+      system "#{bin}/go", "install", "-race", "std"
+    end
 
     if build.with?("godoc") || build.with?("vet")
       ENV.prepend_path "PATH", bin

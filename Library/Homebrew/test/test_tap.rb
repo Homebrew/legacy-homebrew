@@ -59,7 +59,7 @@ class TapTest < Homebrew::TestCase
   end
 
   def test_fetch
-    assert_kind_of CoreFormulaRepository, Tap.fetch("Homebrew", "homebrew")
+    assert_kind_of CoreTap, Tap.fetch("Homebrew", "homebrew")
     tap = Tap.fetch("Homebrew", "foo")
     assert_kind_of Tap, tap
     assert_equal "homebrew/foo", tap.name
@@ -78,7 +78,7 @@ class TapTest < Homebrew::TestCase
     assert_equal @path, @tap.path
     assert_predicate @tap, :installed?
     assert_predicate @tap, :official?
-    refute_predicate @tap, :core_formula_repository?
+    refute_predicate @tap, :core_tap?
   end
 
   def test_issues_url
@@ -155,7 +155,7 @@ class TapTest < Homebrew::TestCase
   end
 
   def test_private_remote
-    skip "HOMEBREW_GITHUB_API_TOKEN is required" unless ENV["HOMEBREW_GITHUB_API_TOKEN"]
+    skip "HOMEBREW_GITHUB_API_TOKEN is required" unless GitHub.api_credentials
     assert_predicate @tap, :private?
   end
 
@@ -204,11 +204,11 @@ class TapTest < Homebrew::TestCase
   end
 end
 
-class CoreFormulaRepositoryTest < Homebrew::TestCase
+class CoreTapTest < Homebrew::TestCase
   include FileUtils
 
   def setup
-    @repo = CoreFormulaRepository.new
+    @repo = CoreTap.new
   end
 
   def test_attributes
@@ -219,7 +219,7 @@ class CoreFormulaRepositoryTest < Homebrew::TestCase
     assert_predicate @repo, :installed?
     refute_predicate @repo, :pinned?
     assert_predicate @repo, :official?
-    assert_predicate @repo, :core_formula_repository?
+    assert_predicate @repo, :core_tap?
   end
 
   def test_forbidden_operations

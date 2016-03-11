@@ -3,21 +3,20 @@ require "language/go"
 class Telegraf < Formula
   desc "Server-level metric gathering agent for InfluxDB"
   homepage "https://influxdata.com"
-  url "https://github.com/influxdata/telegraf/archive/0.10.3.tar.gz"
-  sha256 "00673003a0e190f30a69a23f51a84ce0bc9d2efb1a1142b0dfdb697524229e59"
+  url "https://github.com/influxdata/telegraf/archive/0.10.4.1.tar.gz"
+  sha256 "6114444834910b9545dc06243dd8f5dba834b82220b7ff69f3929aae12d9af37"
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "050df2070631c21e1333afc9eb41ee7072a22094bda98794adaeb97de303e627" => :el_capitan
-    sha256 "bc27074ee461a668ac1c6a384d30dc41a29572347bd5367938c8a3c057316c2f" => :yosemite
-    sha256 "07e67e5fe15bd190e2206e9ad0a4a0868a01ba4e3b49081a48605eb39709b4bf" => :mavericks
+    sha256 "edee960086e7edc4fc6c1c9faf0e9b0d5542b197e988aa26e08eb4ebd51a31ad" => :el_capitan
+    sha256 "9510b0420da15be9c0804b3ddd6604b47fb294da87809a9f533a9fe8b18343c3" => :yosemite
+    sha256 "90d90836da7de441feeaee2b4d4443e399084c0c2e67b209f5f14970b25e1752" => :mavericks
   end
 
   depends_on "go" => :build
 
   go_resource "git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git" do
-    url "https://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git",
+    url "git://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git",
     :revision => "617c801af238c3af2d9e72c5d4a0f02edad03ce5"
   end
 
@@ -129,6 +128,11 @@ class Telegraf < Formula
   go_resource "github.com/matttproud/golang_protobuf_extensions" do
     url "https://github.com/matttproud/golang_protobuf_extensions.git",
     :revision => "d0c3fe89de86839aecf2e0579c40ba3bb336a453"
+  end
+
+  go_resource "github.com/miekg/dns" do
+    url "https://github.com/miekg/dns.git",
+    :revision => "e0d84d97e59bcb6561eae269c4e94d25b66822cb"
   end
 
   go_resource "github.com/mreiferson/go-snappystream" do

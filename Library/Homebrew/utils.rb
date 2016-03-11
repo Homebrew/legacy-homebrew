@@ -506,21 +506,53 @@ module GitHub
     end
   end
 
+  def api_credentials
+    @api_credentials ||= begin
+      if ENV["HOMEBREW_GITHUB_API_TOKEN"]
+        ENV["HOMEBREW_GITHUB_API_TOKEN"]
+      else
+        github_credentials = Utils.popen("git credential-osxkeychain get", "w+") do |io|
+          io.puts "protocol=https\nhost=github.com"
+          io.close_write
+          io.read
+        end
+        github_username = github_credentials[/username=(.+)/, 1]
+        github_password = github_credentials[/password=(.+)/, 1]
+        if github_username && github_password
+          [github_password, github_username]
+        else
+          []
+        end
+      end
+    end
+  end
+
+  def api_headers
+    @api_headers ||= begin
+        headers = {
+        "User-Agent" => HOMEBREW_USER_AGENT,
+        "Accept"     => "application/vnd.github.v3+json"
+      }
+      token, username = api_credentials
+      if token && !token.empty?
+        if username && !username.empty?
+          headers[:http_basic_authentication] = [username, token]
+        else
+          headers["Authorization"] = "token #{token}"
+        end
+      end
+      headers
+    end
+  end
+
   def open(url, &_block)
     # This is a no-op if the user is opting out of using the GitHub API.
     return if ENV["HOMEBREW_NO_GITHUB_API"]
 
     require "net/https"
 
-    headers = {
-      "User-Agent" => HOMEBREW_USER_AGENT,
-      "Accept"     => "application/vnd.github.v3+json"
-    }
-
-    headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-
     begin
-      Kernel.open(url, headers) { |f| yield Utils::JSON.load(f.read) }
+      Kernel.open(url, api_headers) { |f| yield Utils::JSON.load(f.read) }
     rescue OpenURI::HTTPError => e
       handle_api_error(e)
     rescue EOFError, SocketError, OpenSSL::SSL::SSLError => e

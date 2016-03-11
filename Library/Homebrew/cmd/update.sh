@@ -42,22 +42,21 @@ which_git() {
 }
 
 git_init_if_necessary() {
-  set -e
-  trap '{ rm -rf .git; exit 1; }' EXIT
-
   if [[ ! -d ".git" ]]
   then
+    set -e
+    trap '{ rm -rf .git; exit 1; }' EXIT
     git init
     git config --bool core.autocrlf false
     git config remote.origin.url https://github.com/Homebrew/homebrew.git
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-    git fetch origin
+    git fetch --force --depth=1 origin refs/heads/master:refs/remotes/origin/master
     git reset --hard origin/master
     SKIP_FETCH_HOMEBREW_REPOSITORY=1
+    set +e
+    trap - EXIT
+    return
   fi
-
-  set +e
-  trap - EXIT
 
   if [[ "$(git remote show origin -n)" = *"mxcl/homebrew"* ]]
   then
@@ -343,13 +342,14 @@ EOS
         # (so the API does not return 304: unmodified).
         UPSTREAM_SHA_HTTP_CODE="$(curl --silent '--max-time' 3 \
            --output /dev/null --write-out "%{http_code}" \
-           -H "Accept: application/vnd.github.chitauri-preview+sha" \
-           -H "If-None-Match: \"$UPSTREAM_BRANCH_LOCAL_SHA\"" \
+           --user-agent "Homebrew $HOMEBREW_VERSION" \
+           --header "Accept: application/vnd.github.chitauri-preview+sha" \
+           --header "If-None-Match: \"$UPSTREAM_BRANCH_LOCAL_SHA\"" \
            "https://api.github.com/repos/$UPSTREAM_REPOSITORY/commits/$UPSTREAM_BRANCH")"
         [[ "$UPSTREAM_SHA_HTTP_CODE" = "304" ]] && exit
       fi
 
-      git fetch "${QUIET_ARGS[@]}" origin \
+      git fetch --force "${QUIET_ARGS[@]}" origin \
         "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" || \
           odie "Fetching $DIR failed!"
     ) &

@@ -82,6 +82,7 @@ class Pathname
     src = Pathname(src)
     dst = join(new_basename)
     dst = yield(src, dst) if block_given?
+    return unless dst
 
     mkpath
 

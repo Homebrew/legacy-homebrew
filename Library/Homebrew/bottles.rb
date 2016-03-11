@@ -47,7 +47,7 @@ def bottle_resolve_formula_names(bottle_file)
   name = receipt_file_path.split("/").first
   tap = Tab.from_file_content(receipt_file, "#{bottle_file}/#{receipt_file_path}").tap
 
-  if tap.nil? || tap.core_formula_repository?
+  if tap.nil? || tap.core_tap?
     full_name = name
   else
     full_name = "#{tap}/#{name}"
@@ -66,7 +66,7 @@ class Bintray
   end
 
   def self.repository(tap = nil)
-    if tap.nil? || tap.core_formula_repository?
+    if tap.nil? || tap.core_tap?
       "bottles"
     else
       "bottles-#{tap.repo}"
