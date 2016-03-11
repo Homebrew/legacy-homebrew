@@ -17,9 +17,9 @@ class KubernetesCli < Formula
   end
 
   devel do
-    url "https://github.com/kubernetes/kubernetes/archive/v1.2.0-alpha.8.tar.gz"
-    sha256 "3ae607179a4b9adc7ed34f3877645e6e4cf9dad9bd17206bafb95019d38f60dc"
-    version "1.2.0-alpha.8"
+    url "https://github.com/kubernetes/kubernetes/archive/v1.2.0-beta.0.tar.gz"
+    sha256 "cda3b644c91445b33f002b1b70150c21a6b4da4b4fb19e4cec28fe91a7ae1068"
+    version "1.2.0-beta.0"
   end
 
   depends_on "go" => :build
