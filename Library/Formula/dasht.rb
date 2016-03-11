@@ -12,17 +12,6 @@ class Dasht < Formula
     bin.install Dir["bin/*"]
   end
 
-  def caveats
-    <<-EOS.undent
-      First, install some docsets using dasht-docsets-install(1)
-        dasht-docsets-install bash
-      Next, perform a direct search from the terminal using dasht(1)
-        dasht 'c - x'
-      Then, repeat the search in a web browser using dasht-server(1)
-        dasht-server
-    EOS
-  end
-
   test do
     system "#{bin}/dasht"
   end
