@@ -90,6 +90,13 @@ class AwsShell < Formula
       sha256 "dcb3ec4771066cc15cf6aab5d5c4a499a5f01c677ff5aeb46cf20500dccd920b"
     end
   end
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "27087f0726c934e16c3ece2e61aba839527c1ca12a9b34c2619635296b1ae38f" => :el_capitan
+    sha256 "cb59ba879e047933abedaf07776a3ce0df0ddcbdf9f6c081dc7df02a8074bd30" => :yosemite
+    sha256 "af0a15d42c5e6fb0476041bf56657cd841536dcd1feb42de5f5ca01272cdd81b" => :mavericks
+  end
+
 
   head do
     url "https://github.com/awslabs/aws-shell.git"
