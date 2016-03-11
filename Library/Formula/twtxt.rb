@@ -4,6 +4,13 @@ class Twtxt < Formula
   url "https://github.com/buckket/twtxt/archive/v1.2.1.tar.gz"
   sha256 "d16fe169b2f5800a60d2ed3d9b876e50fe45f2c0b46730d60a7b489bbc2c4e6a"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "0687d298c16f0e956e750cfe714fdf04cc75db65f2ed0907506de678b16b2d12" => :el_capitan
+    sha256 "0d2b60a588d415aaf4296488dc427330402a7e6d0ecfb583b8368a3e5521496a" => :yosemite
+    sha256 "108b01711cdff84ddc8ae8691d46acab5e214cd24e3fa1be86c1b2989217e25f" => :mavericks
+  end
+
   depends_on :python3
 
   resource "aiohttp" do
