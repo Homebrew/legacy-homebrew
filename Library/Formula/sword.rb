@@ -1,14 +1,14 @@
 class Sword < Formula
   desc "Cross-platform tools to write Bible software"
-  homepage "http://www.crosswire.org/sword/index.jsp"
-  url "http://www.crosswire.org/ftpmirror/pub/sword/source/v1.7/sword-1.7.4.tar.gz"
+  homepage "https://www.crosswire.org/sword/index.jsp"
+  url "https://www.crosswire.org/ftpmirror/pub/sword/source/v1.7/sword-1.7.4.tar.gz"
   sha256 "995da8cf5a207c1f09809bf4b9db0bd7d267da5fcdb9d6666c9b313edd9d213d"
 
   bottle do
-    revision 1
-    sha256 "a6740601f8541d911a5227942008078ce1775052c517213b34ad764a0f3f3af5" => :el_capitan
-    sha256 "25f96b8b873f291a3d4101838c6f796f6402641016bfa932d6a90cf310f27492" => :yosemite
-    sha256 "565501984e64d06ceb44c0661309f684efb06382349e6ea33e0c5b4749b9fc2b" => :mavericks
+    revision 2
+    sha256 "7b9581c869aa590288ad5b076b2547bcfe4edcb869550fc2c97497bcbb83e7ec" => :el_capitan
+    sha256 "1c5b77b0a2d5441cd9a51a72c65d8c64b64840072b70eb34a4c0231e7fe35c48" => :yosemite
+    sha256 "dc3bd07b3621d61ab58c1f1ca9796d7b1af05e3fccee3f8181cb5c743642df29" => :mavericks
   end
 
   option "with-clucene", "Use clucene for text searching capabilities"

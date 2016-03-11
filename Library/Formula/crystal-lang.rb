@@ -1,15 +1,14 @@
 class CrystalLang < Formula
   desc "Fast and statically typed, compiled language with Ruby-like syntax"
   homepage "http://crystal-lang.org/"
-  url "https://github.com/manastech/crystal/archive/0.11.1.tar.gz"
-  sha256 "bdff81fcb4f2dfdd50d79abba8a1ed0260bad4c1f055002cd16b9b6f443b8a15"
+  url "https://github.com/crystal-lang/crystal/archive/0.13.0.tar.gz"
+  sha256 "abada1d7bd411dca52ac0df2124a188d61301bdcd1fc75e8419a24496ee8ff42"
   head "https://github.com/manastech/crystal.git"
 
   bottle do
-    revision 1
-    sha256 "35e042219f5cc68a702b7b7c20b0671cdb7aa9d01da4339641a6db41d9d7b007" => :el_capitan
-    sha256 "352154e7e32302aa9d7c7406be9a56a994ce563ae4192bb65192b8fa16881978" => :yosemite
-    sha256 "15728ee8445c863b9f9f1b78c99ea6cd8bfbee0516a92a787960d2db3775920d" => :mavericks
+    sha256 "5c804b37df14fa4b4b93fb77be35f5f61a00610108095b3dbf37130bd1da3f22" => :el_capitan
+    sha256 "7e070984b439e4030afad28d42bd22b4842495e0def892eeeb87b724a24a3afe" => :yosemite
+    sha256 "aba8ac58c5f8c5afac22f579d33c006b6319967e3923c7fdce5c26d3ee5e40e0" => :mavericks
   end
 
   option "without-release", "Do not build the compiler in release mode"
@@ -21,13 +20,14 @@ class CrystalLang < Formula
   depends_on "libyaml" if build.with?("shards")
 
   resource "boot" do
-    url "https://github.com/manastech/crystal/releases/download/0.10.2/crystal-0.10.2-1-darwin-x86_64.tar.gz"
-    sha256 "6b1ffdbb662a27b2da2bccb358aff7c7d01d6ae1b1636fd5a99a3d73de4b8f4b"
+    url "https://github.com/crystal-lang/crystal/releases/download/0.12.0/crystal-0.12.0-1-darwin-x86_64.tar.gz"
+    version "0.12.0"
+    sha256 "2481282c037d9b209ec44a98a01895c26c1f5eee33ad364d68bc15b834f63446"
   end
 
   resource "shards" do
-    url "https://github.com/ysbaddaden/shards/archive/v0.6.0.tar.gz"
-    sha256 "cbaaa6f9d9d140ec410623b97cb86fb44640125495f1e48fb8a1875ccedc4cc5"
+    url "https://github.com/ysbaddaden/shards/archive/v0.6.2.tar.gz"
+    sha256 "11d22086d736598efa87eea558e7b304d538372f017fce9bb21476e40c586110"
   end
 
   def install
@@ -45,7 +45,7 @@ class CrystalLang < Formula
     if build.with? "release"
       system "make", "crystal", "release=true"
     else
-      system "make", "llvm_ext"
+      system "make", "deps"
       (buildpath/".build").mkpath
       system "bin/crystal", "build", "-o", ".build/crystal", "src/compiler/crystal.cr"
     end

@@ -42,6 +42,7 @@ module Homebrew
 
   UNBREWED_EXCLUDE_FILES = %w[.DS_Store]
   UNBREWED_EXCLUDE_PATHS = %w[
+    .github/*
     bin/brew
     lib/gdk-pixbuf-2.0/*
     lib/gio/*

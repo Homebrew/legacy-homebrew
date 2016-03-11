@@ -1,15 +1,15 @@
 class Tarantool < Formula
   desc "In-memory database and Lua application server."
   homepage "http://tarantool.org"
-  url "http://tarantool.org/dist/master/tarantool-1.6.7-593-gc17fa86-src.tar.gz"
-  version "1.6.7-593"
-  sha256 "21579278c732674149bfe55a4f408c47f44f7d2df6bfc71f3b12f004aa14bd1b"
+  url "https://github.com/tarantool/tarantool/releases/download/1.6.8.525/tarantool-1.6.8.525.tar.gz"
+  version "1.6.8-525"
+  sha256 "570c1ef7cabf86d30a98a3b8c5020a956cee0882738b223b2a385b02f9fda70f"
   head "https://github.com/tarantool/tarantool.git", :shallow => false
 
   bottle do
-    sha256 "d8c4c3b797f8a0707a5b58502db4af8e0700e6f93d54fd8376c4e2ea487eddc2" => :el_capitan
-    sha256 "abbb7d67c4218b90afb2a82079af0fd79b8d3dca58e4704cda14cd50d0cb38f5" => :yosemite
-    sha256 "4603c2baced36f51c11570d5a6cdaab2255dfe30a44cd78c20a22dc1bb3cb94d" => :mavericks
+    sha256 "c0b9b071132bd59018e0e56d15e4fae5010ef57f7fe46ceeaced26ac98145527" => :el_capitan
+    sha256 "a92ea313a32ca124f6b06cf5c572874df752c7631ddec50f108370f2c6626174" => :yosemite
+    sha256 "036d44fd4111ef3a3f2c85e8ff3227188fcb5d90828449e57fe3887b595c26a8" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -19,22 +19,12 @@ class Tarantool < Formula
     args = std_cmake_args
     args << "-DCMAKE_INSTALL_MANDIR=#{doc}"
     args << "-DCMAKE_INSTALL_SYSCONFDIR=#{etc}"
+    args << "-DCMAKE_INSTALL_LOCALSTATEDIR=#{var}"
+    args << "-DENABLE_DIST=ON"
 
     system "cmake", ".", *args
     system "make"
     system "make", "install"
-
-    inreplace bin/"tarantoolctl", %r{\/usr\/local\/etc\/tarantool\/default\/tarantool}, "#{etc}/default/tarantool"
-    inreplace etc/"default/tarantool" do |s|
-      s.gsub!(/(pid_file\s*=).*/, "\\1 '#{var}/run/tarantool',")
-      s.gsub!(/(wal_dir\s*=).*/, "\\1 '#{var}/lib/tarantool',")
-      s.gsub!(/(snap_dir\s*=).*/, "\\1 '#{var}/lib/tarantool',")
-      s.gsub!(/(sophia_dir\s*=).*/, "\\1 '#{var}/lib/tarantool',")
-      s.gsub!(/(logger\s*=).*/, "\\1 '#{var}/log/tarantool',")
-      s.gsub!(/(instance_dir\s*=).*/, "\\1 '#{etc}/tarantool/instances.enabled'")
-    end
-
-    (etc/"tarantool/instances.enabled").install_symlink "#{etc}/tarantool/instances.available/example.lua"
   end
 
   def post_install

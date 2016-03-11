@@ -6,9 +6,10 @@ class Zorba < Formula
   revision 2
 
   bottle do
-    sha256 "db15418a3274cf4aeb35937e230ce97698182ddfde37807f16c035c8a5135ca0" => :el_capitan
-    sha256 "32c0d43f093d70c672cd5aff4c0f5e5e4fe401c88db84e7cea78793a3871a7ba" => :yosemite
-    sha256 "434987a856a507071999d743d5cef45693a4c2a0f905f0d52489ada70183e558" => :mavericks
+    revision 1
+    sha256 "58b70f797b4d0066d596a4171abd47e2271a99a7b286ac20e75de1db1dc1a6b5" => :el_capitan
+    sha256 "8ff93afa65476997671b4dc8668adda260fd3a1c592d98257fe0629fc814c42c" => :yosemite
+    sha256 "80479a279dcc7297990317a2a4af0a56e82a7bb3936081571cf486005a743a63" => :mavericks
   end
 
   option "with-big-integer", "Use 64 bit precision instead of arbitrary precision for performance"
@@ -20,6 +21,8 @@ class Zorba < Formula
   depends_on "flex"
   depends_on "icu4c"
   depends_on "xerces-c"
+
+  conflicts_with "xqilla", :because => "Both supply xqc.h"
 
   needs :cxx11
 

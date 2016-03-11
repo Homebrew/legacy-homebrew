@@ -3,6 +3,7 @@ class ProofGeneral < Formula
   homepage "http://proofgeneral.inf.ed.ac.uk"
   url "http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz"
   sha256 "3567b68077798396ccd55c501b7ea7bd2c4d6300e4c74ff609dc19837d050b27"
+  head "https://github.com/ProofGeneral/PG.git"
 
   bottle do
     cellar :any_skip_relocation
@@ -30,7 +31,7 @@ class ProofGeneral < Formula
       EMACS=#{which "emacs"}
     ]
 
-    cd "ProofGeneral" do
+    cd (build.head? ? "." : "ProofGeneral") do
       # http://proofgeneral.inf.ed.ac.uk/trac/ticket/458
       # remove in next stable release
       inreplace "Makefile", "(setq byte-compile-error-on-warn t)", "" if build.stable?
@@ -39,6 +40,11 @@ class ProofGeneral < Formula
       system "make", "install", *args
 
       man1.install "doc/proofgeneral.1"
+      if build.head?
+        cd "doc" do
+          system "make", "info", "html"
+        end
+      end
       info.install "doc/ProofGeneral.info", "doc/PG-adapting.info"
       doc.install "doc/ProofGeneral", "doc/PG-adapting"
     end

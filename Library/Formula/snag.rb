@@ -3,59 +3,31 @@ require "language/go"
 class Snag < Formula
   desc "Automatic build tool for all your needs"
   homepage "https://github.com/Tonkpils/snag"
-  url "https://github.com/Tonkpils/snag/archive/v1.1.0.tar.gz"
-  sha256 "30197526352284067ebc7f8c066da37e1e92f535dcf7a185584bdc4d8ef37233"
+  url "https://github.com/Tonkpils/snag/archive/v1.2.0.tar.gz"
+  sha256 "37bf661436edf4526adf5428ac5ff948871c613ff4f9b61fbbdfe1fb95f58b37"
   head "https://github.com/Tonkpils/snag.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0440b77998204934baafcd3d607c1fee407a3116b4b0b23dd3b91dd0a29ebe04" => :el_capitan
-    sha256 "b2c058bcdab37bc890e03b843fcb07f500d0ccce5157c94cb75ab0bc0f629f71" => :yosemite
-    sha256 "a65fc487274d29dc68d8dba8cc85318606dae4c55aa64446fc61e76c5d82ed60" => :mavericks
+    sha256 "18a6d589a0b416ee502a8dacd6f919959d25cc08d9bbaad152fdade4c72634dc" => :el_capitan
+    sha256 "00edba081c3a56f6cda3a4fc5bb1125d8ce93a8239c3cae89346b1893df12025" => :yosemite
+    sha256 "df63529c6ec2ff4f38f0fb7900687b9362ce710a13013d4bac4bb9cdea5190da" => :mavericks
   end
 
   depends_on "go" => :build
 
-  go_resource "gopkg.in/yaml.v2" do
-    url "https://github.com/go-yaml/yaml.git",
-      :revision => "7ad95dd0798a40da1ccdff6dff35fd177b5edf40"
-  end
-
-  go_resource "github.com/shiena/ansicolor" do
-    url "https://github.com/shiena/ansicolor.git",
-      :revision => "a5e2b567a4dd6cc74545b8a4f27c9d63b9e7735b"
-  end
-
-  go_resource "github.com/mattn/go-isatty" do
-    url "https://github.com/mattn/go-isatty.git",
-      :revision => "7fcbc72f853b92b5720db4a6b8482be612daef24"
-  end
-
-  go_resource "gopkg.in/fsnotify.v1" do
-    url "https://github.com/go-fsnotify/fsnotify.git",
-      :revision => "96c060f6a6b7e0d6f75fddd10efeaca3e5d1bcb0"
-  end
-
-  go_resource "github.com/fatih/color" do
-    url "https://github.com/fatih/color.git",
-      :revision => "2f376994f3b3cae1602f63eb5bdfb58101a94a08"
-  end
-
   def install
     ENV["GOPATH"] = buildpath
 
-    snagpath = buildpath/"src/github.com/Tonkpils/snag"
-    snagpath.install Dir["{*,.git}"]
-    Language::Go.stage_deps resources, buildpath/"src"
+    (buildpath/"src/github.com/Tonkpils/").mkpath
+    ln_s buildpath, buildpath/"src/github.com/Tonkpils/snag"
 
-    cd snagpath do
-      system "go", "build", "-o", bin/"snag"
-    end
+    system "go", "build", "-o", bin/"snag", "./src/github.com/Tonkpils/snag"
   end
 
   test do
     (testpath/".snag.yml").write <<-EOS.undent
-      script:
+      build:
         - touch #{testpath}/snagged
       verbose: true
     EOS

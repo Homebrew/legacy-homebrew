@@ -20,13 +20,14 @@ class Monetdb < Formula
   sha256 "1638d74fbfbccc61e7e72e470114e24f6b31f3449e28b14febeffa8bd380ef69"
 
   bottle do
-    sha256 "131544e89f4bab795fdfd3b0a5e6ea15f96e77978a4994bb91ebab84b232cdc3" => :el_capitan
-    sha256 "f76d2f0f1af2fa543cf6d71f54469a61ef7caa3ae111b3fff60d16ccfb759d92" => :yosemite
-    sha256 "9b4a4c12b180443488d7bd780b4c18490d87f34e87a3374fe29f2b1055927e09" => :mavericks
+    revision 1
+    sha256 "160f961fdae67e0a0c3f28b6ef26baa16343505ff12aee36737540b4437441ff" => :el_capitan
+    sha256 "ccf122c79943fb36e97259e84a7897e5d07c9cfbdcd6fb7390287c18f0317f7e" => :yosemite
+    sha256 "1214716dc3f3d40183fea68685943bddccc55f477d7d3fa5dfebae525680077c" => :mavericks
   end
 
   head do
-    url "http://dev.monetdb.org/hg/MonetDB", :using => :hg
+    url "https://dev.monetdb.org/hg/MonetDB", :using => :hg
 
     depends_on "libtool" => :build
     depends_on "gettext" => :build

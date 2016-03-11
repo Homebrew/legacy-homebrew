@@ -24,11 +24,10 @@ class Neo4j < Formula
     bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell,-import}"]
 
     # Adjust UDC props
-    open("#{libexec}/conf/neo4j-wrapper.conf", "a") do |f|
-      f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
-
-      # suppress the empty, focus-stealing java gui
-      f.puts "wrapper.java.additional=-Djava.awt.headless=true"
-    end
+    # Suppress the empty, focus-stealing java gui.
+    (libexec/"conf/neo4j-wrapper.conf").append_lines <<-EOS.undent
+      wrapper.java.additional=-Djava.awt.headless=true
+      wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew
+    EOS
   end
 end

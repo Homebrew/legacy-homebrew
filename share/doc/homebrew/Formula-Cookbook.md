@@ -34,7 +34,7 @@ Before submitting a new formula make sure your package:
 *   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release versions belong.
 *   passes all `brew audit --strict --online $FORMULA` tests.
 
-Before submitting a new formula make sure you read over our [contribution guidelines](https://github.com/Homebrew/homebrew/blob/master/CONTRIBUTING.md).
+Before submitting a new formula make sure you read over our [contribution guidelines](https://github.com/Homebrew/homebrew/blob/master/.github/CONTRIBUTING.md).
 
 ## Grab the URL
 
@@ -245,7 +245,7 @@ The [`test do`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#
 
 We want tests that don't require any user input and test the basic functionality of the application. For example `foo build-foo input.foo` is a good test and (despite their widespread use) `foo --version` and `foo --help` are bad tests. However, a bad test is better than no test at all.
 
-See [cmake](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/cmake.rb) for an example of a formula with a good test. A basic `CMakeLists.txt` file is written CMake uses it to generate Makefiles. This test checks that CMake doesn't e.g. segfault during basic operation.
+See [cmake](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/cmake.rb) for an example of a formula with a good test. The formula writes a basic `CMakeLists.txt` file into the test directory then calls CMake to generate Makefiles. This test checks that CMake doesn't e.g. segfault during basic operation.  Another good example is [tinyxml2](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/tinyxml2.rb), which writes a small C++ source file into the test directory, compiles and links it against the tinyxml2 library and finally checks that the resulting program runs successfully.
 
 ## Manuals
 
@@ -272,7 +272,7 @@ When importing classes, Homebrew will require the formula and then create an ins
 *   `foo-bar.rb` => `FooBar`
 *   `foobar.rb` => `Foobar`
 
-Thus, if you change the name of the class, you must also rename the file. Filenames should be all lowercase.
+Thus, if you change the name of the class, you must also rename the file. Filenames should be all lowercase, and class names should be the strict CamelCase equivalent, e.g. formulae `gnu-go` and `sdl_mixer` become classes `GnuGo` and `SdlMixer`, even if part of their name is an acronym.
 
 Add aliases by creating symlinks in `Library/Aliases`.
 

@@ -1,14 +1,14 @@
 class Peervpn < Formula
   desc "Peer-to-peer VPN"
-  homepage "http://www.peervpn.net"
-  url "http://www.peervpn.net/files/peervpn-0-041.tar.gz"
+  homepage "https://peervpn.net/"
+  url "https://peervpn.net/files/peervpn-0-041.tar.gz"
   version "0.041"
   sha256 "94a7b649a973c1081d3bd9499bd7410b00b2afc5b4fd4341b1ccf2ce13ad8f52"
 
   bottle do
     cellar :any
-    sha256 "dac8fa509dcf02ba28bc7d07d2d47dddae96672c332db1fbe7fdd78d6eb8a7f6" => :mavericks
-    sha256 "daf4a93d6e08cdc6de5f849bf6bf05ea44fdfc8ca72683dd6e6197d045f4168e" => :mountain_lion
+    revision 1
+    sha256 "415752cdc8aa3e3a53f1456ca1fe9cb8966c74f2a0255309d78b505e7eeae52d" => :mavericks
   end
 
   depends_on "openssl"

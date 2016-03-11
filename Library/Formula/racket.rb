@@ -1,15 +1,14 @@
 class Racket < Formula
   desc "Modern programming language in the Lisp/Scheme family"
-  homepage "http://racket-lang.org/"
-  url "http://mirror.racket-lang.org/installers/6.3/racket-minimal-6.3-src-builtpkgs.tgz"
-  version "6.3"
-  sha256 "72d79026e1301ee222089fb555b3eb7290b95f4b7541fec21b4ddb5842fff081"
+  homepage "https://racket-lang.org/"
+  url "https://mirror.racket-lang.org/installers/6.4/racket-minimal-6.4-src-builtpkgs.tgz"
+  version "6.4"
+  sha256 "cf717d4983f4198fce8973ead5d427bc9da78b73bd51fee16b58c894c2a146e8"
 
   bottle do
-    revision 1
-    sha256 "bfa9a6ecd8ec2b61fe58f7f3576471f09c08c1ec404d059a18609bff6728967b" => :el_capitan
-    sha256 "dc4b3f00480486eb54a1e86b6c7148cfd14fee1fb3e8cd7f8caa4b8c11436729" => :yosemite
-    sha256 "01ebd100e40cdc605d5023da5a608b8a73c4151829bf36806baec71aa126d04a" => :mavericks
+    sha256 "4c4aed2fbf16f3057bf570b383e407c320fb27a624f5df40ac8aa176c809a0b9" => :el_capitan
+    sha256 "2f647fb3d2c13249b85f9a52a97fdce17669bee1102805b8a0a9435397397977" => :yosemite
+    sha256 "6b67a01389d715b9a0cf692dab51b45904fe117f9c1243d5c19b9d0e323c1f4f" => :mavericks
   end
 
   # these two files are amended when (un)installing packages
@@ -34,7 +33,7 @@ class Racket < Formula
     end
 
     # configure racket's package tool (raco) to do the Right Thing
-    # see: http://docs.racket-lang.org/raco/config-file.html
+    # see: https://docs.racket-lang.org/raco/config-file.html
     inreplace etc/"racket/config.rktd" do |s|
         s.gsub!(
             /\(bin-dir\s+\.\s+"#{Regexp.quote(bin)}"\)/,
@@ -49,8 +48,11 @@ class Racket < Formula
 
   def caveats; <<-EOS.undent
     This is a minimal Racket distribution.
-    If you want to use the DrRacket IDE, you may run
+    If you want to build the DrRacket IDE, you may run
       raco pkg install --auto drracket
+
+    The full Racket distribution is available as a cask:
+      brew cask install racket
     EOS
   end
 
@@ -65,9 +67,9 @@ class Racket < Formula
       ^name:
         #{version}
       catalogs:
-        http://download.racket-lang.org/releases/#{version}/catalog/
-        http://pkgs.racket-lang.org
-        http://planet-compats.racket-lang.org
+        https://download.racket-lang.org/releases/#{version}/catalog/
+        https://pkgs.racket-lang.org
+        https://planet-compats.racket-lang.org
       default-scope:
         installation
     EOS

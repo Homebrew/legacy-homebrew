@@ -11,11 +11,6 @@ class Cfengine < Formula
     sha256 "eff5d4c4f4713df4aa5f862b5c2d9c6fade5c507d8a323b41e0618236cdd0ef8" => :mavericks
   end
 
-  resource "masterfiles" do
-    url "https://cfengine-package-repos.s3.amazonaws.com/tarballs/cfengine-masterfiles-3.8.0.tar.gz"
-    sha256 "6956ba4a359e8fe03b627b3fb16b382fed6e33cdfc303db08fb9790895c2a98e"
-  end
-
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
@@ -23,6 +18,11 @@ class Cfengine < Formula
   depends_on "pcre"
   depends_on "lmdb"
   depends_on "openssl"
+
+  resource "masterfiles" do
+    url "https://cfengine-package-repos.s3.amazonaws.com/tarballs/cfengine-masterfiles-3.8.0.tar.gz"
+    sha256 "6956ba4a359e8fe03b627b3fb16b382fed6e33cdfc303db08fb9790895c2a98e"
+  end
 
   def install
     system "autoreconf", "-Wno-portability", "-fvi", "-I", "m4" # see autogen.sh

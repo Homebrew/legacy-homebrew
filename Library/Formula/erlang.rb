@@ -3,7 +3,7 @@
 # elixir are compatible.
 class Erlang < Formula
   desc "Programming language for highly scalable real-time systems"
-  homepage "http://www.erlang.org"
+  homepage "https://www.erlang.org/"
   head "https://github.com/erlang/otp.git"
 
   stable do
@@ -14,19 +14,10 @@ class Erlang < Formula
 
   bottle do
     cellar :any
-    sha256 "b0b6f0d6dd03f5c45388481940f169c335c4a1b5803e96cb2d46830df285a861" => :el_capitan
-    sha256 "3c49f6e032111938e6a2093a3952a5461bbacd78d38b9eda9fcce7f729409b49" => :yosemite
-    sha256 "5cc9d9e1f16d8e7d9fa1dcd6788b9c8ebb9abcfb033c3a003448fbd5da0649aa" => :mavericks
-  end
-
-  resource "man" do
-    url "http://www.erlang.org/download/otp_doc_man_18.2.1.tar.gz"
-    sha256 "a58005ccd64853e8c79631a3c4c057dd6f92f581d97d00845a0aea817c33afa0"
-  end
-
-  resource "html" do
-    url "http://www.erlang.org/download/otp_doc_html_18.2.1.tar.gz"
-    sha256 "3576c567b30400fec2b456897d54ba79933ee0f83f6ec57816417b5417ea9723"
+    revision 1
+    sha256 "e34cf1c96989af31ccd796d4fe18e1051e93f0a5d1499e56f8c9b0b2621960e4" => :el_capitan
+    sha256 "07e214e038540064aa1e950031ec61783054f0a9ae9720a3ec9ddb9ea3237e82" => :yosemite
+    sha256 "fa32cd20b0e5c28901b431fd6fb9bac30e3f0aca53b2bc6e23ccd0cff251e858" => :mavericks
   end
 
   option "without-hipe", "Disable building hipe; fails on various OS X systems"
@@ -46,6 +37,16 @@ class Erlang < Formula
   depends_on "wxmac" => :recommended # for GUI apps like observer
 
   fails_with :llvm
+
+  resource "man" do
+    url "https://www.erlang.org/download/otp_doc_man_18.2.1.tar.gz"
+    sha256 "a58005ccd64853e8c79631a3c4c057dd6f92f581d97d00845a0aea817c33afa0"
+  end
+
+  resource "html" do
+    url "https://www.erlang.org/download/otp_doc_html_18.2.1.tar.gz"
+    sha256 "3576c567b30400fec2b456897d54ba79933ee0f83f6ec57816417b5417ea9723"
+  end
 
   def install
     # Unset these so that building wx, kernel, compiler and
@@ -81,8 +82,8 @@ class Erlang < Formula
 
     if build.without? "hipe"
       # HIPE doesn't strike me as that reliable on OS X
-      # http://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
-      # http://www.erlang.org/pipermail/erlang-patches/2008-September/000293.html
+      # https://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
+      # https://www.erlang.org/pipermail/erlang-patches/2008-September/000293.html
       args << "--disable-hipe"
     else
       args << "--enable-hipe"

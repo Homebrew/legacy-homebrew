@@ -2,29 +2,29 @@
 class Ksh < Formula
   desc "ksh93, the KornShell"
   homepage "http://www.kornshell.com"
-  url "http://www2.research.att.com/~astopen/download/tgz/ast-ksh.2012-08-01.tgz",
-    :using => :nounzip, :user => "I accept www.opensource.org/licenses/eclipse:."
-  sha256 "e6192cfa52a6a9fd20618cbaf3fa81f0cc9fd83525500757e83017275e962851"
+  url "https://opensource.apple.com/source/ksh/ksh-23/ast-ksh.2012-08-01.tgz",
+    :using => :nounzip
+  mirror "https://www.mirrorservice.org/pub/pkgsrc/distfiles/ast-ksh.2012-08-01.tgz"
   version "93u+" # Versioning scheme: + means "+ patches", - means "beta/alpha".
+  sha256 "e6192cfa52a6a9fd20618cbaf3fa81f0cc9fd83525500757e83017275e962851"
 
   bottle do
-    cellar :any
-    revision 2
-    sha256 "d644c2bebf9e735a0b1086409fc273f4e28df09ae9a1540490f60f87bac94ddc" => :yosemite
-    sha256 "5693e654a561ba55c873574a6853a04f0fd2716219d45e3df5568e211bc3f730" => :mavericks
-    sha256 "e5994a299c82f27d5ee78649b2ad5dc5d6202d305fd50ca57809b711ccf0ddc7" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 3
+    sha256 "5148e18444c7f1a4e7b71f72982362491aa5581101296acaa6d9c2a782d620b1" => :el_capitan
+    sha256 "13f85c7df7f44b68f1e5560c05b61eff8145230d94986537bdee5702c1e72e68" => :yosemite
+    sha256 "7c665466fb323fc0cb6ffb87ec9fe1630d75afcd3b12864e2424677473db4924" => :mavericks
   end
 
   resource "init" do
-    url "http://www2.research.att.com/~astopen/download/tgz/INIT.2012-08-01.tgz",
-      :using => :nounzip, :user => "I accept www.opensource.org/licenses/eclipse:."
+    url "https://opensource.apple.com/source/ksh/ksh-23/INIT.2012-08-01.tgz"
+    mirror "https://www.mirrorservice.org/pub/pkgsrc/distfiles/INIT.2012-08-01.tgz"
     sha256 "c40cf57e9b2186271a9c362a560aa4a6e25ba911a8258ab931d2bbdbce44cfe5"
   end
 
   def install
-    (buildpath/"lib/package/tgz").install resource("init"), Dir["*.tgz"]
-
-    system "tar", "xzf", "lib/package/tgz/INIT.2012-08-01.tgz"
+    resource("init").stage buildpath
+    (buildpath/"lib/package/tgz").install Dir["*.tgz"]
     system "/bin/ksh", "bin/package", "read"
 
     # Needed due to unusal build system.

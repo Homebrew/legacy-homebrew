@@ -1,15 +1,15 @@
 class Openexr < Formula
   desc "OpenEXR Graphics Tools (high dynamic-range image file format)"
   homepage "http://www.openexr.com/"
-  url "http://download.savannah.nongnu.org/releases/openexr/openexr-2.2.0.tar.gz"
+  url "https://savannah.nongnu.org/download/openexr/openexr-2.2.0.tar.gz"
   sha256 "36a012f6c43213f840ce29a8b182700f6cf6b214bea0d5735594136b44914231"
 
   bottle do
     cellar :any
-    sha256 "ae31cedab570d5840d584964967e348ca3daab63541a92d32adef434fb1757f6" => :el_capitan
-    sha256 "5bdf90ede738749524f2ed6504fe833cb99771dc2517f3546558efa0512525c1" => :yosemite
-    sha256 "cafdc8251501bd6a0dc3bbf919469872498c1a378f7f21809614498c968e3e49" => :mavericks
-    sha256 "9fad65fc10a89ee39bda6e89c6f0f84828c867105a50c16f7bd03dc2c5476c86" => :mountain_lion
+    revision 1
+    sha256 "a73d66076b03d20908db659b965cee768d82408ddca5196fef8164b779091765" => :el_capitan
+    sha256 "ad973fc780bb731a5ee8be347283903e8343448913e46a23fbdede0145ef980a" => :yosemite
+    sha256 "9c21b70caff58d8d699a58a50249f220b03c23f450a219276782827e6c03ff33" => :mavericks
   end
 
   option :universal

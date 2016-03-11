@@ -1,12 +1,13 @@
 class ShibbolethSp < Formula
   desc "Shibboleth 2 Service Provider daemon"
   homepage "https://wiki.shibboleth.net/confluence/display/SHIB2"
-  url "http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.5.5.tar.gz"
-  sha256 "30da36e0bba2ce4606a9effc37c05cd110dafdd6d3141468c4aa0f57ce4d96ce"
+  url "https://shibboleth.net/downloads/service-provider/2.5.6/shibboleth-sp-2.5.6.tar.gz"
+  sha256 "024739a7b5190aebecac913d9445719912c6e4e401bfe256a25ca75ab4e67ad5"
 
   bottle do
-    sha256 "0b677a96f1db3fc05e77e2d19233c8e28e50db96813a533ba579e634844b8810" => :el_capitan
-    sha256 "bc8acf35899aac2a824d7120c1f6e4076775df35e46fea14bfaa5f2884e221c9" => :yosemite
+    revision 1
+    sha256 "8c59bf2a970e23c72e9c2bb3e2a84a534d184acee65e4b9ffca0dccfc16018e4" => :el_capitan
+    sha256 "ec99fed7eee7454a6ddb0640aa160fbb5c7eb0215c15a9e35eb231882a2def18" => :yosemite
   end
 
   option "with-apache-22", "Build mod_shib_22.so instead of mod_shib_24.so"

@@ -51,6 +51,18 @@ class PathnameTests < Homebrew::TestCase
     assert_raises(RuntimeError) { @file.write("CONTENT") }
   end
 
+  def test_append_lines
+    touch @file
+    @file.append_lines("CONTENT")
+    assert_equal "CONTENT\n", File.read(@file)
+    @file.append_lines("CONTENTS")
+    assert_equal "CONTENT\nCONTENTS\n", File.read(@file)
+  end
+
+  def test_append_lines_does_not_create
+    assert_raises(RuntimeError) { @file.append_lines("CONTENT") }
+  end
+
   def test_atomic_write
     touch @file
     @file.atomic_write("CONTENT")
@@ -123,6 +135,16 @@ class PathnameTests < Homebrew::TestCase
     @file.write "a"
     @dst.install @src
     assert_equal "a", File.read(@dst+@src.basename+@file.basename)
+  end
+
+  def test_install_renamed_directory_recursive
+    @dst.extend(InstallRenamed)
+    (@dst+@dir.basename).mkpath
+    (@dst+@dir.basename+"another_file").write "a"
+    @dir.mkpath
+    (@dir+"another_file").write "b"
+    @dst.install @dir
+    assert_equal "b", File.read(@dst+@dir.basename+"another_file.default")
   end
 
   def test_cp_path_sub_file

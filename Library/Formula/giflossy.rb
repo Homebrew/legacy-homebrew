@@ -6,7 +6,8 @@ class Giflossy < Formula
   head "https://github.com/pornel/giflossy.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "b1003fafaa5c7bbdf956a7ac4f8c0c06abf4c583b922bf67e1eacb1498db0b16" => :el_capitan
     sha256 "2c4d49abc644aa4e98eaaae86002c7153bf9e3990186e730d9ebb3ff4ceb0b22" => :yosemite
     sha256 "96c42819acabd42287e2e032f10969e9ac08bfb28848626ac0df4f926f116a99" => :mavericks
     sha256 "1e71bcca774a3f01d8ede50d6040d06c2f25df7e6e3635efab4c5daf06f2bcb1" => :mountain_lion

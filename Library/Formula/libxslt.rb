@@ -7,10 +7,10 @@ class Libxslt < Formula
   revision 1
 
   bottle do
-    sha256 "491daabbc8d2ebbe0184bdd6c6ebe7c99f72899cfabe259c7f7ebcc37947b20b" => :el_capitan
-    sha256 "6d183c0aec7ca84802c54256289d401d05b2ae153956e118df357f70f388fed9" => :yosemite
-    sha256 "3f674b2296134366637b6ab6f8880c124926b768d4ce5230564d4a1265a8797d" => :mavericks
-    sha256 "2530cd13170900d9f6e5cc4c9d57312cffcb0f16a20d12cc4e82ac8e5f4455d9" => :mountain_lion
+    revision 1
+    sha256 "c362e947b994dc21c3f6a8802a1d783996504c4e6a1ec9e957a7b282543badac" => :el_capitan
+    sha256 "8ee39c4e7fe3868b175185632db62d0b2e63e7d76df589492d9e11a720c569d7" => :yosemite
+    sha256 "39820c2f81926fc1aee8854553d3c390c644db068847ceae77c805d65e2303a2" => :mavericks
   end
 
   keg_only :provided_by_osx
@@ -18,7 +18,7 @@ class Libxslt < Formula
   depends_on "libxml2"
 
   head do
-    url "https://git.gnome.org/browse/libxslt"
+    url "https://git.gnome.org/browse/libxslt.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -33,6 +33,9 @@ class Libxslt < Formula
       ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
+
+    # https://bugzilla.gnome.org/show_bug.cgi?id=762967
+    inreplace "configure", /PYTHON_LIBS=.*/, 'PYTHON_LIBS="-undefined dynamic_lookup"'
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

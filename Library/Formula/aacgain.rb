@@ -9,10 +9,10 @@ class Aacgain < Formula
   sha256 "2bb8e27aa8f8434a4861fdbc70adb9cb4b47e1dfe472910d62d6042cb80a2ee1"
 
   bottle do
-    cellar :any
-    sha256 "72ceb23c5d6c6a474470873eb42c7adabc8b723d4e828a6408a9c5f9ea915d70" => :yosemite
-    sha256 "29b50db18863bba43907eeabac5221005cc1b2c733ef0f73efa2ff6264ff6bc0" => :mavericks
-    sha256 "b4004c239d2443b4278b09222685ff19b8ca1b0dc8a39903db85966f4d57c1ab" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "b97aaaf19fee69734b4a29e22c498becaa94b3025a192a7ef8f1ecfb0a2ce87c" => :el_capitan
+    sha256 "5c01278c495e8a67b7af02f6355ac6a79ce6b4caa5148503346eb33e7d26b70a" => :yosemite
+    sha256 "9bf1cb0bf030d70bb37a311b92621747d02379cb7f6ae6734bcb4239bdb9d4e6" => :mavericks
   end
 
   def install

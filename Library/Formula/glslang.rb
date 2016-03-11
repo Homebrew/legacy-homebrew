@@ -1,5 +1,5 @@
 class Glslang < Formula
-  desc "glslang is an OpenGL and OpenGL ES shader front end and validator."
+  desc "OpenGL and OpenGL ES reference compiler for shading languages"
   homepage "https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/"
   url "https://github.com/KhronosGroup/glslang/archive/3.0.tar.gz"
   sha256 "91653d09a90440a0bc35aa490d0c44973501257577451d4c445b2df5e78d118c"

@@ -1,14 +1,14 @@
 class Mpv < Formula
   desc "Free, open source, and cross-platform media player"
   homepage "https://mpv.io"
-  url "https://github.com/mpv-player/mpv/archive/v0.15.0.tar.gz"
-  sha256 "7d31217ba8572f364fcea2955733f821374ae6d8c6d8f22f8bc63c44c0400bdc"
+  url "https://github.com/mpv-player/mpv/archive/v0.16.0.tar.gz"
+  sha256 "fc3619de0ede16fbb023ac72589090e8e77fd9d9e03a81adc728105d50ef38ba"
   head "https://github.com/mpv-player/mpv.git"
 
   bottle do
-    sha256 "63996b3e927b2e3479e2d692d05f33667de82a759ac61b02ead48b61acdfdac3" => :el_capitan
-    sha256 "9d5aad3d6fb60942b47525674f7d211368c0fdc57a8abb4c92537253f627d6c0" => :yosemite
-    sha256 "ab6807953f53ea3009e4472fdc74d0cb0c92a7bc4f6030c79358c21519c63a01" => :mavericks
+    sha256 "3fb87a6d4dae9530c8042789f5f39d8f4b7d13baf7b160767e0c04e6f2f314b6" => :el_capitan
+    sha256 "48b8fd0a7e1c67b661d9ba37b4eb4207e9c5902afce8f4eac3e6d380b960ef24" => :yosemite
+    sha256 "8c991d92065e29fcb109568010774a2f635e9e5c84a0cb300e53192800275911" => :mavericks
   end
 
   option "with-shared", "Build libmpv shared library."

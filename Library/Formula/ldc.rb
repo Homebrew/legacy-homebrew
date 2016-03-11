@@ -1,27 +1,32 @@
 class Ldc < Formula
   desc "Portable D programming language compiler"
   homepage "http://wiki.dlang.org/LDC"
-  head "https://github.com/ldc-developers/ldc.git", :shallow => false
-  revision 1
-
-  stable do
-    url "https://github.com/ldc-developers/ldc/releases/download/v0.16.1/ldc-0.16.1-src.tar.gz"
-    sha256 "e66cea99f0b1406bbd265ad5fe6aa1412bae31ac86d8a678eb6751f304b6f95b"
-
-    # Fixes build errors in release mode, fixed in 0.17.0-beta2
-    patch :DATA
-  end
+  url "https://github.com/ldc-developers/ldc/releases/download/v0.17.0/ldc-0.17.0-src.tar.gz"
+  sha256 "6c80086174ca87281413d7510641caf99dc630e6cf228a619d0d989bbf53bdd2"
 
   bottle do
-    sha256 "61f7c63543741ef4cbadbd5ca293c94e2fcd7432dcf80bfe9d86bf4af0681525" => :el_capitan
-    sha256 "40b0e843810f13dd9e712c4f2720db1ac5cfdd546e23f394cad9e266a5552829" => :yosemite
-    sha256 "abe6b024e237061510b6b9f68508177803f162849a8e950cb3a8832da3ac8593" => :mavericks
+    sha256 "c2ff6360645d4deb2ec135b262d257e85228df95e7765adb9e3a625b76250923" => :el_capitan
+    sha256 "551a58a74107f93620af10964ef3128642ae4575ad2be31c618935ced420cd47" => :yosemite
+    sha256 "6d9d60e0a1711a12e03729f273459363873286ce77977801cfbbfc517fc7af1a" => :mavericks
   end
 
   devel do
-    url "https://github.com/ldc-developers/ldc/releases/download/v0.17.0-beta2/ldc-0.17.0-beta2-src.tar.gz"
-    sha256 "6d00b29928556f1220332a230dd743169c30f18333724254ac3f58244d98a6d7"
-    version "0.17.0-beta2"
+    url "https://github.com/ldc-developers/ldc/releases/download/v1.0.0-alpha1/ldc-1.0.0-alpha1-src.tar.gz"
+    sha256 "b656437d0d7568c5ac4ef4366376184c06013e79f3dd5a512b18ca9f20df4b63"
+    version "1.0.0-alpha1"
+
+    resource "ldc-lts" do
+      url "https://github.com/ldc-developers/ldc/releases/download/v0.17.0/ldc-0.17.0-src.tar.gz"
+      sha256 "6c80086174ca87281413d7510641caf99dc630e6cf228a619d0d989bbf53bdd2"
+    end
+  end
+
+  head do
+    url "https://github.com/ldc-developers/ldc.git", :shallow => false
+
+    resource "ldc-lts" do
+      url "https://github.com/ldc-developers/ldc.git", :shallow => false, :branch => "ltsmaster"
+    end
   end
 
   needs :cxx11
@@ -32,11 +37,25 @@ class Ldc < Formula
 
   def install
     ENV.cxx11
-    mkdir "build"
-    cd "build" do
-      system "cmake", "..", "-DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc", *std_cmake_args
-      system "make"
-      system "make", "install"
+    if build.stable?
+      mkdir "build" do
+        system "cmake", "..", "-DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc", *std_cmake_args
+        system "make"
+        system "make", "install"
+      end
+    else
+      (buildpath/"ldc-lts").install resource("ldc-lts")
+      cd "ldc-lts" do
+        mkdir "build" do
+          system "cmake", "..", *std_cmake_args
+          system "make"
+        end
+      end
+      mkdir "build" do
+        system "cmake", "..", "-DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc", "-DD_COMPILER=../ldc-lts/build/bin/ldmd2", *std_cmake_args
+        system "make"
+        system "make", "install"
+      end
     end
   end
 
@@ -54,16 +73,3 @@ class Ldc < Formula
     system "./test"
   end
 end
-__END__
-diff --git a/cmake/Modules/FindLLVM.cmake b/cmake/Modules/FindLLVM.cmake
-index a1a5118..fe9902e 100644
---- a/cmake/Modules/FindLLVM.cmake
-+++ b/cmake/Modules/FindLLVM.cmake
-@@ -151,6 +151,7 @@ else()
-     llvm_set(HOST_TARGET host-target)
-     llvm_set(INCLUDE_DIRS includedir true)
-     llvm_set(ROOT_DIR prefix true)
-+    llvm_set(ENABLE_ASSERTIONS assertion-mode)
-
-     if(${LLVM_VERSION_STRING} MATCHES "^3\\.[0-2][\\.0-9A-Za-z]*")
-         # Versions below 3.3 do not support components objcarcopts, option

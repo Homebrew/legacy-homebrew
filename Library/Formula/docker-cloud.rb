@@ -1,14 +1,14 @@
 class DockerCloud < Formula
   desc "SaaS to build, deploy and manage Docker-based applications"
   homepage "https://cloud.docker.com/"
-  url "https://pypi.python.org/packages/source/d/docker-cloud/docker-cloud-1.0.1.tar.gz"
-  sha256 "e86246002168e1e1a8e91e8a816d7091042d362fdf8f72a9358da0ce4e7da02c"
+  url "https://pypi.python.org/packages/source/d/docker-cloud/docker-cloud-1.0.2.tar.gz"
+  sha256 "dfa3c84eccb6b681ef9286f803b573789b10491fcde5fcb5f503fd67025e29ae"
 
   bottle do
     cellar :any
-    sha256 "fb95c84be9381c2127a5ad087cb1b5883c00643d20983f784410ef4c3fbda2c0" => :el_capitan
-    sha256 "8291bcedcfc58c050dfb4ea0091d16c907ae7ecbaca1325fd112dc3e6e68093b" => :yosemite
-    sha256 "7ed4ae91d2185c181fc9ad6a8b38931db8c42610864d96a245a5049cae168fbf" => :mavericks
+    sha256 "183404a67b00ed3d59387cb3cac161332aa0fd987cbb384f91775503c18adced" => :el_capitan
+    sha256 "6a5b327ef177867d3f01ab75b676b0365ffac5ad68d8e2a10c7dc92466cb2493" => :yosemite
+    sha256 "30948a50e5c5d389bcff2914f6572961cb2440b7dcb63fbb8ecb09a4c37c30cb" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -25,8 +25,8 @@ class DockerCloud < Formula
   end
 
   resource "python-dockercloud" do
-    url "https://pypi.python.org/packages/source/p/python-dockercloud/python-dockercloud-1.0.1.tar.gz"
-    sha256 "68f1fab2d7de15b4f7a9c8f55c1adb7c76b654d86a44f6025cf3de85991a33d5"
+    url "https://pypi.python.org/packages/source/p/python-dockercloud/python-dockercloud-1.0.2.tar.gz"
+    sha256 "aed4bfcb96e51a392e4f8cc82a79b63eb4489da695ab193a8a7679c76335459e"
   end
 
   resource "backports.ssl-match-hostname" do

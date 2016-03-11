@@ -6,7 +6,8 @@ class Colortail < Formula
   version "0.3.4"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "e0c8c9af739ce911c0d09eaee26b615444c17f48de27c680cbaf27739e45d8f5" => :el_capitan
     sha256 "1be1c0067a5621f5edcabf64ec06a775d334924e4ea01bccd1c42830f6c9d0c6" => :yosemite
     sha256 "8570fbda1625d70eac83d0e53a1d32d0cd7b32f9fb0b8dea38d32a3228dc6688" => :mavericks
     sha256 "cba08e3d00b530eca42cd2d95dc0c3ed9419f199e7f26edc068b5b1074c3fe51" => :mountain_lion

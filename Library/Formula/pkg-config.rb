@@ -1,14 +1,14 @@
 class PkgConfig < Formula
   desc "Manage compile and link flags for libraries"
-  homepage "https://wiki.freedesktop.org/www/Software/pkg-config/"
-  url "http://pkgconfig.freedesktop.org/releases/pkg-config-0.29.tar.gz"
-  mirror "https://fossies.org/linux/misc/pkg-config-0.29.tar.gz"
-  sha256 "c8507705d2a10c67f385d66ca2aae31e81770cc0734b4191eb8c489e864a006b"
+  homepage "https://freedesktop.org/wiki/Software/pkg-config/"
+  url "https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.1.tar.gz"
+  mirror "https://fossies.org/linux/misc/pkg-config-0.29.1.tar.gz"
+  sha256 "beb43c9e064555469bd4390dcfd8030b1536e0aa103f08d7abf7ae8cac0cb001"
 
   bottle do
-    sha256 "088515dbb9db3977859d895b20eff9f486120641280d3b3a51fefe751197ece9" => :el_capitan
-    sha256 "0791826c3728850a60af3da2056140dd98d329564b3c18288f4a9a1e419e7db5" => :yosemite
-    sha256 "0d7481570e257c4ed5125ed4ae5c6ee4dce475eda0e8935e4c5028bbbe81a5f2" => :mavericks
+    sha256 "6bf11398f37f686faf47bf5fa96138423950428cd08316d9f0edcce6cda53561" => :el_capitan
+    sha256 "8b908a88bf6a073824861647a074244fa24997f502ba3ac6a55411e05b54e736" => :yosemite
+    sha256 "a27ddccd93c19c3e492c6dba674140340b9ac18253066b5a91933d7ca4dd0992" => :mavericks
   end
 
   def install

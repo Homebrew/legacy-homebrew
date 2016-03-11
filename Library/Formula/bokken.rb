@@ -1,14 +1,14 @@
 class Bokken < Formula
   desc "GUI for the Pyew and Radare projects"
-  homepage "https://inguma.eu/projects/bokken"
-  url "https://inguma.eu/attachments/download/197/bokken-1.6.tar.gz"
-  sha256 "4770602585b3e77b2977a8a6906c91ae0d64373eae328f42688106224c8bbc12"
+  homepage "http://bokken.re/"
+  url "https://inguma.eu/attachments/download/212/bokken-1.8.tar.gz"
+  sha256 "1c73885147dfcf0a74ba4d3dd897a6aabc11a4a42f95bd1269782d0b2e1a11b9"
 
   bottle do
     cellar :any
-    sha256 "c5b0b1f7e134c37387b9ca3f15ab63c424fe1d7a1c3196c4de583feda002c4d3" => :mavericks
-    sha256 "870b917d0ad42a4a38a057919946ca099c726b181abc3adf1f6a8242d981bdf4" => :mountain_lion
-    sha256 "dcda9a37224afa064e78a0b9575d9e7d1f8032d5b8b44bd95b63fc0768da37c4" => :lion
+    sha256 "8c7620112d4780191a49bd6d45aa79dfec7be1051959af5eb76e2b370b6b0eeb" => :el_capitan
+    sha256 "a08dbad0b91ed9aee3af298e4e493ff9d27960de228bec2b15833d64355814ff" => :yosemite
+    sha256 "75e3e223d233e6340f02a927ebb0c9fdcfbc46ec13e323136724fd971a1078fc" => :mavericks
   end
 
   depends_on :python
@@ -30,6 +30,7 @@ class Bokken < Formula
 
   def install
     resource("distorm64").stage do
+      inreplace "src/pydistorm.h", "python2\.5", "python2.7"
       cd "build/mac" do
         system "make"
         mkdir_p libexec/"distorm64"

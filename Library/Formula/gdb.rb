@@ -74,7 +74,7 @@ class Gdb < Formula
     gdb requires special privileges to access Mach ports.
     You will need to codesign the binary. For instructions, see:
 
-      http://sourceware.org/gdb/wiki/BuildingOnDarwin
+      https://sourceware.org/gdb/wiki/BuildingOnDarwin
     EOS
   end
 

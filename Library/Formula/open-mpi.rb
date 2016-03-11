@@ -1,14 +1,14 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.1.tar.bz2"
-  sha256 "7919ecde15962bab2e26d01d5f5f4ead6696bbcacb504b8560f2e3a152bfe492"
-  revision 1
+  url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.2.tar.bz2"
+  sha256 "8846e7e69a203db8f50af90fa037f0ba47e3f32e4c9ccdae2db22898fd4d1f59"
 
   bottle do
-    sha256 "4d88289344121d4e27764d9f11ac3daf16229bc17680534e251622af2631adf7" => :el_capitan
-    sha256 "9e95ece40f8e1de74d35e637c5f83f65b5ab70b6b4346a331449c664f2acdda7" => :yosemite
-    sha256 "239b560ef01724af3c05f9c090490f75908f0fa0a3cd60cea64485e1574ec11f" => :mavericks
+    revision 1
+    sha256 "3a6ec528d87a0648b30ec17b0dd88a7c40bac25719cb6509421879d9dab009bb" => :el_capitan
+    sha256 "8682efb08c38e781245783991a2ed1019f92eb735288c8d1a0cf25ea8b559ed7" => :yosemite
+    sha256 "168b60f491efc640c17fb92afd64eacf5b9430d519f594934106be01561bf907" => :mavericks
   end
 
   head do
@@ -27,9 +27,9 @@ class OpenMpi < Formula
   conflicts_with "mpich", :because => "both install mpi__ compiler wrappers"
   conflicts_with "lcdf-typetools", :because => "both install same set of binaries."
 
-  depends_on :java => :build
   depends_on :fortran => :recommended
   depends_on "libevent"
+  depends_on :java => :optional
 
   def install
     ENV.cxx11 if build.cxx11?
@@ -45,6 +45,7 @@ class OpenMpi < Formula
     args << "--with-platform-optimized" if build.head?
     args << "--disable-mpi-fortran" if build.without? "fortran"
     args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
+    args << "--enable-mpi-java" if build.with? "java"
 
     system "./autogen.pl" if build.head?
     system "./configure", *args
@@ -54,7 +55,9 @@ class OpenMpi < Formula
 
     # If Fortran bindings were built, there will be stray `.mod` files
     # (Fortran header) in `lib` that need to be moved to `include`.
-    include.install Dir["#{lib}/*.mod"]
+    if build.with? "fortran"
+      include.install Dir["#{lib}/*.mod"]
+    end
 
     if build.stable?
       # Move vtsetup.jar from bin to libexec.

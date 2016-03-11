@@ -1,9 +1,9 @@
 class GstPluginsGood < Formula
   desc "GStreamer plugins (well-supported, under the LGPL)"
-  homepage "http://gstreamer.freedesktop.org/"
+  homepage "https://gstreamer.freedesktop.org/"
 
   stable do
-    url "http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.6.3.tar.xz"
+    url "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.6.3.tar.xz"
     sha256 "24b19db70b2a83461ebddfe20033db432dadfdb5d4b54ffb1dfa0d830134a177"
 
     depends_on "check" => :optional
@@ -16,7 +16,7 @@ class GstPluginsGood < Formula
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gst-plugins-good"
+    url "https://anongit.freedesktop.org/git/gstreamer/gst-plugins-good.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

@@ -3,24 +3,24 @@ class Radare2 < Formula
   homepage "http://radare.org"
 
   stable do
-    url "http://radare.org/get/radare2-0.10.0.tar.xz"
-    sha256 "f7a755e4ff2d5fb9258be6c9b7ffa708b0533e0d1efce4ced177785a9270befd"
+    url "http://radare.org/get/radare2-0.10.1.tar.xz"
+    sha256 "5ac02717786f2ff3b5326927351d5ca38464da89675c8edfb4ded43addb22987"
 
     resource "bindings" do
-      url "http://radare.org/get/radare2-bindings-0.10.0.tar.xz"
-      sha256 "f7f10e308c7bd6edc3ddf8d2229fa9647cdee0474134ba9120ee163723e475cf"
+      url "http://radare.org/get/radare2-bindings-0.10.1.tar.xz"
+      sha256 "6cb91f4135b5e490185e25629850cb48c08c06882e2c870fa5ab1425cc84106f"
     end
 
     resource "extras" do
-      url "http://radare.org/get/radare2-extras-0.10.0.tar.xz"
-      sha256 "363fef80e39dff18c4b8263f3f4eb355c7f89aba3339505b3a37acb82fea053e"
+      url "http://radare.org/get/radare2-extras-0.10.1.tar.xz"
+      sha256 "c330210c8e6ce5fa8113c455e98c994fb5ecbb5d2f1c15c40c0d1bcbc24d5092"
     end
   end
 
   bottle do
-    sha256 "c1d789306650ae76fcc2c00cfa9f1eaef12c27fa0179b60655968d54fe24cf54" => :el_capitan
-    sha256 "5d0264d2a107c5ccb94b9d54191c51aeaf153e998a8e12f7073cae96882240e8" => :yosemite
-    sha256 "71062439da10ac541505d0124f1540c9cf434f64511b3e00bc83fc568c575018" => :mavericks
+    sha256 "73a42da677ce0d4fb4b02608659ff06096aa20909e8eec49cfd34904947c8728" => :el_capitan
+    sha256 "348343ac295621bb2288a9d8a418ce0a55a3fea4c445703b5697a02407d6ef65" => :yosemite
+    sha256 "2cf435b70d3ba0960a4f67190c472bffcdf247760cfdc3a58286b0336fed943b" => :mavericks
   end
 
   head do
@@ -28,6 +28,10 @@ class Radare2 < Formula
 
     resource "bindings" do
       url "https://github.com/radare/radare2-bindings.git"
+    end
+
+    resource "extras" do
+      url "https://github.com/radare/radare2-extras.git"
     end
   end
 
@@ -77,7 +81,8 @@ class Radare2 < Formula
       make_install_args = ["R2_PLUGIN_PATH=#{lib}/radare2/#{version}",
                            "LUAPKG=lua-#{lua_version}",
                            "PERLPATH=#{lib}/perl5/site_perl/#{perl_version}",
-                           "PYTHON_PKGDIR=#{lib}/python2.7/site-packages",]
+                           "PYTHON_PKGDIR=#{lib}/python2.7/site-packages",
+                           "RUBYPATH=#{lib}/ruby/#{RUBY_VERSION}",]
 
       system "./configure", "--prefix=#{prefix}"
       ["lua", "perl", "python"].each do |binding|

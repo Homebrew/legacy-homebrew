@@ -16,13 +16,17 @@ class Openjpeg < Formula
     sha256 "a30aa5b0a7ebcc1daba910671183084d69afb1d30cb85bfeb8b213f8e7a617d7" => :mountain_lion
   end
 
+  option "with-static", "Build a static library."
+
   depends_on "cmake" => :build
   depends_on "little-cms2"
   depends_on "libtiff"
   depends_on "libpng"
 
   def install
-    system "cmake", ".", *std_cmake_args
+    args = std_cmake_args
+    args << "-DBUILD_SHARED_LIBS=OFF" if build.with? "static"
+    system "cmake", ".", *args
     system "make", "install"
 
     # https://github.com/uclouvain/openjpeg/issues/562

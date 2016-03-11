@@ -1,14 +1,15 @@
 class Mkvalidator < Formula
   desc "Tool to verify Matroska and WebM files for spec conformance"
-  homepage "http://www.matroska.org/downloads/mkvalidator.html"
+  homepage "https://www.matroska.org/downloads/mkvalidator.html"
   url "https://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.5.0.tar.bz2"
   sha256 "c3e72e5b49d32174415b9273ea8d52380e09ac63c8dc7db684104021c711c104"
 
   bottle do
-    cellar :any
-    sha256 "4bb2391affb1697319fc568b886632fd4ab4d9086764f76e1f5f6b7079ee8d53" => :yosemite
-    sha256 "d4182f1c6d82537301be30160d16d9218096c1a4b712da9785854a7ffceb2463" => :mavericks
-    sha256 "4884199ce61f84e24d2c2ab09723c3ca46ef31afac5d561093bc11ebedaa442d" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "fe23d687f75ca9d28b75c9886b0eca1830861f2d47d5e03eea8d9cae0f2f0441" => :el_capitan
+    sha256 "e10253ba9942b7d4d92a66efd55fb04671af4edd73bddeed302f5373591d244f" => :yosemite
+    sha256 "8a6c2abe6c63609e04f4855f25b336418d6ae9f10f95061c40efd811372afb0f" => :mavericks
   end
 
   # see https://sourceforge.net/p/matroska/bugs/9/

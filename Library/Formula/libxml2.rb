@@ -13,7 +13,7 @@ class Libxml2 < Formula
   end
 
   head do
-    url "https://git.gnome.org/browse/libxml2", :using => :git
+    url "https://git.gnome.org/browse/libxml2.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

@@ -6,13 +6,14 @@ class Libdvdcss < Formula
 
   bottle do
     cellar :any
-    sha256 "f833ab30a591de897cab74d05cb35cd2017af23311431229f98af23f539a63d1" => :el_capitan
-    sha256 "612ee99696b4bfa8a9fa8e7d0f57f391a6c4ff678116ad670a860e82145a171a" => :yosemite
-    sha256 "17b3292cb7d2f2055ab411e2eb9667337808e505ba12cf8c6386626d70b75d2e" => :mavericks
+    revision 1
+    sha256 "c15f5de6e9bb695e3d5325c4732e83c12ac5142a5ae1ba1facc098560822b8a1" => :el_capitan
+    sha256 "c93bcd80c6ecdc46f9b74eeb82c5834d42c1380bd4b8070dbd9a80354d1726d7" => :yosemite
+    sha256 "09b948452ac6499dd896cf96ae9289028bfb73c143d93b3f73067369a690e04c" => :mavericks
   end
 
   head do
-    url "git://git.videolan.org/libdvdcss"
+    url "https://git.videolan.org/git/libdvdcss.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build

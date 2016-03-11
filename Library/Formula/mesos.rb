@@ -1,14 +1,14 @@
 class Mesos < Formula
   desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.27.0/mesos-0.27.0.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.27.0/mesos-0.27.0.tar.gz"
-  sha256 "d5f356ad30ba661bc65af34de3cc54176b0ac90f2c58ad02b802a10e1bab0d55"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.27.2/mesos-0.27.2.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.27.2/mesos-0.27.2.tar.gz"
+  sha256 "07cc5f949251a9f90d6c472ded073affb5cd9aaa5ec16528706d65595df845d6"
 
   bottle do
-    sha256 "fb2e299f30fab28ae9c0d4e39cfa87bf20082ed3e70b0a49781ae5403e18d93d" => :el_capitan
-    sha256 "bfb24dabfe7c8c5594e7af76ae1a203968eb52a4cb0c8c2dd025fd840537fb67" => :yosemite
-    sha256 "e22ce22447decf39889e567ab2ad80eca9322e387c6bbc0ea3f937bd82167151" => :mavericks
+    sha256 "983c37cb422a4ad174ab382e5e844783edd3ba3a64fe960216f0b539a5e3c3ee" => :el_capitan
+    sha256 "746e206948276b1ee3e1c2eb03f4b156de3bd8aa52a31d6420253c4abf4976d2" => :yosemite
+    sha256 "24ac59edba1ea8c39da2cbdf0e2ec93d626fce8722f97ff2b67b60c1d154caef" => :mavericks
   end
 
   depends_on :java => "1.7+"

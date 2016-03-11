@@ -1,14 +1,21 @@
 class Libvoikko < Formula
   desc "Linguistic software and and Finnish dictionary"
   homepage "http://voikko.puimula.org/"
-  url "http://www.puimula.org/voikko-sources/libvoikko/libvoikko-4.0.1.tar.gz"
-  sha256 "4fdc12dec38c0e074f0728652b8bc52595e3d63b2c8c87e8a05cd55b808d32a1"
+  url "http://www.puimula.org/voikko-sources/libvoikko/libvoikko-4.0.2.tar.gz"
+  sha256 "0bfaaabd039024920713020671daff828434fcf4c89bce4601b94a377567f2a3"
+
+  # Standard compatibility fixes for Clang, upstream pull request at
+  # https://github.com/voikko/corevoikko/pull/22
+  patch :p2 do
+    url "https://github.com/voikko/corevoikko/commit/f69bab4.diff"
+    sha256 "415fc284feccb3b55972177d73d32a445a4c9b790071637d8d64da9c86ab2928"
+  end
 
   bottle do
     cellar :any
-    sha256 "d22047d2e96418f4f00a23dc8be15f597791d2afe73707584eb06e9482f3f83a" => :el_capitan
-    sha256 "9f8ada3163060f6fe71adf9849fbd019fd1f8b1d26d0770abc7267b706342965" => :yosemite
-    sha256 "f0dce2aef19383349b4fac06db0cb6f75cce8122d6279e65925103caf5fd3158" => :mavericks
+    sha256 "2eb82a48b1859e90f72cb932def86f46437b68c06237f7bc03a3c62a512da73a" => :el_capitan
+    sha256 "951b89e8c6e372b8a950f646eba4a3dc0cfff6f0fa0939507baecdaa82afda4a" => :yosemite
+    sha256 "7584eb257d6e626a16bf9e562dc96bb801c23074ec8741f350ab3801093f893d" => :mavericks
   end
 
   depends_on "pkg-config" => :build

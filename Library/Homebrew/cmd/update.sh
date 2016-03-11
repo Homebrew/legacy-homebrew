@@ -42,22 +42,21 @@ which_git() {
 }
 
 git_init_if_necessary() {
-  set -e
-  trap '{ rm -rf .git; exit 1; }' EXIT
-
   if [[ ! -d ".git" ]]
   then
+    set -e
+    trap '{ rm -rf .git; exit 1; }' EXIT
     git init
     git config --bool core.autocrlf false
     git config remote.origin.url https://github.com/Homebrew/homebrew.git
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-    git fetch origin
+    git fetch --force --depth=1 origin refs/heads/master:refs/remotes/origin/master
     git reset --hard origin/master
     SKIP_FETCH_HOMEBREW_REPOSITORY=1
+    set +e
+    trap - EXIT
+    return
   fi
-
-  set +e
-  trap - EXIT
 
   if [[ "$(git remote show origin -n)" = *"mxcl/homebrew"* ]]
   then
@@ -189,7 +188,7 @@ pull() {
     export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$CURRENT_REVISION"
     if ! git merge-base --is-ancestor "$INITIAL_REVISION" "$CURRENT_REVISION"
     then
-      odie "Your HEAD is not a descendant of $UPSTREAM_BRANCH!"
+      odie "Your $DIR HEAD is not a descendant of $UPSTREAM_BRANCH!"
     fi
     return
   fi
@@ -203,6 +202,7 @@ pull() {
       echo "Stashing uncommitted changes to $DIR."
       git status --short --untracked-files=all
     fi
+    git merge --abort &>/dev/null
     git -c "user.email=brew-update@localhost" \
         -c "user.name=brew update" \
         stash save --include-untracked "${QUIET_ARGS[@]}"
@@ -232,25 +232,22 @@ pull() {
   then
     git rebase "${QUIET_ARGS[@]}" "origin/$UPSTREAM_BRANCH"
   else
-    git merge --no-edit --ff "${QUIET_ARGS[@]}" "origin/$UPSTREAM_BRANCH"
+    git merge --no-edit --ff "${QUIET_ARGS[@]}" "origin/$UPSTREAM_BRANCH" \
+      --strategy=recursive \
+      --strategy-option=ours \
+      --strategy-option=ignore-all-space
   fi
 
   export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$(read_current_revision)"
 
   trap '' SIGINT
 
-  if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
-  then
-    git checkout "$INITIAL_BRANCH" "${QUIET_ARGS[@]}"
-    pop_stash
-  else
-    pop_stash_message
-  fi
+  pop_stash_message
 
   trap - SIGINT
 }
 
-homebrew-update-bash() {
+homebrew-update() {
   local option
   local DIR
   local UPSTREAM_BRANCH
@@ -258,7 +255,8 @@ homebrew-update-bash() {
   for option in "$@"
   do
     case "$option" in
-      --help) brew update --help; exit $? ;;
+      # TODO: - `brew update --help` should display update subcommand help
+      --help) brew --help; exit $? ;;
       --verbose) HOMEBREW_VERBOSE=1 ;;
       --debug) HOMEBREW_DEBUG=1;;
       --rebase) HOMEBREW_REBASE=1 ;;
@@ -303,6 +301,9 @@ EOS
       odie "Git must be installed and in your PATH!"
     fi
   fi
+  export GIT_TERMINAL_PROMPT="0"
+  export GIT_ASKPASS="false"
+  export GIT_SSH_COMMAND="ssh -oBatchMode=yes"
 
   if [[ -z "$HOMEBREW_VERBOSE" ]]
   then
@@ -330,8 +331,28 @@ EOS
     cd "$DIR" || continue
     UPSTREAM_BRANCH="$(upstream_branch)"
     # the refspec ensures that the default upstream branch gets updated
-    git fetch "${QUIET_ARGS[@]}" origin \
-      "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" &
+    (
+      UPSTREAM_REPOSITORY_URL="$(git config remote.origin.url)"
+      if [[ "$UPSTREAM_REPOSITORY_URL" = "https://github.com/"* ]]
+      then
+        UPSTREAM_REPOSITORY="${UPSTREAM_REPOSITORY_URL#https://github.com/}"
+        UPSTREAM_REPOSITORY="${UPSTREAM_REPOSITORY%.git}"
+        UPSTREAM_BRANCH_LOCAL_SHA="$(git rev-parse "refs/remotes/origin/$UPSTREAM_BRANCH")"
+        # Only try to `git fetch` when the upstream branch is at a different SHA
+        # (so the API does not return 304: unmodified).
+        UPSTREAM_SHA_HTTP_CODE="$(curl --silent '--max-time' 3 \
+           --output /dev/null --write-out "%{http_code}" \
+           --user-agent "Homebrew $HOMEBREW_VERSION" \
+           --header "Accept: application/vnd.github.chitauri-preview+sha" \
+           --header "If-None-Match: \"$UPSTREAM_BRANCH_LOCAL_SHA\"" \
+           "https://api.github.com/repos/$UPSTREAM_REPOSITORY/commits/$UPSTREAM_BRANCH")"
+        [[ "$UPSTREAM_SHA_HTTP_CODE" = "304" ]] && exit
+      fi
+
+      git fetch --force "${QUIET_ARGS[@]}" origin \
+        "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" || \
+          odie "Fetching $DIR failed!"
+    ) &
   done
 
   wait

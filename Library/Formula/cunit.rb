@@ -6,6 +6,7 @@ class Cunit < Formula
 
   bottle do
     cellar :any
+    sha256 "0b92535641c86f38bf7a3a1b08a07aa6523e4c0135792dd92829e00579a5e3a9" => :el_capitan
     sha256 "63c1d2905cf9214281b8dad71a7d86fcf57d46ccbeb026a43dc73dddac569840" => :yosemite
     sha256 "4add1b332febce1ba3ee01ab98213be0729f3d2cad14f435f4064fec0273c3cd" => :mavericks
     sha256 "758213aea9b80d97eb4d30da882933e80e69685ae035ef298f2d39bde84eba06" => :mountain_lion

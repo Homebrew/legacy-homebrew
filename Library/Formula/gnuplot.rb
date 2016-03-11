@@ -1,13 +1,13 @@
 class Gnuplot < Formula
   desc "Command-driven, interactive function plotting"
   homepage "http://www.gnuplot.info"
-  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/5.0.2/gnuplot-5.0.2.tar.gz"
-  sha256 "5a2b31d375f56d29272193370705164cde49545a332841183bcca44f02b1d890"
+  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/5.0.3/gnuplot-5.0.3.tar.gz"
+  sha256 "5f6ee35f3f22014058e999911934bfa9db28e02a2722a7001c192cd182b8c715"
 
   bottle do
-    sha256 "f32b2309b02be99723ad7bf340daff91478ac3abddc9a01591023bfe37a86db2" => :el_capitan
-    sha256 "c2bcd470edba07ad6e8fe8c52dc0b4e52c5f372313dd8965a97d80e8b6171a6c" => :yosemite
-    sha256 "80ad28f8c0198a94592de1a5e7d802b4ce383c8e60153f48ace9106d283b3607" => :mavericks
+    sha256 "e429bd5f40c8611b5e2e7c286124fc9da2547bfb5d80aed32f5e1d4dbd3481ec" => :el_capitan
+    sha256 "26baf173eb97e86686dbaa1770b59b91c3b7d91049cd4e213b87c2ba7ea8b820" => :yosemite
+    sha256 "bb3700adc73329b2f4e0a5d423a607a00a52ac3ddab6070121a7fb336a8b16bc" => :mavericks
   end
 
   head do
@@ -23,7 +23,7 @@ class Gnuplot < Formula
   option "with-test",  "Verify the build with make check"
   option "without-emacs", "Do not build Emacs lisp files"
   option "with-wxmac", "Build wxmac support. Need with-cairo to build wxt terminal"
-  option "with-latex",  "Build with LaTeX support"
+  option "with-tex",  "Build with LaTeX support"
   option "with-aquaterm", "Build with AquaTerm support"
 
   deprecated_option "with-x" => "with-x11"
@@ -35,7 +35,8 @@ class Gnuplot < Formula
   deprecated_option "nolua" => "without-lua"
   deprecated_option "tests" => "with-test"
   deprecated_option "with-tests" => "with-test"
-  deprecated_option "latex" => "with-latex"
+  deprecated_option "latex" => "with-tex"
+  deprecated_option "with-latex" => "with-tex"
 
   depends_on "pkg-config" => :build
   depends_on "fontconfig"
@@ -49,7 +50,7 @@ class Gnuplot < Formula
   depends_on "pdflib-lite" => :optional
   depends_on "qt" => :optional
   depends_on "wxmac" => :optional
-  depends_on :tex if build.with? "latex"
+  depends_on :tex => :optional
   depends_on :x11 => :optional
 
   def install
@@ -91,7 +92,7 @@ class Gnuplot < Formula
     args << ((build.with? "aquaterm") ? "--with-aquaterm" : "--without-aquaterm")
     args << ((build.with? "x11") ? "--with-x" : "--without-x")
 
-    if build.with? "latex"
+    if build.with? "tex"
       args << "--with-latex"
       args << "--with-tutorial"
     else

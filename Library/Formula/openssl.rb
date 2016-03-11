@@ -1,15 +1,15 @@
 class Openssl < Formula
   desc "SSL/TLS cryptography library"
   homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-1.0.2f.tar.gz"
-  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2f.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2f.tar.gz"
-  sha256 "932b4ee4def2b434f85435d9e3e19ca8ba99ce9a065a61524b429a9d5e9b2e9c"
+  url "https://www.openssl.org/source/openssl-1.0.2g.tar.gz"
+  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2g.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2g.tar.gz"
+  sha256 "b784b1b3907ce39abf4098702dade6365522a253ad1552e267a9a0e89594aa33"
 
   bottle do
-    sha256 "24ed49675f690666749444306357dff828bf9770a89b044a0653b7d7dccc92f3" => :el_capitan
-    sha256 "76e6b88a0294a99876ad58930833a33085142cbde958c87bb9c2b0a2052a6d75" => :yosemite
-    sha256 "136b65d7d4496c1277a39d30c44c38226ec776fef3a3ecbe9ce3888e68bc343e" => :mavericks
+    sha256 "b1de0682c7a838a75da3a06ddad2b9700d208b2faaaa1b51c0889ba403c7dd22" => :el_capitan
+    sha256 "68e5432c7b863341bc0c42c9a9391c11ba244519f110ba7c5ef4d97eb5c6b8fa" => :yosemite
+    sha256 "cdb9ddcc2bc683afa836b40258acbd40fa82dc67b68b245b7413d85e18d98ca0" => :mavericks
   end
 
   keg_only :provided_by_osx,
@@ -22,24 +22,17 @@ class Openssl < Formula
 
   depends_on "makedepend" => :build
 
-  # 1.0.2f: fix typo in macro BIO_get_conn_int_port()
-  # https://github.com/openssl/openssl/issues/595
-  # https://github.com/openssl/openssl/pull/596
-  patch do
-    url "https://github.com/openssl/openssl/commit/da7947e8c6915d86616425ecbc4906f079ef122f.diff"
-    sha256 "00bc58f9949baf592fb0caf63cd754f5407453cc4b61a1accb89040fa17b05b9"
-  end
-
-  # 1.0.2f: fix a typo in constant value DH_CHECK_PUBKEY_INVALID
-  patch do
-    url "https://github.com/openssl/openssl/commit/7107798ae6c5e19f581915928a69073d17cc21ab.diff"
-    sha256 "a13d63f0e5b5bcebe27eca7c20286843e105bc794e9b2bfa5f6e162174a0e135"
-  end
-
-  # 1.0.2f: add required checks in DH_check_pub_key()
-  patch do
-    url "https://github.com/openssl/openssl/commit/83ab6e55a1f8de9b3e45d13dcc78eb739dc66dea.diff"
-    sha256 "98443034f57e5c4fd1bd89dbf64e9b150184522d10b6a6f7bb7e67cc397615c2"
+  # Replace with upstream url if they merge the more robust fix
+  # https://github.com/openssl/openssl/pull/597
+  if MacOS.version <= :snow_leopard
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/3f1dc8ea145a70543aded8101a0c725abf82fc45/openssl/revert-pass-pure-constants-verbatim.patch"
+      sha256 "e38f84181a56e70028ade8408ad70aaffaea386b7e1b35de55728ae878d544aa"
+    end
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/3f1dc8ea145a70543aded8101a0c725abf82fc45/openssl/tshort-asm.patch"
+      sha256 "f161e2fc1395efcb53d785004d67d4962d28aa8ce282a91020f12809c03b2afd"
+    end
   end
 
   def arch_args

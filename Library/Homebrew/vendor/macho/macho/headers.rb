@@ -33,14 +33,11 @@ module MachO
   # any CPU (unused?)
   CPU_TYPE_ANY = -1
 
-  # x86 compatible CPUs
-  CPU_TYPE_X86 = 0x07
-
   # i386 and later compatible CPUs
-  CPU_TYPE_I386 = CPU_TYPE_X86
+  CPU_TYPE_I386 = 0x07
 
   # x86_64 (AMD64) compatible CPUs
-  CPU_TYPE_X86_64 = (CPU_TYPE_X86 | CPU_ARCH_ABI64)
+  CPU_TYPE_X86_64 = (CPU_TYPE_I386 | CPU_ARCH_ABI64)
 
   # PowerPC compatible CPUs (7400 series?)
   CPU_TYPE_POWERPC = 0x12
@@ -51,7 +48,6 @@ module MachO
   # association of cpu types to string representations
   CPU_TYPES = {
     CPU_TYPE_ANY => "CPU_TYPE_ANY",
-    CPU_TYPE_X86 => "CPU_TYPE_X86",
     CPU_TYPE_I386 => "CPU_TYPE_I386",
     CPU_TYPE_X86_64 => "CPU_TYPE_X86_64",
     CPU_TYPE_POWERPC => "CPU_TYPE_POWERPC",
@@ -166,7 +162,7 @@ module MachO
     # @return [Fixnum] the number of fat architecture structures following the header
     attr_reader :nfat_arch
 
-    FORMAT = "VV"
+    FORMAT = "N2" # always big-endian
     SIZEOF = 8
 
     # @api private
@@ -195,7 +191,7 @@ module MachO
     # @return [Fixnum] the alignment, as a power of 2
     attr_reader :align
 
-    FORMAT = "VVVVV"
+    FORMAT = "N5" # always big-endian
     SIZEOF = 20
 
     # @api private
@@ -239,7 +235,9 @@ module MachO
         flags)
       @magic = magic
       @cputype = cputype
-      @cpusubtype = cpusubtype
+      # For now we're not interested in additional capability bits also to be
+      # found in the `cpusubtype` field. We only care about the CPU sub-type.
+      @cpusubtype = cpusubtype & ~CPU_SUBTYPE_MASK
       @filetype = filetype
       @ncmds = ncmds
       @sizeofcmds = sizeofcmds

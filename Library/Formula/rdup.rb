@@ -1,17 +1,21 @@
 class Rdup < Formula
   desc "Utility to create a file list suitable for making backups"
-  homepage "https://archive.miek.nl/projects/rdup/"
-  url "https://archive.miek.nl/projects/rdup/rdup-1.1.14.tar.bz2"
-  sha256 "b25e2b0656d2e6a9cb97a37f493913c4156468d4c21cea15a9a0c7b353e3742a"
-  revision 2
+  homepage "https://github.com/miekg/rdup"
+  url "https://github.com/miekg/rdup/archive/1.1.15.tar.gz"
+  sha256 "787b8c37e88be810a710210a9d9f6966b544b1389a738aadba3903c71e0c29cb"
+  head "https://github.com/miekg/rdup.git"
 
   bottle do
     cellar :any
-    sha256 "9ea24b36882c48e95dd8c8f8653ee9568ce1bc73e5feaf1cc0c815939776f1bf" => :el_capitan
-    sha256 "163ee2ee0b3a2ada8119779d071d5dd52bbf26c242f0114e39b42d5ce47bb352" => :yosemite
-    sha256 "955fc1c20fd4d9daddef07f0cc4f8475f310040ed797ba0e00e1a76f91a74a46" => :mavericks
+    sha256 "c9afd06e3d3cfb9628c9618723d1913916f2563d2b18159cffe2b2586ce0c508" => :el_capitan
+    sha256 "0b83116666ac22439d46a6d92f6d75eb3dd7f231021dbc441c2388b4bd076e00" => :yosemite
+    sha256 "ddfd0b0a7116c618739caffb054a0b149e17c7bf517c512ccb1543c3e7784275" => :mavericks
   end
 
+  option "with-test", "Verify the build with `make check`"
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "pkg-config" => :build
   depends_on "nettle"
   depends_on "pcre"
@@ -19,13 +23,26 @@ class Rdup < Formula
   depends_on "libarchive"
   depends_on "mcrypt"
 
+  if build.with? "test"
+    depends_on "deja-gnu" => :build
+    depends_on "gnu-sed" => :build
+    depends_on "coreutils" => :build
+    depends_on "gnu-tar" => :build
+  end
+
   def install
-    ENV.deparallelize
-
+    system "autoreconf", "-fiv"
     system "./configure", "--prefix=#{prefix}"
+    system "make"
 
-    # let rdup know that we actually have dirfd
-    system "echo '#define HAVE_DIRFD 1' >> config.h"
+    if build.with? "test"
+      saved_path = ENV["PATH"]
+      ENV.prepend_path "PATH", Formula["gnu-sed"].opt_libexec/"gnubin"
+      ENV.prepend_path "PATH", Formula["coreutils"].opt_libexec/"gnubin"
+      ENV.prepend_path "PATH", Formula["gnu-tar"].opt_libexec/"gnubin"
+      system "make", "check"
+      ENV["PATH"] = saved_path
+    end
 
     system "make", "install"
   end

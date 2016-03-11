@@ -7,7 +7,8 @@ class ClosureLinter < Formula
   head "https://github.com/google/closure-linter.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "44607d2104144e462b1a87313345f9205f66d9d2ee03f5ad306e5f532a95d0c0" => :el_capitan
     sha256 "1fba2b6ce208cc1944ecb7aaf1e4998f439f248234f51854523b04be96babb8d" => :yosemite
     sha256 "a5f04eab15b5496bc5309b420552a2f13392606bab465beaf0cce27119557b61" => :mavericks
     sha256 "beaed6105607c8d7096707904aa6b1d51dfe3f119d709ddb6d0dba93691323bb" => :mountain_lion

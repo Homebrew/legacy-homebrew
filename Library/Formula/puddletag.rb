@@ -3,15 +3,15 @@ class Puddletag < Formula
   homepage "http://puddletag.sf.net"
   url "https://github.com/keithgg/puddletag/archive/1.1.1.tar.gz"
   sha256 "550680abf9c2cf082861dfb3b61fd308f87f9ed304065582cddadcc8bdd947cc"
-  revision 1
+  revision 2
 
   head "https://github.com/keithgg/puddletag.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "66b9869de0ed08574b572ec748a9d60818793dc89786b8881186b1b9f7c49271" => :el_capitan
-    sha256 "a71ba99dda619b47191d6491a4af6985db4ea8b8553a9a0a058162f5c0f4be82" => :yosemite
-    sha256 "d68cf36675cb2a2ed03630d01d418199cef90fcda6d39e733d5754acb6255e51" => :mavericks
+    sha256 "2f97b0687f8eacab3188d6e2ec595f267f862efed2701e51b39a2bf81bf508bb" => :el_capitan
+    sha256 "80ad92bbf1cdaaed786063b7fc2ef78e1b652a70efbc882e1fd2c5828e3d302d" => :yosemite
+    sha256 "52b3b94916fe4943df8962f63534093a7f9a9b7f6c5e0ed4869d23b51ccd908f" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

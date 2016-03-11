@@ -5,6 +5,7 @@ class Xmp < Formula
   sha256 "b6d45fef0dbdb4ad4948b9f82335cbfaf60eaec3a63cc9a0050a1e5cf7a65e3e"
 
   bottle do
+    sha256 "f12054f842520102517a3d1a9457c5bf083a5b1386d842419651524591c478c4" => :el_capitan
     sha256 "30123b45264d818a74c8a47171b984dbce47ba1342bada039405882f2bb906e2" => :yosemite
     sha256 "39c8747c8f8cb4a61b7050cca33f2e58b4e96c669cd194253a673ea53a27d609" => :mavericks
     sha256 "7c0ceac5687e8e6ee8da0cd9ac35e91061919ed932ec681f79bf25a2e8493e7c" => :mountain_lion

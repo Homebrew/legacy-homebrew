@@ -1,19 +1,20 @@
 class RdiffBackup < Formula
   desc "Backs up one directory to another--also works over networks"
   homepage "http://rdiff-backup.nongnu.org/"
-  url "http://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.2.8.tar.gz"
+  url "https://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.2.8.tar.gz"
   sha256 "0d91a85b40949116fa8aaf15da165c34a2d15449b3cbe01c8026391310ac95db"
   revision 1
 
   bottle do
     cellar :any
-    sha256 "196b7306e685aa7b03b8a55f9a305316d102885437c4a99eaefcb9a26518f11e" => :el_capitan
-    sha256 "c0a4e011807f1549616f5455d41e46d705a5e35218ab203f117d25a5d3061816" => :yosemite
-    sha256 "508a818d9f53775e43a445d786688c3ee41858bf4be0041057a5b555e3964ead" => :mavericks
+    revision 1
+    sha256 "f06f79bc1536dbaa990e6005565f18de05e9dc12deb09701a504ab6bfc8b8f11" => :el_capitan
+    sha256 "35f6a0f726a680d639f7a1c83af8e27d046d5a68a334bf19d47eaa363748767c" => :yosemite
+    sha256 "5b0eab2335afe2d298cd51737c744d052536cb0bdbee780819496e1000a3b179" => :mavericks
   end
 
   devel do
-    url "http://download.savannah.nongnu.org/releases/rdiff-backup/rdiff-backup-1.3.3.tar.gz"
+    url "https://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.3.3.tar.gz"
     sha256 "ee030ce638df0eb1047cf72578e0de15d9a3ee9ab24da2dc0023e2978be30c06"
   end
 

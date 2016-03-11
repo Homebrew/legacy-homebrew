@@ -1,7 +1,7 @@
 class Gstreamer < Formula
   desc "GStreamer is a development framework for multimedia applications"
-  homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.6.3.tar.xz"
+  homepage "https://gstreamer.freedesktop.org/"
+  url "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.6.3.tar.xz"
   sha256 "22f9568d67b87cf700a111f381144bd37cb93790a77e4e331db01fe854a37f24"
 
   bottle do
@@ -11,7 +11,7 @@ class Gstreamer < Formula
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gstreamer"
+    url "https://anongit.freedesktop.org/git/gstreamer/gstreamer.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

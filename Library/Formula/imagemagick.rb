@@ -1,20 +1,19 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
-  homepage "http://www.imagemagick.org"
+  homepage "https://www.imagemagick.org/"
   # Please always keep the Homebrew mirror as the primary URL as the
   # ImageMagick site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://dl.bintray.com/homebrew/mirror/ImageMagick-6.9.3-0.tar.xz"
-  mirror "http://www.imagemagick.org/download/releases/ImageMagick-6.9.3-0.tar.xz"
-  sha256 "2ba0656eb03d72d8a44e741ead524e8c34097418c0bb5487a5c4f4fe5eca9656"
-  revision 2
+  url "https://dl.bintray.com/homebrew/mirror/ImageMagick-6.9.3-6.tar.xz"
+  mirror "https://www.imagemagick.org/download/ImageMagick-6.9.3-6.tar.xz"
+  sha256 "519b14a5f58f5b55a61bebd378aff63176d8c2e9d1eb23ee332d2cc73d11943f"
 
   head "http://git.imagemagick.org/repos/ImageMagick.git"
 
   bottle do
-    sha256 "08066807e93743ade06bb3fbb358cd787b80d2f38ba8ad829ad2729a43ab2b58" => :el_capitan
-    sha256 "5bd86a2ad5d99979d493c71b388e389df37a797abc73fc2820117ff9ae02ce47" => :yosemite
-    sha256 "332e6d47b79b8a40625284bae95e508509454149e4381ea94449ce47ee31ef12" => :mavericks
+    sha256 "9b39c38306699d171d20d63ce262041c24a56c46371d1e51734dc5f5450ca517" => :el_capitan
+    sha256 "c6576149b066086797d9e5ad1514320963a7b0984a6119aec1e13b46e08e7959" => :yosemite
+    sha256 "351cfda4a52c2722209be5b279002793752c134049c3b89ccee4faa59bdc82bf" => :mavericks
   end
 
   deprecated_option "enable-hdri" => "with-hdri"
@@ -58,8 +57,6 @@ class Imagemagick < Formula
   skip_clean :la
 
   def install
-    ENV.delete "PERL_MM_OPT"
-
     args = %W[
       --disable-osx-universal-binary
       --prefix=#{prefix}

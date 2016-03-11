@@ -1,18 +1,13 @@
 class Abcm2ps < Formula
   desc "ABC music notation software"
   homepage "http://moinejf.free.fr"
-  url "http://moinejf.free.fr/abcm2ps-7.8.14.tar.gz"
-  sha256 "31c55865a914d56c12e2b7cbeaf5e4a09b47bbe79f1c7b5cd1576a16f3753d07"
+  url "http://moinejf.free.fr/abcm2ps-8.11.1.tar.gz"
+  sha256 "992255c11b51b8ebcc0516f1d3caa435e4970eac7bf6dd839fad8d2fef82df01"
 
   bottle do
-    sha256 "3f3cbc0a52593625dd5d14cfc4678f92dcfcbf13a88bb3f51d8dd2544137b396" => :yosemite
-    sha256 "11dc20c7dc6bc5e71df0cc7df303df3027de9663f3c7cdc1425151b8007081dc" => :mavericks
-    sha256 "904a9114ad88c9482bc8c3b7d9366ce3f2bde2e3ee324da54f9c5e70932d6c7e" => :mountain_lion
-  end
-
-  devel do
-    url "http://moinejf.free.fr/abcm2ps-8.7.8.tar.gz"
-    sha256 "f9120e8ffd8e9eba3095fc800c7cceca5017eadeedcc2e1e19d7c59082201cbc"
+    sha256 "1892d93a86b59026b4a167345bb553e93e859bf47b9db5e907b779929ba76308" => :el_capitan
+    sha256 "e0553f3feed22c8130f1b3fe101ce1679f7d04f780ebafe1bdbb92144f85d173" => :yosemite
+    sha256 "f50c0bde8c3628df1465cc31f07b66195381d756bb24c8fc79939a54f299df04" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -45,6 +40,7 @@ class Abcm2ps < Formula
       "Trompette"z3|z3 |z3 |z3 |:Mc>BA|PGA/G/F|PE>EF|PEF/E/D|C>CPB,|A,G,F,-|
     EOF
 
-    system "#{bin}/abcm2ps", (testpath/"voices")
+    system "#{bin}/abcm2ps", testpath/"voices"
+    assert File.exist?("Out.ps")
   end
 end

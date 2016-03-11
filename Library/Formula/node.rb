@@ -1,14 +1,14 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v5.6.0/node-v5.6.0.tar.gz"
-  sha256 "3af2cc5e5970afc83e59f2065fea2e2df846a544a100cd3c0527f0db05bec27f"
+  url "https://nodejs.org/dist/v5.8.0/node-v5.8.0.tar.xz"
+  sha256 "c1246d473d6650ca02ab168eaf840e9edda82a4190ff08165fc44a7b381a9361"
   head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "6c1cea54bc89868e24f1ee79b8e07c59fbe21b2a0fc0b133febd297ec4749d74" => :el_capitan
-    sha256 "7b524f06adae8b0fc5bd194a9910cb9587c71c44b586863bacb8474120a006a8" => :yosemite
-    sha256 "6936e601755a16ae7aaf4b7f0856466a59b5c1eb4e8c957e7cd64303b6a4df77" => :mavericks
+    sha256 "5d3b84369491ab6bf186682006faae6a9e7a1fb53708091028331aaa59665aef" => :el_capitan
+    sha256 "68f44efbba992849b979f8200bd683be3a55d9e6110d797a5d309fd1b7ad8d83" => :yosemite
+    sha256 "9d38e6085cfc2db498dd057648666e021a88e1499763e1f329a7f360b135f852" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -36,8 +36,8 @@ class Node < Formula
   # We will accept *important* npm patch releases when necessary.
   # https://github.com/Homebrew/homebrew/pull/46098#issuecomment-157802319
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-3.6.0.tgz"
-    sha256 "e686676c9d6db00f43f415998a8e0f47f415549f850f4b86ffdc7d7677db70e0"
+    url "https://registry.npmjs.org/npm/-/npm-3.7.3.tgz"
+    sha256 "3f787fa7dc401d3dca40abed838c20ad1abcdef8947581c9856427db9a92be7a"
   end
 
   resource "icu4c" do
@@ -114,8 +114,8 @@ class Node < Formula
     ["man1", "man3", "man5", "man7"].each do |man|
       # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
       mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
-      rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
-      ln_sf Dir[libexec/"npm/lib/node_modules/npm/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
+      rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.,package.json.}*"]
+      ln_sf Dir[libexec/"npm/lib/node_modules/npm/man/#{man}/{npm,package.json}*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
     npm_root = node_modules/"npm"

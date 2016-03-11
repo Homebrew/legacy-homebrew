@@ -5,7 +5,8 @@ class Dwarfutils < Formula
   sha256 "29aa8d07db659d7d7af7079854cf42c09bf74d303942159cbfee82d655549870"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "15968805e0d4452741029f99926375747e27973f5b37e322100d42b051949825" => :el_capitan
     sha256 "90938e4decc07bb5ae51d9ed43554de01d812e5dafea3bef30b7e34e347caeb2" => :yosemite
     sha256 "599743c3fbc31356bf02a701a7216b2cce71f54f24a6f8210f7ec5756a470fe8" => :mavericks
     sha256 "110451d0c1166720bae4f113b2929822434c422fba07bfbf48e05a1031d1cdef" => :mountain_lion

@@ -1,14 +1,14 @@
 class AmmoniteRepl < Formula
   desc "Ammonite is a cleanroom re-implementation of the Scala REPL"
   homepage "https://lihaoyi.github.io/Ammonite/#Ammonite-REPL"
-  url "https://github.com/lihaoyi/Ammonite/archive/0.5.4.tar.gz"
-  sha256 "9cd2c1d19561c443a3e8eeec123461533deb98b26346b78077dc2540b26ce4c5"
+  url "https://github.com/lihaoyi/Ammonite/archive/0.5.6.tar.gz"
+  sha256 "c131a984aa101b927e34a84832b85f8e9f54c1d4a5a1f2e45d18d26a3c6122cb"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b995e7163d3904d17ef9dc789551ce7b579fa33ec3d067ebbf81a9aa4911ba4d" => :el_capitan
-    sha256 "5cd9ae338d8cce15290416984eb42fb01309a473f1d5b2de9ff11e43715d3249" => :yosemite
-    sha256 "c6587102f614c545932dfae67a19aeeecd2e30608af652dce072b8048838fd64" => :mavericks
+    sha256 "02fab559ad7837181378cf622476049808ba3eb02af2dacdf3ab651e6cb4d103" => :el_capitan
+    sha256 "95d030040a6fd69368b052f53c25cb8ec6ac0c84e422fe4a8f765d9d36459334" => :yosemite
+    sha256 "40f14e8805cb7b33fb685463bc77c1ab0e1c7e8e54eb15817c604d65b7dd984b" => :mavericks
   end
 
   depends_on :java => "1.6+"
@@ -19,13 +19,7 @@ class AmmoniteRepl < Formula
 
     system "sbt", "repl/assembly"
 
-    # Ammonite REPL 0.5.4 incorrectly generates an executable with version 0.5.3 in the name
-    # see: https://github.com/lihaoyi/Ammonite/blob/0.5.4/project/Constants.scala
-
-    # Please use the derived version instead of an explicit version for the next release:
-    # bin.install "repl/target/scala-2.11/ammonite-repl-#{version}-2.11.7" => "amm"
-    bin.install "repl/target/scala-2.11/ammonite-repl-0.5.3-2.11.7" => "amm"
-
+    bin.install "repl/target/scala-2.11/ammonite-repl-#{version}-2.11.7" => "amm"
   end
 
   test do

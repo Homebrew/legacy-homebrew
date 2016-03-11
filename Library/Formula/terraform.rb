@@ -3,14 +3,15 @@ require "language/go"
 class Terraform < Formula
   desc "Tool to build, change, and version infrastructure"
   homepage "https://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.6.11.tar.gz"
-  sha256 "374f69a5b2c32073a493a88cd9c55580b30dcf345437f4a8f6c46d87bdc5f0eb"
+  url "https://github.com/hashicorp/terraform/archive/v0.6.12.tar.gz"
+  sha256 "a8c4877547f8f02887c03328582ad2a43ea113a351f545e073f32e74d172e8a2"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e8d5b7a14fed39a9f2998b48698b93df0828b0384bd4a665313df9006f561d12" => :el_capitan
-    sha256 "e42e11fa1c7b65ce4e17dd6db6c354f7902bf4d20fe89bda8545fb898df6793e" => :yosemite
-    sha256 "df2d35cf3060aa371145b65f5dbe8237d84d37ab2ecda356b9cfc257a09018e8" => :mavericks
+    revision 1
+    sha256 "d1b551080f684dd7a56bf9c272ef08fe1cf3c74f886a1241751f2c3cc27df8e4" => :el_capitan
+    sha256 "276296fbfec5d879aecb45f56799b6ba20686ebf5b66b91deaa28e41dfbf16cb" => :yosemite
+    sha256 "0a3c6cbb5da1be5548b427630d08c8a7761985e4769f9fe217dcb347138ed3f6" => :mavericks
   end
 
   depends_on "go" => :build
@@ -38,12 +39,11 @@ class Terraform < Formula
   end
 
   go_resource "google.golang.org/grpc" do
-    url "https://github.com/grpc/grpc-go", :revision => "5d64098b94ee9dbbea8ddc130208696bcd199ba4"
+    url "https://github.com/grpc/grpc-go.git", :revision => "5d64098b94ee9dbbea8ddc130208696bcd199ba4"
   end
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["GO15VENDOREXPERIMENT"] = "1"
     # For the gox buildtool used by terraform, which doesn't need to
     # get installed permanently
     ENV.append_path "PATH", buildpath
@@ -63,7 +63,10 @@ class Terraform < Formula
     end
 
     cd terrapath do
-      terraform_files = `go list ./...`.lines.map {|f| f.strip unless f.include? "/vendor/" }.compact
+      terraform_files = `go list ./...`.lines.map { |f| f.strip unless f.include? "/vendor/" }.compact
+      # v0.6.12 - source contains tests which fail if these environment variables are set locally.
+      ENV.delete "AWS_ACCESS_KEY"
+      ENV.delete "AWS_SECRET_KEY"
       system "go", "test", *terraform_files
 
       mkdir "bin"
@@ -74,6 +77,7 @@ class Terraform < Formula
         "-output", "bin/terraform-{{.Dir}}", *terraform_files
       bin.install "bin/terraform-terraform" => "terraform"
       bin.install Dir["bin/*"]
+      zsh_completion.install "contrib/zsh-completion/_terraform"
     end
   end
 

@@ -5,11 +5,11 @@ class GnuIndent < Formula
   mirror "https://ftp.gnu.org/gnu/indent/indent-2.2.10.tar.gz"
   sha256 "8a9b41be5bfcab5d8c1be74204b10ae78789fc3deabea0775fdced8677292639"
 
+  option "with-default-names", "Do not prepend 'g' to the binary"
+
   depends_on "gettext"
 
   deprecated_option "default-names" => "with-default-names"
-
-  option "with-default-names", "Do not prepend 'g' to the binary"
 
   # Fix broken include and missing build dependency
   patch :DATA

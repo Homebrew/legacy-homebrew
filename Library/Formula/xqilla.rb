@@ -6,12 +6,15 @@ class Xqilla < Formula
 
   bottle do
     cellar :any
-    sha256 "f5c1033698c6dfe371182dac4311b3ad2e1d8e1f5c23f0a6fd6f579e45f52ad4" => :el_capitan
-    sha256 "c1ca983aa5ba4063e5fb540353852e75139af571dee32ae086fe593a781f8b53" => :yosemite
-    sha256 "696b3fa43a0847c6614513d0e84c148dcb7d2ea352109153e7e21e735397ee08" => :mavericks
+    revision 1
+    sha256 "467093e2e7aa5d27ef6fbb4b38b4272847b58f0034a274dee32a47d03269a4fc" => :el_capitan
+    sha256 "25adad84e1e9c8aef23c2acde2a7848a1899d291628ffbe6c03c6296fbeb39f4" => :yosemite
+    sha256 "29918d50fd8318817ddea7f7e99ee9f6e144c631fcbeaa19c5b0f478223b1d39" => :mavericks
   end
 
   depends_on "xerces-c"
+
+  conflicts_with "zorba", :because => "Both supply xqc.h"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

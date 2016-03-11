@@ -31,17 +31,17 @@ require "rexml/document"
 require "rexml/xmldecl"
 require "rexml/cdata"
 require "tap"
-require "core_formula_repository"
 
 module Homebrew
   BYTES_IN_1_MEGABYTE = 1024*1024
+  HOMEBREW_TAP_REGEX = %r{^([\w-]+)/homebrew-([\w-]+)$}
 
   def resolve_test_tap
     if tap = ARGV.value("tap")
       return Tap.fetch(tap)
     end
 
-    if tap = ENV["TRAVIS_REPO_SLUG"]
+    if (tap = ENV["TRAVIS_REPO_SLUG"]) && (tap =~ HOMEBREW_TAP_REGEX)
       return Tap.fetch(tap)
     end
 
@@ -57,12 +57,12 @@ module Homebrew
       # Also can get tap from Jenkins GIT_URL.
       url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/").sub(%r{\.git$}, "")
       begin
-        return Tap.fetch(url_path)
+        return Tap.fetch(url_path) if url_path =~ HOMEBREW_TAP_REGEX
       rescue
       end
     end
 
-    CoreFormulaRepository.instance
+    CoreTap.instance
   end
 
   class Step
@@ -209,7 +209,7 @@ module Homebrew
       @added_formulae = []
       @modified_formula = []
       @steps = []
-      @tap = options.fetch(:tap,  CoreFormulaRepository.instance)
+      @tap = options.fetch(:tap, CoreTap.instance)
       @repository = @tap.path
       @skip_homebrew = options.fetch(:skip_homebrew, false)
 
@@ -609,7 +609,7 @@ module Homebrew
       @category = __method__
       return if @skip_homebrew
       test "brew", "tests"
-      if @tap.core_formula_repository?
+      if @tap.core_tap?
         tests_args = ["--no-compat"]
         readall_args = ["--aliases"]
         if RUBY_VERSION.split(".").first.to_i >= 2
@@ -767,7 +767,7 @@ module Homebrew
     safe_system "brew", "update"
 
     if pr
-      pull_pr = if tap.core_formula_repository?
+      pull_pr = if tap.core_tap?
         pr
       else
         "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
@@ -779,7 +779,7 @@ module Homebrew
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
     system "brew", "bottle", *bottle_args
 
-    remote_repo = tap.core_formula_repository? ? "homebrew" : "homebrew-#{tap.repo}"
+    remote_repo = tap.core_tap? ? "homebrew" : "homebrew-#{tap.repo}"
     remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
@@ -805,9 +805,14 @@ module Homebrew
       unless formula_packaged[formula_name]
         package_url = "#{bintray_repo_url}/#{bintray_package}"
         unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
+          package_blob = <<-EOS.undent
+            {"name": "#{bintray_package}",
+             "public_download_numbers": true,
+             "public_stats": true}
+          EOS
           curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
                "-H", "Content-Type: application/json",
-               "-d", "{\"name\":\"#{bintray_package}\"}", bintray_repo_url
+               "-d", package_blob, bintray_repo_url
           puts
         end
         formula_packaged[formula_name] = true

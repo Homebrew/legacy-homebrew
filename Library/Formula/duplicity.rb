@@ -6,10 +6,10 @@ class Duplicity < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha256 "b792108d8405e8527a5bfaf62fdc01b7885046b3c08e1c53d93d44aa243ed806" => :el_capitan
-    sha256 "b78b9be8ec45c71fdafeef55220221ced37384b4bdf885fd3194de126b360549" => :yosemite
-    sha256 "040c23018c8ba4732743194af7ffd5d13e5d14e7921ed2d6a4a93f3947b27645" => :mavericks
+    revision 2
+    sha256 "cc719afe3ad72a76b9eb7ae4aefae09c6bb3a26f56d6a737344af23ddad39502" => :el_capitan
+    sha256 "1d2ab87d0411e0f701f14f7202407f6800d75148a596ba5d9acdcb78de5ff33e" => :yosemite
+    sha256 "9bbfb2ab584675e4251280c85bcc4bac2f4455fee86d4a9a1f1bd67df43c661f" => :mavericks
   end
 
   option :universal
@@ -54,8 +54,8 @@ class Duplicity < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.1.tar.gz"
-    sha256 "a13217a03a47e743d26edff7299e4be7358c2fd12a223ac5d6de3229690b6ee5"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "debtcollector" do
@@ -234,8 +234,8 @@ class Duplicity < Formula
   end
 
   resource "pyrax" do
-    url "https://pypi.python.org/packages/source/p/pyrax/pyrax-1.9.6.tar.gz"
-    sha256 "a06b0ae9d0aac091c4287bf65debc64ecd85089c1ac765adbeea26204133a0ea"
+    url "https://pypi.python.org/packages/source/p/pyrax/pyrax-1.9.7.tar.gz"
+    sha256 "6f2e2bbe9d34541db66f5815ee2016a1366a78a5bf518810d4bd81b71a9bc477"
   end
 
   resource "python-keystoneclient" do

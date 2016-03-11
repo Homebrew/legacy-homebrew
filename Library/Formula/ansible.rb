@@ -1,22 +1,22 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
   homepage "http://www.ansible.com"
-  url "https://releases.ansible.com/ansible/ansible-2.0.0.2.tar.gz"
-  sha256 "27db0b99113fab85b1430c361c7790a0aa7f5c614c9af13362e2adbba07e5828"
+  url "https://releases.ansible.com/ansible/ansible-2.0.1.0.tar.gz"
+  sha256 "cddc4fa6af4c1be6cd1d6634de1bd0397abad921c76b32cab6722c042744ee5d"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    revision 2
-    sha256 "7d1afbbf70603d8e1c3bf14b507d6b1ffc50bc2694e99fafde63a5b2cc601d22" => :el_capitan
-    sha256 "d5b256451edee339c92b3ca1ea2dd9c91ae012afa0efc6f0716f1af79cefa463" => :yosemite
-    sha256 "c4291da7b959bca1455367f205e9a334dece4937a27faab14dc919b65c4fcd4d" => :mavericks
+    revision 1
+    sha256 "be446d21c04beaf79f24b9ee2b2cc8649d07f6997147e54517df6cda43afbaec" => :el_capitan
+    sha256 "e9dfd9b936aa1fde89b88de26dedeffd99870a4e194e4582319136751a39110d" => :yosemite
+    sha256 "a89fd9ab292556da3efaf609562350aec2408c700d1c08f80543ac63b0550811" => :mavericks
   end
 
   devel do
-    url "https://releases.ansible.com/ansible/ansible-2.0.1.0-0.1.rc1.tar.gz"
-    sha256 "ab2230f22d742e1379c72a3a59b18779a6aad2b4db69e87e073478028f51b24b"
-    version "2.0.1.0-0.1.rc1"
+    url "https://releases.ansible.com/ansible/ansible-2.0.1.0-0.2.rc2.tar.gz"
+    sha256 "4807f8e4b6c70ea1eca6bb3131c19e17d835d2e8884a63d107a842007430285a"
+    version "2.0.1.0-0.2.rc2"
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -79,8 +79,8 @@ class Ansible < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.1.2.tar.gz"
-    sha256 "7f51459f84d670444275e615839f4542c93547a12e938a0a4906dafe5f7de153"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "enum34" do

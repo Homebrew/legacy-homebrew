@@ -1,6 +1,8 @@
 require "testing_env"
 
 class TapTest < Homebrew::TestCase
+  include FileUtils
+
   def setup
     @path = Tap::TAP_DIRECTORY/"homebrew/homebrew-foo"
     @path.mkpath
@@ -16,20 +18,30 @@ class TapTest < Homebrew::TestCase
     EOS
     @alias_file = @path/"Aliases/bar"
     @alias_file.parent.mkpath
-    FileUtils.ln_s @formula_file, @alias_file
+    ln_s @formula_file, @alias_file
     (@path/"formula_renames.json").write <<-EOS.undent
      { "oldname": "foo" }
     EOS
+    (@path/"tap_migrations.json").write <<-EOS.undent
+     { "removed-formula": "homebrew/foo" }
+    EOS
     @cmd_file = @path/"cmd/brew-tap-cmd.rb"
     @cmd_file.parent.mkpath
-    FileUtils.touch @cmd_file
-    FileUtils.chmod 0755, @cmd_file
+    touch @cmd_file
+    chmod 0755, @cmd_file
     @manpage_file = @path/"man/man1/brew-tap-cmd.1"
     @manpage_file.parent.mkpath
-    FileUtils.touch @manpage_file
+    touch @manpage_file
   end
 
   def setup_git_repo
+    env = ENV.to_hash
+    %w[AUTHOR COMMITTER].each do |role|
+      ENV["GIT_#{role}_NAME"] = "brew tests"
+      ENV["GIT_#{role}_EMAIL"] = "brew-tests@localhost"
+      ENV["GIT_#{role}_DATE"] = "Thu May 21 00:04:11 2009 +0100"
+    end
+
     @path.cd do
       shutup do
         system "git", "init"
@@ -38,6 +50,8 @@ class TapTest < Homebrew::TestCase
         system "git", "commit", "-m", "init"
       end
     end
+  ensure
+    ENV.replace(env)
   end
 
   def teardown
@@ -45,7 +59,7 @@ class TapTest < Homebrew::TestCase
   end
 
   def test_fetch
-    assert_kind_of CoreFormulaRepository, Tap.fetch("Homebrew", "homebrew")
+    assert_kind_of CoreTap, Tap.fetch("Homebrew", "homebrew")
     tap = Tap.fetch("Homebrew", "foo")
     assert_kind_of Tap, tap
     assert_equal "homebrew/foo", tap.name
@@ -64,14 +78,14 @@ class TapTest < Homebrew::TestCase
     assert_equal @path, @tap.path
     assert_predicate @tap, :installed?
     assert_predicate @tap, :official?
-    refute_predicate @tap, :core_formula_repository?
+    refute_predicate @tap, :core_tap?
   end
 
   def test_issues_url
     t = Tap.new("someone", "foo")
     path = Tap::TAP_DIRECTORY/"someone/homebrew-foo"
     path.mkpath
-    FileUtils.cd path do
+    cd path do
       shutup { system "git", "init" }
       system "git", "remote", "add", "origin",
         "https://github.com/someone/homebrew-foo"
@@ -93,8 +107,13 @@ class TapTest < Homebrew::TestCase
     assert_equal @tap.alias_table, "homebrew/foo/bar" => "homebrew/foo/foo"
     assert_equal @tap.alias_reverse_table, "homebrew/foo/foo" => ["homebrew/foo/bar"]
     assert_equal @tap.formula_renames, "oldname" => "foo"
+    assert_equal @tap.tap_migrations, "removed-formula" => "homebrew/foo"
     assert_equal [@cmd_file], @tap.command_files
     assert_kind_of Hash, @tap.to_hash
+    assert_equal true, @tap.formula_file?(@formula_file)
+    assert_equal true, @tap.formula_file?("Formula/foo.rb")
+    assert_equal false, @tap.formula_file?("bar.rb")
+    assert_equal false, @tap.formula_file?("Formula/baz.sh")
   end
 
   def test_remote
@@ -115,8 +134,28 @@ class TapTest < Homebrew::TestCase
     refute_predicate version_tap, :private?
   end
 
+  def test_remote_not_git_repo
+    assert_nil @tap.remote
+  end
+
+  def test_remote_git_not_available
+    setup_git_repo
+    Utils.stubs(:git_available?).returns(false)
+    assert_nil @tap.remote
+  end
+
+  def test_git_variant
+    touch @path/"README"
+    setup_git_repo
+
+    assert_equal "e1893a6bd191ba895c71b652ff8376a6114c7fa7", @tap.git_head
+    assert_equal "e189", @tap.git_short_head
+    assert_match %r{years ago}, @tap.git_last_commit
+    assert_equal "2009-05-21", @tap.git_last_commit_date
+  end
+
   def test_private_remote
-    skip "HOMEBREW_GITHUB_API_TOKEN is required" unless ENV["HOMEBREW_GITHUB_API_TOKEN"]
+    skip "HOMEBREW_GITHUB_API_TOKEN is required" unless GitHub.api_credentials
     assert_predicate @tap, :private?
   end
 
@@ -165,9 +204,11 @@ class TapTest < Homebrew::TestCase
   end
 end
 
-class CoreFormulaRepositoryTest < Homebrew::TestCase
+class CoreTapTest < Homebrew::TestCase
+  include FileUtils
+
   def setup
-    @repo = CoreFormulaRepository.new
+    @repo = CoreTap.new
   end
 
   def test_attributes
@@ -178,7 +219,7 @@ class CoreFormulaRepositoryTest < Homebrew::TestCase
     assert_predicate @repo, :installed?
     refute_predicate @repo, :pinned?
     assert_predicate @repo, :official?
-    assert_predicate @repo, :core_formula_repository?
+    assert_predicate @repo, :core_tap?
   end
 
   def test_forbidden_operations
@@ -196,7 +237,7 @@ class CoreFormulaRepositoryTest < Homebrew::TestCase
     EOS
     @alias_file = @repo.alias_dir/"bar"
     @alias_file.parent.mkpath
-    FileUtils.ln_s @formula_file, @alias_file
+    ln_s @formula_file, @alias_file
 
     assert_equal [@formula_file], @repo.formula_files
     assert_equal ["foo"], @repo.formula_names

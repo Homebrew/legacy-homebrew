@@ -1,15 +1,15 @@
 class Passpie < Formula
   desc "Manage login credentials from the terminal"
   homepage "https://github.com/marcwebbie/passpie"
-  url "https://pypi.python.org/packages/source/p/passpie/passpie-1.3.1.tar.gz"
-  sha256 "90106e09b1d2609bcf6476157cafd42cfd639cd718a26a55674d87ccb9303b29"
+  url "https://pypi.python.org/packages/source/p/passpie/passpie-1.4.1.tar.gz"
+  sha256 "531957f343948dcc73883418377a0902cec4f1c3690e80b664b5a9eccb36a393"
   head "https://github.com/marcwebbie/passpie.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b157ec8e0eefab1497935fa33ea234c10130c52ef9992ad6a16afde4f1ac43b9" => :el_capitan
-    sha256 "412da32cbf45e87d66dce6be9641dac0d81c30907f7c05e076839598882e55e8" => :yosemite
-    sha256 "78bab7bb5024e60a247f65a50e92d9f7916fa4ceb988a301090c6eacd91a87e2" => :mavericks
+    sha256 "77a716138f7dbff10b2e1eb82ce88825a8840407cb97d300575d22af06f30b1b" => :el_capitan
+    sha256 "fd70a360480a82bce3450e66e5a8299cb1262196bd71d2ab082b2721f4dc441b" => :yosemite
+    sha256 "7f8e2edb54aa8e0188265ca062d611e30185eb498211764f8595ca9e90b8afaa" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

@@ -1,7 +1,5 @@
 require "digest/md5"
-require "formula_renames"
 require "tap"
-require "core_formula_repository"
 
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
@@ -148,15 +146,17 @@ class Formulary
     def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
       @tap = Tap.fetch user, repo
-      name = @tap.formula_renames.fetch(name, name)
-      path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
+      formula_dir = @tap.formula_dir || @tap.path
+      path = formula_dir/"#{name}.rb"
 
-      unless path
+      unless path.file?
         if (possible_alias = @tap.alias_dir/name).file?
           path = possible_alias.resolved_path
           name = path.basename(".rb").to_s
-        else
-          path = @tap.path/"#{name}.rb"
+        elsif (new_name = @tap.formula_renames[name]) &&
+              (new_path = formula_dir/"#{new_name}.rb").file?
+          path = new_path
+          name = new_name
         end
       end
 
@@ -277,7 +277,7 @@ class Formulary
       return FormulaLoader.new(ref, formula_with_that_name)
     end
 
-    possible_alias = CoreFormulaRepository.instance.alias_dir/ref
+    possible_alias = CoreTap.instance.alias_dir/ref
     if possible_alias.file?
       return AliasLoader.new(possible_alias)
     end
@@ -291,7 +291,7 @@ class Formulary
       return FormulaLoader.new(name, path)
     end
 
-    if newref = CoreFormulaRepository.instance.formula_renames[ref]
+    if newref = CoreTap.instance.formula_renames[ref]
       formula_with_that_oldname = core_path(newref)
       if formula_with_that_oldname.file?
         return FormulaLoader.new(newref, formula_with_that_oldname)
@@ -320,7 +320,7 @@ class Formulary
   end
 
   def self.core_path(name)
-    CoreFormulaRepository.instance.formula_dir/"#{name.downcase}.rb"
+    CoreTap.instance.formula_dir/"#{name.downcase}.rb"
   end
 
   def self.tap_paths(name, taps = Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"])

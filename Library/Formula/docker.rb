@@ -2,16 +2,16 @@ class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
   url "https://github.com/docker/docker.git",
-      :tag => "v1.10.0",
-      :revision => "590d5108bbdaabb05af590f76c9757daceb6d02e"
+      :tag => "v1.10.2",
+      :revision => "c3959b140f33c115c50710d2944dbf7e211bacd0"
 
   head "https://github.com/docker/docker.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "37c32d6b8d28691b13f0d9ff5b8043e80a3264a2d6216aa57162cc750ba9d05f" => :el_capitan
-    sha256 "359afd5526a7d827ce63a96932ae0747c06c96a72fc644f897e07d6d32757dad" => :yosemite
-    sha256 "71589e5bbbae4763752b99d60b127da1010d38f07a60c361f16bf9a65d85f156" => :mavericks
+    sha256 "2f1b2fbc2639981f2057c27341b4e9675e078d27501817039b0e16fb063fc91e" => :el_capitan
+    sha256 "c2ef1f6df5d0847eb86dcf67d0247da6befd22f50b4e2f7516c94bb940f54707" => :yosemite
+    sha256 "0da0a3ffdd26ebe62843fee986048253024e60d2122b325dc50242cb638a2836" => :mavericks
   end
 
   option "with-experimental", "Enable experimental features"

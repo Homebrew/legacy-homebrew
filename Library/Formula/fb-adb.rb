@@ -5,7 +5,8 @@ class FbAdb < Formula
   sha256 "c712cde3d4bfc16f8ea7da9a56d3cf567b8b9f1ae3c6c6bb052c95308b5752d9"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "92dbb3db60e478549fe5dc3734c18e99e2c2b43e1c3e0d50728552f6efcade3f" => :el_capitan
     sha256 "ea7f04716e434f8788be5f00c321cf47aa0a0bfb988ccbe71a7772bcc8066794" => :yosemite
     sha256 "77f99858579778af72ba838f4372c5dd2064da10bc59fad5f3d680d29e474ca8" => :mavericks
     sha256 "1a70988d1082132abc28b6536ac2f4ae2b9cd13c1dc7f40f869b39023ce65e51" => :mountain_lion

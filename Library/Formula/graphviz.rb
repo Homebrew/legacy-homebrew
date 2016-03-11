@@ -2,15 +2,8 @@ class Graphviz < Formula
   desc "Graph visualization software from AT&T and Bell Labs"
   homepage "http://graphviz.org/"
   url "http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/g/graphviz/graphviz_2.38.0.orig.tar.gz"
   sha256 "81aa238d9d4a010afa73a9d2a704fc3221c731e1e06577c2ab3496bdef67859e"
-
-  head do
-    url "https://github.com/ellson/graphviz.git"
-
-    depends_on "automake" => :build
-    depends_on "autoconf" => :build
-    depends_on "libtool" => :build
-  end
 
   bottle do
     revision 1
@@ -20,7 +13,15 @@ class Graphviz < Formula
     sha256 "a8d9c8d59af854970bfffa16dc62cb584383887053a4ded39cfbbfdabac624bc" => :mountain_lion
   end
 
-  # To find Ruby and Co.
+  head do
+    url "https://github.com/ellson/graphviz.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
+  # https://github.com/Homebrew/homebrew/issues/14566
   env :std
 
   option :universal
@@ -87,7 +88,8 @@ class Graphviz < Formula
 
     if build.with? "app"
       cd "macosx" do
-        xcodebuild "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+        xcodebuild "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}",
+                   "ONLY_ACTIVE_ARCH=YES", "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
       end
       prefix.install "macosx/build/Release/Graphviz.app"
     end

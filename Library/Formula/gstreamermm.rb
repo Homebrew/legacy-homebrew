@@ -1,6 +1,6 @@
 class Gstreamermm < Formula
   desc "GStreamer C++ bindings"
-  homepage "http://gstreamer.freedesktop.org/bindings/cplusplus.html"
+  homepage "https://gstreamer.freedesktop.org/bindings/cplusplus.html"
   url "https://download.gnome.org/sources/gstreamermm/1.4/gstreamermm-1.4.3.tar.xz"
   sha256 "f1c11ee1cf7537d77de7f8d486e09c5140cc4bb78882849718cd88959a55462e"
   revision 1

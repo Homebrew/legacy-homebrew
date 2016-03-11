@@ -3,13 +3,12 @@ class Libquicktime < Formula
   homepage "http://libquicktime.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz"
   sha256 "1c53359c33b31347b4d7b00d3611463fe5e942cae3ec0fefe0d2fd413fd47368"
-  revision 1
+  revision 2
 
   bottle do
-    revision 2
-    sha256 "2cae7adf72e3bb72e629702828a1fd6b45cfdaf75d5c168a5a64fd2ed3789814" => :el_capitan
-    sha256 "1c6114f8e1afcca388259b917f8a4c2718de06b75ccb4f031c8378fbc77b99f7" => :yosemite
-    sha256 "743855f6c61608efd44d918975c264fecfe223606fd0bb21e6e3e85a31c99647" => :mavericks
+    sha256 "d0762547198c0c6f40db52cdaae659d8b10b785afdeef46d52a95cd1430c4485" => :el_capitan
+    sha256 "66ce6cc1c870267861fe1124c83604f5d15b43ab6fc27cff26f6980242b074ab" => :yosemite
+    sha256 "9dd990b59f6a4ac957cc78e47a65b64ef026194326a2341b0915695398aa1c96" => :mavericks
   end
 
   depends_on "pkg-config" => :build

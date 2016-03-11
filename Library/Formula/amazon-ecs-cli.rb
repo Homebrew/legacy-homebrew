@@ -3,14 +3,14 @@ require "language/go"
 class AmazonEcsCli < Formula
   desc "CLI for Amazon ECS to manage clusters and tasks for development."
   homepage "https://aws.amazon.com/ecs"
-  url "https://github.com/aws/amazon-ecs-cli/archive/v0.2.0.tar.gz"
-  sha256 "7690b835b7e394ba37c93ef48af3f9ac81834e94129e8ea64c91020d404bb6c2"
+  url "https://github.com/aws/amazon-ecs-cli/archive/v0.2.1.tar.gz"
+  sha256 "c3056bcae583fd6966e3dc9e60ba96ffb23679bfc5671a5d8d4d7bfe6c2e5d73"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "90fb4508ef68c9b9b10d7cab0aafac886957af4d36124ecb88a4d66cc380b6fc" => :el_capitan
-    sha256 "53a30e2b1b9546bc254371578b36fed9f498c62f40b0cbf736d91d2aab9b63ca" => :yosemite
-    sha256 "28174de24dbe7f21b527db10f4474402ef11bd675cef5d7601ebce1f2aa9686f" => :mavericks
+    sha256 "6b40724d56012f9905dc0a90263a655c924cf4ea248819704b7acbf8c816513b" => :el_capitan
+    sha256 "b64969a0b343f9b2da32bfe3587b0b8ccb725ab79a854a78d724a79b1788b340" => :yosemite
+    sha256 "81ce218cc1271383664eb7e3a42276d90bc0254b9a2bae1c179ce97d9f10979c" => :mavericks
   end
 
   depends_on "go" => :build

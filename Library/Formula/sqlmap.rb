@@ -1,10 +1,9 @@
 class Sqlmap < Formula
   desc "Penetration testing for SQL injection and database servers"
   homepage "http://sqlmap.org"
-  url "https://github.com/sqlmapproject/sqlmap/archive/0.9.tar.gz"
-  sha256 "77b2b0ac7844cbb045baa8d477ca11a9f3ca736b7e0b340787c8a181a2fc718f"
+  url "https://github.com/sqlmapproject/sqlmap/archive/1.0.tar.gz"
+  sha256 "6818c74d6bd5525879beedc9baaef404534cd5b8c0f671476367783fb3ef64a6"
   head "https://github.com/sqlmapproject/sqlmap.git"
-  revision 1
 
   bottle :unneeded
 
@@ -14,10 +13,8 @@ class Sqlmap < Formula
     bin.install_symlink libexec/"sqlmap.py"
     bin.install_symlink bin/"sqlmap.py" => "sqlmap"
 
-    if build.head?
-      bin.install_symlink libexec/"sqlmapapi.py"
-      bin.install_symlink bin/"sqlmapapi.py" => "sqlmapapi"
-    end
+    bin.install_symlink libexec/"sqlmapapi.py"
+    bin.install_symlink bin/"sqlmapapi.py" => "sqlmapapi"
   end
 
   test do
