@@ -1,8 +1,8 @@
 class Walkmod < Formula
   desc "Java-based project to apply and share code conventions"
   homepage "http://www.walkmod.com"
-  url "https://bitbucket.org/rpau/walkmod/downloads/walkmod-2.3.2-installer.zip"
-  sha256 "af3f07474e8a0526bf2e5ea6ec8adc1b6245996714031f8b3bd4a7c81bb50b2d"
+  url "https://bitbucket.org/rpau/walkmod/downloads/walkmod-2.3.3-installer.zip"
+  sha256 "bb0c017b288589123594731abb7d5e34662a66d5b966e413de3f62b916d6f4d0"
 
   bottle :unneeded
 
