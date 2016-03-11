@@ -98,7 +98,7 @@ class Lighttpd < Formula
   def caveats; <<-EOS.undent
     Docroot is: #{www_path}
 
-    The default port has been set in #{config_path}lighttpd.conf to 8080 so that
+    The default port has been set in #{config_path}/lighttpd.conf to 8080 so that
     lighttpd can run without sudo.
     EOS
   end
