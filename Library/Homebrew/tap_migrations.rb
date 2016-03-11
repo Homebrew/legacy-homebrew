@@ -6,6 +6,7 @@ TAP_MIGRATIONS = {
   "apple-gcc42" => "homebrew/dupes",
   "appswitch" => "homebrew/binary",
   "archivemount" => "homebrew/fuse",
+  "arpon" => "homebrew/boneyard",
   "atari++" => "homebrew/x11",
   "auctex" => "homebrew/tex",
   "authexec" => "homebrew/boneyard",
