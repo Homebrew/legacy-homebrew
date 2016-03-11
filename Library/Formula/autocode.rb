@@ -1,8 +1,8 @@
 class Autocode < Formula
   desc "Code automation for every language, library and framework"
   homepage "https://autocode.run"
-  url "https://github.com/ctate/autocode/archive/v1.1.4.tar.gz"
-  sha256 "a86dffccf34503d06d9b6d8f0562eff26616a1b7899bd26a24a06c7d424d2ac2"
+  url "https://github.com/ctate/autocode/archive/v1.3.1.tar.gz"
+  sha256 "a263353a3ff63bd0cf7606335e453f40caa76abd783957ac4feb8b793f1751bf"
 
   bottle do
     cellar :any_skip_relocation
