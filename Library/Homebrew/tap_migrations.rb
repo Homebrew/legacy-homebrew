@@ -250,6 +250,7 @@ TAP_MIGRATIONS = {
   "xpdf" => "homebrew/x11",
   "xplot" => "homebrew/x11",
   "xspringies" => "homebrew/x11",
+  "xulrunner" => "homebrew/boneyard",
   "yarp" => "homebrew/x11",
   "ydict" => "homebrew/boneyard",
 }
