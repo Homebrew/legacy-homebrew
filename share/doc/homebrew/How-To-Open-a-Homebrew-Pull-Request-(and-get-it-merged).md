@@ -1,4 +1,5 @@
 # How To Open a Homebrew Pull Request (and get it merged)
+
 The following commands are used by Homebrew's contributors to setup a fork of Homebrew's Git repository on GitHub, create a new branch and create a GitHub pull request of the changes in that branch.
 
 To set up your own fork of the Homebrew repository:
@@ -35,3 +36,68 @@ To make changes based on feedback:
 Once all feedback has been addressed and if it's a change we want to include (we include most changes) then we'll add your commit to Homebrew. Note it will not show up as "Merged" because of the way we include contributions.
 
 Well done, you are now a Homebrew contributor!
+
+## Staying in Sync
+
+While you have your branch checked out, `brew` won't behave the way you're used to:
+
+* `brew update` will work and report updated formulae, but
+* `brew upgrade` won't upgrade.
+
+**To get formula updates**, switch back to `master` and update as usual:
+
+```sh
+cd $(brew --prefix)
+
+git checkout master
+brew update
+brew upgrade
+```
+
+Your `brew update` and `brew upgrade` will work as expected. Your formula changes won't be available until you rebase: see below.
+
+If `brew update` outputs tips on how to "restore the stashed changes", you had edited some files but not committed the changes. Follow the `git stash pop` advice to recover.
+
+**To rebase your branch** after the steps above, bringing it up to date with `master`:
+
+```sh
+cd $(brew --prefix)
+
+git checkout YOUR_BRANCH_NAME
+git rebase --interactive origin/master
+```
+
+After the `rebase`, the changes from `master` _and_ your changes will be available.
+
+Push to your fork repository as below if you had to clean up conflicts.
+
+**To pull and rebase in a single step** once you've had some practice:
+
+```sh
+cd $(brew --prefix)
+git branch # check you're still on YOUR_BRANCH_NAME
+
+git pull --rebase
+brew upgrade
+```
+
+This leaves your branch checked out through the whole process. Push to your fork repository as below if you had to clean up conflicts.
+
+Note this comes at the expense of the `brew update` status report.
+
+**To push changes to your fork repository and pull request**, push carefully:
+
+```sh
+cd $(brew --prefix)
+git branch # check you're still on YOUR_BRANCH_NAME
+
+git push YOUR_USERNAME master
+git push -f
+```
+
+Pushing is a good idea every time you:
+
+* Make changes to your branch, or
+* Clean up conflicts during your `rebase`
+
+Pushing is not necessary every time you `brew update`. Please be gentle on the build servers.
