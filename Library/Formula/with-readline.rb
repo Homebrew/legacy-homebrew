@@ -11,9 +11,9 @@ class WithReadline < Formula
     sha256 "8d4ce6951a4dd81a3dc23859be07a48cd0ebd72a5a3d758ce54318b208378b0e" => :mountain_lion
   end
 
-  depends_on "readline"
-
   option :universal
+
+  depends_on "readline"
 
   def install
     system "./configure", "--disable-debug",
@@ -23,6 +23,6 @@ class WithReadline < Formula
   end
 
   test do
-    system "echo 'exit' | #{bin}/with-readline /usr/bin/expect"
+    pipe_output("#{bin}/with-readline /usr/bin/expect", "exit", 0)
   end
 end
