@@ -9,8 +9,6 @@ class Ceylon < Formula
   depends_on :java => "1.7+"
 
   def install
-    rm_f Dir["bin/*.bat"]
-
     man1.install Dir["doc/man/man1/*"]
     doc.install Dir["doc/*"]
     libexec.install Dir["*"]
