@@ -17,8 +17,4 @@ class Rtl433 < Formula
     system "make"
     system "make", "install"
   end
-
-  test do
-    system "#{bin}/rtl_433", "-h"
-  end
 end
