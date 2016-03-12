@@ -1,8 +1,8 @@
 class Arangodb < Formula
   desc "Universal open-source database with a flexible data model"
   homepage "https://www.arangodb.com/"
-  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.8.4.tar.gz"
-  sha256 "25f27c9b1200971f9134531ecee8411501a63b7274035d9d555c6f3741f8de53"
+  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.8.5.tar.gz"
+  sha256 "d09a046120371de42842fe6506d4ab37032b8e228afafba83f6f0fad2b4403ee"
 
   head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
 
