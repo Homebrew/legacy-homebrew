@@ -19,5 +19,14 @@ class Mlkit < Formula
 
   test do
     system "#{bin}/mlkit", "-V"
+    (testpath/"test.sml").write <<-EOS.undent
+      fun f(x) = x + 2
+      val a = [1,2,3,10]
+      val b = List.foldl (op +) 0 (List.map f a)
+      val res = if b = 24 then "OK" else "ERR"
+      val () = print ("Result: " ^ res ^ "\\n")
+    EOS
+    system "#{bin}/mlkit", "-o", "test", "test.sml"
+    system "./test"
   end
 end
