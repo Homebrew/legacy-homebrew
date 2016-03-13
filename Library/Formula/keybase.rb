@@ -1,9 +1,9 @@
 class Keybase < Formula
   desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io/"
-  url "https://github.com/keybase/client/archive/v1.0.13-0.tar.gz"
-  version "1.0.13-0"
-  sha256 "27a619fdccbc9cc91a7e0f4048e1f728093826cd8097a58e466adfa7ef54b5ad"
+  url "https://github.com/keybase/client/archive/v1.0.14-1.tar.gz"
+  version "1.0.14-1"
+  sha256 "ef8f6d01206428a99558885ecec8de99089a60fe5f4b6e6f425e01a3fb368853"
 
   head "https://github.com/keybase/client.git"
 
