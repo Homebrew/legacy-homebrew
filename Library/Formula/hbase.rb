@@ -132,6 +132,17 @@ class Hbase < Formula
 
   test do
     assert_match /#{version}/, shell_output("#{bin}/hbase mapredcp")
+
+    cp_r (libexec/"conf"), testpath
+    inreplace (testpath/"conf/hbase-site.xml") do |s|
+      s.gsub! /(hbase.rootdir.*)\n.*/, "\\1\n<value>file://#{testpath}/hbase</value>"
+      s.gsub! /(hbase.zookeeper.property.dataDir.*)\n.*/, "\\1\n<value>#{testpath}/zookeeper</value>"
+    end
+
+    ENV["HBASE_LOG_DIR"]  = (testpath/"logs")
+    ENV["HBASE_CONF_DIR"] = (testpath/"conf")
+    ENV["HBASE_PID_DIR"]  = (testpath/"pid")
+
     system "#{bin}/start-hbase.sh"
     assert_match /Zookeeper/, pipe_output("nc localhost 2181", "stats")
     system "#{bin}/stop-hbase.sh"
