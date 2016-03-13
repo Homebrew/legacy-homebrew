@@ -4,6 +4,7 @@ class Bokken < Formula
   url "https://inguma.eu/attachments/download/212/bokken-1.8.tar.gz"
   mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/bokken-1.8.tar.gz"
   sha256 "1c73885147dfcf0a74ba4d3dd897a6aabc11a4a42f95bd1269782d0b2e1a11b9"
+  revision 1
 
   bottle do
     cellar :any
@@ -33,6 +34,7 @@ class Bokken < Formula
     resource("distorm64").stage do
       inreplace "src/pydistorm.h", "python2\.5", "python2.7"
       cd "build/mac" do
+        inreplace "Makefile", "-lpython", "-undefined dynamic_lookup"
         system "make"
         mkdir_p libexec/"distorm64"
         (libexec/"distorm64").install "libdistorm64.dylib"
