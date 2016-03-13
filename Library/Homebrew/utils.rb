@@ -506,8 +506,9 @@ module GitHub
         EOS
       else
         message << <<-EOS.undent
-          You may have old GitHub credentials saved in the OS X Keychain
-          (open the Keychain Access app and search for github).
+          The GitHub credentials in the OS X keychain are invalid.
+          Clear them with:
+            printf "protocol=https\\nhost=github.com\\n" | git credential-osxkeychain erase
         EOS
       end
       super message
