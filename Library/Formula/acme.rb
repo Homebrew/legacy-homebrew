@@ -5,10 +5,10 @@ class Acme < Formula
   mirror "http://ftp.lip6.fr/pub/minix/distfiles/backup/acme091src.tar.gz"
   version "0.91"
   sha256 "31ed7f9be5cd27100b13d6c3e2faec35d15285542cbe168ec5e1b5236125decb"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
     sha256 "8e6c5302b7ec8d17bebb8d22a5d409358b92d45a3a683876987113ebce656b08" => :el_capitan
     sha256 "f5ed6e96c9210436569e97f2c1dff5607814fc21952db39e095c5c34ff6d9502" => :yosemite
     sha256 "990425c3d467e3ab7bb0b4ff88cf12ad7095a0bd8f22b91f86105d569e87a6a9" => :mavericks
