@@ -28,13 +28,13 @@ class Pypy < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-19.4.tar.gz"
-    sha256 "214bf29933f47cf25e6faa569f710731728a07a19cae91ea64f826051f68a8cf"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-20.2.2.tar.gz"
+    sha256 "24fcfc15364a9fe09a220f37d2dcedc849795e3de3e4b393ee988e66a9cbd85a"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-8.0.2.tar.gz"
-    sha256 "46f4bd0d8dfd51125a554568d646fe4200a3c2c6c36b9f2d06d2212148439521"
+    url "https://pypi.python.org/packages/source/p/pip/pip-8.1.0.tar.gz"
+    sha256 "d8faa75dd7d0737b16d50cd0a56dc91a631c79ecfd8d38b80f6ee929ec82043e"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
