@@ -1,8 +1,8 @@
 class Poco < Formula
   desc "C++ class libraries for building network and internet-based applications"
   homepage "http://pocoproject.org/"
-  url "http://pocoproject.org/releases/poco-1.6.1/poco-1.6.1-all.tar.gz"
-  sha256 "88c88ff0916228d3a011b86c486033dab75e62a27429b5d35736d43527cf5b44"
+  url "http://pocoproject.org/releases/poco-1.7.0/poco-1.7.0-all.tar.gz"
+  sha256 "7aebee1b998c2d5ceac4328dfd98fcd4f69028d3efd37bc1915112650ecd5abc"
 
   head "https://github.com/pocoproject/poco.git", :branch => "develop"
 
@@ -32,11 +32,6 @@ class Poco < Formula
     end
 
     args << "-DPOCO_STATIC=ON" if build.with? "static"
-
-    if build.stable?
-      # Fix Foundation library version (already fixed upstream).
-      inreplace "Foundation/CMakeLists.txt", "VERSION ${PROJECT_VERSION}", "VERSION ${SHARED_LIBRARY_VERSION}"
-    end
 
     mkdir "macbuild" do
       system "cmake", buildpath, *args
