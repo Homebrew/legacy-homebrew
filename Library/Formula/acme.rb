@@ -5,6 +5,7 @@ class Acme < Formula
   mirror "http://ftp.lip6.fr/pub/minix/distfiles/backup/acme091src.tar.gz"
   version "0.91"
   sha256 "31ed7f9be5cd27100b13d6c3e2faec35d15285542cbe168ec5e1b5236125decb"
+  revision 10
 
   bottle do
     cellar :any_skip_relocation
