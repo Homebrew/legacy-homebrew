@@ -1,8 +1,8 @@
 class TranslateShell < Formula
   desc "Command-line translator using Google Translate and more"
   homepage "https://www.soimort.org/translate-shell"
-  url "https://github.com/soimort/translate-shell/archive/v0.9.3.1.tar.gz"
-  sha256 "7b5a2404ead919570cfa4d741c521ed7e124bbf27d6f5de1a6a598e7e713c2a6"
+  url "https://github.com/soimort/translate-shell/archive/v0.9.3.2.tar.gz"
+  sha256 "4ddf7292802f6d81a8e9c736a3ff854ebcc193866e9774376dc0c2f8d893323a"
   head "https://github.com/soimort/translate-shell.git", :branch => "develop"
 
   bottle do
@@ -31,6 +31,6 @@ class TranslateShell < Formula
   end
 
   test do
-    assert_equal "Hello\n", shell_output("#{bin}/trans -b -s fr -t en bonjour")
+    assert_equal "Hello\n", shell_output("#{bin}/trans -no-init -b -s fr -t en bonjour")
   end
 end
