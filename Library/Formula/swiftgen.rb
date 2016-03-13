@@ -1,8 +1,8 @@
 class Swiftgen < Formula
   desc "Collection of Swift tools to generate Swift code"
   homepage "https://github.com/AliSoftware/SwiftGen"
-  url "https://github.com/AliSoftware/SwiftGen/archive/0.7.6.tar.gz"
-  sha256 "9d564b7d1781e8c26ba01496bfa2cb0b8dd7c2f2d1cb722f9154604785632b79"
+  url "https://github.com/AliSoftware/SwiftGen/archive/0.8.0.tar.gz"
+  sha256 "fd95c0c1e8504df0cfa708a75e77343e2e89944aa4815e644d11b6e4e82f4dd0"
   head "https://github.com/AliSoftware/SwiftGen.git"
 
   bottle do
