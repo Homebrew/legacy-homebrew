@@ -498,11 +498,18 @@ module GitHub
 
   class AuthenticationFailedError < Error
     def initialize(error)
-      super <<-EOS.undent
+      message = <<-EOS.undent
         GitHub #{error}
-        HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
-          #{Tty.em}https://github.com/settings/tokens#{Tty.reset}
+        You may have old Github credentials saved in the OS X Keychain
+        (open the Keychain Access app and search for github).
       EOS
+      if ENV["HOMEBREW_GITHUB_API_TOKEN"]
+        message << <<-EOS.undent
+          HOMEBREW_GITHUB_API_TOKEN may be invalid or expired; check:
+          #{Tty.em}https://github.com/settings/tokens#{Tty.reset}
+        EOS
+      end
+      super message
     end
   end
 
