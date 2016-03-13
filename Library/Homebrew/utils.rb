@@ -487,7 +487,7 @@ module GitHub
         GitHub #{error}
         Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
           #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
-        and then set the token as: HOMEBREW_GITHUB_API_TOKEN
+        and then set the token as: export HOMEBREW_GITHUB_API_TOKEN="your_new_token"
       EOS
     end
 
