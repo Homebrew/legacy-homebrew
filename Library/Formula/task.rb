@@ -7,9 +7,9 @@ class Task < Formula
   head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.6.0", :shallow => false
 
   bottle do
-    sha256 "eb3dc1497ed1c6701a12714fa7e5b1a8732aebce516263d15386b1cfcc5ed790" => :el_capitan
-    sha256 "87d6a510df37189e80ce12724b8e390ccb88d949c2d2099453d41b4e99c281c1" => :yosemite
-    sha256 "274a7ecc28e5843d057e4e4c51f90856fb487fb78b990e36758e12dcd5fa4303" => :mavericks
+    sha256 "07aa2c19ae6d7a9a46b286bfc48fa970aa9a9e0237e034bbaab354dcfc4f6848" => :el_capitan
+    sha256 "113fc7ce057c51ea14021006a4106c25d29e361e4b70113e33fb7a83e57ee8d1" => :yosemite
+    sha256 "7888e42210edb6691ff57d056585536abd318d62b43a898bb98e286373519164" => :mavericks
   end
 
   option "without-gnutls", "Don't use gnutls; disables sync support"
