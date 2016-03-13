@@ -14,15 +14,21 @@
 #   --bump:      For one-formula PRs, automatically reword commit message to our preferred format
 #   --clean:     Do not rewrite or otherwise modify the commits found in the pulled PR
 #   --ignore-whitespace: Silently ignore whitespace discrepancies when applying diffs
-#   --install:   Install changed formulae locally after pulling the patch
+#   --install:   Install or upgrade changed formulae locally after pulling each patch
 #   --resolve:   When a patch fails to apply, leave in progress and allow user to
 #                 resolve, instead of aborting
 #   --branch-okay: Do not warn if pulling to a branch besides master (useful for testing)
+
+# Developer notes: Because the `brew pull` actions may change the class definitions for
+# formulae and `brew` itself, it shells out to separate `brew` commands to get formula info
+# or do other actions. Each patch application may invalidate class definitions.
 
 require "utils"
 require "utils/json"
 require "formula"
 require "tap"
+require "net/http"
+require "net/https"
 
 module Homebrew
   def pull
@@ -182,22 +188,13 @@ module Homebrew
         safe_system "git", "branch", "-D", bottle_branch
 
         # Publish bottles on Bintray
-        bintray_user = ENV["BINTRAY_USER"]
-        bintray_key = ENV["BINTRAY_KEY"]
-
-        if bintray_user && bintray_key
-          repo = Bintray.repository(tap)
+        bintray_creds = { :user => ENV["BINTRAY_USER"], :key => ENV["BINTRAY_KEY"] }
+        if bintray_creds[:user] && bintray_creds[:key]
           changed_formulae.each do |f|
             next if f.bottle_unneeded? || f.bottle_disabled?
-            ohai "Publishing on Bintray:"
-            package = Bintray.package f.name
-            version = f.pkg_version
-            curl "-w", '\n', "--silent", "--fail",
-              "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
-              "-H", "Content-Type: application/json",
-              "-d", '{"publish_wait_for_secs": 0}',
-              "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
-            bintray_fetch_formulae << f
+            ohai "Publishing on Bintray: #{formula_descr_s(f)}"
+            Bintray.publish_bottle_files(f, tap, bintray_creds)
+            bintray_fetch_formulae << f.full_name unless bintray_fetch_formulae.include? f.full_name
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
@@ -211,25 +208,68 @@ module Homebrew
         changed_formulae.each do |f|
           ohai "Installing #{f.full_name}"
           install = f.installed? ? "upgrade" : "install"
-          safe_system "brew", install, "--debug", f.full_name
+          safe_system HOMEBREW_BREW_FILE, install, "--debug", f.full_name
         end
       end
     end
 
-    bintray_fetch_formulae.each do |f|
-      max_retries = 8
+    # Verify bintray publishing after all patches have been applied
+    # Do it in external process to work with fresh formula definitions
+    system HOMEBREW_BREW_FILE, "_internal", "verify-bintray-publish", *bintray_fetch_formulae
+  end
+
+  # Verifies that formulae have been published to Bintray by downloading a bottle file
+  # for each one. Blocks until the published files are available.
+  # Raises an error if the verification fails.
+  # This does not currently work for `brew pull`, because it may have cached the old
+  # version of a formula.
+  def verify_bintray_publish(formulae_names)
+    ohai "Verifying bottles published to Bintray"
+    formulae = formulae_names.map { |n| Formula[n] }
+    wrote_dots = false
+    formulae.each do |f|
+      max_retries = 32  # shared among all bottles
+      sleep_seconds = 2
       retry_count = 0
-      begin
-        success = system "brew", "fetch", "--force-bottle", f.full_name
-        raise "Failed to download #{f} bottle!" unless success
-      rescue RuntimeError => e
-        retry_count += 1
-        raise e if retry_count >= max_retries
-        sleep_seconds = 2**retry_count
-        ohai "That didn't work; sleeping #{sleep_seconds} seconds and trying again..."
-        sleep sleep_seconds
-        retry
+      # Choose arbitrary bottle just to get the host/port for Bintray right
+      bottle_tag = f.stable.bottle_specification.collector.keys.first
+      bottle = f.bottle_for_platform(bottle_tag)
+      # Poll for publication completion using a quick HEAD, to avoid spurious error messages
+      # 401 error is normal while file is still in async publishing process
+      # Poll all bottle files, to make sure they're all available before proceeding
+      uri = URI(bottle.url)
+      Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+        f.stable.bottle_specification.collector.keys.each do |bottle_tag|
+          bottle = f.bottle_for_platform(bottle_tag)
+          uri = URI(bottle.url)
+          while true do
+            req = Net::HTTP::Head.new uri
+            res = http.request req
+            retry_count += 1
+            if res.is_a?(Net::HTTPSuccess)
+              break
+            elsif res.is_a?(Net::HTTPClientError)
+              # We may see 401 or other errors when downloading without credentials
+              if retry_count >= max_retries
+                raise "Failed to download #{f} bottle from #{uri}!"
+              end
+              print(wrote_dots ? "." : "Waiting for files to appear...")
+              wrote_dots = true
+              sleep sleep_seconds
+            else
+              raise "Failed to download #{f} bottle from #{uri} (#{res.code} #{res.message})!"
+            end
+          end
+        end
       end
+    end
+    print "\n" if wrote_dots
+
+    formulae.each do |f|
+      # Then do a full download to verify bottle file contents
+      success = system HOMEBREW_BREW_FILE, "_internal", "fetch-bottle-any-arch",
+                       "--force", "--force-bottle", f.full_name
+      raise "Failed to download #{f} bottle!" unless success
     end
   end
 
@@ -368,5 +408,14 @@ module Homebrew
 
   def pbcopy(text)
     Utils.popen_write("pbcopy") { |io| io.write text }
+  end
+
+  def formula_descr_s(f)
+    ver = f.version
+    ver = "#{ver}_#{f.revision}" unless f.revision == 0
+    str = "#{f.name} #{ver}"
+    bottle_rev = f.stable.bottle_specification.revision
+    str = "#{str} (btl rev #{bottle_rev})" unless bottle_rev == 0
+    str
   end
 end

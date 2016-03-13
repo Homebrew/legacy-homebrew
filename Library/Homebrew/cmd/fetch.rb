@@ -41,6 +41,18 @@ module Homebrew
     end
   end
 
+  # For Homebrew's internal use.
+  # Fetches a bottle for any arch, without falling back to source download.
+  def fetch_bottle_any_arch(names)
+    names.each do |fname|
+      f = Formula[fname]
+      f.print_tap_action :verb => "Fetching"
+      bottle_tag = f.stable.bottle_specification.collector.keys.first
+      bottle = f.bottle_for_platform(bottle_tag)
+      fetch_formula(bottle)
+    end
+  end
+
   def fetch_bottle?(f)
     return true if ARGV.force_bottle? && f.bottle
     return false unless f.bottle && f.pour_bottle?

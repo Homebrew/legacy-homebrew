@@ -72,6 +72,19 @@ class Bintray
       "bottles-#{tap.repo}"
     end
   end
+
+  # Publishes the bottle files for a given formula to Bintray
+  def self.publish_bottle_files(f, tap, creds)
+    repo = Bintray.repository(tap)
+    package = Bintray.package(f.name)
+    version = f.pkg_version
+    curl "-w", '\n', "--silent", "--fail",
+         "-u#{creds[:user]}:#{creds[:key]}", "-X", "POST",
+         "-H", "Content-Type: application/json",
+         "-d", '{"publish_wait_for_secs": 0}',
+         "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
+  end
+
 end
 
 class BottleCollector

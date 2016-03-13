@@ -219,6 +219,7 @@ class Bottle
       @version = version
       @tag = tag
       @revision = revision
+      #puts "initialize Bottle.Filename: #{name} #{version} #{tag} #{revision}"
     end
 
     def to_s
@@ -243,13 +244,14 @@ class Bottle
   def_delegators :resource, :url, :fetch, :verify_download_integrity
   def_delegators :resource, :cached_download, :clear_cache
 
-  def initialize(formula, spec)
+  def initialize(formula, spec, tag = bottle_tag)
     @name = formula.name
     @resource = Resource.new
     @resource.owner = formula
     @spec = spec
+    @tag = tag
 
-    checksum, tag = spec.checksum_for(bottle_tag)
+    checksum, tag = spec.checksum_for(tag)
 
     filename = Filename.create(formula, tag, spec.revision)
     @resource.url(build_url(spec.root_url, filename))

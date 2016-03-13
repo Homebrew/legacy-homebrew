@@ -267,6 +267,12 @@ class Formula
     Bottle.new(self, bottle_specification) if bottled?
   end
 
+  # A Bottle object for the active {SoftwareSpec}, for a given platform tag.
+  # @private
+  def bottle_for_platform(tag)
+    Bottle.new(self, bottle_specification, tag)
+  end
+
   # The description of the software.
   # @see .desc
   def desc
