@@ -487,7 +487,7 @@ module GitHub
         GitHub #{error}
         Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
           #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
-        and then set the token as: HOMEBREW_GITHUB_API_TOKEN
+        and then set the token as: export HOMEBREW_GITHUB_API_TOKEN="your_new_token"
       EOS
     end
 
@@ -498,11 +498,20 @@ module GitHub
 
   class AuthenticationFailedError < Error
     def initialize(error)
-      super <<-EOS.undent
-        GitHub #{error}
-        HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
+      message = "GitHub #{error}\n"
+      if ENV["HOMEBREW_GITHUB_API_TOKEN"]
+        message << <<-EOS.undent
+          HOMEBREW_GITHUB_API_TOKEN may be invalid or expired; check:
           #{Tty.em}https://github.com/settings/tokens#{Tty.reset}
-      EOS
+        EOS
+      else
+        message << <<-EOS.undent
+          The GitHub credentials in the OS X keychain are invalid.
+          Clear them with:
+            printf "protocol=https\\nhost=github.com\\n" | git credential-osxkeychain erase
+        EOS
+      end
+      super message
     end
   end
 
