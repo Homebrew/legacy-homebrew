@@ -3,6 +3,7 @@ class Ceylon < Formula
   homepage "http://ceylon-lang.org/"
   url "http://ceylon-lang.org/download/dist/1_2_2"
   sha256 "68a7d56b2d3eca83f8832ef1a2e0e58124a71c3c9fc0cda7c377e4882b4feedb"
+  revision 1
 
   bottle :unneeded
 
