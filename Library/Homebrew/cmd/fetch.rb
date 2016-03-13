@@ -100,7 +100,7 @@ module Homebrew
     return unless download.file?
 
     puts "Downloaded to: #{download}" unless already_fetched
-    puts Checksum::TYPES.map { |t| "#{t.to_s.upcase}: #{download.send(t)}" }
+    puts "SHA256: #{download.sha256}"
 
     f.verify_download_integrity(download)
   end
