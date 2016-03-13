@@ -12,8 +12,8 @@ class Bokken < Formula
     sha256 "75e3e223d233e6340f02a927ebb0c9fdcfbc46ec13e323136724fd971a1078fc" => :mavericks
   end
 
-  depends_on :python
   depends_on "graphviz"
+  depends_on "librsvg"
   depends_on "pygtk"
   depends_on "pygtksourceview"
   depends_on "radare2"
