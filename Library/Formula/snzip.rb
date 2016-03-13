@@ -1,14 +1,14 @@
 class Snzip < Formula
   desc "Compression/decompression tool based on snappy"
   homepage "https://github.com/kubo/snzip"
-  url "https://bintray.com/artifact/download/kubo/generic/snzip-1.0.2.tar.gz"
-  sha256 "b4e4175b9ee74da6c7ee4681d7c8c1b92d7c4aaa4eb79559a2300ab9b2e8eb1b"
+  url "https://bintray.com/artifact/download/kubo/generic/snzip-1.0.3.tar.gz"
+  sha256 "c83f1301cb1f1b64a25ef10e5fcfc2f6f66fa092ae833c524cad219c0ef2e990"
 
   bottle do
     cellar :any
-    sha256 "dab2db159fc08d16d1b526c2abb2913cbacf64ad862aaef885ec8062626ecbaa" => :yosemite
-    sha256 "cfb1f8addadcb6a7c1a57d5ea5a0177a30e896d8c7d029167412a5740c0824b1" => :mavericks
-    sha256 "46c35841df6c0cd60cec8e45e31bce5d8c64ef67ace33aa6c2d71e3dc6fa9071" => :mountain_lion
+    sha256 "048d8e5c33afda8fda06d5c65ba7da97c65527556ffe54e11f7a0aa1f1019ca0" => :el_capitan
+    sha256 "3f0e1604d261a3d0aedc527a7e6242a11fe094aa1f635ae26e31da754eff6fdb" => :yosemite
+    sha256 "d2399ea073c5b04fe1eeba5d7d7e3c288c5da72c295739c569b4af73f47d9e69" => :mavericks
   end
 
   depends_on "snappy"

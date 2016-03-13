@@ -321,6 +321,7 @@ module Homebrew
   def current_versions_from_info_external(formula_name)
     versions = {}
     json = Utils.popen_read(HOMEBREW_BREW_FILE, "info", "--json=v1", formula_name)
+    json.force_encoding("UTF-8") if json.respond_to?(:force_encoding)
     if $?.success?
       info = Utils::JSON.load(json)
       [:stable, :devel, :head].each do |vertype|

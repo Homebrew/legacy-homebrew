@@ -1,15 +1,15 @@
 class TranslateShell < Formula
   desc "Command-line translator using Google Translate and more"
   homepage "https://www.soimort.org/translate-shell"
-  url "https://github.com/soimort/translate-shell/archive/v0.9.3.1.tar.gz"
-  sha256 "7b5a2404ead919570cfa4d741c521ed7e124bbf27d6f5de1a6a598e7e713c2a6"
+  url "https://github.com/soimort/translate-shell/archive/v0.9.3.2.tar.gz"
+  sha256 "4ddf7292802f6d81a8e9c736a3ff854ebcc193866e9774376dc0c2f8d893323a"
   head "https://github.com/soimort/translate-shell.git", :branch => "develop"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d8623a978baf2ac631125f1eacb5f5d28492a8bab08bede0c454b4d27e52c847" => :el_capitan
-    sha256 "caec9cbcdc3590f1af1e668b3da4e26ff4782a9698f4e03f42a9fe42d0de0f1d" => :yosemite
-    sha256 "7057ee2ec32e7aae09b55b652f3c6f7b89375c89debcf0d338ee319c133faa96" => :mavericks
+    sha256 "854dbbeda540c28d188184d4d286807e6d3d645159bc0972d350cbbe9a723184" => :el_capitan
+    sha256 "3211d41aea77077a19a773f4d8f8ec65b8dc365b684df1036eebd57f753b1149" => :yosemite
+    sha256 "4eec43b9052180d05df5b0be9fa9ca57891d85a354baf7c608b52a5282d504e0" => :mavericks
   end
 
   depends_on "fribidi"
@@ -31,6 +31,6 @@ class TranslateShell < Formula
   end
 
   test do
-    assert_equal "Hello\n", shell_output("#{bin}/trans -b -s fr -t en bonjour")
+    assert_equal "Hello\n", shell_output("#{bin}/trans -no-init -b -s fr -t en bonjour")
   end
 end
