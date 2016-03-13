@@ -14,6 +14,7 @@ class GlodCli < Formula
   end
 
   def install
+    ENV["TERM"] = "xterm"
     ENV["GOPATH"] = buildpath
     ENV["GO15VENDOREXPERIMENT"] = "0"
     mkdir_p buildpath/"src/github.com/dwarvesf/"
@@ -25,9 +26,6 @@ class GlodCli < Formula
   end
 
   test do
-    output = shell_output(bin/"glod-cli --version")
-    assert_match "glod-cli version #{version}\n", output
-
     system bin/"glod-cli", "http://mp3.zing.vn/bai-hat/Hello-Vietnam-Pham-Quynh-Anh/ZWZ9C8EB.html"
     sleep 2
     assert File.exist?("Hello Vietnam.mp3")
