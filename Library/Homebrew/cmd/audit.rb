@@ -509,6 +509,8 @@ class FormulaAuditor
       return
     end
 
+    return if metadata.nil?
+
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
     if (metadata["forks_count"] < 20) && (metadata["subscribers_count"] < 20) &&
        (metadata["stargazers_count"] < 50)
