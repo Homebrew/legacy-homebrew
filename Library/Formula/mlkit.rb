@@ -11,7 +11,19 @@ class Mlkit < Formula
   def install
     system "./autobuild; true"
     system "./configure", "--prefix=#{prefix}"
-    ENV.permit_arch_flags
+
+    # The ENV.permit_arch_flags specification is needed on 64-bit
+    # machines because the mlkit compiler generates 32-bit machine
+    # code whereas the mlton compiler generates 64-bit machine
+    # code. Because of this difference, the ENV.m64 and ENV.m32 flags
+    # are not sufficient for the formula as clang is used by both
+    # tools in a single makefile target. For the mlton-compilation of
+    # sml-code, no arch tags are used for the clang assembler
+    # invocation. Thus, on a 32-bit machine, both the mlton-compiled
+    # binary (the mlkit compiler) and the 32-bit native code generated
+    # by the mlkit compiler will be running 32-bit code.
+
+    ENV.permit_arch_flags if MacOS.prefer_64_bit?
     system "make", "mlkit"
     system "make", "mlkit_libs"
     system "make", "install"
