@@ -12,7 +12,7 @@ class Ponyc < Formula
     sha256 "6feb5a4031bcb8a23b0cbfe036d67df3f0ef4424533a66e5f4fdef29dec7d118" => :mavericks
   end
 
-  depends_on "llvm" => "with-rtti"
+  depends_on "llvm"
   needs :cxx11
 
   def install
