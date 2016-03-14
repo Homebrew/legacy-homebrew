@@ -20,9 +20,12 @@ class Go < Formula
   option "without-vet", "vet will not be installed for you"
   option "without-race", "Build without race detector"
 
+  go_version = version
+
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
-    :revision => "d02228d1857b9f49cd0252788516ff5584266eb6"
+    :branch => "release-branch.go#{go_version}",
+    :revision => "c887be1b2ebd11663d4bf2fbca508c449172339e"
   end
 
   resource "gobootstrap" do
