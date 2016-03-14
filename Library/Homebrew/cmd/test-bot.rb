@@ -917,8 +917,9 @@ module Homebrew
           testcase.add_attribute "time", step.time
 
           if step.has_output?
-            # Remove invalid XML CData characters from step output.
-            output = step.output.delete("\000\a\b\e\f\x2\x1f")
+            # Remove invalid XML characters
+            # http://www.w3.org/TR/xml/#charsets
+            output = step.output.gsub(/[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]/, "")
 
             if output.bytesize > BYTES_IN_1_MEGABYTE
               output = "truncated output to 1MB:\n" \
