@@ -9,9 +9,7 @@ class AwsKeychain < Formula
   end
 
   test do
-    # aws-keychain is a simple shell script wrapper around built-in
-    # keychain utilities. It is not possible to create a new
-    # keychain without triggering a keychain prompt.
-    shell_output("aws-keychain --help", 1)
+    # It is not possible to create a new keychain without triggering a prompt.
+    shell_output("#{bin}/aws-keychain --help", 1)
   end
 end
