@@ -46,10 +46,10 @@ class Hbase < Formula
               "export JAVA_HOME=\"$(/usr/libexec/java_home)\"")
     end
 
+    # makes hbase usable out of the box
+    # upstream has been provided this patch
+    # https://issues.apache.org/jira/browse/HBASE-15426
     inreplace "#{libexec}/conf/hbase-site.xml",
-      # makes hbase usable out of the box
-      # upstream has been provided this patch
-      # https://issues.apache.org/jira/browse/HBASE-15426
       /<configuration>/,
       <<-EOS.undent
       <configuration>
@@ -145,7 +145,10 @@ class Hbase < Formula
 
     system "#{bin}/start-hbase.sh"
     sleep 2
-    assert_match /Zookeeper/, pipe_output("nc 127.0.0.1 2181 2>&1", "stats")
-    system "#{bin}/stop-hbase.sh"
+    begin
+      assert_match /Zookeeper/, pipe_output("nc 127.0.0.1 2181 2>&1", "stats")
+    ensure
+      system "#{bin}/stop-hbase.sh"
+    end
   end
 end
