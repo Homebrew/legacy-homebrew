@@ -14,8 +14,8 @@ class Bash < Formula
     # and the more patches there are, the more unreliable they get. Upstream
     # patches can be found in: http://git.savannah.gnu.org/cgit/bash.git
     patch do
-      url "https://gist.githubusercontent.com/dunn/a8986687991b57eb3b25/raw/76dd864812e821816f4b1c18e3333c8fced3919b/bash-4.3.42.diff"
-      sha256 "2eeb9b3ed71f1e13292c2212b6b8036bc258c58ec9c82eec7a86a091b05b15d2"
+      url "https://raw.githubusercontent.com/Homebrew/patches/master/bash/bash-4.3.42.diff"
+      sha256 "a3ab0b79f63845db5bda568258b56629de25922ae52c6786d004f4f62566bf1d"
     end
   end
 
