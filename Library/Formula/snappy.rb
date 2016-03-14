@@ -27,11 +27,7 @@ class Snappy < Formula
     ENV.universal_binary if build.universal?
     ENV.j1 if build.stable?
 
-    if build.head?
-      # https://github.com/google/snappy/pull/4
-      inreplace "autogen.sh", "libtoolize", "glibtoolize"
-      system "./autogen.sh"
-    end
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
