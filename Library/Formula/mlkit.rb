@@ -18,7 +18,6 @@ class Mlkit < Formula
   end
 
   test do
-    system "#{bin}/mlkit", "-V"
     (testpath/"test.sml").write <<-EOS.undent
       fun f(x) = x + 2
       val a = [1,2,3,10]
