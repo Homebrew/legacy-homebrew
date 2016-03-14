@@ -919,7 +919,9 @@ module Homebrew
           if step.has_output?
             # Remove invalid XML characters
             # http://www.w3.org/TR/xml/#charsets
-            output = step.output.gsub(/[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]/, "")
+            output = step.output
+            output.force_encoding("UTF-8") if output.respond_to?(:force_encoding)
+            output.gsub!(/[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]/, "")
 
             if output.bytesize > BYTES_IN_1_MEGABYTE
               output = "truncated output to 1MB:\n" \
