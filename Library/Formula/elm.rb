@@ -37,26 +37,6 @@ class Elm < Formula
     sha256 "631587361e3e35dbd6677de2c6b580bd88b5ed04835c8b6ca763649d98579da7" => :mavericks
   end
 
-  head do
-    url "https://github.com/elm-lang/elm-compiler.git"
-
-    resource "elm-package" do
-      url "https://github.com/elm-lang/elm-package.git"
-    end
-
-    resource "elm-make" do
-      url "https://github.com/elm-lang/elm-make.git"
-    end
-
-    resource "elm-repl" do
-      url "https://github.com/elm-lang/elm-repl.git"
-    end
-
-    resource "elm-reactor" do
-      url "https://github.com/elm-lang/elm-reactor.git"
-    end
-  end
-
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
