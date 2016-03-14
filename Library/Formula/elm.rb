@@ -24,11 +24,6 @@ class Elm < Formula
       url "https://github.com/elm-lang/elm-repl/archive/0.16.tar.gz"
       sha256 "ea89a6cccd546e26c6af12bd35b886bfa666888323596c60168013acf67fe2e4"
     end
-
-    resource "elm-reactor" do
-      url "https://github.com/elm-lang/elm-reactor/archive/0.16.tar.gz"
-      sha256 "fd105180b92364c3ba8df58bfa88306adb8a21074786267ab1eaa634777ded7f"
-    end
   end
 
   bottle do
@@ -38,7 +33,7 @@ class Elm < Formula
   end
 
   head do
-    url "https://github.com/elm-lang/elm-compiler.git"
+    url "https://github.com/elm-lang/elm-compiler.git", :branch => "dev"
 
     resource "elm-package" do
       url "https://github.com/elm-lang/elm-package.git"
@@ -51,10 +46,6 @@ class Elm < Formula
     resource "elm-repl" do
       url "https://github.com/elm-lang/elm-repl.git"
     end
-
-    resource "elm-reactor" do
-      url "https://github.com/elm-lang/elm-reactor.git"
-    end
   end
 
   depends_on "ghc" => :build
@@ -64,21 +55,17 @@ class Elm < Formula
     # elm-compiler needs to be staged in a subdirectory for the build process to succeed
     (buildpath/"elm-compiler").install Dir["*"]
 
-    extras_no_reactor = ["elm-package", "elm-make", "elm-repl"]
-    extras = extras_no_reactor + ["elm-reactor"]
-    extras.each do |extra|
-      resource(extra).stage buildpath/extra
+    packages = ["elm-package", "elm-make", "elm-repl"]
+    packages.each do |package|
+      resource(package).stage buildpath/package
     end
+    packages << "elm-compiler"
 
     cabal_sandbox do
-      cabal_sandbox_add_source "elm-compiler", *extras
-      cabal_install "--only-dependencies", "elm-compiler", *extras
-      cabal_install "--prefix=#{prefix}", "elm-compiler", *extras_no_reactor
-
-      # elm-reactor needs to be installed last because of a post-build dependency on elm-make
-      ENV.prepend_path "PATH", bin
-
-      cabal_install "--prefix=#{prefix}", "elm-reactor"
+      (Pathname.pwd/"cabal.config").write "allow-newer: elm-compiler" if build.head?
+      cabal_sandbox_add_source *packages
+      cabal_install "--only-dependencies", *packages
+      cabal_install "--prefix=#{prefix}", *packages
     end
   end
 
