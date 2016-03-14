@@ -7,6 +7,7 @@ class Dasht < Formula
   bottle :unneeded
 
   depends_on "sqlite"
+  depends_on "socat"
 
   def install
     bin.install Dir["bin/*"]
