@@ -1,7 +1,7 @@
 class Lrzsz < Formula
   desc "Tools for zmodem/xmodem/ymodem file transfer"
   homepage "http://www.ohse.de/uwe/software/lrzsz.html"
-  url "http://www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz"
+  url "https://github.com/achikin/lrzsz/raw/master/lrzsz-0.12.20.tar.gz"
   sha256 "c28b36b14bddb014d9e9c97c52459852f97bd405f89113f30bee45ed92728ff1"
 
   def install
