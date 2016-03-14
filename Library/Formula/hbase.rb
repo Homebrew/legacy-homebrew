@@ -144,6 +144,7 @@ class Hbase < Formula
     ENV["HBASE_PID_DIR"]  = (testpath/"pid")
 
     system "#{bin}/start-hbase.sh"
+    sleep 2
     assert_match /Zookeeper/, pipe_output("nc 127.0.0.1 2181 2>&1", "stats")
     system "#{bin}/stop-hbase.sh"
   end
