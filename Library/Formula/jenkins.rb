@@ -4,6 +4,12 @@ class Jenkins < Formula
   url "http://mirrors.jenkins-ci.org/war/1.653/jenkins.war"
   sha256 "48e33fab851459c0e81fc2d6f36f1795490d862d1d1f3d3a79c46c945bdb44fc"
 
+  devel do
+    url "http://mirrors.jenkins-ci.org/war-rc/2.0/jenkins.war"
+    version "2.0-rc"
+    sha256 "7ff7759e1d7a097e018c8001db5f4248db04d0bf39f9b0f06934c124a936cfa2"
+  end
+
   head do
     url "https://github.com/jenkinsci/jenkins.git"
     depends_on "maven" => :build
@@ -57,13 +63,14 @@ class Jenkins < Formula
 
   test do
     ENV["JENKINS_HOME"] = testpath
+    ENV["_JAVA_OPTIONS"] = "-Djava.io.tmpdir=#{testpath}"
     pid = fork do
       exec "#{bin}/jenkins"
     end
     sleep 60
 
     begin
-      assert_match /"mode":"NORMAL"/, shell_output("curl localhost:8080/api/json")
+      assert_match /Welcome to Jenkins!|Unlock Jenkins|Authentication required/, shell_output("curl localhost:8080/")
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)
