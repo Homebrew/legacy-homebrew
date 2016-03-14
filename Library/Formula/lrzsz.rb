@@ -7,6 +7,12 @@ class Lrzsz < Formula
   url "https://dl.bintray.com/homebrew/mirror/lrzsz-0.12.20.tar.gz"
   sha256 "c28b36b14bddb014d9e9c97c52459852f97bd405f89113f30bee45ed92728ff1"
 
+  bottle do
+    sha256 "578641aa80e798cfea91cd20b1d6f0b6a3190f2656dc81e3ccc24caadcf1c3b2" => :el_capitan
+    sha256 "c417cab543224228762023031d93f2b4acfe0f970ed3ea1cc6616893e83cad6b" => :yosemite
+    sha256 "2644d211f486bbc5e67094d80454025a53e9dbda37154e9161f6a5908958788c" => :mavericks
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
