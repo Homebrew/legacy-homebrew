@@ -91,7 +91,19 @@ class Opentsdb < Formula
   end
 
   test do
+
+    cp_r (Formula["hbase"].libexec/"conf"), testpath
+    inreplace (testpath/"conf/hbase-site.xml") do |s|
+      s.gsub! /(hbase.rootdir.*)\n.*/, "\\1\n<value>file://#{testpath}/hbase</value>"
+      s.gsub! /(hbase.zookeeper.property.dataDir.*)\n.*/, "\\1\n<value>#{testpath}/zookeeper</value>"
+    end
+
+    ENV["HBASE_LOG_DIR"]  = (testpath/"logs")
+    ENV["HBASE_CONF_DIR"] = (testpath/"conf")
+    ENV["HBASE_PID_DIR"]  = (testpath/"pid")
+
     system "#{Formula["hbase"].opt_bin}/start-hbase.sh"
+    sleep 2
 
     pid = Process.spawn "#{bin}/tsdb tsd --config=#{HOMEBREW_PREFIX}/etc/opentsdb/opentsdb.conf --staticroot=#{HOMEBREW_PREFIX}/opt/opentsdb/share/opentsdb/static/ --cachedir=#{HOMEBREW_PREFIX}/var/cache/opentsdb --port=4242 --zkquorum=localhost:2181 --zkbasedir=/hbase --auto-metric"
 
