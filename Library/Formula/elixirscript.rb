@@ -4,6 +4,13 @@ class Elixirscript < Formula
   url "https://github.com/bryanjos/elixirscript/archive/v0.16.0.tar.gz"
   sha256 "1ccc52501be1d762e823c6174aa5db1de200f4edc96b39f1057fa8aefeb6212e"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "22425ee9bec8269a44a80eefaa2b9d70852a5bacc34e6a49c57212fb40160688" => :el_capitan
+    sha256 "27b64e956363db52fb136c3f7a4ca082999fe3a1fa1ce0d125aea54d73bed75e" => :yosemite
+    sha256 "a037a9ba19e3740bcb43023d4363864cde664178f46942ddff5a194bac43f6cc" => :mavericks
+  end
+
   depends_on "elixir" => :build
 
   def install
