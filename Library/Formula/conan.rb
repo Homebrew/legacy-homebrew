@@ -1,8 +1,8 @@
 class Conan < Formula
   desc "Distributed, open source, package manager for C/C++"
   homepage "https://github.com/conan-io/conan"
-  url "https://pypi.python.org/packages/source/c/conan/conan-0.7.4.tar.gz"
-  sha256 "8cb746e071b0f9f29416fa5ae26c426aaa2ad4bcc7b6b400fb3f9189a37928dd"
+  url "https://pypi.python.org/packages/source/c/conan/conan-0.8.0.tar.gz"
+  sha256 "9062ce6a8ea17b9915897b4bbed294bc28506d4183ddd2f79b61395e7d24c953"
 
   bottle do
     cellar :any_skip_relocation
@@ -33,6 +33,16 @@ class Conan < Formula
     sha256 "0880a751afcb111881b437a846a93e540c7e1346030ba7bd7fda03434371fbc3"
   end
 
+  resource "fasteners" do
+    url "https://pypi.python.org/packages/source/f/fasteners/fasteners-0.14.1.tar.gz"
+    sha256 "427c76773fe036ddfa41e57d89086ea03111bbac57c55fc55f3006d027107e18"
+  end
+
+  resource "monotonic" do
+    url "https://pypi.python.org/packages/source/m/monotonic/monotonic-1.0.tar.gz"
+    sha256 "47d7d045b3f2a08bffe683d761ef7f9131a2598db1cec7532a06720656cf719d"
+  end
+
   resource "passlib" do
     url "https://pypi.python.org/packages/source/p/passlib/passlib-1.6.5.tar.gz"
     sha256 "a83d34f53dc9b17aa42c9a35c3fbcc5120f3fcb07f7f8721ec45e6a27be347fc"
@@ -58,9 +68,14 @@ class Conan < Formula
     sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
   end
 
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.5.2.tar.gz"
+    sha256 "fc6beeffdd8fc76b783287eb77d093425d0710920aae2c70acd693c52d7e8cf8"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[boto bottle cfgparse colorama passlib patch PyJWT PyYAML requests].each do |r|
+    %w[boto bottle cfgparse colorama fasteners monotonic passlib patch PyJWT PyYAML requests six].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
