@@ -4,6 +4,13 @@ class Conan < Formula
   url "https://pypi.python.org/packages/source/c/conan/conan-0.7.4.tar.gz"
   sha256 "8cb746e071b0f9f29416fa5ae26c426aaa2ad4bcc7b6b400fb3f9189a37928dd"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "7fd1ab1b40db0a75681c81ea9117fe336d6fde10f4ad99146642cf49bf9380af" => :el_capitan
+    sha256 "78da76f55ceb3fd0ce931c768bfd754fbe4dfe31725f6e0ad13adaf980d7406e" => :yosemite
+    sha256 "e5bc12843c58da66d2825c379452882edbb3bb7ba883a2e989c55e75047669be" => :mavericks
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "boto" do
