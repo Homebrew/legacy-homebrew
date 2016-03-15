@@ -3,42 +3,7 @@ brew() {
 }
 
 git() {
-  [[ -n "$HOMEBREW_GIT" ]] || odie "HOMEBREW_GIT is unset!"
-  "$HOMEBREW_GIT" "$@"
-}
-
-which_git() {
-  local git_path
-  local active_developer_dir
-
-  if [[ -n "$HOMEBREW_GIT" ]]
-  then
-    git_path="$HOMEBREW_GIT"
-  elif [[ -n "$GIT" ]]
-  then
-    git_path="$GIT"
-  else
-    git_path="git"
-  fi
-
-  git_path="$(which "$git_path" 2>/dev/null)"
-
-  if [[ -n "$git_path" ]]
-  then
-    git_path="$(chdir "${git_path%/*}" && pwd -P)/${git_path##*/}"
-  fi
-
-  if [[ -n "$HOMEBREW_OSX" && "$git_path" = "/usr/bin/git" ]]
-  then
-    active_developer_dir="$('/usr/bin/xcode-select' -print-path 2>/dev/null)"
-    if [[ -n "$active_developer_dir" && -x "$active_developer_dir/usr/bin/git" ]]
-    then
-      git_path="$active_developer_dir/usr/bin/git"
-    else
-      git_path=""
-    fi
-  fi
-  echo "$git_path"
+  "$HOMEBREW_LIBRARY/ENV/scm/git" "$@"
 }
 
 git_init_if_necessary() {
@@ -291,12 +256,10 @@ EOS
     odie "$HOMEBREW_REPOSITORY must be writable!"
   fi
 
-  HOMEBREW_GIT="$(which_git)"
-  if [[ -z "$HOMEBREW_GIT" ]]
+  if ! git --version >/dev/null 2>&1
   then
     brew install git
-    HOMEBREW_GIT="$(which_git)"
-    if [[ -z "$HOMEBREW_GIT" ]]
+    if ! git --version >/dev/null 2>&1
     then
       odie "Git must be installed and in your PATH!"
     fi
