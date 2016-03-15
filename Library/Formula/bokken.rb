@@ -2,6 +2,7 @@ class Bokken < Formula
   desc "GUI for the Pyew and Radare projects"
   homepage "http://bokken.re/"
   url "https://inguma.eu/attachments/download/212/bokken-1.8.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/bokken-1.8.tar.gz"
   sha256 "1c73885147dfcf0a74ba4d3dd897a6aabc11a4a42f95bd1269782d0b2e1a11b9"
 
   bottle do
