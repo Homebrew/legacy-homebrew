@@ -12,6 +12,13 @@ class Wxmac < Formula
     sha256 "9b137f0338358bdce6afc21e94226a09aa32432563a95173f6f050709e5c8f37" => :mavericks
   end
 
+  head "https://github.com/wxWidgets/wxWidgets.git"
+
+  devel do
+    url "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.0/wxWidgets-3.1.0.tar.bz2"
+    sha256 "e082460fb6bf14b7dd6e8ac142598d1d3d0b08a7b5ba402fdbf8711da7e66da8"
+  end
+
   option :universal
   option "with-stl", "use standard C++ classes for everything"
   option "with-static", "build static libraries"
@@ -23,7 +30,9 @@ class Wxmac < Formula
   # Various fixes related to Yosemite. Revisit in next stable release.
   # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
   # Theoretically the above linked patch should still be needed, but it isn't. Try to find out why.
-  patch :DATA
+  stable do
+    patch :DATA
+  end
 
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
