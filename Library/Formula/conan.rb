@@ -1,6 +1,6 @@
 class Conan < Formula
   desc "Distributed, open source, package manager for C/C++"
-  homepage "https://github.com/conan-io/conan"
+  homepage "https://www.conan.io"
   url "https://pypi.python.org/packages/source/c/conan/conan-0.7.4.tar.gz"
   sha256 "8cb746e071b0f9f29416fa5ae26c426aaa2ad4bcc7b6b400fb3f9189a37928dd"
 
