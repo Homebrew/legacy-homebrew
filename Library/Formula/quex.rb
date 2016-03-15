@@ -1,8 +1,8 @@
 class Quex < Formula
   desc "Generate lexical analyzers"
   homepage "http://quex.org/"
-  url "https://downloads.sourceforge.net/project/quex/DOWNLOAD/quex-0.65.4.tar.gz"
-  sha256 "42245d5795d03ca053741947733660ac4a0d6d54abdd7d2fa9997a9f2bd4ef3f"
+  url "https://downloads.sourceforge.net/project/quex/DOWNLOAD/quex-0.65.11.zip"
+  sha256 "5384fbff8645bfbdd5d6659b79aba9012a8db184d93d25026c764074b8beb503"
 
   head "http://svn.code.sf.net/p/quex/code/trunk"
 
