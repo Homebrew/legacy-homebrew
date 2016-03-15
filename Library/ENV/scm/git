@@ -10,8 +10,8 @@ fi
 exec "$HOMEBREW_RUBY_PATH" -x "$0" "$@"
 #!/usr/bin/env ruby -W0
 
-# This script because we support $GIT, $HOMEBREW_SVN, etc. and Xcode-only
-# configurations. Order is careful to be what the user would want.
+# This script because we support $GIT, $HOMEBREW_SVN, etc., Xcode-only and
+# no Xcode/CLT configurations. Order is careful to be what the user would want.
 
 F = File.basename(__FILE__).freeze
 D = File.expand_path(File.dirname(__FILE__)).freeze
@@ -35,17 +35,26 @@ brew_version = File.expand_path("#{D}/../../../bin/#{F}")
 exec brew_version, *ARGV if File.executable? brew_version
 
 `/usr/bin/which -a #{F} 2>/dev/null`.split("\n").each do |path|
-  exec path, *ARGV
+  exec path, *ARGV unless path == "/usr/bin/#{F}"
 end
 
-# xcrun hangs if xcode-select is set to "/"
-path = `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp
-if path != "/"
-  path = `/usr/bin/xcrun -find #{F} 2>/dev/null`.chomp
-  exec path, *ARGV if File.executable? path
+popup_stub = false
+if File.executable? "/usr/bin/xcode-select"
+  # xcode-select will return empty on no Xcode/CLT configuration.
+  #   /usr/bin/<tool> will be a popup stub under such configuration.
+  # xcrun hangs if xcode-select is set to "/"
+  path = `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp
+  popup_stub = path.empty?
+  if !popup_stub && path != "/"
+    path = `/usr/bin/xcrun -find #{F} 2>/dev/null`.chomp
+    exec path, *ARGV if File.executable? path
+  end
 end
 
 path = "/Applications/Xcode.app/Contents/Developer/usr/bin/#{F}"
 exec path, *ARGV if File.executable? path
+
+path = "/usr/bin/#{F}"
+exec path, *ARGV if !popup_stub && File.executable?(path)
 
 abort "You must: brew install #{F}"
