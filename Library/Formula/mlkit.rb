@@ -9,7 +9,7 @@ class Mlkit < Formula
   depends_on "gmp"
 
   def install
-    system "./autobuild; true"
+    system "./autobuild"
     system "./configure", "--prefix=#{prefix}"
 
     # The ENV.permit_arch_flags specification is needed on 64-bit
