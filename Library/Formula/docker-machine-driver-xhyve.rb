@@ -19,7 +19,7 @@ class DockerMachineDriverXhyve < Formula
   depends_on "docker-machine" => :recommended
 
   def install
-    (buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve").install Dir["{*,.git,.gitignore}"]
+    (buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve").install Dir["{*,.git,.gitignore,.gitmodules}"]
 
     ENV["GOPATH"] = "#{buildpath}/gopath"
     build_root = buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve"
@@ -29,11 +29,6 @@ class DockerMachineDriverXhyve < Formula
         git_hash = "HEAD-#{git_hash}"
         ENV["CGO_LDFLAGS"] = "#{build_root}/vendor/build/lib9p/lib9p.a -L#{build_root}/vendor/lib9p"
         ENV["CGO_CFLAGS"] = "-I#{build_root}/vendor/lib9p"
-        mkdir "vendor/build"
-        mkdir "vendor/build/lib9p"
-        mkdir "vendor/build/lib9p/sbuf"
-        mkdir "vendor/build/lib9p/transport"
-        mkdir "vendor/build/lib9p/backend"
         system "make", "lib9p"
       end
       system "go", "build", "-x", "-o", bin/"docker-machine-driver-xhyve",
