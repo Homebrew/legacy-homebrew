@@ -13,9 +13,51 @@ class Bash < Formula
     # Vendor the patches. The mirrors are unreliable for getting the patches,
     # and the more patches there are, the more unreliable they get. Upstream
     # patches can be found in: http://git.savannah.gnu.org/cgit/bash.git
-    patch do
-      url "https://gist.githubusercontent.com/dunn/a8986687991b57eb3b25/raw/76dd864812e821816f4b1c18e3333c8fced3919b/bash-4.3.42.diff"
-      sha256 "2eeb9b3ed71f1e13292c2212b6b8036bc258c58ec9c82eec7a86a091b05b15d2"
+    patch :p0 do
+      url "https://github.com/ilovezfs/patches/raw/bash-4.3-p042/bash/bash-patches-4.3-p042.tar.gz"
+      sha256 "dc8424be2ae909273596e2cab41b38b25a55405e909ae6b9b8b8b8df27bae0ec"
+      apply "bash43-001",
+            "bash43-002",
+            "bash43-003",
+            "bash43-004",
+            "bash43-005",
+            "bash43-006",
+            "bash43-007",
+            "bash43-008",
+            "bash43-009",
+            "bash43-010",
+            "bash43-011",
+            "bash43-012",
+            "bash43-013",
+            "bash43-014",
+            "bash43-015",
+            "bash43-016",
+            "bash43-017",
+            "bash43-018",
+            "bash43-019",
+            "bash43-020",
+            "bash43-021",
+            "bash43-022",
+            "bash43-023",
+            "bash43-024",
+            "bash43-025",
+            "bash43-026",
+            "bash43-027",
+            "bash43-028",
+            "bash43-029",
+            "bash43-030",
+            "bash43-031",
+            "bash43-032",
+            "bash43-033",
+            "bash43-034",
+            "bash43-035",
+            "bash43-036",
+            "bash43-037",
+            "bash43-038",
+            "bash43-039",
+            "bash43-040",
+            "bash43-041",
+            "bash43-042"
     end
   end
 
