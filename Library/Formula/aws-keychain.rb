@@ -10,6 +10,7 @@ class AwsKeychain < Formula
 
   test do
     # It is not possible to create a new keychain without triggering a prompt.
-    assert_match /Store multiple AWS IAM access keys/, shell_output("#{bin}/aws-keychain --help", 1).strip
+    assert_match /Store multiple AWS IAM access keys/,
+      shell_output("#{bin}/aws-keychain --help", 1)
   end
 end
