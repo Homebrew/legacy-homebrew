@@ -1,8 +1,8 @@
 class Infer < Formula
   desc "Static analyzer for Java, C and Objective-C"
   homepage "http://fbinfer.com/"
-  url "https://github.com/facebook/infer/releases/download/v0.7.0/infer-osx-v0.7.0.tar.xz"
-  sha256 "c83753c04bea8ad1dae3877d23d094d963d293b5d926a21ea8ea9443c870404a"
+  url "https://github.com/facebook/infer/releases/download/v0.8.0/infer-osx-v0.8.0.tar.xz"
+  sha256 "2b494a2b595bd7cf0f0cfaac4e9bece568575a4bcf25cc00161ed34c0319dc58"
 
   bottle do
     cellar :any
@@ -36,6 +36,7 @@ class Infer < Formula
     system "opam", "install", "sawja>=1.5.1"
     system "opam", "install", "atdgen>=1.6.0"
     system "opam", "install", "extlib>=1.5.4"
+    system "opam", "install", "oUnit>=2.0.0"
 
     target_platform = if build.without?("clang")
       "java"
