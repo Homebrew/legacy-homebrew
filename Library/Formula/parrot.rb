@@ -1,9 +1,24 @@
 class Parrot < Formula
   desc "Open source virtual machine (for Perl6, et al.)"
   homepage "http://www.parrot.org/"
-  url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.9.0/parrot-6.9.0.tar.bz2"
-  sha256 "ad5f3723c216675b9ebc2e3d3807d24fd13aa55e1eb3e7ffcad4062e0026f482"
   head "https://github.com/parrot/parrot.git"
+
+  stable do
+    url "ftp://ftp.parrot.org/pub/parrot/releases/supported/8.1.0/parrot-8.1.0.tar.bz2"
+    sha256 "caf356acab64f4ea50595a846808e81d0be8ada8267afbbeb66ddb3c93cb81d3"
+
+    # remove at 8.2.0, already in HEAD
+    patch do
+      url "https://github.com/parrot/parrot/commit/7524bf5384ddebbb3ba06a040f8acf972aa0a3ba.diff"
+      sha256 "170f63df33fa2dc870902bd703c371bb6d601b515618f5830ab921bffa22e87b"
+    end
+
+    # remove at 8.2.0, already in HEAD
+    patch do
+      url "https://github.com/parrot/parrot/commit/854aec65d6de8eaf5282995ab92100a2446f0cde.diff"
+      sha256 "dfe8b5e26b104f8fb2c1efe0a8316ffcba399463bd164c22e7cf2327fac2540e"
+    end
+  end
 
   bottle do
     sha256 "6c03426ea421562a7ae6489c93423f047d5bc2cbc6f8e9fd5ad6ae48d3096d21" => :yosemite
