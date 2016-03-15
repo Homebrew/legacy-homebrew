@@ -20,6 +20,11 @@ class Ngrok < Formula
   depends_on "go" => :build
   depends_on :hg => :build
 
+  patch do
+    url "https://github.com/inconshreveable/ngrok/commit/761e6d0de87f4175b91a007951d7ca4ab12b7d04.diff"
+    sha256 "1bfc6342e1c194a7763039de8d6a1a1c3783a30f0517473248e0fccb3c71c211"
+  end
+
   def install
     ENV.j1
     system "make", "release-client"
