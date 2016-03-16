@@ -1,9 +1,9 @@
 class Avrdude < Formula
   desc "Atmel AVR MCU programmer"
   homepage "https://savannah.nongnu.org/projects/avrdude/"
-  url "http://download.savannah.gnu.org/releases/avrdude/avrdude-6.2.tar.gz"
-  mirror "http://download-mirror.savannah.gnu.org/releases/avrdude/avrdude-6.2.tar.gz"
-  sha256 "e65f833493b7d63a4436c7056694a0f04ae5b437b72cc084e32c58bc543b0f91"
+  url "http://download.savannah.gnu.org/releases/avrdude/avrdude-6.3.tar.gz"
+  mirror "http://download-mirror.savannah.gnu.org/releases/avrdude/avrdude-6.3.tar.gz"
+  sha256 "0f9f731b6394ca7795b88359689a7fa1fba818c6e1d962513eb28da670e0a196"
 
   bottle do
     sha256 "b2ac65f070879456e2047ba543a7fafb1d45c98b745b7915b4059ea90c10dfcd" => :el_capitan
