@@ -8,9 +8,9 @@ class Connect < Formula
     # A pull request has been submitted upstream to resolve issues with the
     # Makefile producing errors when executed on OS X, see:
     # https://bitbucket.org/gotoh/connect/pull-requests/5/updates-to-allow-for-cross-compiling/diff
-    # 
-    # This simpler solution of simply removing the call to ver solves the 
-    # problem for installation on OS X until such time as the above pull 
+    #
+    # This simpler solution of simply removing the call to ver solves the
+    # problem for installation on OS X until such time as the above pull
     # request is merged.
     inreplace "Makefile", "WINVER := $(shell ver)", ""
     system "make"
