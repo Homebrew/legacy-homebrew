@@ -1,9 +1,8 @@
 class Creduce < Formula
   desc "Reduce a C/C++ program while keeping a property of interest"
   homepage "https://embed.cs.utah.edu/creduce/"
-  url "https://github.com/csmith-project/creduce/archive/creduce-2.3.0.tar.gz"
-  sha256 "47a42751aab8b51bc10d8df62f359bdc1b4a644f16feb85b9f7325f0c5bce4a3"
-  revision 2
+  url "https://github.com/csmith-project/creduce/archive/creduce-2.4.0.tar.gz"
+  sha256 "a3917e37b0c7d77e7f2c2961794ba511f874f78684a7fd944e51c9d43cc5d7c6"
   head "https://github.com/csmith-project/creduce.git"
 
   bottle do
