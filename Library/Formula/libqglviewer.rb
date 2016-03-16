@@ -8,10 +8,9 @@ class Libqglviewer < Formula
 
   bottle do
     cellar :any
-    sha256 "4e10d8f4fc3dd26fdecf2ea84eb7f9d4ce31de6ed0bf32827c5f2c2c3467e3f0" => :el_capitan
-    sha256 "e38fbb01b02b961a242b56340cc1d2f3010b64ea21c8c7caf5c20dee077ea505" => :yosemite
-    sha256 "0c866f4fb472474fda0054a4fd7b3c54500a2c076e0699179da8d2614ccf94a1" => :mavericks
-    sha256 "d43ff135e46f0032759e33c8f42da2c0c306e3c5bdeacb09f79fe082196ece7a" => :mountain_lion
+    sha256 "1f00c73ef441a6ffcddd7a4b086701b4a56796c4b9fd6ca979f0cbc7e485c97e" => :el_capitan
+    sha256 "ee30fec03b3a34c4377211779212bae6f0bf1211b20abed235ef2503b5b72d9c" => :yosemite
+    sha256 "8bb883a52487feb86cd2bbe1c83ac4c70a7d45282ef76a4a22e7dfa89774d9f8" => :mavericks
   end
 
   option :universal
