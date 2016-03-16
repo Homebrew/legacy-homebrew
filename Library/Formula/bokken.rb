@@ -17,6 +17,7 @@ class Bokken < Formula
   depends_on "pygtk"
   depends_on "pygtksourceview"
   depends_on "radare2"
+  depends_on "librsvg"
 
   resource "distorm64" do
     url "http://ftp.de.debian.org/debian/pool/main/d/distorm64/distorm64_1.7.30.orig.tar.gz"
