@@ -18,9 +18,9 @@ class Qt5 < Formula
   revision 2
 
   stable do
-    url "https://download.qt.io/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
-    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
-    sha256 "6f028e63d4992be2b4a5526f2ef3bfa2fe28c5c757554b11d9e8d86189652518"
+    url "https://download.qt.io/official_releases/qt/5.6/5.6.0/single/qt-everywhere-opensource-src-5.6.0.tar.xz"
+    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.6/5.6.0/single/qt-everywhere-opensource-src-5.6.0.tar.xz"
+    sha256 "76a95cf6c1503290f75a641aa25079cd0c5a8fcd7cff07ddebff80a955b07de7"
 
     # Build error: Fix library detection for QtWebEngine with Xcode 7.
     # https://codereview.qt-project.org/#/c/127759/
