@@ -5,6 +5,7 @@ class Terraform < Formula
   homepage "https://www.terraform.io/"
   url "https://github.com/hashicorp/terraform/archive/v0.6.13.tar.gz"
   sha256 "21db98e1e1c17d793bdf744f15704157bc86da465171dba751d8a92f455bc62f"
+  head "https://github.com/hashicorp/terraform.git"
 
   bottle do
     cellar :any_skip_relocation
