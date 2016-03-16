@@ -104,7 +104,15 @@ We generally try to not duplicate system libraries and complicated tools in core
 
 One very special exception is OpenSSL. Anything that uses OpenSSL *should* be built using Homebrew’s shipped OpenSSL and our test bot's post-install `audit` will warn if it detects you haven't done this.
 
-Homebrew’s OpenSSL is [`keg_only`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#keg_only-class_method) to avoid conflicting with the system so sometimes formulae need to have environmental variables set or special configuration flags passed to locate our OpenSSL. You can see this mechanism in the [clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28) formula. Usually this is unnecessary because when OpenSSL is specified as a dependency Homebrew temporarily prepends the `$PATH` with that prefix.
+Homebrew’s OpenSSL is
+[`keg_only`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#keg_only-class_method)
+to avoid conflicting with the system so sometimes formulae need to
+have environment variables set or special configuration flags passed
+to locate our OpenSSL. You can see this mechanism in the
+[clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28)
+formula. Usually this is unnecessary because when OpenSSL is specified
+as a dependency Homebrew temporarily prepends the `$PATH` with that
+prefix.
 
 Homebrew maintains a special [tap that provides other useful system duplicates](https://github.com/Homebrew/homebrew-dupes).
 
