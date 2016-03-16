@@ -241,7 +241,15 @@ Check the top of the e.g. `./configure` output. Some configure scripts do not re
 
 Please add a [`test do`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#test-class_method) block to the formula. This will be run by `brew test foo` and the [Brew Test Bot](Brew-Test-Bot.md).
 
-The [`test do`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#test-class_method) block automatically creates and changes to a temporary directory which is deleted after run. You can access this [`Pathname`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Pathname) with the [`testpath`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#testpath-instance_method) function.
+The
+[`test do`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#test-class_method)
+block automatically creates and changes to a temporary directory which
+is deleted after run. You can access this
+[`Pathname`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Pathname)
+with the
+[`testpath`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#testpath-instance_method)
+function.  The environment variable `HOME` is set to `testpath` within
+the `test do` block.
 
 We want tests that don't require any user input and test the basic functionality of the application. For example `foo build-foo input.foo` is a good test and (despite their widespread use) `foo --version` and `foo --help` are bad tests. However, a bad test is better than no test at all.
 
