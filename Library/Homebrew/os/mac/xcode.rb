@@ -43,7 +43,8 @@ module OS
               path = bundle_path
               path.join("Contents", "Developer") if path
             else
-              Pathname.new(dir)
+              # Use cleanpath to avoid pathological trailing slash
+              Pathname.new(dir).cleanpath
             end
           end
       end
