@@ -5,10 +5,10 @@ class Vc4asm < Formula
   sha256 "c9ffb315961a634cef1a26620a73483e7b819a963374952046aa7099d7ceb25c"
 
   bottle do
-    cellar :any
-    sha256 "61d33586464106166ab596587e9e568d966073f328830b96b895cbd0e7f387b7" => :yosemite
-    sha256 "9a4abc2e869f51c8045468e7bc261ae5d863e9fd3eabefd797c898a88580bfc9" => :mavericks
-    sha256 "8c78b6050331c1580dfe22a330a0e449a8b94e18d6432078668f08a2ffc99583" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d3e5bf0d350fe121f98dc5f9382a540246a35aa6ba329738ff6d328537521311" => :el_capitan
+    sha256 "0f859510fcf092ac9aea3edf1a3bdca06fb33fbac058a6c6b07c4fe8485cf756" => :yosemite
+    sha256 "17e23f6685049ca463e555f56947f2694fd14d45ac3e5be7cc82475cae251ca9" => :mavericks
   end
 
   needs :cxx11
