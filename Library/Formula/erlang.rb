@@ -8,16 +8,15 @@ class Erlang < Formula
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
-    url "https://github.com/erlang/otp/archive/OTP-18.2.1.tar.gz"
-    sha256 "2207d7f62605937560cb15c54d183f9b262b82867df6c944887763d1fcbb3280"
+    url "https://github.com/erlang/otp/archive/OTP-18.3.tar.gz"
+    sha256 "8d5436faf37a1273c1b8529c4f02c28af0eccde31e52d474cb740b012d5da7e6"
   end
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "e34cf1c96989af31ccd796d4fe18e1051e93f0a5d1499e56f8c9b0b2621960e4" => :el_capitan
-    sha256 "07e214e038540064aa1e950031ec61783054f0a9ae9720a3ec9ddb9ea3237e82" => :yosemite
-    sha256 "fa32cd20b0e5c28901b431fd6fb9bac30e3f0aca53b2bc6e23ccd0cff251e858" => :mavericks
+    sha256 "3df1ac0cb76ea2d0511dbd7d42d536b486098251c84afbf5eb39cd658d229b4d" => :el_capitan
+    sha256 "25d81e60062d18590d837356527bde513fa69a7d82a86fd979dea931545bc8d6" => :yosemite
+    sha256 "c9bb4cf2ad9b4bd8c55518e4dbad390299bc3ec0539a4304f03ee7b00ddaaece" => :mavericks
   end
 
   option "without-hipe", "Disable building hipe; fails on various OS X systems"
@@ -39,13 +38,13 @@ class Erlang < Formula
   fails_with :llvm
 
   resource "man" do
-    url "https://www.erlang.org/download/otp_doc_man_18.2.1.tar.gz"
-    sha256 "a58005ccd64853e8c79631a3c4c057dd6f92f581d97d00845a0aea817c33afa0"
+    url "https://www.erlang.org/download/otp_doc_man_18.3.tar.gz"
+    sha256 "978be100e9016874921b3ad1a65ee46b7b6a1e597b8db2ec4b5ef436d4c9ecc2"
   end
 
   resource "html" do
-    url "https://www.erlang.org/download/otp_doc_html_18.2.1.tar.gz"
-    sha256 "3576c567b30400fec2b456897d54ba79933ee0f83f6ec57816417b5417ea9723"
+    url "https://www.erlang.org/download/otp_doc_html_18.3.tar.gz"
+    sha256 "8fd6980fd05367735779a487df107ace7c53733f52fbe56de7ca7844a355676f"
   end
 
   def install

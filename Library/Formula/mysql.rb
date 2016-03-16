@@ -16,11 +16,9 @@ class Mysql < Formula
   option "with-archive-storage-engine", "Compile with the ARCHIVE storage engine enabled"
   option "with-blackhole-storage-engine", "Compile with the BLACKHOLE storage engine enabled"
   option "with-local-infile", "Build with local infile loading support"
-  option "with-memcached", "Enable innodb-memcached support"
   option "with-debug", "Build with debug support"
 
   deprecated_option "enable-local-infile" => "with-local-infile"
-  deprecated_option "enable-memcached" => "with-memcached"
   deprecated_option "enable-debug" => "with-debug"
   deprecated_option "with-tests" => "with-test"
 
@@ -101,9 +99,6 @@ class Mysql < Formula
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.with? "local-infile"
-
-    # Build with memcached support
-    args << "-DWITH_INNODB_MEMCACHED=1" if build.with? "memcached"
 
     # Build with debug support
     args << "-DWITH_DEBUG=1" if build.with? "debug"

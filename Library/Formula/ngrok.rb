@@ -12,13 +12,19 @@ class Ngrok < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d8f9bdc6d070a69446eda8a0851192171e9f498a23d30f1bca8f5dc0582ad774" => :el_capitan
-    sha256 "4badc8538de923967d34ef0548ec9539b10efc65b07edf4ace1a1ccbe8a94d4a" => :yosemite
-    sha256 "b93d622f31fab29567c6fa1f26d2c2d2ba50b3d443fcaa94b02bea7194a4764e" => :mavericks
+    revision 1
+    sha256 "56c524adac0a24f47400d369a330cfd55d4d46d04067296dc9bd18cf71180451" => :el_capitan
+    sha256 "48d055cb8bb673f5b4e48d80c76e2b59b6d5aae92bf7e1b3015f44c98fe42e1f" => :yosemite
+    sha256 "2c72dde1ebeb190c5d81bac44d66f98e11486a8f761ac73f796e798863cbfd35" => :mavericks
   end
 
   depends_on "go" => :build
   depends_on :hg => :build
+
+  patch do
+    url "https://github.com/inconshreveable/ngrok/commit/761e6d0de87f4175b91a007951d7ca4ab12b7d04.diff"
+    sha256 "1bfc6342e1c194a7763039de8d6a1a1c3783a30f0517473248e0fccb3c71c211"
+  end
 
   def install
     ENV.j1

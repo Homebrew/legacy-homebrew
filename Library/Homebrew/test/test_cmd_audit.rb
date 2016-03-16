@@ -340,4 +340,21 @@ class FormulaAuditorTests < Homebrew::TestCase
     assert_equal "Please remove default template comments",
       fa.problems.shift
   end
+
+  def test_audit_github_repository_no_api
+    fa = formula_auditor "foo", <<-EOS.undent, :strict => true, :online => true
+      class Foo < Formula
+        homepage "https://github.com/example/example"
+        url "http://example.com/foo-1.0.tgz"
+      end
+    EOS
+
+    original_value = ENV["HOMEBREW_NO_GITHUB_API"]
+    ENV["HOMEBREW_NO_GITHUB_API"] = "1"
+
+    fa.audit_github_repository
+    assert_equal [], fa.problems
+  ensure
+    ENV["HOMEBREW_NO_GITHUB_API"] = original_value
+  end
 end

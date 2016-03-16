@@ -1,16 +1,16 @@
 class Poco < Formula
   desc "C++ class libraries for building network and internet-based applications"
   homepage "http://pocoproject.org/"
-  url "http://pocoproject.org/releases/poco-1.6.1/poco-1.6.1-all.tar.gz"
-  sha256 "88c88ff0916228d3a011b86c486033dab75e62a27429b5d35736d43527cf5b44"
+  url "http://pocoproject.org/releases/poco-1.7.1/poco-1.7.1-all.tar.gz"
+  sha256 "337d82fdd648e50e5a25fa58ca9f66d5e7a381548cae412d13097a85498c5915"
 
   head "https://github.com/pocoproject/poco.git", :branch => "develop"
 
   bottle do
     cellar :any
-    sha256 "33df81188d98b0fcf1d15a6e13f84d3c4e2fcf5b1b96bb7c7f4f5e02366c93be" => :el_capitan
-    sha256 "c5230b22ed0d24df4b5bdf6ca23dd96af5e68e5afe380a457ede2e3bf9d9ba3a" => :yosemite
-    sha256 "bcf911a8a650595792d103e12364e3efc3b283d4fcc22caf7afaba5014786dd0" => :mavericks
+    sha256 "50e6824d1d27a1520fe4eca9fcf3deb77d3c105831d64573623bc0af94b24177" => :el_capitan
+    sha256 "c7e514afcf691fdb26c506dfe4ed5ee9fabde66670e204dbf1a16d0087f3dc3a" => :yosemite
+    sha256 "3577b7a4f6a4a6f8be3b7b5a8aa156e5ee71d8c72bbd285eeaa09768d7f10a03" => :mavericks
   end
 
   option :cxx11
@@ -32,11 +32,6 @@ class Poco < Formula
     end
 
     args << "-DPOCO_STATIC=ON" if build.with? "static"
-
-    if build.stable?
-      # Fix Foundation library version (already fixed upstream).
-      inreplace "Foundation/CMakeLists.txt", "VERSION ${PROJECT_VERSION}", "VERSION ${SHARED_LIBRARY_VERSION}"
-    end
 
     mkdir "macbuild" do
       system "cmake", buildpath, *args

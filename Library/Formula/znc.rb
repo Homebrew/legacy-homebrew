@@ -1,14 +1,14 @@
 class Znc < Formula
   desc "Advanced IRC bouncer"
   homepage "http://wiki.znc.in/ZNC"
-  url "http://znc.in/releases/archive/znc-1.6.2.tar.gz"
-  mirror "https://github.com/znc/znc/archive/znc-1.6.2.tar.gz"
-  sha256 "eef17727c0c6433fed1affba0ea76ec7fd60198d2f3c234d8529bd5fb26f0593"
+  url "http://znc.in/releases/archive/znc-1.6.3.tar.gz"
+  mirror "https://github.com/znc/znc/archive/znc-1.6.3.tar.gz"
+  sha256 "631c46de76fe601a41ef7676bc974958e9a302b72b25fc92b4a603a25d89b827"
 
   bottle do
-    sha256 "2b770669b64933116179b7fe2debfebc9f2fbca7be1883e5e0c3183e45e52ccc" => :el_capitan
-    sha256 "0c3166fe0a1248eafa9ca54fa7818f69b38855c4741ac480afa510d6d94e4b7a" => :yosemite
-    sha256 "a23106c814c4d21646b605bd0d91d40164035ab64fd47315a6854e1fa9483edd" => :mavericks
+    sha256 "1e190212ca7079d83a5de38a6d5fd4a7f3d76dc372cce250758ae05524e52856" => :el_capitan
+    sha256 "a6f958bcf993587a1d57cdd1cfb5d5c457fd61690a4c04e13853b238c5bb8563" => :yosemite
+    sha256 "ba52c547e66c05a2505d97726d41aa17b13232e8f52543a478ce7fa777da05e7" => :mavericks
   end
 
   head do

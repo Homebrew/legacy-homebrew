@@ -1,14 +1,13 @@
 class Xmp < Formula
   desc "Command-line player for module music formats (MOD, S3M, IT, etc)"
   homepage "http://xmp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/xmp/xmp/4.0.10/xmp-4.0.10.tar.gz"
-  sha256 "b6d45fef0dbdb4ad4948b9f82335cbfaf60eaec3a63cc9a0050a1e5cf7a65e3e"
+  url "https://downloads.sourceforge.net/project/xmp/xmp/4.0.11/xmp-4.0.11.tar.gz"
+  sha256 "ba09beefb9bc67cd01bba96e6c79c4896f9d99161ea41ddbfee0e25db09e7991"
 
   bottle do
-    sha256 "f12054f842520102517a3d1a9457c5bf083a5b1386d842419651524591c478c4" => :el_capitan
-    sha256 "30123b45264d818a74c8a47171b984dbce47ba1342bada039405882f2bb906e2" => :yosemite
-    sha256 "39c8747c8f8cb4a61b7050cca33f2e58b4e96c669cd194253a673ea53a27d609" => :mavericks
-    sha256 "7c0ceac5687e8e6ee8da0cd9ac35e91061919ed932ec681f79bf25a2e8493e7c" => :mountain_lion
+    sha256 "0bc782b665dae4b64def3b78e59fa4ca4389f3afba0ab115d5ca707853d53b60" => :el_capitan
+    sha256 "c5d55ea6d90ddfafc9b9268a6c1af3e8f14f427ac65fd3109ad2de1611c7afdb" => :yosemite
+    sha256 "ceac113907bd3ab2d2b8507346ead946d44ad3d174355df8815f7c90fd0b04b5" => :mavericks
   end
 
   head do
