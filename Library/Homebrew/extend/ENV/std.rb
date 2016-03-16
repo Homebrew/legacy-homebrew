@@ -67,8 +67,8 @@ module Stdenv
     macosxsdk MacOS.version
 
     if MacOS::Xcode.without_clt?
-      append_path "PATH", "#{MacOS::Xcode.prefix}/usr/bin"
-      append_path "PATH", "#{MacOS::Xcode.toolchain_path}/usr/bin"
+      append_path "PATH", (MacOS::Xcode.prefix/"usr/bin").to_s
+      append_path "PATH", (MacOS::Xcode.toolchain_path/"usr/bin").to_s
     end
   end
 
