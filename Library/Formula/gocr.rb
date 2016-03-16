@@ -15,6 +15,7 @@ class Gocr < Formula
   option "with-lib", "Install library and headers"
 
   depends_on "netpbm" => :optional
+  depends_on "jpeg" => :optional
 
   # Edit makefile to install libs per developer documentation
   patch :DATA if build.with? "lib"
