@@ -22,37 +22,42 @@ class Llvm < Formula
   homepage "http://llvm.org/"
 
   stable do
-    url "http://llvm.org/releases/3.6.2/llvm-3.6.2.src.tar.xz"
-    sha256 "f60dc158bfda6822de167e87275848969f0558b3134892ff54fced87e4667b94"
+    url "http://llvm.org/releases/3.8.0/llvm-3.8.0.src.tar.xz"
+    sha256 "555b028e9ee0f6445ff8f949ea10e9cd8be0d084840e21fbbe1d31d51fc06e46"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.6.2/cfe-3.6.2.src.tar.xz"
-      sha256 "ae9180466a23acb426d12444d866b266ff2289b266064d362462e44f8d4699f3"
+      url "http://llvm.org/releases/3.8.0/cfe-3.8.0.src.tar.xz"
+      sha256 "04149236de03cf05232d68eb7cb9c50f03062e339b68f4f8a03b650a11536cf9"
     end
 
     resource "clang-extra-tools" do
-      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
-      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
+      url "http://llvm.org/releases/3.8.0/clang-tools-extra-3.8.0.src.tar.xz"
+      sha256 "afbda810106a6e64444bc164b921be928af46829117c95b996f2678ce4cb1ec4"
     end
 
     resource "compiler-rt" do
-      url "http://llvm.org/releases/3.6.2/compiler-rt-3.6.2.src.tar.xz"
-      sha256 "0f2ff37d80a64575fecd8cf0d5c50f7ac1f837ddf700d1855412bb7547431d87"
+      url "http://llvm.org/releases/3.8.0/compiler-rt-3.8.0.src.tar.xz"
+      sha256 "c8d3387e55f229543dac1941769120f24dc50183150bf19d1b070d53d29d56b0"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
-      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+      url "http://llvm.org/releases/3.8.0/libcxx-3.8.0.src.tar.xz"
+      sha256 "36804511b940bc8a7cefc7cb391a6b28f5e3f53f6372965642020db91174237b"
     end
 
     resource "lld" do
-      url "http://llvm.org/releases/3.6.2/lld-3.6.2.src.tar.xz"
-      sha256 "43f553c115563600577764262f1f2fac3740f0c639750f81e125963c90030b33"
+      url "http://llvm.org/releases/3.8.0/lld-3.8.0.src.tar.xz"
+      sha256 "94704dda228c9f75f4403051085001440b458501ec97192eee06e8e67f7f9f0c"
     end
 
     resource "lldb" do
-      url "http://llvm.org/releases/3.6.2/lldb-3.6.2.src.tar.xz"
-      sha256 "940dc96b64919b7dbf32c37e0e1d1fc88cc18e1d4b3acf1e7dfe5a46eb6523a9"
+      url "http://llvm.org/releases/3.8.0/lldb-3.8.0.src.tar.xz"
+      sha256 "e3f68f44147df0433e7989bf6ed1c58ff28d7c68b9c47553cb9915f744785a35"
+    end
+
+    resource "openmp" do
+      url "http://llvm.org/releases/3.8.0/openmp-3.8.0.src.tar.xz"
+      sha256 "92510e3f62e3de955e3a0b6708cebee1ca344d92fb02369cba5fdd5c68f773a0"
     end
   end
 
@@ -95,6 +100,10 @@ class Llvm < Formula
       url "http://llvm.org/git/lldb.git"
     end
 
+    resource "openmp" do
+      url "http://llvm.org/git/openmp.git"
+    end
+
     # Polly is --HEAD-only because it requires isl and the version of Polly
     # shipped with 3.6.2 only compiles with isl 0.14 and earlier (current
     # version is 0.15). isl is distributed with the Polly source code from LLVM
@@ -116,6 +125,7 @@ class Llvm < Formula
   option "with-lldb", "Build LLDB debugger"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "with-rtti", "Build with C++ RTTI"
+  option "with-openmp", "Build with OpenMP support"
 
   deprecated_option "rtti" => "with-rtti"
 
@@ -184,6 +194,10 @@ class Llvm < Formula
       ENV.permit_arch_flags
     end
 
+    if build.with? "openmp"
+      (buildpath/"projects/openmp").install resource("openmp")
+    end
+
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
@@ -205,15 +219,9 @@ class Llvm < Formula
 
     if build.with? "clang"
       (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
-      if build.head?
-        inreplace "#{share}/clang/tools/scan-build/bin/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
-        bin.install_symlink share/"clang/tools/scan-build/bin/scan-build", share/"clang/tools/scan-view/bin/scan-view"
-        man1.install_symlink share/"clang/tools/scan-build/man/scan-build.1"
-      else
-        inreplace "#{share}/clang/tools/scan-build/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
-        bin.install_symlink share/"clang/tools/scan-build/scan-build", share/"clang/tools/scan-view/scan-view"
-        man1.install_symlink share/"clang/tools/scan-build/scan-build.1"
-      end
+      inreplace "#{share}/clang/tools/scan-build/bin/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
+      bin.install_symlink share/"clang/tools/scan-build/bin/scan-build", share/"clang/tools/scan-view/bin/scan-view"
+      man1.install_symlink share/"clang/tools/scan-build/man/scan-build.1"
     end
 
     # install llvm python bindings
