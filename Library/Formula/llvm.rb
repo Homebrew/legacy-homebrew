@@ -54,6 +54,11 @@ class Llvm < Formula
       url "http://llvm.org/releases/3.8.0/lldb-3.8.0.src.tar.xz"
       sha256 "e3f68f44147df0433e7989bf6ed1c58ff28d7c68b9c47553cb9915f744785a35"
     end
+
+    resource "openmp" do
+      url "http://llvm.org/releases/3.8.0/openmp-3.8.0.src.tar.xz"
+      sha256 "92510e3f62e3de955e3a0b6708cebee1ca344d92fb02369cba5fdd5c68f773a0"
+    end
   end
 
   bottle do
@@ -95,6 +100,10 @@ class Llvm < Formula
       url "http://llvm.org/git/lldb.git"
     end
 
+    resource "openmp" do
+      url "http://llvm.org/git/openmp.git"
+    end
+
     # Polly is --HEAD-only because it requires isl and the version of Polly
     # shipped with 3.6.2 only compiles with isl 0.14 and earlier (current
     # version is 0.15). isl is distributed with the Polly source code from LLVM
@@ -116,6 +125,7 @@ class Llvm < Formula
   option "with-lldb", "Build LLDB debugger"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "with-rtti", "Build with C++ RTTI"
+  option "with-openmp", "Build with OpenMP support"
 
   deprecated_option "rtti" => "with-rtti"
 
@@ -182,6 +192,10 @@ class Llvm < Formula
       # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
       # can almost be treated as an entirely different build from llvm.
       ENV.permit_arch_flags
+    end
+
+    if build.with? "openmp"
+      (buildpath/"projects/openmp").install resource("openmp")
     end
 
     args = %w[
