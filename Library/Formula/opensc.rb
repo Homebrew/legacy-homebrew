@@ -14,10 +14,10 @@ class Opensc < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "3c68218181dc025c0a2784ef1fa15834cdd890493b7603da86b6f1a4d2f90e5c" => :el_capitan
-    sha256 "12298b0c9b6cf85d37f861962f2dd719ad51b5f4485338acf17985e2e18d334a" => :yosemite
-    sha256 "08501fbffbb7f534ac5319104f7eb05243209897c6b958b10fc62024cf4a0f50" => :mavericks
+    revision 2
+    sha256 "b84361bf93572c5b156e5e722408ad88f94ecb76ff5703ad731300cc2bf4a59d" => :el_capitan
+    sha256 "68c918cc0aa1660dd91ed127b3d0dcc07a0ce4001cbdb530904b4aec04c6d48b" => :yosemite
+    sha256 "def6a8fa98e04884692da8e0c01043b861c4879becb7a773b1321c2374b019d7" => :mavericks
   end
 
   devel do
