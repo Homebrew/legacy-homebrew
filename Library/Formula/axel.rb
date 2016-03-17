@@ -1,9 +1,9 @@
 class Axel < Formula
   desc "Light UNIX download accelerator"
   homepage "https://packages.debian.org/sid/axel"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/axel/axel_2.4.orig.tar.gz"
-  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/a/axel/axel_2.4.orig.tar.gz"
-  sha256 "359a57ab4e354bcb6075430d977c59d33eb3e2f1415a811948fa8ae657ca8036"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/axel/axel_2.5.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/a/axel/axel_2.5.orig.tar.gz"
+  sha256 "02376767e7f9e6c4292333e69ad0f615f62be5df176a8daaee395f25b0ab1a83"
 
   bottle do
     revision 1
@@ -13,7 +13,11 @@ class Axel < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--debug=0", "--i18n=0"
+    system "./configure", "--prefix=#{prefix}",
+                          "--etcdir=#{etc}",
+                          "--debug=0",
+                          "--i18n=0"
+
     system "make"
     system "make", "install"
   end
