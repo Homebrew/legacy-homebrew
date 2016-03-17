@@ -2,8 +2,8 @@ class Rmtrash < Formula
   desc "Move files to OS X's Trash"
   homepage "http://www.nightproductions.net/cli.htm"
   url "http://www.nightproductions.net/downloads/rmtrash_source.tar.gz"
-  sha256 "9b30561454529e5923ffb62327d3fe009d23495263efc958534ac6b637e361d6"
   version "0.3.3"
+  sha256 "9b30561454529e5923ffb62327d3fe009d23495263efc958534ac6b637e361d6"
 
   bottle do
     cellar :any
