@@ -30,12 +30,12 @@ class Gocr < Formula
       s.change_make_var! "mandir", "/share/man"
     end
 
-    system "make libs" if build.with? "lib"
+    system "make", "libs" if build.with? "lib"
     system "make", "install"
   end
 
   test do
-    system "#{bin}/gocr -h"
+    system "#{bin}/gocr", "-h"
   end
 end
 
