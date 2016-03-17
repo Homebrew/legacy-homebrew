@@ -68,7 +68,7 @@ class Pyqt5 < Formula
         Network
         Quick
         Svg
-        WebKit
+        WebEngineWidgets
         Widgets
         Xml
       ].each { |mod| system python, "-c", "import PyQt5.Qt#{mod}" }
