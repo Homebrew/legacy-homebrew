@@ -6,10 +6,10 @@ class Gocr < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d858a334c4ae9b0e360039e02ae320066015332f75894a97f077ba0fd0589242" => :el_capitan
-    sha256 "1f6f747ad71c4b2fe7cfa6733d3d869fb412658c2230ee39c1c3723e47ef54f7" => :mavericks
-    sha256 "0322effda461a85cbe1f111d1ed06dc30669697fd778e2823885d4dd3066c34e" => :mountain_lion
-    sha256 "d95b3be99c1628a50d8f13ca33cd3bda3838cd7e7d28cb6d5762576f5a129ec2" => :lion
+    revision 1
+    sha256 "3b3a0351d949f3f798dc973e0f31a283b8df3f73d1c7f251c7f15229ceb2fb20" => :el_capitan
+    sha256 "94207525e139ef275415f46ff50baab26fef6a2ba52ca71a6a00aa3035ced71c" => :yosemite
+    sha256 "467ce3a1411e022f44b60691bf71bf8a7b86ba234b21dad23cc1f2b258d92e9b" => :mavericks
   end
 
   option "with-lib", "Install library and headers"
