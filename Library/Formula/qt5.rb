@@ -14,7 +14,7 @@ end
 class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
-  head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
+  head "https://code.qt.io/qt/qt5.git", :branch => "5.6", :shallow => false
   revision 2
 
   stable do
