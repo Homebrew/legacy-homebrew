@@ -3,8 +3,8 @@ class Zookeeper < Formula
   homepage "https://zookeeper.apache.org/"
 
   stable do
-    url "https://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz"
-    sha256 "2e043e04c4da82fbdb38a68e585f3317535b3842c726e0993312948afcc83870"
+    url "https://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz"
+    sha256 "f10a0b51f45c4f64c1fe69ef713abf9eb9571bc7385a82da892e83bb6c965e90"
   end
 
   bottle do
