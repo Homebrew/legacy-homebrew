@@ -5,6 +5,7 @@ class Devd < Formula
   homepage "https://github.com/cortesi/devd"
   url "https://github.com/cortesi/devd/archive/v0.4.tar.gz"
   sha256 "8cf15ece9b707658ef4825e4c031ff8dd54b8ea7c4ff6a9b07bb68b400d15253"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -85,7 +86,7 @@ class Devd < Formula
 
   go_resource "github.com/rjeczalik/notify" do
     url "https://github.com/rjeczalik/notify.git",
-        :revision => "efbcb15a545abd0c7d546f0a15f4115c713a4c59"
+        :revision => "5dd6205716539662f8f14ab513552b41eab69d5d"
   end
 
   go_resource "github.com/toqueteos/webbrowser" do
