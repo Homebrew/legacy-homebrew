@@ -37,7 +37,7 @@ class Nu < Formula
 
     inreplace "Nukefile" do |s|
       s.gsub!('(SH "sudo ', '(SH "') # don't use sudo to install
-      s.gsub!("#{@destdir}/Library/Frameworks", "#{@prefix}/Frameworks")
+      s.gsub!("\#{@destdir}/Library/Frameworks", "\#{@prefix}/Frameworks")
       s.sub! /^;; source files$/, <<-EOS
 ;; source files
 (set @framework_install_path "#{frameworks}")
@@ -51,18 +51,14 @@ EOS
     system "./mininush", "tools/nuke", "install"
   end
 
-  def caveats
-    if self.installed? && File.exist?(frameworks+"Nu.framework")
-      return <<-EOS.undent
-        Nu.framework was installed to:
-          #{frameworks}/Nu.framework
+  def caveats; <<-EOS.undent
+    Nu.framework was installed to:
+      #{frameworks}/Nu.framework
 
-        You may want to symlink this Framework to a standard OS X location,
-        such as:
-          ln -s "#{frameworks}/Nu.framework" /Library/Frameworks
-      EOS
-    end
-    nil
+    You may want to symlink this Framework to a standard OS X location,
+    such as:
+      ln -s "#{frameworks}/Nu.framework" /Library/Frameworks
+  EOS
   end
 
   test do
