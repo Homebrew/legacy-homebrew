@@ -6,10 +6,10 @@ class Axel < Formula
   sha256 "02376767e7f9e6c4292333e69ad0f615f62be5df176a8daaee395f25b0ab1a83"
 
   bottle do
-    revision 1
-    sha256 "0a5c877bb143d08c037650f78b29d174a83761859e27dcf097e11f8911ad8dfc" => :el_capitan
-    sha256 "a6adc5c5853d2ec103c090121e0c1cf9fe25726f64421633fee016fd257fc95d" => :yosemite
-    sha256 "4b4060a479c5a3920fa38989ac0103eb0077e4a210140fd930fac304b44a0762" => :mavericks
+    cellar :any_skip_relocation
+    sha256 "5bf1bfc2e77a9e08c629fca2519166ba6edef07940c466fd95fafb828bd5f1b4" => :el_capitan
+    sha256 "1a00cb5af07025ba54e1fb48dea4e0723dcd81142aca8e74caafa79f8ea51dfd" => :yosemite
+    sha256 "b0a7bcbab57df1b9877ac3a6a8343a3a5b4256b4cfa5a6bfe777b9ba92930d31" => :mavericks
   end
 
   def install
