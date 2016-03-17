@@ -160,6 +160,16 @@ EOS
   esac
 fi
 
+if [[ "$HOMEBREW_COMMAND" = "install" ]] && [[ -n "$HOMEBREW_DEVELOPER" ]]
+then
+  # Hide shellcheck complaint:
+  # shellcheck source=/dev/null
+  (
+    source "$HOMEBREW_LIBRARY/Homebrew/cmd/update.sh"
+    { homebrew-update --preinstall; }
+  )
+fi
+
 if [[ -n "$HOMEBREW_BASH_COMMAND" ]]
 then
   # source rather than executing directly to ensure the entire file is read into
