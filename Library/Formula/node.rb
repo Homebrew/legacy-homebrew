@@ -1,8 +1,8 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v5.8.0/node-v5.8.0.tar.xz"
-  sha256 "c1246d473d6650ca02ab168eaf840e9edda82a4190ff08165fc44a7b381a9361"
+  url "https://nodejs.org/dist/v5.9.0/node-v5.9.0.tar.xz"
+  sha256 "9bdf2f8e44a721df459dfad0072a8ac46f11c05d25fc33dc0dc9c522827e34bb"
   head "https://github.com/nodejs/node.git"
 
   bottle do
