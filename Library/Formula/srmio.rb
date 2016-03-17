@@ -15,7 +15,7 @@ class Srmio < Formula
 
   def install
     if build.head?
-      system "chmod u+x genautomake.sh"
+      chmod 0755, "genautomake.sh"
       system "./genautomake.sh"
     end
     system "./configure", "--disable-dependency-tracking",
