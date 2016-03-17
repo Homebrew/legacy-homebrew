@@ -5,8 +5,8 @@ class GitAnnex < Formula
 
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-6.20160126/git-annex-6.20160126.tar.gz"
-  sha256 "dc59f670a3d0bdb90db8fc6cadba8003708219bb0dc3d56867a9246d825c0d11"
+  url "https://hackage.haskell.org/package/git-annex-6.20160229/git-annex-6.20160229.tar.gz"
+  sha256 "1eac609eeedbf01cf088461577b478a3aa99f7ecefa668214308e3b5509c1506"
 
   head "git://git-annex.branchable.com/"
 
@@ -24,11 +24,12 @@ class GitAnnex < Formula
   depends_on "pkg-config" => :build
   depends_on "gsasl"
   depends_on "libidn"
+  depends_on "libmagic"
   depends_on "gnutls"
   depends_on "quvi"
 
   def install
-    install_cabal_package :using => ["alex", "happy", "c2hs"], :flags => ["Webapp"] do
+    install_cabal_package :using => ["alex", "happy", "c2hs"] do
       # this can be made the default behavior again once git-union-merge builds properly when bottling
       if build.with? "git-union-merge"
         system "make", "git-union-merge", "PREFIX=#{prefix}"
