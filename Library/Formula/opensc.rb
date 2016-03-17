@@ -26,6 +26,12 @@ class Opensc < Formula
     version "0.16.0-pre1"
   end
 
+  devel do
+    url "https://github.com/OpenSC/OpenSC/archive/v0.16.0-pre1.tar.gz"
+    sha256 "097132ce24d8c19f9ef79b46fde558698ed1dc1bd616d8ad275e32eaf79e5ba6"
+    version "0.16.0-pre1"
+  end
+
   option "without-man-pages", "Skip building manual pages"
 
   depends_on "autoconf" => :build
