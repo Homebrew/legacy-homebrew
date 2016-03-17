@@ -34,6 +34,8 @@ module OS
         installed? && version >= "4.3" && !MacOS::CLT.installed?
       end
 
+      # Returns a Pathname object corresponding to Xcode.app's Developer
+      # directory or nil if Xcode.app is not installed
       def prefix
         @prefix ||=
           begin
