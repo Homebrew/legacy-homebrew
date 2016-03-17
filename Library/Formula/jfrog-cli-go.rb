@@ -13,9 +13,8 @@ class JfrogCliGo < Formula
   end
 
   test do
-    system "#{bin}/jfrog", "rt", "config", "--interactive=false", "--enc-password=false", "--url=\"http://loaclhost:8081/artifactory\" --user=\"admin\" --password=\"password\""
-    actual = pipe_output("#{bin}/jfrog rt config show")
-    expected = ""
+    actual = pipe_output("#{bin}/jfrog rt -v")
+    expected = "jfrog version 1.0.1\n"
     assert_equal expected, actual
   end
 end
