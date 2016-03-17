@@ -119,8 +119,8 @@ module Superenv
     # On 10.9, there are shims for all tools in /usr/bin.
     # On 10.7 and 10.8 we need to add these directories ourselves.
     if MacOS::Xcode.without_clt? && MacOS.version <= "10.8"
-      paths << (MacOS::Xcode.prefix/"usr/bin").to_s
-      paths << (MacOS::Xcode.toolchain_path/"usr/bin").to_s
+      paths << "#{MacOS::Xcode.prefix}/usr/bin"
+      paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
 
     paths << MacOS::X11.bin.to_s if x11?
