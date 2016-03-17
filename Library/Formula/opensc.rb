@@ -54,6 +54,6 @@ class Opensc < Formula
   end
 
   test do
-    assert_match "0.15.0", shell_output("opensc-tool -i")
+    assert_match "0.15.0", shell_output("#{bin}/opensc-tool -i")
   end
 end
