@@ -50,7 +50,7 @@ module OS
       end
 
       def toolchain_path
-        (prefix/"Toolchains/XcodeDefault.xctoolchain") if installed? && version >= "4.3"
+        Pathname.new("#{prefix}/Toolchains/XcodeDefault.xctoolchain") if installed? && version >= "4.3"
       end
 
       # Ask Spotlight where Xcode is. If the user didn't install the
@@ -79,8 +79,8 @@ module OS
 
         return nil if !MacOS::Xcode.installed? && !MacOS::CLT.installed?
 
-        [(prefix/"usr/bin/xcodebuild"), which("xcodebuild")].uniq.each do |path|
-          if path.file?
+        %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
+          if File.file? path
             Utils.popen_read(path, "-version") =~ /Xcode (\d(\.\d)*)/
             return $1 if $1
           end
