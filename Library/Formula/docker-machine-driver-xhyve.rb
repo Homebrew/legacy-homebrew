@@ -3,11 +3,10 @@ require "language/go"
 class DockerMachineDriverXhyve < Formula
   desc "Docker Machine driver for xhyve"
   homepage "https://github.com/zchee/docker-machine-driver-xhyve"
-  url "https://github.com/zchee/docker-machine-driver-xhyve/archive/v0.2.2.tar.gz"
-  sha256 "bdf43f7657c08974a752bceec69840d3025d6f6442a79ebbd3ff4c3453fef04e"
-
+  url "https://github.com/zchee/docker-machine-driver-xhyve.git", 
+    :tag => "v0.2.2",
+    :revision => "7a7e30b80a9ee444e5e67fd1839422e201a1b328"
   head "https://github.com/zchee/docker-machine-driver-xhyve.git"
-
   bottle do
     cellar :any_skip_relocation
     sha256 "d6550fd4f152d40760e7e2ab008b6a376aeeb05c1e81fb1dc29997c028b10075" => :el_capitan
@@ -17,6 +16,15 @@ class DockerMachineDriverXhyve < Formula
   depends_on :macos => :yosemite
   depends_on "go" => :build
   depends_on "docker-machine" => :recommended
+  def caveats
+    a = <<-EOS.undent
+        This driver requires superuser privileges to access the hypervisor. To
+        enable, execute
+            sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+            sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+      EOS
+    a
+  end
 
   def install
     (buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve").install Dir["{*,.git,.gitignore,.gitmodules}"]
