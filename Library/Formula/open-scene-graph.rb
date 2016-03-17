@@ -15,10 +15,6 @@ class OpenSceneGraph < Formula
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
 
-  # Currently does not build on 10.10+, possibly due to Xcode 7 issue
-  # https://github.com/Homebrew/homebrew/pull/46776
-  depends_on MaximumMacOSRequirement => :mavericks
-
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "jpeg"
@@ -55,6 +51,7 @@ class OpenSceneGraph < Formula
 
     args = std_cmake_args
     args << "-DBUILD_DOCUMENTATION=" + ((build.with? "docs") ? "ON" : "OFF")
+    args << "-DCMAKE_CXX_FLAGS=-Wno-error=narrowing" # or: -Wno-c++11-narrowing
 
     if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.arch_64_bit}"
