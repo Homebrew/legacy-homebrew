@@ -1,8 +1,8 @@
 class B2Tools < Formula
   desc "B2 Cloud Storage Command-Line Tools"
   homepage "https://github.com/Backblaze/B2_Command_Line_Tool"
-  url "https://github.com/Backblaze/B2_Command_Line_Tool/archive/v0.4.0.tar.gz"
-  sha256 "0253dfc4352ae6bc23e7184c2402b713f7e6f9a0584c80693ed1fdcffcf61325"
+  url "https://github.com/Backblaze/B2_Command_Line_Tool/archive/v0.4.4.tar.gz"
+  sha256 "43a0edf1b0260b0231e0a80b2cedc2a740b8f0388084a2b04aa8a70074f740e3"
 
   bottle do
     cellar :any_skip_relocation
@@ -11,14 +11,28 @@ class B2Tools < Formula
     sha256 "e0f5d5b735ded6f83eae2d1debc2b78745f561bc27532f34d00fcf08028636d1" => :mavericks
   end
 
+  depends_on :python if MacOS.version <= :snow_leopard
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+  end
+
   def install
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    %w[six].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
-    bash_completion.install "contrib/b2" => "b2-tools-completion.bash"
+    bash_completion.install "contrib/bash_completion/b2" => "b2-tools-completion.bash"
   end
 
   test do
