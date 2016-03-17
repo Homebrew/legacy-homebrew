@@ -26,6 +26,19 @@ class Qt5 < Formula
     sha256 "6a5a3cd1331a217eb2a1abfc09d73d6e06a0ce5cafac9188aee6d96c7fc4ca4e" => :mavericks
   end
 
+  # Restore `.pc` files for framework-based build of Qt 5 on OS X. This
+  # partially reverts <https://codereview.qt-project.org/#/c/140954/> merged
+  # between the 5.5.1 and 5.6.0 releases. (Remove this as soon as feasible!)
+  #
+  # Core formulae known to fail without this patch (as of 2016-03-17):
+  #   * mkvtoolnix (with `--with-qt5` option, silent build failure)
+  #   * poppler    (with `--with-qt5` option)
+  #   * wireshark  (with `--with-qt5` option)
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/patches/e8fe6567/qt5/restore-pc-files.patch"
+    sha256 "48ff18be2f4050de7288bddbae7f47e949512ac4bcd126c2f504be2ac701158b"
+  end
+
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
   option "with-docs", "Build documentation"
