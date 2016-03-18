@@ -1,8 +1,8 @@
 class Dasht < Formula
   desc "Search API docs offline, in your terminal or browser"
   homepage "https://sunaku.github.io/dasht"
-  url "https://github.com/sunaku/dasht/archive/v1.1.0.tar.gz"
-  sha256 "578bb8a1d576b5c487ca3d0c3113905ff68401530d4237f239b6c6aac62e1fbd"
+  url "https://github.com/sunaku/dasht/archive/v2.0.0.tar.gz"
+  sha256 "bd058d57ecb13f95a7979e466572785fc08ede807f0558620aa4ec377f3afd72"
 
   bottle :unneeded
 
@@ -11,6 +11,7 @@ class Dasht < Formula
 
   def install
     bin.install Dir["bin/*"]
+    man.install "man/man1"
   end
 
   test do
