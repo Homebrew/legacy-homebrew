@@ -18,7 +18,7 @@ class Flatcc < Formula
   end
 
   test do
-    def testfbs; <<-EOS.undent
+    (testpath/"test.fbs").write <<-EOS.undent
       // example IDL file
 
       namespace MyGame.Sample;
@@ -46,8 +46,6 @@ class Flatcc < Formula
       root_type Monster;
 
       EOS
-    end
-    (testpath/"test.fbs").write(testfbs)
 
     system "flatcc", "-av", "--json", "test.fbs"
   end
