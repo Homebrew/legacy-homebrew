@@ -6,9 +6,10 @@ class TokyoCabinet < Formula
   sha256 "a003f47c39a91e22d76bc4fe68b9b3de0f38851b160bbb1ca07a4f6441de1f90"
 
   bottle do
-    sha256 "f7a7d169e0605b21acf50c1db7a0dc71f21726956649c8ec6900c54df2d1cab7" => :mavericks
-    sha256 "84f0bf2bd9502684cf277ac5dd5355e8e70b555a0e45163d19f7b6cd7a87cf00" => :mountain_lion
-    sha256 "3daa8b6caafa123dd9e8f3fa81d876187fc65f88ace3e35a4568e7844683b78b" => :lion
+    revision 1
+    sha256 "a209fa62fdb84a86784de5eb9699a9a6811c962afab2ebf418b2a712f51852d8" => :el_capitan
+    sha256 "3267823914e250aff7c8d3a5a686a010f0fc96242a417dbf47bb1502aa020ad6" => :yosemite
+    sha256 "8d8e93ed60945cfb729395882e69d3924d899c8f792eab73a6094aa78b47c75c" => :mavericks
   end
 
   def install
