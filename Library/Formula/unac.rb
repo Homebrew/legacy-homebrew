@@ -1,7 +1,8 @@
 class Unac < Formula
   desc "C library and command that removes accents from a string"
   homepage "https://savannah.nongnu.org/projects/unac"
-  url "http://ftp.de.debian.org/debian/pool/main/u/unac/unac_1.8.0.orig.tar.gz"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/u/unac/unac_1.8.0.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/u/unac/unac_1.8.0.orig.tar.gz"
   sha256 "29d316e5b74615d49237556929e95e0d68c4b77a0a0cfc346dc61cf0684b90bf"
 
   depends_on "autoconf" => :build
@@ -9,6 +10,7 @@ class Unac < Formula
   depends_on "libtool" => :build
   depends_on "gettext" => :build
 
+  # configure.ac doesn't properly detect Mac OS's iconv library. This patch fixes that.
   patch :DATA
 
   patch :p0 do
@@ -22,7 +24,8 @@ class Unac < Formula
   end
 
   patch do
-    url "http://ftp.de.debian.org/debian/pool/main/u/unac/unac_1.8.0-6.diff.gz"
+    url "https://mirrors.ocf.berkeley.edu/debian/pool/main/u/unac/unac_1.8.0-6.diff.gz"
+    mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/u/unac/unac_1.8.0-6.diff.gz"
     sha256 "13a362f8d682670c71182ab5f0bbf3756295a99fae0d7deb9311e611a43b8111"
   end
 
@@ -45,7 +48,6 @@ class Unac < Formula
   end
 end
 
-# configure.ac doesn't properly detect Mac OS's iconv library. This patch fixes that.
 __END__
 diff --git a/configure.ac b/configure.ac
 index 4a4eab6..9f25d50 100644
