@@ -16,7 +16,7 @@ class Qcachegrind < Formula
 
   def install
     cd "qcachegrind"
-    system "#{Formula["qt5"].bin}/qmake", "-spec", "macx-g++", "-config", "release"
+    system "#{Formula["qt5"].bin}/qmake", "-spec", "macx-clang", "-config", "release"
     system "make"
     # Install app
     prefix.install "qcachegrind.app"
