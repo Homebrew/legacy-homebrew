@@ -1,7 +1,7 @@
 class Minicom < Formula
   desc "Menu-driven communications program"
   homepage "https://alioth.debian.org/projects/minicom/"
-  url "http://ftp.de.debian.org/debian/pool/main/m/minicom/minicom_2.7.orig.tar.gz"
+  url "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/m/minicom/minicom_2.7.orig.tar.gz"
   sha256 "9ac3a663b82f4f5df64114b4792b9926b536c85f59de0f2d2b321c7626a904f4"
 
   def install
