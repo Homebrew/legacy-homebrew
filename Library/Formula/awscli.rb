@@ -5,13 +5,6 @@ class Awscli < Formula
   mirror "https://github.com/aws/aws-cli/archive/1.10.14.tar.gz"
   sha256 "68355a6e86a25596939b98ce1902b9778cbce327b1d98e211bb1dd69e7a2cdf2"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "fe3a61563ba61ce3759c21cdb2554a3f636002f39bf8e2c748e1a86e5d930170" => :el_capitan
-    sha256 "a24352f548dbeb33ce968b5f26646f7879970b4e216eaf123d71fb7df4d09988" => :yosemite
-    sha256 "9a05065a047b991913d766ecc2dd599cbf097d78900b3ae65f9f0df1c9bbcad1" => :mavericks
-  end
-
   head do
     url "https://github.com/aws/aws-cli.git", :branch => "develop"
 
