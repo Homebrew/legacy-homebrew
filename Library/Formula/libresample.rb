@@ -5,11 +5,11 @@ class Libresample < Formula
   sha256 "20222a84e3b4246c36b8a0b74834bb5674026ffdb8b9093a76aaf01560ad4815"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "c39ce9a7a453628e13f64c2de3a109ddcdba8f90fa0b4dd437b03d7c7a12f372" => :yosemite
-    sha256 "e33b8ebd4536680314863dad42bb37a742602894542d1cf230ae10f94af0608e" => :mavericks
-    sha256 "b227998aa09a85b0de27361e4574313e4754d0b54b9de56b183ef0e2c4843383" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "ba2446005f2417fa81e5a5963d2273494396f8821ee95fd84ed9825342564598" => :el_capitan
+    sha256 "2f58f8b45cd7b6f89f645cb90d3b4f63dd0a28e927713f3a4664c348e3a15a21" => :yosemite
+    sha256 "61a8ab0861ce6e6c45632b7235eaf718e4be191fe8c184ba8f065d436681d786" => :mavericks
   end
 
   def install
