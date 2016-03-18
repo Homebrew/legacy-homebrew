@@ -20,13 +20,13 @@ class Bokken < Formula
   depends_on "radare2"
 
   resource "distorm64" do
-    url "http://ftp.de.debian.org/debian/pool/main/d/distorm64/distorm64_1.7.30.orig.tar.gz"
+    url "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/d/distorm64/distorm64_1.7.30.orig.tar.gz"
     sha256 "98b218e5a436226c5fb30d3b27fcc435128b4e28557c44257ed2ba66bb1a9cf1"
   end
 
   resource "pyew" do
     # Upstream only provides binary packages so pull from Debian.
-    url "http://ftp.de.debian.org/debian/pool/main/p/pyew/pyew_2.0.orig.tar.gz"
+    url "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/p/pyew/pyew_2.0.orig.tar.gz"
     sha256 "64a4dfb1850efbe2c9b06108697651f9ff25223fd132eec66c6fe84d5ecc17ae"
   end
 
