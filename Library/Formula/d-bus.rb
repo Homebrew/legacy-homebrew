@@ -4,8 +4,8 @@ class DBus < Formula
   homepage "https://wiki.freedesktop.org/www/Software/dbus"
   url "https://dbus.freedesktop.org/releases/dbus/dbus-1.10.6.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dbus/dbus_1.10.6.orig.tar.gz"
-  master "git://anongit.freedesktop.org/dbus/dbus.git"
   sha256 "b5fefa08a77edd76cd64d872db949eebc02cf6f3f8be82e4bbc641742af5d35f"
+  head "git://anongit.freedesktop.org/dbus/dbus.git"
 
   bottle do
     sha256 "edf31f467954d3ead8d32fe9db3ef406211fa03eba81b2ab9cad842359a76829" => :el_capitan
@@ -58,3 +58,4 @@ class DBus < Formula
     system "#{bin}/dbus-daemon", "--version"
   end
 end
+
