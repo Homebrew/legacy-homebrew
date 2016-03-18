@@ -1,8 +1,8 @@
 class Gperftools < Formula
   desc "Multi-threaded malloc() and performance analysis tools"
-  homepage "https://code.google.com/p/gperftools/"
-  url "https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/gperftools-2.4.tar.gz"
-  sha256 "982a37226eb42f40714e26b8076815d5ea677a422fb52ff8bfca3704d9c30a2d"
+  homepage "https://github.com/gperftools/gperftools"
+  url "https://github.com/gperftools/gperftools/releases/download/gperftools-2.5/gperftools-2.5.tar.gz"
+  sha256 "6fa2748f1acdf44d750253e160cf6e2e72571329b42e563b455bde09e9e85173"
 
   bottle do
     cellar :any
