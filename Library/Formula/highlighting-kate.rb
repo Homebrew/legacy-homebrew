@@ -5,8 +5,8 @@ class HighlightingKate < Formula
 
   desc "Haskell syntax highlighting library, based on the Kate editor"
   homepage "https://github.com/jgm/highlighting-kate"
-  url "https://hackage.haskell.org/package/highlighting-kate-0.6.1/highlighting-kate-0.6.1.tar.gz"
-  sha256 "cb57caf861bda046043575772ffc7fd4cd21dd63a0ecdf26b624c7e930e0f30e"
+  url "https://hackage.haskell.org/package/highlighting-kate-0.6.2/highlighting-kate-0.6.2.tar.gz"
+  sha256 "728f10ccba6dfa1604398ae527520d2debeef870472fe104c2bf0714c513b411"
 
   head "https://github.com/jgm/highlighting-kate.git"
 
