@@ -14,51 +14,29 @@ end
 class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
-  head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
-  revision 2
+  url "https://download.qt.io/official_releases/qt/5.6/5.6.0/single/qt-everywhere-opensource-src-5.6.0.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.6/5.6.0/single/qt-everywhere-opensource-src-5.6.0.tar.xz"
+  sha256 "76a95cf6c1503290f75a641aa25079cd0c5a8fcd7cff07ddebff80a955b07de7"
 
-  stable do
-    url "https://download.qt.io/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
-    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
-    sha256 "6f028e63d4992be2b4a5526f2ef3bfa2fe28c5c757554b11d9e8d86189652518"
-
-    # Build error: Fix library detection for QtWebEngine with Xcode 7.
-    # https://codereview.qt-project.org/#/c/127759/
-    patch do
-      url "https://raw.githubusercontent.com/UniqMartin/patches/557a8bd4/qt5/webengine-xcode7.patch"
-      sha256 "7bd46f8729fa2c20bc486ddc5586213ccf2fb9d307b3d4e82daa78a2553f59bc"
-    end
-
-    # Fix for qmake producing broken pkg-config files, affecting Poppler et al.
-    # https://codereview.qt-project.org/#/c/126584/
-    # Should land in the 5.5.2 and/or 5.6 release.
-    patch do
-      url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
-      sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
-    end
-
-    # Build issue: Fix install names with `-no-rpath` to be absolute paths.
-    # https://codereview.qt-project.org/#/c/138349
-    patch do
-      url "https://raw.githubusercontent.com/UniqMartin/patches/77d138fa/qt5/osx-no-rpath.patch"
-      sha256 "92c9cfe701f9152f4b16219a04a523338d4b77bb0725a8adccc3fc72c9fb576f"
-    end
-
-    # Fixes for Secure Transport in QtWebKit
-    # https://codereview.qt-project.org/#/c/139967/
-    # https://codereview.qt-project.org/#/c/139968/
-    # https://codereview.qt-project.org/#/c/139970/
-    # Should land in the 5.5.2 and/or 5.6 release.
-    patch do
-      url "https://gist.githubusercontent.com/The-Compiler/8202f92fff70da39353a/raw/884c3bef4d272d25d7d7202be99c3940248151ee/qt5.5-securetransport-qtwebkit.patch"
-      sha256 "c3302de2e23e74a99e62f22527e0edee5539b2e18d34c05e70075490ba7b3613"
-    end
-  end
+  head "https://code.qt.io/qt/qt5.git", :branch => "5.6", :shallow => false
 
   bottle do
     sha256 "66392beb2f58ca5763c044de0f80128c4d2747b7708dfe749ffa551e323e12e5" => :el_capitan
     sha256 "a7b2d4ef9027f41c0e1f70ecdd39682caa343ac5314eb226e441b30b0943739d" => :yosemite
     sha256 "6a5a3cd1331a217eb2a1abfc09d73d6e06a0ce5cafac9188aee6d96c7fc4ca4e" => :mavericks
+  end
+
+  # Restore `.pc` files for framework-based build of Qt 5 on OS X. This
+  # partially reverts <https://codereview.qt-project.org/#/c/140954/> merged
+  # between the 5.5.1 and 5.6.0 releases. (Remove this as soon as feasible!)
+  #
+  # Core formulae known to fail without this patch (as of 2016-03-17):
+  #   * mkvtoolnix (with `--with-qt5` option, silent build failure)
+  #   * poppler    (with `--with-qt5` option)
+  #   * wireshark  (with `--with-qt5` option)
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/patches/e8fe6567/qt5/restore-pc-files.patch"
+    sha256 "48ff18be2f4050de7288bddbae7f47e949512ac4bcd126c2f504be2ac701158b"
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
@@ -68,7 +46,6 @@ class Qt5 < Formula
   option "with-oci", "Build with Oracle OCI plugin"
 
   option "without-webengine", "Build without QtWebEngine module"
-  option "without-webkit", "Build without QtWebKit module"
 
   deprecated_option "qtdbus" => "with-d-bus"
 
@@ -85,13 +62,13 @@ class Qt5 < Formula
 
   def install
     args = %W[
+      -verbose
       -prefix #{prefix}
       -release
       -opensource -confirm-license
       -system-zlib
       -qt-libpng
       -qt-libjpeg
-      -no-openssl -securetransport
       -nomake tests
       -no-rpath
     ]
@@ -118,7 +95,6 @@ class Qt5 < Formula
     end
 
     args << "-skip" << "qtwebengine" if build.without? "webengine"
-    args << "-skip" << "qtwebkit" if build.without? "webkit"
 
     system "./configure", *args
     system "make"
@@ -142,8 +118,9 @@ class Qt5 < Formula
 
     # configure saved PKG_CONFIG_LIBDIR set up by superenv; remove it
     # see: https://github.com/Homebrew/homebrew/issues/27184
-    inreplace prefix/"mkspecs/qconfig.pri", /\n\n# pkgconfig/, ""
-    inreplace prefix/"mkspecs/qconfig.pri", /\nPKG_CONFIG_.*=.*$/, ""
+    inreplace prefix/"mkspecs/qconfig.pri",
+              /\n# pkgconfig\n(PKG_CONFIG_(SYSROOT_DIR|LIBDIR) = .*\n){2}\n/,
+              "\n"
 
     # Move `*.app` bundles into `libexec` to expose them to `brew linkapps` and
     # because we don't like having them in `bin`. Also add a `-qt5` suffix to
