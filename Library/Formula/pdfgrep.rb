@@ -22,7 +22,10 @@ class Pdfgrep < Formula
   depends_on "poppler"
   depends_on "pcre" => :optional
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./autogen.sh" if build.head?
 
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
