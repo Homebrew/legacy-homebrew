@@ -1,8 +1,9 @@
 class R3 < Formula
   desc "High-performance URL router library"
   homepage "https://github.com/c9s/r3"
-  url "https://github.com/c9s/r3/archive/1.3.3.tar.gz"
-  sha256 "347faa8011df9e8194b3ccf9bbf529882b1e331421d98aa78c788cb47db3df92"
+  url "https://github.com/c9s/r3/archive/1.3.4.tar.gz"
+  sha256 "db1fb91e51646e523e78b458643c0250231a2640488d5781109f95bd77c5eb82"
+  head "https://github.com/c9s/r3.git"
 
   bottle do
     cellar :any
@@ -13,8 +14,6 @@ class R3 < Formula
 
   option :universal
   option "with-graphviz", "Enable Graphviz functions"
-
-  head "https://github.com/c9s/r3.git"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
