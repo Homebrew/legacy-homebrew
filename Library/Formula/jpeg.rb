@@ -15,8 +15,7 @@ class Jpeg < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-debug",
-                        "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                         "--disable-silent-rules",
                         "--prefix=#{prefix}"
     system "make", "install"
