@@ -17,11 +17,16 @@ class Cowsay < Formula
   # url "http://www.nog.net/~tony/warez/cowsay-3.03.tar.gz"
 
   def install
+    puts "TTY is: #{ENV['TTY']}"
+    ohai "Normal install"
     system "/bin/sh", "install.sh", prefix
     mv prefix/"man", share
   end
 
   test do
+    puts "Environment:"
+    system "env | sort"
+    puts "Normal tests:"
     output = shell_output("#{bin}/cowsay moo")
     assert_match "moo", output  # bubble
     assert_match "^__^", output # cow
