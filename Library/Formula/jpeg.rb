@@ -11,13 +11,15 @@ class Jpeg < Formula
       sha256 "9b26396b4124fda61fe70dd7a672e56300d8178612ef464e33dac9b0601c2ad3"
   end
 
-  def install
-    ENV.universal_binary if build.universal?
-    system "./configure", "--disable-debug",
+  stable do
+    def install
+      ENV.universal_binary if build.universal?
+      system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    system "make", "install"
+      system "make", "install"
+    end
   end
 
   test do
