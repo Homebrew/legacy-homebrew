@@ -4,8 +4,8 @@ class Nomad < Formula
   desc "Distributed, Highly Available, Datacenter-Aware Scheduler"
   homepage "https://www.nomadproject.io"
   url "https://github.com/hashicorp/nomad.git",
-    :tag => "v0.3.0",
-    :revision => "8c27f155500ed22c1660a218177f2cc9b0639c25"
+    :tag => "v0.3.1",
+    :revision => "17fa55c4cfdacbcaf9459a7210d58aa4b47ed541"
 
   head "https://github.com/hashicorp/nomad.git"
 
@@ -18,9 +18,19 @@ class Nomad < Formula
 
   depends_on "go" => :build
 
-  go_resource "github.com/shirou/gopsutil" do
-    url "https://github.com/shirou/gopsutil.git",
-      :revision => "ce433bf86e4d05eeae4276aefc462ec825c2a4f5"
+  go_resource "github.com/ugorji/go" do
+    url "https://github.com/ugorji/go.git",
+        :revision => "c062049c1793b01a3cc3fe786108edabbaf7756b"
+  end
+
+  go_resource "github.com/mitchellh/gox" do
+    url "https://github.com/mitchellh/gox.git",
+        :revision => "39862d88e853ecc97f45e91c1cdcb1b312c51ea"
+  end
+
+  go_resource "github.com/mitchellh/iochan" do
+    url "https://github.com/mitchellh/iochan.git",
+        :revision => "87b45ffd0e9581375c491fef3d32130bb15c5bd7"
   end
 
   def install
@@ -33,8 +43,15 @@ class Nomad < Formula
 
     Language::Go.stage_deps resources, gopath/"src"
 
+    cd gopath/"src/github.com/ugorji/go/codec/codecgen" do
+      system "go", "install"
+    end
+
+    cd gopath/"src/github.com/mitchellh/gox" do
+      system "go", "install"
+    end
+
     cd gopath/"src/github.com/hashicorp/nomad" do
-      system "make", "bootstrap"
       system "make", "dev"
       bin.install "bin/nomad"
     end
