@@ -54,6 +54,6 @@ class Flatcc < Formula
 
       EOS
 
-    system "flatcc", "-av", "--json", "test.fbs"
+    system bin/"flatcc", "-av", "--json", "test.fbs"
   end
 end
