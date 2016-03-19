@@ -3,6 +3,7 @@ class OpenMesh < Formula
   homepage "http://openmesh.org"
   url "http://www.openmesh.org/media/Releases/5.1/OpenMesh-5.1.tar.gz"
   sha256 "643262dec62d1c2527950286739613a5b8d450943c601ecc42a817738556e6f7"
+  head "http://openmesh.org/svnrepo/OpenMesh/trunk/", :using => :svn
 
   bottle do
     cellar :any
@@ -10,8 +11,6 @@ class OpenMesh < Formula
     sha256 "e73e25f5adbb12bd20bf822e472a2a883f6d969c1cb340d76feb1a83fc4c02cf" => :yosemite
     sha256 "f55c01c2dbde31f9307530349141b33860f733bbe2836fc88d79536bcd3945d4" => :mavericks
   end
-
-  head "http://openmesh.org/svnrepo/OpenMesh/trunk/", :using => :svn
 
   depends_on "cmake" => :build
   depends_on "qt" => :optional
