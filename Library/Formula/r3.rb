@@ -7,9 +7,9 @@ class R3 < Formula
 
   bottle do
     cellar :any
-    sha256 "0ec7081059cb9e392b56cf27b44da1b33ed4e16ab9cb8b9e665b70f2569f2eff" => :mavericks
-    sha256 "02ec0063b2d8ee60d6ef5ecea92dd191c86ba48acd5d5e20d71e524eb5a0d93e" => :mountain_lion
-    sha256 "018f6e681d2abc8a02c0cd873f8e442bb3966a57cc92f69bdab110ed181b2660" => :lion
+    sha256 "6122bbc3566581f130e54cd563ed69f169598f5ce62d6319e7b5a95b10b802ef" => :el_capitan
+    sha256 "56a37f8cab8af3833eb52c6fc739027ffd755fb0e60530bd96dc643bdb8e18ed" => :yosemite
+    sha256 "26bd4bc4114b54d57d9f39bd00f15914f03eea7407fbcc50df4c1925b412a879" => :mavericks
   end
 
   option :universal
