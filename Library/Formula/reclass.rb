@@ -1,9 +1,9 @@
 class Reclass < Formula
   desc "Recursive external node classification"
   homepage "http://reclass.pantsfullofunix.net/"
-  head "https://github.com/madduck/reclass.git"
   url "https://github.com/madduck/reclass/archive/reclass-1.4.1.tar.gz"
   sha256 "48271fcd3b37d8945047ed70c478b387f87ffef2fd209fe028761724ed2f97fb"
+  head "https://github.com/madduck/reclass.git"
 
   bottle do
     cellar :any
