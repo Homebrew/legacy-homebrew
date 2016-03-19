@@ -1,5 +1,3 @@
-require "language/go"
-
 class Nomad < Formula
   desc "Distributed, Highly Available, Datacenter-Aware Scheduler"
   homepage "https://www.nomadproject.io"
@@ -18,11 +16,6 @@ class Nomad < Formula
 
   depends_on "go" => :build
 
-  go_resource "github.com/shirou/gopsutil" do
-    url "https://github.com/shirou/gopsutil.git",
-      :revision => "ce433bf86e4d05eeae4276aefc462ec825c2a4f5"
-  end
-
   def install
     contents = Dir["{*,.git,.gitignore}"]
     gopath = buildpath/"gopath"
@@ -30,8 +23,6 @@ class Nomad < Formula
 
     ENV["GOPATH"] = gopath
     ENV.prepend_create_path "PATH", gopath/"bin"
-
-    Language::Go.stage_deps resources, gopath/"src"
 
     cd gopath/"src/github.com/hashicorp/nomad" do
       system "make", "bootstrap"
