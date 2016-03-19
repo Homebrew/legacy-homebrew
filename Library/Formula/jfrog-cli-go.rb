@@ -1,3 +1,5 @@
+require "language/go"
+
 class JfrogCliGo < Formula
   desc "command-line interface for Jfrog Artifactory and Bintray"
   homepage "https://github.com/JFrogDev/jfrog-cli-go"
@@ -13,9 +15,17 @@ class JfrogCliGo < Formula
 
   depends_on "go" => :build
 
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git",
+    :revision => "c197bcf24cde29d3f73c7b4ac6fd41f4384e8af6"
+  end
+
   def install
     ENV["GOPATH"] = buildpath
-    system "go", "get", "github.com/jfrogdev/jfrog-cli-go/..."
+    (buildpath/"src/github.com/JFrogDev/").mkpath
+    ln_sf buildpath, buildpath/"src/github.com/JFrogDev/jfrog-cli-go"
+    Language::Go.stage_deps resources, buildpath/"src"
+
     system "go", "build", "-o", "#{bin}/jfrog", "github.com/jfrogdev/jfrog-cli-go/jfrog"
   end
 
