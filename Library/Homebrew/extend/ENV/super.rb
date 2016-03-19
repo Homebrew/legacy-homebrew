@@ -28,7 +28,7 @@ module Superenv
   def self.bin
     return unless MacOS.has_apple_developer_tools?
 
-    bin = (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
+    bin = HOMEBREW_ENV_PATH.subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
     bin.realpath unless bin.nil?
   end
 
@@ -150,7 +150,7 @@ module Superenv
   end
 
   def determine_pkg_config_libdir
-    paths = %W[/usr/lib/pkgconfig #{HOMEBREW_LIBRARY}/ENV/pkgconfig/#{MacOS.version}]
+    paths = %W[/usr/lib/pkgconfig #{HOMEBREW_ENV_PATH}/pkgconfig/#{MacOS.version}]
     paths << "#{MacOS::X11.lib}/pkgconfig" << "#{MacOS::X11.share}/pkgconfig" if x11?
     paths.to_path_s
   end
