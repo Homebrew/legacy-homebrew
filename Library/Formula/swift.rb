@@ -1,26 +1,26 @@
 class Swift < Formula
   desc "High-performance system programming language"
   homepage "https://github.com/apple/swift"
-  url "https://github.com/apple/swift/archive/swift-2.2-SNAPSHOT-2015-12-31-a.tar.gz"
-  version "2.2-SNAPSHOT-2015-12-31-a"
-  sha256 "d899e995c9cfa8987e470f0ad799f311ba9d8ae54ca889c4a22e60ac44bea26a"
 
   stable do
-    swift_tag = "swift-#{version}"
+    url "https://github.com/apple/swift/archive/swift-2.2-SNAPSHOT-2016-03-01-a.tar.gz"
+    version "2.2-SNAPSHOT-2016-03-01-a"
+    sha256 "cefd56b08df9ed4867985ce2669b9ca544b8fbda75b0e8932047a2474d7db209"
 
+    swift_tag = "swift-#{version}"
     resource "cmark" do
-      url "https://github.com/apple/swift-cmark/archive/0.22.0.tar.gz"
-      sha256 "7fa11223b9a29a411fbc440aba2a756ccc8b6228d8c2b367e8f568968e3eb569"
+      url "https://github.com/apple/swift-cmark/archive/#{swift_tag}.tar.gz"
+      sha256 "aa2e91c790cf1826a4ee0a04769f397b1abfaefd92139816a9d56ceec38f715a"
     end
 
     resource "clang" do
       url "https://github.com/apple/swift-clang/archive/#{swift_tag}.tar.gz"
-      sha256 "9660637e380472e3c30244d43f0d56499483a10dd960a8ae5323a0ba374152a2"
+      sha256 "662b94727e17339e7aedd01aef02f881e04dee2aff4a696460020d96fe906d93"
     end
 
     resource "llvm" do
       url "https://github.com/apple/swift-llvm/archive/#{swift_tag}.tar.gz"
-      sha256 "4730fb75898110ed892d4cc35f2f58b457879c51283b19cccf797c443b3bc05e"
+      sha256 "0cc42660906b5d756e7bba30db9ef301cb6765dbed95f32fdd3fd70b52aa0651"
     end
   end
 
@@ -51,6 +51,13 @@ class Swift < Formula
   depends_on "ninja" => :build
   depends_on :xcode => ["7.0", :build]
 
+  # According to the official llvm readme, GCC 4.7+ is required
+  fails_with :gcc_4_0
+  fails_with :gcc
+  ("4.3".."4.6").each do |n|
+    fails_with :gcc => n
+  end
+
   def install
     workspace = buildpath.parent
     build = workspace/"build"
@@ -74,7 +81,14 @@ class Swift < Formula
         "--build-jobs=#{ENV.make_jobs}"
     end
     bin.install "#{build}/swift-macosx-x86_64/bin/swift",
-                "#{build}/swift-macosx-x86_64/bin/swiftc"
+                "#{build}/swift-macosx-x86_64/bin/swift-autolink-extract",
+                "#{build}/swift-macosx-x86_64/bin/swift-compress",
+                "#{build}/swift-macosx-x86_64/bin/swift-demangle",
+                "#{build}/swift-macosx-x86_64/bin/swift-ide-test",
+                "#{build}/swift-macosx-x86_64/bin/swift-llvm-opt",
+                "#{build}/swift-macosx-x86_64/bin/swiftc",
+                "#{build}/swift-macosx-x86_64/bin/sil-extract",
+                "#{build}/swift-macosx-x86_64/bin/sil-opt"
     (lib/"swift").install "#{build}/swift-macosx-x86_64/lib/swift/macosx/",
                           "#{build}/swift-macosx-x86_64/lib/swift/shims/"
   end
