@@ -28,7 +28,6 @@ class Poppler < Formula
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "openjpeg"
-
   depends_on "qt" => :optional
   depends_on "qt5" => :optional
   depends_on "little-cms2" => :optional
@@ -41,6 +40,7 @@ class Poppler < Formula
   end
 
   def install
+    ENV.cxx11 if MacOS.version < :mavericks
     ENV["LIBOPENJPEG_CFLAGS"] = "-I#{Formula["openjpeg"].opt_include}/openjpeg-1.5"
 
     args = %W[
