@@ -5,18 +5,18 @@ class Quantlib < Formula
   mirror "https://distfiles.macports.org/QuantLib/QuantLib-1.7.tar.gz"
   sha256 "4b6f595bcac4fa319f0dc1211ab93df461a6266c70b2fc479aaccc746eb18c9b"
 
-  head do
-    url "https://github.com/lballabio/quantlib.git"
-    depends_on "automake" => :build
-    depends_on "autoconf" => :build
-    depends_on "libtool" => :build
-  end
-
   bottle do
     cellar :any
     sha256 "62bdbb6d934d1667220508de6f0738965dae8ce8dca2c34f48df626e40be4224" => :el_capitan
     sha256 "137f974e28a129b0a16665833439be4ab7db443d9389a9a9856e6fd58fafe0d3" => :yosemite
     sha256 "77283b2405461fe36439dad406c7849b42d0927fb27a1e490d57bbf631584b63" => :mavericks
+  end
+
+  head do
+    url "https://github.com/lballabio/quantlib.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   option :cxx11
