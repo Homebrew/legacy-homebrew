@@ -8,9 +8,9 @@ class Nvi < Formula
 
   bottle do
     cellar :any
-    sha256 "75ea5ae632a340cd15118c9fa9134ef750e3e2b0d5dae54f7725e9786ed9f924" => :el_capitan
-    sha256 "81c395ade5bad8e89edd06ba70bde4075801b3bd4f67a79df4719628f788d8a0" => :yosemite
-    sha256 "ff4b8ae7f70172d31e7f2983cb91d5e4ea946ce66dbca50ae5af30158de70862" => :mavericks
+    sha256 "c4f15ed7ef7d6ca867cccf614823d03a0ffebfd1c303ae2625f64645b4b36b62" => :el_capitan
+    sha256 "2b6a728e143b8dbd0584d403e5c7b5138130a09177bd658ba3dc95f999420ddd" => :yosemite
+    sha256 "b86a3fc268f0b698e8218505bc257256d36c79f215e19fbaa72c8970995c402e" => :mavericks
   end
 
   depends_on "xz" => :build # Homebrew bug. Shouldn't need declaring explicitly.
