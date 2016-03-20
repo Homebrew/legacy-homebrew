@@ -300,12 +300,6 @@ class Pathname
     digest.hexdigest
   end
 
-  # @private
-  def sha1
-    require "digest/sha1"
-    incremental_hash(Digest::SHA1)
-  end
-
   def sha256
     require "digest/sha2"
     incremental_hash(Digest::SHA2)
