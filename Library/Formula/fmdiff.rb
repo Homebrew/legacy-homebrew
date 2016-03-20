@@ -11,6 +11,11 @@ class Fmdiff < Formula
     sha256 "af27122257b358518d38a86d8bdc1242b17e7f1fe6e5e08dc7b7a8a3b1151148" => :mavericks
   end
 
+  # Needs FileMerge.app, which has been part of Xcode since Xcode 4 (OS X 10.7)
+  # Prior to that it was included in the Developer Tools package.
+  # "make" has logic for checking both possibilities.
+  depends_on :xcode if MacOS.version >= :lion
+
   def install
     system "make"
     system "make", "DESTDIR=#{bin}", "install"
