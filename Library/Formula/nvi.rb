@@ -2,7 +2,9 @@ class Nvi < Formula
   desc "44BSD re-implementation of vi"
   homepage "https://sites.google.com/a/bostic.com/keithbostic/vi/"
   url "https://mirrors.ocf.berkeley.edu/debian/pool/main/n/nvi/nvi_1.81.6.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/n/nvi/nvi_1.81.6.orig.tar.gz"
   sha256 "8bc348889159a34cf268f80720b26f459dbd723b5616107d36739d007e4c978d"
+  revision 1
 
   bottle do
     cellar :any
@@ -11,6 +13,7 @@ class Nvi < Formula
     sha256 "ff4b8ae7f70172d31e7f2983cb91d5e4ea946ce66dbca50ae5af30158de70862" => :mavericks
   end
 
+  depends_on "xz" => :build # Homebrew bug. Shouldn't need declaring explicitly.
   depends_on "berkeley-db"
 
   # Patches per MacPorts
@@ -30,11 +33,17 @@ class Nvi < Formula
     sha256 "742c4578319ddc07b0b86482b4f2b86125026f200749e07c6d2ac67976204728"
   end
 
-  # support berkeley > 4, patch extracted from debian package
-  # http://http.debian.net/debian/pool/main/n/nvi/nvi_1.81.6-11.debian.tar.gz
+  # Upstream have been pretty inactive for a while, so we may want to kill this
+  # formula at some point unless that changes. We're leaning hard on Debian now.
   patch do
-    url "https://gist.githubusercontent.com/nijikon/c77bd170ff76dfe6cea4/raw/76369bda9d345c8d027766c4f892a5c82de0f493/nvi-db4.patch"
-    sha256 "33f707366757cc83dddf39251f64b45d6549a07ad21bc0fcc66ed6fc5d2b3964"
+    url "https://mirrors.ocf.berkeley.edu/debian/pool/main/n/nvi/nvi_1.81.6-12.debian.tar.xz"
+    mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/n/nvi/nvi_1.81.6-12.debian.tar.xz"
+    sha256 "c86c9feac8410ffbf79bb8ddf85b34d2edcc00660d8f4cd131eb65e8e0d6156b"
+    apply "patches/03db4.patch",
+          "patches/19include_term_h.patch",
+          "patches/24fallback_to_dumb_term.patch",
+          "patches/26trailing_tab_segv.patch",
+          "patches/27support_C_locale.patch"
   end
 
   def install
