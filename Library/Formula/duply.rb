@@ -16,3 +16,4 @@ class Duply < Formula
     system "#{bin}/duply", "-v"
   end
 end
+
