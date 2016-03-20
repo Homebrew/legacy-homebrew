@@ -38,7 +38,7 @@ class FormulaSpecSelectionTests < Homebrew::TestCase
 
   def test_incomplete_spec_not_selected
     f = formula {
-      sha1 TEST_SHA1
+      sha256 TEST_SHA256
       version "1.0"
       head "foo"
     }
@@ -48,7 +48,7 @@ class FormulaSpecSelectionTests < Homebrew::TestCase
 
   def test_incomplete_stable_not_set
     f = formula {
-      sha1 TEST_SHA1
+      sha256 TEST_SHA256
       devel { url "foo-1.1a" }
       head "foo"
     }

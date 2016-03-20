@@ -21,22 +21,6 @@ class ChecksumVerificationTests < Homebrew::TestCase
     @_f.clear_cache
   end
 
-  def test_good_sha1
-    formula do
-      sha1 TESTBALL_SHA1
-    end
-
-    assert_checksum_good
-  end
-
-  def test_bad_sha1
-    formula do
-      sha1 "7ea8a98acb8f918df723c2ae73fe67d5664bfd7e"
-    end
-
-    assert_checksum_bad
-  end
-
   def test_good_sha256
     formula do
       sha256 TESTBALL_SHA256
