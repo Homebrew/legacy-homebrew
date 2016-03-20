@@ -8,9 +8,9 @@ class Ldapvi < Formula
 
   bottle do
     cellar :any
-    sha256 "bd3f055256d05adb1e88e9641c57b4b01be37677f7991699606c2cee6af52f2f" => :yosemite
-    sha256 "ae6758ad1cb44a31377015f015c5c20626fb1bedbf90dfd33efdcd85447bb183" => :mavericks
-    sha256 "b26d6f88dad7109ac4b5cb48005366a0b103c8f6851e765f7797b187aaafd58b" => :mountain_lion
+    sha256 "efc90cde1d76b43698de01768181ecccc206b72f12337a05ae21274fc9b9aec2" => :el_capitan
+    sha256 "bbb587e4cb2968d9618fd0957318a35780c2b3fa8ceb4476b42619d93076b917" => :yosemite
+    sha256 "8e500b3edbf436ae22ad5ed1078af35e9e9315b199e529c54a00b371199d7039" => :mavericks
   end
 
   depends_on "pkg-config" => :build
