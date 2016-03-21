@@ -4,8 +4,8 @@ class Nomad < Formula
   desc "Distributed, Highly Available, Datacenter-Aware Scheduler"
   homepage "https://www.nomadproject.io"
   url "https://github.com/hashicorp/nomad.git",
-    :tag => "v0.3.0",
-    :revision => "8c27f155500ed22c1660a218177f2cc9b0639c25"
+    :tag => "v0.3.1",
+    :revision => "17fa55c4cfdacbcaf9459a7210d58aa4b47ed541"
 
   head "https://github.com/hashicorp/nomad.git"
 
