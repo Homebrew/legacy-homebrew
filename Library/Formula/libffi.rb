@@ -6,7 +6,6 @@ class Libffi < Formula
   sha256 "6b2680fbf6ae9c2381d381248705857de22e05bae191889298f8e6bfb2ded4ef"
 
   bottle do
-    cellar :any
   end
 
   head do
@@ -30,7 +29,7 @@ class Libffi < Formula
       else
         Dir.chdir("build_macosx-i386"){system "make"; system "make install"}
       end
-    else
+	else
       system "make"
       system "make", "install"
     end
