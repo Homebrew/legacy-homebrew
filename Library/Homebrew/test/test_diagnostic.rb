@@ -61,7 +61,7 @@ class DiagnosticChecksTest < Homebrew::TestCase
     mod = HOMEBREW_REPOSITORY.stat.mode & 0777
     HOMEBREW_REPOSITORY.chmod 0555
 
-    assert_match "The #{HOMEBREW_REPOSITORY} is not writable.",
+    assert_match "#{HOMEBREW_REPOSITORY} is not writable.",
       @checks.check_access_homebrew_repository
   ensure
     HOMEBREW_REPOSITORY.chmod mod
