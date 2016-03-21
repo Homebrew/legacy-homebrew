@@ -19,18 +19,18 @@ class Nomad < Formula
   depends_on "go" => :build
 
   go_resource "github.com/ugorji/go" do
-    url "https://github.com/ugorji/go/archive/c062049c1793b01a3cc3fe786108edabbaf7756b.tar.gz"
-    sha256 "933c1d57a8085fe421480efffcc643fb25f74e33d4936af9797d895333945e47"
+    url "https://github.com/ugorji/go.git",
+        :revision => "c062049c1793b01a3cc3fe786108edabbaf7756b"
   end
 
   go_resource "github.com/mitchellh/gox" do
-    url "https://github.com/mitchellh/gox/archive/39862d88e853ecc97f45e91c1cdcb1b312c51eaa.tar.gz"
-    sha256 "c884282ebb143a037975418d0c3a73843d5147f73af6723d19b6177d369f4fcc"
+    url "https://github.com/mitchellh/gox.git",
+        :revision => "39862d88e853ecc97f45e91c1cdcb1b312c51ea"
   end
 
   go_resource "github.com/mitchellh/iochan" do
-    url "https://github.com/mitchellh/iochan/archive/87b45ffd0e9581375c491fef3d32130bb15c5bd7.tar.gz"
-    sha256 "71c117246bb1d4d78ad5c3bc5d301942bcebaae5b1e35da1ad7851ceac71a675"
+    url "https://github.com/mitchellh/iochan.git",
+        :revision => "87b45ffd0e9581375c491fef3d32130bb15c5bd7"
   end
 
   def install
