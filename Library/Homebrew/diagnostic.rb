@@ -523,7 +523,7 @@ module Homebrew
 
         You should probably change the ownership and permissions of /usr/local
         back to your user account.
-          sudo chown -R $(whoami):admin /usr/local
+          sudo chown -R $(whoami) /usr/local
         EOS
         end
       end
