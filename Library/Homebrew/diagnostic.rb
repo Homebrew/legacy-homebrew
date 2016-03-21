@@ -501,7 +501,7 @@ module Homebrew
 
       def check_access_homebrew_repository
         unless HOMEBREW_REPOSITORY.writable_real? then <<-EOS.undent
-          The #{HOMEBREW_REPOSITORY} is not writable.
+          #{HOMEBREW_REPOSITORY} is not writable.
 
           You should probably change the ownership and permissions of #{HOMEBREW_REPOSITORY}
           back to your user account.
@@ -514,7 +514,7 @@ module Homebrew
         return unless HOMEBREW_PREFIX.to_s == "/usr/local"
 
         unless HOMEBREW_PREFIX.writable_real? then <<-EOS.undent
-        The /usr/local directory is not writable.
+        /usr/local is not writable.
         Even if this directory was writable when you installed Homebrew, other
         software may change permissions on this directory. For example, upgrading
         to OS X El Capitan has been known to do this. Some versions of the
