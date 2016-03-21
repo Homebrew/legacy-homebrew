@@ -16,12 +16,8 @@ class DBus < Formula
   # Patch applies the config templating fixed in https://bugs.freedesktop.org/show_bug.cgi?id=94494
   # Homebrew pr/issue: 50219
   patch do
-    url "https://raw.githubusercontent.com/zbentley/dbus-osx-examples/master/homebrew-patches/org.freedesktop.dbus-session.plist.osx.diff"
+    url "https://github.com/homebrew/patches/blob/dbus-fixes/d-bus/org.freedesktop.dbus-session.plist.osx.diff"
     sha256 "a8aa6fe3f2d8f873ad3f683013491f5362d551bf5d4c3b469f1efbc5459a20dc"
-  end
-
-  def plist_name
-    "org.freedesktop.dbus-session"
   end
 
   def install
@@ -52,4 +48,3 @@ class DBus < Formula
     system "#{bin}/dbus-daemon", "--version"
   end
 end
-
