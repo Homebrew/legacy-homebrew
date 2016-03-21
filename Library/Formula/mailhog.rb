@@ -3,8 +3,8 @@ require "language/go"
 class Mailhog < Formula
   desc "Web and API based SMTP testing tool"
   homepage "https://github.com/mailhog/MailHog"
-  url "https://github.com/mailhog/MailHog/archive/0.1.9.tar.gz"
-  sha256 "2128208e5dbf25a812c31d745f3f40d32020304081fa4e811403b75b61bc828e"
+  url "https://github.com/mailhog/MailHog/archive/v0.2.0.tar.gz"
+  sha256 "e7aebdc9295aa3a4a15198b921e76ec9b1a490d2f3e67d4670b94d816d070f37"
 
   head "https://github.com/mailhog/MailHog.git"
 
