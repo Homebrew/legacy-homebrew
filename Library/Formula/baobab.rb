@@ -1,8 +1,8 @@
 class Baobab < Formula
   desc "Gnome disk usage analyzer"
   homepage "https://wiki.gnome.org/Apps/Baobab"
-  url "https://download.gnome.org/sources/baobab/3.18/baobab-3.18.1.tar.xz"
-  sha256 "c2ac90426390e77147446a290c1480c49936c0a224f740b555ddaec2675b44b5"
+  url "https://download.gnome.org/sources/baobab/3.20/baobab-3.20.0.tar.xz"
+  sha256 "5cdd65b287079cdfafe92b6170fc7bebae5309d4e19adafcd64dc4837e627d07"
 
   bottle do
     sha256 "55ea4703861707e433de02cf3d18420ffa0de197c089a8a28c4ee5c43917eb88" => :el_capitan
