@@ -1,17 +1,12 @@
 class Libffi < Formula
   desc "Portable Foreign Function Interface library"
   homepage "https://sourceware.org/libffi/"
-  url "https://mirrorservice.org/sites/sources.redhat.com/pub/libffi/libffi-3.0.13.tar.gz"
-  mirror "ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz"
-  sha256 "1dddde1400c3bcb7749d398071af88c3e4754058d2d4c0b3696c2f82dc5cf11c"
+  url "https://mirrorservice.org/sites/sources.redhat.com/pub/libffi/libffi-3.2.tar.gz"
+  mirror "ftp://sourceware.org/pub/libffi/libffi-3.2.tar.gz"
+  sha256 "6b2680fbf6ae9c2381d381248705857de22e05bae191889298f8e6bfb2ded4ef"
 
   bottle do
     cellar :any
-    sha256 "d512d7c3258d61e088097f1f9a1fd010bd1a197e760e0b3abc08a3f767624745" => :el_capitan
-    sha256 "f75c1beb848231ed3e2275c867620da91dd16be9dc7c4b88f86675ac62159323" => :yosemite
-    sha256 "aa60d56351d36a45f2e7f16114fc17f9bd8fe805931f36d744c6ccb5fa5df238" => :mavericks
-    sha256 "fad1fe049554d37471408fe451ef2e46628177c94eaafb23a3af56336603baad" => :mountain_lion
-    sha256 "dc4718ebb77ff384386e0ef1782d8418c821637044b5dff7c08f21c401d0668d" => :lion
   end
 
   head do
@@ -21,15 +16,26 @@ class Libffi < Formula
     depends_on "libtool" => :build
   end
 
-  keg_only :provided_by_osx, "Some formulae require a newer version of libffi."
+  keg_only :provided_by_osx," but some formulae require this version of libffi."
 
   def install
     ENV.deparallelize # https://github.com/Homebrew/homebrew/pull/19267
-    ENV.universal_binary
     system "./autogen.sh" if build.head?
+    system "python", "./generate-darwin-source-and-headers.py", "--only-osx"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make", "install"
+    if Hardware::CPU.intel?
+      if OS::Mac.prefer_64_bit?
+        cd("build_macosx-x86_64"){system "make"}
+        system "make", "install"
+      else
+        cd("build_macosx-i386"){system "make"}
+       system "make", " install"
+      end
+    else
+      system "make"
+      system "make", "install"
+    end
   end
 
   test do
