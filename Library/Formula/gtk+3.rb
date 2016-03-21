@@ -1,8 +1,8 @@
 class Gtkx3 < Formula
   desc "Toolkit for creating graphical user interfaces"
   homepage "http://gtk.org/"
-  url "https://download.gnome.org/sources/gtk+/3.18/gtk+-3.18.9.tar.xz"
-  sha256 "783d7f8b00f9b4224cc94d7da885a67598e711c2d6d79c9c873c6b203e83acbd"
+  url "https://download.gnome.org/sources/gtk+/3.20/gtk+-3.20.0.tar.xz"
+  sha256 "1c3d3a4a6e959ec8636ccb074bcdb8fa25c81ec56fbc70de6a3f5ef83ba6d803"
 
   bottle do
     sha256 "57613440207555041ff48bc234c33b0bd6c15b3548712ea3d2e080952f57d7c5" => :el_capitan
@@ -52,7 +52,7 @@ class Gtkx3 < Formula
     system "./configure", *args
     # necessary to avoid gtk-update-icon-cache not being found during make install
     bin.mkpath
-    ENV.prepend_path "PATH", "#{bin}"
+    ENV.prepend_path "PATH", bin.to_s
     system "make", "install"
     # Prevent a conflict between this and Gtk+2
     mv bin/"gtk-update-icon-cache", bin/"gtk3-update-icon-cache"
