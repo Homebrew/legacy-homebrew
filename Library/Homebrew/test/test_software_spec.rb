@@ -155,19 +155,19 @@ class BottleSpecificationTests < Homebrew::TestCase
 
   def test_checksum_setters
     checksums = {
-      :snow_leopard_32 => "deadbeef"*5,
-      :snow_leopard    => "faceb00c"*5,
-      :lion            => "baadf00d"*5,
-      :mountain_lion   => "8badf00d"*5
+      :snow_leopard_32 => "deadbeef"*8,
+      :snow_leopard    => "faceb00c"*8,
+      :lion            => "baadf00d"*8,
+      :mountain_lion   => "8badf00d"*8
     }
 
-    checksums.each_pair do |cat, sha1|
-      @spec.sha1(sha1 => cat)
+    checksums.each_pair do |cat, digest|
+      @spec.sha256(digest => cat)
     end
 
-    checksums.each_pair do |cat, sha1|
+    checksums.each_pair do |cat, digest|
       checksum, = @spec.checksum_for(cat)
-      assert_equal Checksum.new(:sha1, sha1), checksum
+      assert_equal Checksum.new(:sha256, digest), checksum
     end
   end
 

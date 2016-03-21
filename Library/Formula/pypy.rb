@@ -1,14 +1,14 @@
 class Pypy < Formula
   desc "Highly performant implementation of Python 2 in Python"
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.0-src.tar.bz2"
-  sha256 "89027b1b33553b53ff7733dc4838f0a76af23552c0d915d9f6de5875b8d7d4ab"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-src.tar.bz2"
+  sha256 "1573c9284d3ec236c8e6ef3b954753932dff29462c54b5885b761d1ee68b6e05"
 
   bottle do
     cellar :any
-    sha256 "275ec2c8023a806524dce0f7693840047558d26e5b586a4da5db0bac79fef0c6" => :el_capitan
-    sha256 "607fa6f900afcd58368ea10b640616821622375257faa357419b8e340f97ff2a" => :yosemite
-    sha256 "8bab89d17343cc05c58c30b82115ba137315867da8f23b3d3f7b60e0cfe4c83e" => :mavericks
+    sha256 "6cba73759073f9e94969eef79e220ef41b7a94001b6d73f7aff4b3ce0b231098" => :el_capitan
+    sha256 "cf6103bb1fb5f2c2302d08e103b2f2182e2642a22366fcdc026922be7280ef88" => :yosemite
+    sha256 "199e09036f4598cfbc639ffe7fac9a9891b2d05af0422baa165a7a71f49c8a58" => :mavericks
   end
 
   option "without-bootstrap", "Translate Pypy with system Python instead of " \
