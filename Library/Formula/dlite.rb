@@ -3,6 +3,7 @@ class Dlite < Formula
   homepage "https://github.com/nlf/dlite"
   url "https://github.com/nlf/dlite/archive/1.1.4.tar.gz"
   sha256 "9fc39e4b94e141390a1f52863d4d4417f3f3c7bfd7e9622d5b8863c70f6c2c72"
+  head "https://github.com/nlf/dlite.git"
 
   bottle do
     cellar :any_skip_relocation
