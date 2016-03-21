@@ -1,8 +1,8 @@
 class CrystalLang < Formula
   desc "Fast and statically typed, compiled language with Ruby-like syntax"
   homepage "http://crystal-lang.org/"
-  url "https://github.com/crystal-lang/crystal/archive/0.13.0.tar.gz"
-  sha256 "abada1d7bd411dca52ac0df2124a188d61301bdcd1fc75e8419a24496ee8ff42"
+  url "https://github.com/crystal-lang/crystal/archive/0.14.1.tar.gz"
+  sha256 "2f593ea68683e26cd8971619b3860b15b85048f27648e34b7ed5a41116ad2ecb"
   head "https://github.com/manastech/crystal.git"
 
   bottle do
@@ -20,9 +20,9 @@ class CrystalLang < Formula
   depends_on "libyaml" if build.with?("shards")
 
   resource "boot" do
-    url "https://github.com/crystal-lang/crystal/releases/download/0.12.0/crystal-0.12.0-1-darwin-x86_64.tar.gz"
-    version "0.12.0"
-    sha256 "2481282c037d9b209ec44a98a01895c26c1f5eee33ad364d68bc15b834f63446"
+    url "https://github.com/crystal-lang/crystal/releases/download/0.13.0/crystal-0.13.0-1-darwin-x86_64.tar.gz"
+    version "0.13.0"
+    sha256 "06a9485240387ae145e6cad07889cd40a632b0f2a13aa33470b21f59e76a0680"
   end
 
   resource "shards" do
@@ -47,7 +47,7 @@ class CrystalLang < Formula
     else
       system "make", "deps"
       (buildpath/".build").mkpath
-      system "bin/crystal", "build", "-o", ".build/crystal", "src/compiler/crystal.cr"
+      system "bin/crystal", "build", "-o", "-D", "without_openssl", "-D", "without_zlib", ".build/crystal", "src/compiler/crystal.cr"
     end
 
     if build.with? "shards"
