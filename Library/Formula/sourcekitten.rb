@@ -17,6 +17,6 @@ class Sourcekitten < Formula
   end
 
   test do
-    system "#{bin}/sourcekitten", "syntax", "--text", "import Foundation // Hello World"
+    system "#{bin}/sourcekitten", "version"
   end
 end
