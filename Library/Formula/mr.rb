@@ -1,7 +1,7 @@
 class Mr < Formula
   desc "Multiple Repository management tool"
   homepage "https://myrepos.branchable.com/"
-  url "git://myrepos.branchable.com/", :tag => "1.20151022", :revision => "038088c6b4903ce96c73fd4a99751c9848f98863"
+  url "git://myrepos.branchable.com/", :tag => "1.20160123", :revision => "6cd6c0ced619695cdede1fb6b0d654acee1bceb1"
 
   bottle do
     cellar :any_skip_relocation
