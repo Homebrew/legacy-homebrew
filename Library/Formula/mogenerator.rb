@@ -1,8 +1,8 @@
 class Mogenerator < Formula
   desc "Generate Objective-C code for Core Data custom classes"
   homepage "https://rentzsch.github.io/mogenerator/"
-  url "https://github.com/rentzsch/mogenerator/archive/1.29.tar.gz"
-  sha256 "586bb71d647c64db62180e29ba6c5020b103418103ae2fed9481534e2bfec434"
+  url "https://github.com/rentzsch/mogenerator/archive/1.30.tar.gz"
+  sha256 "a89fa68c9ede26b505259a009e1c342fd32f29bc0e9bff8657985637c9f05967"
 
   head "https://github.com/rentzsch/mogenerator.git"
 
@@ -15,6 +15,7 @@ class Mogenerator < Formula
   end
 
   depends_on :xcode => :build
+  depends_on :macos => :yosemite
 
   def install
     xcodebuild "-target", "mogenerator", "-configuration", "Release", "SYMROOT=symroot", "OBJROOT=objroot"
