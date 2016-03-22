@@ -1,9 +1,9 @@
 class Libffi < Formula
   desc "Portable Foreign Function Interface library"
   homepage "https://sourceware.org/libffi/"
-  url "https://mirrorservice.org/sites/sources.redhat.com/pub/libffi/libffi-3.2.tar.gz"
-  mirror "ftp://sourceware.org/pub/libffi/libffi-3.2.tar.gz"
-  sha256 "6b2680fbf6ae9c2381d381248705857de22e05bae191889298f8e6bfb2ded4ef"
+  url "https://mirrorservice.org/sites/sources.redhat.com/pub/libffi/libffi-3.2.1.tar.gz"
+  mirror "ftp://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz"
+  sha256 "d06ebb8e1d9a22d19e38d63fdb83954253f39bedc5d46232a05645685722ca37"
 
   bottle do
     cellar :any
@@ -16,7 +16,11 @@ class Libffi < Formula
     depends_on "libtool" => :build
   end
 
-  keg_only :provided_by_osx," but some formulae require this version of libffi."
+  keg_only :provided_by_osx," Some formulae require this version of libffi."
+
+  stable do
+  patch :DATA
+  end
 
   def install
     ENV.deparallelize # https://github.com/Homebrew/homebrew/pull/19267
@@ -24,17 +28,23 @@ class Libffi < Formula
     system "python", "./generate-darwin-source-and-headers.py", "--only-osx"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    if Hardware::CPU.intel?
-      if OS::Mac.prefer_64_bit?
-        cd("build_macosx-x86_64"){system "make"}
-        system "make", "install"
-      else
-        cd("build_macosx-i386"){system "make"}
-       system "make", " install"
-      end
+    system "make", "install"
+    if build.universal?
+      cd("build_macosx-x86_64"){system "make"}
+      cd("build_macosx-i386"){system "make"}
+      system "lipo", "-create", "build_macosx-x86_64/.libs/libffi.6.dylib", "build_macosx-i386/.libs/libffi.6.dylib", "-output", "libffi.6.dylib"
+      system "lipo", "-create", "build_macosx-x86_64/.libs/libffi.a", "build_macosx-i386/.libs/libffi.a", "-output", "libffi.a"
+      lib.install "libffi.6.dylib"
+      lib.install "libffi.a"
     else
-      system "make"
-      system "make", "install"
+      if Hardware::CPU.intel?
+        if OS::Mac.prefer_64_bit?
+          cd("build_macosx-x86_64"){system "make";lib.install ".libs/libffi.6.dylib";lib.install ".libs/libffi.a"}
+         else
+          cd("build_macosx-i386"){system "make";lib.install ".libs/libffi.6.dylib";lib.install ".libs/libffi.a"}
+        end
+      else
+      end
     end
   end
 
@@ -93,3 +103,16 @@ class Libffi < Formula
     system "./closure"
   end
 end
+__END__
+--- /Makefile.am.org	2016-03-22 11:41:13.000000000 +0900
++++ /Makefile.am	2016-03-22 11:41:31.000000000 +0900
+@@ -140,7 +140,7 @@ endif
+ if X86_DARWIN
+ nodist_libffi_la_SOURCES += src/x86/ffi.c src/x86/darwin.S src/x86/ffi64.c src/x86/darwin64.S
+ if X86_DARWIN32
+-nodist_libffi_la_SOURCES += src/x86/win32.S
++nodist_libffi_la_SOURCES += src/x86/darwin64.S
+ endif
+ endif
+ if SPARC
+
