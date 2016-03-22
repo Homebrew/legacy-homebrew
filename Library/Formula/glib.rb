@@ -1,8 +1,8 @@
 class Glib < Formula
   desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
-  url "https://download.gnome.org/sources/glib/2.46/glib-2.46.2.tar.xz"
-  sha256 "5031722e37036719c1a09163cc6cf7c326e4c4f1f1e074b433c156862bd733db"
+  url "https://download.gnome.org/sources/glib/2.48/glib-2.48.0.tar.xz"
+  sha256 "744be6931ca914c68af98dc38ff6b0cf8381d65e335060faddfbf04c17147c34"
 
   bottle do
     sha256 "7712b8d7682c79d31f8325e4a6a99d43ed480907420193035ba4a874603d720e" => :el_capitan
@@ -18,6 +18,7 @@ class Glib < Formula
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "libffi"
+  depends_on "pcre"
 
   fails_with :llvm do
     build 2334
