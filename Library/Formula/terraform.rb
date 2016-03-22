@@ -3,8 +3,8 @@ require "language/go"
 class Terraform < Formula
   desc "Tool to build, change, and version infrastructure"
   homepage "https://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.6.13.tar.gz"
-  sha256 "21db98e1e1c17d793bdf744f15704157bc86da465171dba751d8a92f455bc62f"
+  url "https://github.com/hashicorp/terraform/archive/v0.6.14.tar.gz"
+  sha256 "e19a35e4794ea551d3e42abf771069c658d121c5ebbb7bc1c48c2822412c1825"
   head "https://github.com/hashicorp/terraform.git"
 
   bottle do
@@ -20,8 +20,8 @@ class Terraform < Formula
   terraform_deps = %w[
     github.com/mitchellh/gox 770c39f64e66797aa46b70ea953ff57d41658e40
     github.com/mitchellh/iochan 87b45ffd0e9581375c491fef3d32130bb15c5bd7
-    github.com/Azure/azure-sdk-for-go bc148c2c7ee5113748941126b465e4ad6eee8e1d
-    github.com/aws/aws-sdk-go bc2c5714d312337494394909e7cc3a19a2e68530
+    github.com/Azure/azure-sdk-for-go 1cb9dff8c37b2918ad1ebd7b294d01100a153d27
+    github.com/aws/aws-sdk-go 4da0bec8953a0a540f391930a946917b12a95671
     github.com/cenkalti/backoff 4dc77674aceaabba2c7e3da25d4c823edfb73f99
     github.com/davecgh/go-spew 5215b55f46b2b919f50a1df0eaa5886afe4e3b3d
     gopkg.in/yaml.v2 f7716cbe52baa25d2e9b0d0da546fcf909fc16b4
