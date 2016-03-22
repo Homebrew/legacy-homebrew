@@ -19,7 +19,7 @@ class Libffi < Formula
   keg_only :provided_by_osx," Some formulae require this version of libffi."
 
   stable do
-  patch :DATA
+    patch :DATA
   end
 
   def install
@@ -43,7 +43,6 @@ class Libffi < Formula
          else
           cd("build_macosx-i386"){system "make";lib.install ".libs/libffi.6.dylib";lib.install ".libs/libffi.a"}
         end
-      else
       end
     end
   end
@@ -104,15 +103,14 @@ class Libffi < Formula
   end
 end
 __END__
---- /Makefile.am.org	2016-03-22 11:41:13.000000000 +0900
-+++ /Makefile.am	2016-03-22 11:41:31.000000000 +0900
+--- ./Makefile.am.org	2016-03-22 14:58:33.000000000 +0900
++++ ./Makefile.am	2016-03-22 14:59:26.000000000 +0900
 @@ -140,7 +140,7 @@ endif
  if X86_DARWIN
  nodist_libffi_la_SOURCES += src/x86/ffi.c src/x86/darwin.S src/x86/ffi64.c src/x86/darwin64.S
  if X86_DARWIN32
 -nodist_libffi_la_SOURCES += src/x86/win32.S
-+nodist_libffi_la_SOURCES += src/x86/darwin64.S
++nodist_libffi_la_SOURCES += src/x86/darwin.S
  endif
  endif
  if SPARC
-
