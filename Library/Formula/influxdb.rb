@@ -3,14 +3,25 @@ require "language/go"
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
-  url "https://github.com/influxdata/influxdb/archive/v0.10.2.tar.gz"
-  sha256 "4d537534c96c387a3f11275680c678fc9aec819a9283143762812d5d189f8e6f"
+  url "https://github.com/influxdata/influxdb/archive/v0.10.3.tar.gz"
+  sha256 "87f23ea558fe69738832e6e1634a826dbbb5980cef2fdcf1bc07d6f9f3239f1d"
 
   bottle do
     cellar :any_skip_relocation
     sha256 "a021fa63eed5afaeb5852631a51023a34b1eff7c9877478d076d03e3df6c9199" => :el_capitan
     sha256 "15f9ff77895b88a4d7a4b6f60597a59fd3d6715aee057514babddcce0d16c7c2" => :yosemite
     sha256 "596f3e437b855050a1f05a68f6de053c9625492c2cd05695ead960915f86876a" => :mavericks
+  end
+
+  devel do
+    url "https://github.com/influxdata/influxdb/archive/v0.11.0-rc1.tar.gz"
+    sha256 "3c5f190a0a512870feb862a38e3b69653a9573499373d8021c587704198dcbe5"
+    version "0.11.0-rc1"
+
+    go_resource "github.com/influxdata/usage-client" do
+      url "https://github.com/influxdata/usage-client.git",
+      :revision => "475977e68d79883d9c8d67131c84e4241523f452"
+    end
   end
 
   head do
@@ -131,7 +142,7 @@ class Influxdb < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    if build.head?
+    if build.head? || build.devel?
       influxdb_path = buildpath/"src/github.com/influxdata/influxdb"
     else
       influxdb_path = buildpath/"src/github.com/influxdb/influxdb"
@@ -142,9 +153,11 @@ class Influxdb < Formula
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version=0.11.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.12.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
+      elsif build.devel?
+        system "go", "install", "-ldflags", "-X main.version=0.11.0-rc1 -X main.branch=0.11 -X main.commit=441772e87782c27a679043071f7181f7928bfbb2", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version=0.10.2 -X main.branch=0.10.0 -X main.commit=845ce867189724762a6637f17da742f2ca0a9625", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.10.3 -X main.branch=0.10 -X main.commit=f55169eaca706f78e2d66edb0b8e62861712a747", "./..."
       end
     end
 
@@ -210,8 +223,10 @@ class Influxdb < Formula
     inreplace testpath/"config.toml" do |s|
       s.gsub! %r{/.*/.influxdb/data}, "#{testpath}/influxdb/data"
       s.gsub! %r{/.*/.influxdb/meta}, "#{testpath}/influxdb/meta"
-      s.gsub! %r{/.*/.influxdb/hh}, "#{testpath}/influxdb/hh"
       s.gsub! %r{/.*/.influxdb/wal}, "#{testpath}/influxdb/wal"
+    end
+    if !build.head?
+      inreplace testpath/"config.toml", %r{/.*/.influxdb/hh}, "#{testpath}/influxdb/hh"
     end
 
     pid = fork do
