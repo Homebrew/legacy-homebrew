@@ -5,7 +5,7 @@ class DBus < Formula
   url "https://dbus.freedesktop.org/releases/dbus/dbus-1.10.6.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dbus/dbus_1.10.6.orig.tar.gz"
   sha256 "b5fefa08a77edd76cd64d872db949eebc02cf6f3f8be82e4bbc641742af5d35f"
-  head "git://anongit.freedesktop.org/dbus/dbus.git"
+  head "https://anongit.freedesktop.org/git/dbus/dbus.git"
 
   bottle do
     sha256 "edf31f467954d3ead8d32fe9db3ef406211fa03eba81b2ab9cad842359a76829" => :el_capitan
@@ -16,7 +16,7 @@ class DBus < Formula
   # Patch applies the config templating fixed in https://bugs.freedesktop.org/show_bug.cgi?id=94494
   # Homebrew pr/issue: 50219
   patch do
-    url "https://raw.githubusercontent.com/homebrew/patches/master/d-bus/org.freedesktop.dbus-session.plist.osx.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/0a8a55872e/d-bus/org.freedesktop.dbus-session.plist.osx.diff"
     sha256 "a8aa6fe3f2d8f873ad3f683013491f5362d551bf5d4c3b469f1efbc5459a20dc"
   end
 
