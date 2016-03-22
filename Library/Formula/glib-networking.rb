@@ -1,9 +1,8 @@
 class GlibNetworking < Formula
   desc "Network related modules for glib"
   homepage "https://launchpad.net/glib-networking"
-  url "https://download.gnome.org/sources/glib-networking/2.46/glib-networking-2.46.1.tar.xz"
-  sha256 "d5034214217f705891b6c9e719cc2c583c870bfcfdc454ebbb5e5e8940ac90b1"
-  revision 1
+  url "https://download.gnome.org/sources/glib-networking/2.48/glib-networking-2.48.0.tar.xz"
+  sha256 "7a1f3312e757b97af94e2db8a1f14eb9cc018c983931ecdf3b0c54acece39024"
 
   bottle do
     cellar :any
@@ -62,7 +61,7 @@ class GlibNetworking < Formula
       "-I#{HOMEBREW_PREFIX}/opt/gettext/include",
       "-L#{HOMEBREW_PREFIX}/lib",
       "-L#{HOMEBREW_PREFIX}/opt/gettext/lib",
-      "-lgio-2.0", "-lgobject-2.0", "-lglib-2.0", "-lintl",
+      "-lgio-2.0", "-lgobject-2.0", "-lglib-2.0", "-lintl"
     ]
 
     system ENV.cc, "gtls-test.c", "-o", "gtls-test", *flags
