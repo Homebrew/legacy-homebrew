@@ -386,7 +386,7 @@ class IntegrationCommandTests < Homebrew::TestCase
     EOS
     (HOMEBREW_CELLAR/"testball/0.0.1/foo").mkpath
 
-    assert_equal "testball", cmd("outdated")
+    assert_equal "testball", cmd_fail("outdated")
   ensure
     formula_file.unlink
     FileUtils.rm_rf HOMEBREW_CELLAR/"testball"
