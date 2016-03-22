@@ -1,8 +1,8 @@
 class Gedit < Formula
   desc "The GNOME text editor"
   homepage "https://wiki.gnome.org/Apps/Gedit"
-  url "https://download.gnome.org/sources/gedit/3.18/gedit-3.18.3.tar.xz"
-  sha256 "6762ac0d793b0f754a2da5f88739d04fa39daa7491c5c46401d24bcef76c32e7"
+  url "https://download.gnome.org/sources/gedit/3.20/gedit-3.20.0.tar.xz"
+  sha256 "4013dedd2b58ce215ed40b028a1223df5b5fc44571388c008f31f77379a77bb2"
 
   bottle do
     sha256 "12119b98084b680cb7db10db4b7a60bffb60ff2ba14dd2b6c4f2af8a95df1630" => :el_capitan
@@ -14,6 +14,7 @@ class Gedit < Formula
   depends_on "intltool" => :build
   depends_on "itstool" => :build
   depends_on "gtk+3"
+  depends_on "gspell"
   depends_on "gtk-mac-integration"
   depends_on "gobject-introspection"
   depends_on "enchant"
