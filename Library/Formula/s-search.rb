@@ -17,34 +17,34 @@ class SSearch < Formula
 
   depends_on "go" => :build
 
+  go_resource "github.com/NYTimes/gziphandler" do
+    url "https://github.com/NYTimes/gziphandler.git",
+    :revision => "a88790d49798560db24af70fb6a10a66e2549a72"
+  end
+
   go_resource "github.com/mitchellh/go-homedir" do
     url "https://github.com/mitchellh/go-homedir.git",
-      :revision => "d682a8f0cf139663a984ff12528da460ca963de9"
+    :revision => "981ab348d865cf048eb7d17e78ac7192632d8415"
   end
 
   go_resource "github.com/spf13/cobra" do
     url "https://github.com/spf13/cobra.git",
-      :revision => "65a708cee0a4424f4e353d031ce440643e312f92"
-  end
-
-  go_resource "github.com/zquestz/go-ucl" do
-    url "https://github.com/zquestz/go-ucl.git",
-      :revision => "9e5940bb3930921a83dcb0f9e20a32e3b1335590"
-  end
-
-  go_resource "github.com/NYTimes/gziphandler" do
-    url "https://github.com/NYTimes/gziphandler.git",
-      :revision => "a88790d49798560db24af70fb6a10a66e2549a72"
+    :revision => "966e6048eb43ccf9f240a078557b37f0a407f1df"
   end
 
   go_resource "github.com/spf13/pflag" do
     url "https://github.com/spf13/pflag.git",
-      :revision => "7f60f83a2c81bc3c3c0d5297f61ddfa68da9d3b7"
+    :revision => "7f60f83a2c81bc3c3c0d5297f61ddfa68da9d3b7"
+  end
+
+  go_resource "github.com/zquestz/go-ucl" do
+    url "https://github.com/zquestz/go-ucl.git",
+    :revision => "ec59c7af0062f62671cdc1e974aa857771f105d2"
   end
 
   go_resource "golang.org/x/text" do
     url "https://go.googlesource.com/text.git",
-      :revision => "07b9a78963006a15c538ec5175243979025fa7a8"
+    :revision => "1b466db55e0ba5d56ef5315c728216b42f796491"
   end
 
   def install
