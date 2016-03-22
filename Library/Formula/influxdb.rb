@@ -225,7 +225,7 @@ class Influxdb < Formula
       s.gsub! %r{/.*/.influxdb/meta}, "#{testpath}/influxdb/meta"
       s.gsub! %r{/.*/.influxdb/wal}, "#{testpath}/influxdb/wal"
     end
-    if !build.head?
+    unless build.head?
       inreplace testpath/"config.toml", %r{/.*/.influxdb/hh}, "#{testpath}/influxdb/hh"
     end
 
