@@ -4,10 +4,11 @@ class Hbase < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=hbase/1.1.2/hbase-1.1.2-bin.tar.gz"
   sha256 "8ca5bf0203cef86b4a0acbba89afcd5977488ebc73eec097e93c592b16f8bede"
 
-  depends_on :java => "1.6+"
+  depends_on :java => "1.7+"
   depends_on "hadoop" => :optional
   depends_on "lzo" => :recommended
   depends_on "ant" => :build if build.with? "lzo"
+  depends_on :arch => :x86_64
 
   resource "hadoop-lzo" do
     url "https://github.com/cloudera/hadoop-lzo/archive/0.4.14.tar.gz"
@@ -79,8 +80,11 @@ class Hbase < Formula
         </property>
       EOS
 
-    (var/"run/hbase").mkpath
     (libexec/"logs").mkpath
+  end
+
+  def post_install
+    (var/"run/hbase").mkpath
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/hbase/bin/start-hbase.sh"
