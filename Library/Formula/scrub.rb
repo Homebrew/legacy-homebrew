@@ -31,7 +31,7 @@ class Scrub < Formula
     path.write "foo"
 
     output = `#{bin}/scrub -r -p dod #{path}`
-    assert output.include?("scrubbing #{path}")
+    assert_match "scrubbing #{path}", output
     assert_equal 0, $?.exitstatus
     assert !File.exist?(path)
   end
