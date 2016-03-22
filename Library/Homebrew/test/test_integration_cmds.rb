@@ -244,7 +244,7 @@ class IntegrationCommandTests < Homebrew::TestCase
     EOS
 
     (HOMEBREW_CELLAR/"bar/1.0").mkpath
-    assert_match "foo", cmd("missing")
+    assert_match "foo", cmd_fail("missing")
   ensure
     (HOMEBREW_CELLAR/"bar").rmtree
     foo_file.unlink

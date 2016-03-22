@@ -299,10 +299,21 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     Show the git log for the given formulae. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `missing` [<formulae>]:
+  * `missing` [`--quiet`|`--verbose`|`--json=v1`] [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
     If no <formulae> are given, check all installed brews.
+
+    By default, missing formulae are displayed as per-formula lists in
+    interactive shells, and as a single, non-repeating list otherwise.
+
+    If `--quiet` is passed, list only the names of missing brews (takes
+    precedence over `--verbose`.
+
+    If `--verbose` is passed, display per-formula lists of missing brews.
+
+    If `--json=`<version> is passed, the output will be in JSON format. The only
+    valid version is `v1`.
 
   * `migrate` [`--force`] <formulae>:
     Migrate renamed packages to new name, where <formulae> are old names of
