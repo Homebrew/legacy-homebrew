@@ -10,6 +10,8 @@ class GribApi < Formula
     sha256 "6a10d0d9a39fda3c06505fd0b8a3f2fded6652bb2ac4e11a80d2cbcd5eb5441c" => :mavericks
   end
 
+  option "with-static", "Build static instead of shared library."
+
   depends_on :fortran
   depends_on "cmake" => :build
   depends_on "jasper" => :recommended
@@ -18,8 +20,6 @@ class GribApi < Formula
   # Fixes build errors in Lion
   # https://software.ecmwf.int/wiki/plugins/viewsource/viewpagesrc.action?pageId=12648475
   patch :DATA
-
-  option "with-static", "Build static instead of shared library."
 
   def install
     mkdir "build" do
