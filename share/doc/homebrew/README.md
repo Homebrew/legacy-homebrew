@@ -30,4 +30,4 @@ Read [CONTRIBUTING.md](/.github/CONTRIBUTING.md).
 
 ## Supporters
 [A list of the awesome people who gave £5 or more to our
-Kickstarter](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).
+Kickstarter](./Kickstarter-Supporters.md).
