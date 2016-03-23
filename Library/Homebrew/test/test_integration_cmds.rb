@@ -124,6 +124,11 @@ class IntegrationCommandTests < Homebrew::TestCase
                  cmd("--repository")
   end
 
+  def test_repository
+    assert_match "#{HOMEBREW_LIBRARY}/Taps/foo/homebrew-bar",
+                 cmd("--repository", "foo/bar")
+  end
+
   def test_help
     assert_match "Example usage:",
                  cmd("help")
