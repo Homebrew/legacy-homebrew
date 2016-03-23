@@ -149,6 +149,7 @@ TAP_MIGRATIONS = {
   "mysqlreport" => "homebrew/boneyard",
   "net6" => "homebrew/boneyard",
   "newick-utils" => "homebrew/science",
+  "ngrok" => "homebrew/boneyard",
   "nlopt" => "homebrew/science",
   "ntfs-3g" => "homebrew/fuse",
   "octave" => "homebrew/science",
