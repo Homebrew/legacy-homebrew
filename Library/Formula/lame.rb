@@ -15,13 +15,17 @@ class Lame < Formula
 
   option :universal
 
+  depends_on "nasm" => :optional
+
   def install
     ENV.universal_binary if build.universal?
-
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--enable-nasm"
+      args = %W[
+      --prefix=#{prefix}
+      --disable-debug
+      --disable-dependency-tracking
+    ]
+    args << "--enable-nasm" if build.with? "nasm"
+    system "./configure", *args
     system "make", "install"
   end
 
