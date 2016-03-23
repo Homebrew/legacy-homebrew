@@ -90,19 +90,24 @@ module OS
     # If the requested SDK is not installed returns either:
     # a) The newest SDK (if any SDKs are available), or
     # b) nil
-    def sdk(v = version)
+    def sdk(v = nil)
       @locator ||= SDKLocator.new
       begin
-        @locator.sdk_for v
+        sdk = if v.nil?
+          Xcode.version.to_i >= 7 ? @locator.latest_sdk : @locator.sdk_for(version)
+        else
+          @locator.sdk_for v
+        end
       rescue SDKLocator::NoSDKError
         sdk = @locator.latest_sdk
-        # don't return an SDK that's older than the OS version
-        sdk unless sdk.nil? || sdk.version < version
+      ensure
+        # only return an SDK older than the OS version if it was specifically requested
+        sdk if v || (!sdk.nil? && sdk.version >= version)
       end
     end
 
     # Returns the path to an SDK or nil, following the rules set by #sdk.
-    def sdk_path(v = version)
+    def sdk_path(v = nil)
       s = sdk(v)
       s.path unless s.nil?
     end
