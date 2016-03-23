@@ -67,7 +67,7 @@ module Superenv
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
 
-    if MacOS::Xcode.without_clt?
+    if MacOS::Xcode.without_clt? || (MacOS::Xcode.installed? && MacOS::Xcode.version.to_i >= 7)
       self["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s
       self["SDKROOT"] = MacOS.sdk_path
     end
