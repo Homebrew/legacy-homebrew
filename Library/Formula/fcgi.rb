@@ -4,6 +4,13 @@ class Fcgi < Formula
   url "http://ftp.gwdg.de/pub/linux/gentoo/distfiles/fcgi-2.4.0.tar.gz"
   sha256 "66fc45c6b36a21bf2fbbb68e90f780cc21a9da1fffbae75e76d2b4402d3f05b9"
 
+  bottle do
+    cellar :any
+    sha256 "27b723d2451b163cf1c5b8c461b6b550b9c4fcdd8dfd9e9f9c20477cb50d3da7" => :el_capitan
+    sha256 "ad01d3980edafd7330a41b008e95e4af24708ac0a6b8bb625160635d6f36c4a3" => :yosemite
+    sha256 "58b93f834db071aac4831e73d7f34f59a73759a453676ca66b187135e8da7f36" => :mavericks
+  end
+
   # Fixes "dyld: Symbol not found: _environ"
   # Affects programs linking this library. Reported at
   # http://mailman.fastcgi.com/pipermail/fastcgi-developers/2009-January/000152.html
