@@ -529,6 +529,9 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     Display where Homebrew's `.git` directory is located. For standard installs,
     the `prefix` and `repository` are the same directory.
 
+  * `--repository` <user>`/`<repo>:
+    Display where tap <user>`/`<repo>'s directory is located.
+
   * `--version`:
     Print the version number of brew to standard error and exit.
 
