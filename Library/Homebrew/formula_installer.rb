@@ -126,7 +126,7 @@ class FormulaInstaller
 
   def verify_deps_exist
     begin
-      formula.recursive_dependencies.map(&:to_formula)
+      compute_dependencies
     rescue TapFormulaUnavailableError => e
       if e.tap.installed?
         raise
