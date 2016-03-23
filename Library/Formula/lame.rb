@@ -19,7 +19,7 @@ class Lame < Formula
 
   def install
     ENV.universal_binary if build.universal?
-	args = %W[
+      args = %W[
       --prefix=#{prefix}
       --disable-debug
       --disable-dependency-tracking
