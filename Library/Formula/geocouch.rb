@@ -2,8 +2,8 @@ class Geocouch < Formula
   desc "Spatial index for CouchDB"
   homepage "https://github.com/couchbase/geocouch"
   url "https://github.com/couchbase/geocouch/archive/couchdb1.3.x.tar.gz"
-  sha256 "0f678b5b79f5385c5c11349b662bb897047c72e8056dfb19f0f1e484d9348953"
   version "1.3.0"
+  sha256 "0f678b5b79f5385c5c11349b662bb897047c72e8056dfb19f0f1e484d9348953"
 
   head "https://github.com/couchbase/geocouch.git"
 
@@ -37,12 +37,12 @@ class Geocouch < Formula
     system "make"
 
     #  Install geocouch build files.
-    (share/"geocouch").mkpath
+    pkgshare.mkpath
     rm_rf share/"geocouch/ebin/"
-    (share/"geocouch").install Dir["ebin"]
+    pkgshare.install "ebin"
 
     #  Install geocouch.plist for launchctl support.
-    (share/"geocouch").install Dir[couchdb_dir/"etc/launchd/org.apache.couchdb.plist.tpl.in"]
+    pkgshare.install couchdb_dir/"etc/launchd/org.apache.couchdb.plist.tpl.in"
     mv share/"geocouch/org.apache.couchdb.plist.tpl.in", share/"geocouch/geocouch.plist"
     inreplace (share/"geocouch/geocouch.plist"), "<string>org.apache.couchdb</string>", \
       "<string>geocouch</string>"
@@ -59,7 +59,7 @@ class Geocouch < Formula
     (share/"geocouch/geocouch.plist").chmod 0644
 
     #  Install geocouch.ini into couchdb.
-    (etc/"couchdb/default.d").install Dir["etc/couchdb/default.d/geocouch.ini"]
+    (etc/"couchdb/default.d").install "etc/couchdb/default.d/geocouch.ini"
 
     #  Install tests into couchdb.
     test_files = Dir["share/www/script/test/*.js"]
