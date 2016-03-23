@@ -90,5 +90,15 @@ def blacklisted?(name)
   when "mysqldump-secure" then <<-EOS.undent
     The creator of mysqldump-secure tried to game our popularity metrics.
     EOS
+  when "ngrok" then <<-EOS.undent
+    Upstream sunsetted 1.x in March 2016 and 2.x is not open-source.
+
+    If you wish to use the 2.x release you can install it
+    either via Homebrew:
+      brew install homebrew/binary/ngrok2
+
+    Or via the Cask:
+      brew cask install ngrok
+    EOS
   end
 end
