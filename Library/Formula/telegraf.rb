@@ -3,8 +3,8 @@ require "language/go"
 class Telegraf < Formula
   desc "Server-level metric gathering agent for InfluxDB"
   homepage "https://influxdata.com"
-  url "https://github.com/influxdata/telegraf/archive/0.11.0.tar.gz"
-  sha256 "ad9e1be76b1f66f76246e200fb6f249ff43dc2413eb35d2551b7817799bae042"
+  url "https://github.com/influxdata/telegraf/archive/0.11.1.tar.gz"
+  sha256 "71ead75f02cb744b52bce56188ed37524e315b06f87dfb9c00fc338ecb0212e4"
 
   bottle do
     cellar :any_skip_relocation
