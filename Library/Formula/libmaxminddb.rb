@@ -6,9 +6,9 @@ class Libmaxminddb < Formula
 
   bottle do
     cellar :any
-    sha256 "a05eec1703d5d58cae7455ae397fc3d2fa3514e27b32aa3f4bf8d195d99390ff" => :el_capitan
-    sha256 "6b85890ea8726bd53c5a574a4d883eddb3fc8c9cddcad41b54a126ef94d87050" => :yosemite
-    sha256 "49841b6972f85c952a7e26ea144d4a2cf28390524a59c6e42140834e46edd7fc" => :mavericks
+    sha256 "626d41d5b47374ce9bdd046e1b958ab68536efd772ebd0ad0949e453589ced39" => :el_capitan
+    sha256 "345c405bbdcfa1fad247e838f594b522b935e41ddbf7b7760e7404121a3475f3" => :yosemite
+    sha256 "9046beb8d9abb5002e367594b39ca4fd5e121ca9977cc37e07437c5b8a684a80" => :mavericks
   end
 
   head do
