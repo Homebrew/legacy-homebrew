@@ -71,6 +71,7 @@ class Tap
     @remote = nil
     @formula_dir = nil
     @formula_files = nil
+    @alias_dir = nil
     @alias_files = nil
     @aliases = nil
     @alias_table = nil
@@ -298,7 +299,7 @@ class Tap
   # path to the directory of all alias files for this {Tap}.
   # @private
   def alias_dir
-    path/"Aliases"
+    @alias_dir ||= path/"Aliases"
   end
 
   # an array of all alias files of this {Tap}.
@@ -500,12 +501,12 @@ class CoreTap < Tap
 
   # @private
   def formula_dir
-    HOMEBREW_LIBRARY/"Formula"
+    @formula_dir ||= HOMEBREW_LIBRARY/"Formula"
   end
 
   # @private
   def alias_dir
-    HOMEBREW_LIBRARY/"Aliases"
+    @alias_dir ||= HOMEBREW_LIBRARY/"Aliases"
   end
 
   # @private
