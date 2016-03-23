@@ -21,6 +21,8 @@ class GribApi < Formula
   # https://software.ecmwf.int/wiki/plugins/viewsource/viewpagesrc.action?pageId=12648475
   patch :DATA
 
+  option "with-static", "Build static instead of shared library."
+
   def install
     mkdir "build" do
       args = std_cmake_args
