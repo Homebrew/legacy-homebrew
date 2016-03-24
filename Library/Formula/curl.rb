@@ -45,6 +45,12 @@ class Curl < Formula
   depends_on "libressl" => :optional
   depends_on "nghttp2" => :optional
 
+  # This patch fixes compile against LibreSSL. From:
+  # https://github.com/curl/curl/commit/240cd84b494e0ff
+  # https://github.com/curl/curl/commit/23ab4816443e2b9
+  # Can be removed on the next release.
+  patch :DATA
+
   def install
     # Throw an error if someone actually tries to rock both SSL choices.
     # Long-term, make this singular-ssl-option-only a requirement.
@@ -101,3 +107,19 @@ class Curl < Formula
     filename.verify_checksum stable.checksum
   end
 end
+
+__END__
+diff --git a/lib/vtls/openssl.c b/lib/vtls/openssl.c
+index cbf2d21..f8ccb23 100644
+--- a/lib/vtls/openssl.c
++++ b/lib/vtls/openssl.c
+@@ -95,7 +95,8 @@
+
+ #if (OPENSSL_VERSION_NUMBER >= 0x10000000L)
+ #define HAVE_ERR_REMOVE_THREAD_STATE 1
+-#if (OPENSSL_VERSION_NUMBER >= 0x10100004L)
++#if (OPENSSL_VERSION_NUMBER >= 0x10100004L) && \
++  !defined(LIBRESSL_VERSION_NUMBER)
+ /* OpenSSL 1.1.0-pre4 removed the argument! */
+ #define HAVE_ERR_REMOVE_THREAD_STATE_NOARG 1
+ #endif
