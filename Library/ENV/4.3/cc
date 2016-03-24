@@ -14,8 +14,8 @@ require "pathname"
 require "set"
 
 class Cmd
-  attr_reader :config, :prefix, :cellar, :tmpdir, :sysroot
-  attr_reader :archflags, :optflags
+  attr_reader :config, :prefix, :cellar, :opt, :tmpdir, :sysroot, :deps
+  attr_reader :archflags, :optflags, :keg_regex
 
   def initialize(arg0, args)
     @arg0 = arg0
@@ -23,10 +23,14 @@ class Cmd
     @config = ENV.fetch("HOMEBREW_CCCFG") { "" }
     @prefix = ENV["HOMEBREW_PREFIX"]
     @cellar = ENV["HOMEBREW_CELLAR"]
+    @opt = ENV["HOMEBREW_OPT"]
     @tmpdir = ENV["HOMEBREW_TEMP"]
     @sysroot = ENV["HOMEBREW_SDKROOT"]
     @archflags = ENV.fetch("HOMEBREW_ARCHFLAGS") { "" }.split(" ")
     @optflags = ENV.fetch("HOMEBREW_OPTFLAGS") { "" }.split(" ")
+    @deps = Set.new(ENV.fetch("HOMEBREW_DEPENDENCIES") { "" }.split(","))
+    # matches opt or cellar prefix and formula name
+    @keg_regex = %r[(#{Regexp.escape(opt)}|#{Regexp.escape(cellar)})/([\w\-_\+]+)]
   end
 
   def mode
@@ -197,7 +201,16 @@ class Cmd
   end
 
   def keep?(path)
-    path.start_with?(prefix, cellar, tmpdir) || !path.start_with?("/opt", "/sw", "/usr/X11")
+    # first two paths: reject references to Cellar or opt paths
+    # for unspecified dependencies
+    if path.start_with?(cellar) || path.start_with?(opt)
+      dep = path[keg_regex, 2]
+      dep && @deps.include?(dep)
+    elsif path.start_with?(prefix)
+      true
+    else
+      !path.start_with?("/opt", "/sw", "/usr/X11")
+    end
   end
 
   def cflags
