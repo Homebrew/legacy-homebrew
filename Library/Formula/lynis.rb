@@ -28,3 +28,4 @@ class Lynis < Formula
     man8.install "lynis.8"
   end
 end
+
