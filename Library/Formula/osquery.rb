@@ -13,6 +13,12 @@ class Osquery < Formula
     sha256 "88f1f3b78643bc68258115a3b9ad329b05a7332e71ba94ae35f50ee6b773d5cb" => :mavericks
   end
 
+  devel do
+    url "https://github.com/facebook/osquery.git",
+    :tag => "1.7.2",
+    :revision => "6f034a71567ce237454943eb623e13eeafb4592a"
+  end
+
   # osquery only supports OS X 10.9 and above. Do not remove this.
   depends_on :macos => :mavericks
 
@@ -45,6 +51,12 @@ class Osquery < Formula
   end
 
   def install
+    # Fix build failure on case-sensitive file systems
+    # Upstream issue: facebook/osquery#1931
+    # Upstream merged: facebook/osquery@3e103e6
+    # Remove when 1.8.0 is released
+    inreplace "osquery/events/darwin/iokit.h", "IOKitlib", "IOKitLib" if build.stable?
+
     # Link dynamically against brew-installed libraries.
     ENV["BUILD_LINK_SHARED"] = "1"
 
