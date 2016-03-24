@@ -6,9 +6,9 @@ class Nmap < Formula
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
 
   bottle do
-    sha256 "05d373af1509126f5be52bf24e5e15f0910b7dfa0e49f7b923960c83f9a37d24" => :el_capitan
-    sha256 "b1f3a5f7edb1a3bd328eebbf8dd2175ea22db05c552115fde70651240d770554" => :yosemite
-    sha256 "94585a4e818543710769e2fa17f5f2abba2082d278cf45e47e40941ce64c20ec" => :mavericks
+    sha256 "1f01d36441f75d412b0e9286239316550690110bf5107e15e0d574d1df4e164a" => :el_capitan
+    sha256 "c9157eea44176abb56d038423a141f21ec0b78be01c216ae0e3a226e20d0c15c" => :yosemite
+    sha256 "561a91b2614b01db6b9fb29f6592f710e37dfba3591df3dcde74852f9012d2ce" => :mavericks
   end
 
   depends_on "openssl"
