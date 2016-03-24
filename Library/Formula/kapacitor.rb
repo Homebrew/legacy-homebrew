@@ -11,9 +11,9 @@ class Kapacitor < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "efc23ea8552b81deb78223f2ebdec8769846a4f84756411c323e20d3bc1e4505" => :el_capitan
-    sha256 "9c9fd038c39e970a02f0c05482c5211094bbe429dbf162a746064a0be13e55f7" => :yosemite
-    sha256 "f948ff298c8bdac82b0caefb743a834348d67b38644b2746dea6ae720cca4275" => :mavericks
+    sha256 "a9dd1fec28dc4863bb8983721ad79213a3911eeed2934fd963ecf37bf772096c" => :el_capitan
+    sha256 "52de9ce4609f2d138e5ff8b2bc69dbf6dbc3beb8c9f5ede2c8d12816e385f4ca" => :yosemite
+    sha256 "115703595c641ed2007eec944ae4605b95a1ca4550440b19a5712585f88af7fd" => :mavericks
   end
 
   depends_on "go" => :build
