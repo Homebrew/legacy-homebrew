@@ -3,8 +3,8 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.9.3.tar.gz"
-  sha256 "26950ff50e933a5c76baf16202ac80189461ccfe87ee044bda822dcde3cd0f47"
+  url "https://github.com/Masterminds/glide/archive/0.10.0.tar.gz"
+  sha256 "7696c2d604de7481ae685af4bc11f7c982f8d3d75c65a0ef7810f78cfc1b5f8b"
   head "https://github.com/Masterminds/glide.git"
 
   bottle do
@@ -18,22 +18,22 @@ class Glide < Formula
 
   go_resource "gopkg.in/yaml.v2" do
     url "https://gopkg.in/yaml.v2.git",
-      :revision => "f7716cbe52baa25d2e9b0d0da546fcf909fc16b4"
+      :revision => "a83829b6f1293c91addabc89d0571c246397bbf4"
   end
 
   go_resource "github.com/Masterminds/vcs" do
     url "https://github.com/Masterminds/vcs.git",
-      :revision => "242477a09d9db06a848c5305525168f042d96871"
+      :revision => "b22ee1673cdd03ef47bb0b422736a7f17ff0648c"
   end
 
   go_resource "github.com/codegangsta/cli" do
     url "https://github.com/codegangsta/cli.git",
-      :revision => "c31a7975863e7810c92e2e288a9ab074f9a88f29"
+      :revision => "9fec0fad02befc9209347cc6d620e68e1b45f74d"
   end
 
   go_resource "github.com/Masterminds/semver" do
     url "https://github.com/Masterminds/semver.git",
-      :revision => "513f3dcb3ecfb1248831fb5cb06a23a3cd5935dc"
+      :revision => "808ed7761c233af2de3f9729a041d68c62527f3a"
   end
 
   def install
