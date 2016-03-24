@@ -82,6 +82,7 @@ class Pathname
     src = Pathname(src)
     dst = join(new_basename)
     dst = yield(src, dst) if block_given?
+    return unless dst
 
     mkpath
 
@@ -297,12 +298,6 @@ class Pathname
       open("rb") { |f| digest << buf while f.read(16384, buf) }
     end
     digest.hexdigest
-  end
-
-  # @private
-  def sha1
-    require "digest/sha1"
-    incremental_hash(Digest::SHA1)
   end
 
   def sha256

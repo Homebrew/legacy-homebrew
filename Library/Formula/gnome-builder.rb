@@ -2,6 +2,7 @@ class GnomeBuilder < Formula
   desc "IDE for GNOME"
   homepage "https://wiki.gnome.org/Apps/Builder"
   url "https://download.gnome.org/sources/gnome-builder/3.18/gnome-builder-3.18.1.tar.xz"
+  mirror "https://launchpad.net/ubuntu/+archive/primary/+files/gnome-builder_3.18.1.orig.tar.xz"
   sha256 "501c95220dcf8ca44a5748e863492377fe2c3aee78a95973d6819b1836e5407c"
 
   bottle do
@@ -30,6 +31,14 @@ class GnomeBuilder < Formula
 
   def install
     ENV.cxx11
+
+    # Fix build failure on case-sensitive volumes for libgit2-glib without vala.
+    # Reported 7th Mar 2016 to https://bugzilla.gnome.org/show_bug.cgi?id=763208
+    unless File.exist?(Formula["libgit2-glib"].share/"vala/vapi/ggit-1.0.vapi")
+      inreplace Dir["libide/{Makefile.am,Makefile.in,libide-1.0.deps}"],
+        "ggit-1.0", "Ggit-1.0"
+    end
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",

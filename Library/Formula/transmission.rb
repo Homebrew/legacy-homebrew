@@ -1,13 +1,13 @@
 class Transmission < Formula
   desc "Lightweight BitTorrent client"
   homepage "http://www.transmissionbt.com/"
-  url "https://transmission.cachefly.net/transmission-2.90.tar.xz"
-  sha256 "69ff8caf81684155926f437f46bf7df1b1fb304f52c7809f546257e8923f2fd2"
+  url "https://download.transmissionbt.com/files/transmission-2.92.tar.xz"
+  sha256 "3a8d045c306ad9acb7bf81126939b9594553a388482efa0ec1bfb67b22acd35f"
 
   bottle do
-    sha256 "851b3c1e6428ffb1faf9a27254583fd74d0c562a3a4f28526fd0c87acc2cbb04" => :el_capitan
-    sha256 "b70dde06f3acdd077ed4853198bc648a01975bb3a8e8784e2e34502e3e550576" => :yosemite
-    sha256 "75df41ea299b772c9dd5ff1379730d9fea9c735be68a46da9b95b3e644423329" => :mavericks
+    sha256 "68af47554f408d92d04cbf86239a3d973cf7b4e9f0d254e127f5ead36074987a" => :el_capitan
+    sha256 "2071f4bb87d9d5e7cf6885caa8cf8605d81b108a097259113ba295a3c1f90bb7" => :yosemite
+    sha256 "9fb74d440426bbdf82d06dcd01e53db625cabfce0c4c85b15aec298007df6fd3" => :mavericks
   end
 
   option "with-nls", "Build with native language support"

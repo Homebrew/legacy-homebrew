@@ -75,7 +75,7 @@ renaming the file from <code>otp_src_R13B03</code> to
 download.  This means instead of manually renaming a formula, you can
 run `mv the_tarball $(brew --cache -s $FORMULA)`.
 
-You can also pre-cache the download by using the command `brew fetch formula` which also displays the SHA1 and SHA256 values. This can be useful for updating formulae to new versions.
+You can also pre-cache the download by using the command `brew fetch formula` which also displays the SHA256 value. This can be useful for updating formulae to new versions.
 
 ## Using Homebrew behind a proxy
 

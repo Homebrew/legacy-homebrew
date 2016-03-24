@@ -1,16 +1,16 @@
 class Bind < Formula
   desc "Implementation of the DNS protocols"
   homepage "https://www.isc.org/downloads/bind/"
-  url "https://ftp.isc.org/isc/bind9/9.10.3-P3/bind-9.10.3-P3.tar.gz"
-  mirror "https://fossies.org/linux/misc/dns/bind9/9.10.3-P3/bind-9.10.3-P3.tar.gz"
-  version "9.10.3-P3"
-  sha256 "690810d1fbb72afa629e74638d19cd44e28d2b2e5eb63f55c705ad85d1a4cb83"
+  url "https://ftp.isc.org/isc/bind9/9.10.3-P4/bind-9.10.3-P4.tar.gz"
+  mirror "https://fossies.org/linux/misc/dns/bind9/9.10.3-P4/bind-9.10.3-P4.tar.gz"
+  version "9.10.3-P4"
+  sha256 "2ac044b5fbdf45fb45107af0df961b3b7cb5262a3bf1948ed3fe7a170dd13e3e"
   head "https://source.isc.org/git/bind9.git"
 
   bottle do
-    sha256 "89f2f8ed6ffdd693ee1b0289222adafae15b7092d65147c41d41a1b623fd20a0" => :el_capitan
-    sha256 "698d3518bab3d0324ba1621cb4478538ecc7c08b2fee4e30ea5971746f7bc7d7" => :yosemite
-    sha256 "3693f848704404b9a6fa086a0d5c1b9096026f3ad083512a499b5a4f91f69dad" => :mavericks
+    sha256 "9b1a19ec5f2bc1036d93d757061d6c9c89aa0f94824d76218994267668689665" => :el_capitan
+    sha256 "29e6d2d8ea9fd9199fdba6ceea097fb22b81ce9fb1a188b185648363f7761b85" => :yosemite
+    sha256 "8e5e517a4ddbb92fb2bf83f41a322d482a1fc1bf921cfa23aca1c29dc24d2b12" => :mavericks
   end
 
   depends_on "openssl"
@@ -33,7 +33,7 @@ class Bind < Formula
     system "make"
     system "make", "install"
 
-    (buildpath+"named.conf").write named_conf
+    (buildpath/"named.conf").write named_conf
     system "#{sbin}/rndc-confgen", "-a", "-c", "#{buildpath}/rndc.key"
     etc.install "named.conf", "rndc.key"
   end
@@ -43,10 +43,10 @@ class Bind < Formula
 
     # Create initial configuration/zone/ca files.
     # (Mirrors Apple system install from 10.8)
-    unless (var+"named").exist?
-      (var+"named").mkpath
-      (var+"named/localhost.zone").write localhost_zone
-      (var+"named/named.local").write named_local
+    unless (var/"named").exist?
+      (var/"named").mkpath
+      (var/"named/localhost.zone").write localhost_zone
+      (var/"named/named.local").write named_local
     end
   end
 

@@ -6,9 +6,10 @@ class Nu < Formula
 
   bottle do
     cellar :any
-    sha256 "a9aeea629392e001f68e5b0155fd74f3ed0ce09bbb654f43236db2ee767521b9" => :yosemite
-    sha256 "21c6f4cecd22bb7ebf67dde5e37bbf5dfbc7f7da348f83c7c161480c0c442728" => :mavericks
-    sha256 "8311472e5ad2d30ac1c30b960b97981c76b6a0e655b2870dd721e808b351d297" => :mountain_lion
+    revision 1
+    sha256 "6db4fa8bafc2110e16cb7b8ae675e4e25483cb3d05b7f15535ae3cabe25f48d2" => :el_capitan
+    sha256 "6934ad8b4e7a1baa21939975a82b5fb2b4ec8d7462bb9c4237004dd10c05d9d4" => :yosemite
+    sha256 "c6075aa6a0ea3a36067295f9e9e16fca5ec0d4c79db5f7c5fde19e774a24f69e" => :mavericks
   end
 
   depends_on :macos => :lion
@@ -37,7 +38,7 @@ class Nu < Formula
 
     inreplace "Nukefile" do |s|
       s.gsub!('(SH "sudo ', '(SH "') # don't use sudo to install
-      s.gsub!("#{@destdir}/Library/Frameworks", "#{@prefix}/Frameworks")
+      s.gsub!("\#{@destdir}/Library/Frameworks", "\#{@prefix}/Frameworks")
       s.sub! /^;; source files$/, <<-EOS
 ;; source files
 (set @framework_install_path "#{frameworks}")
@@ -51,18 +52,14 @@ EOS
     system "./mininush", "tools/nuke", "install"
   end
 
-  def caveats
-    if self.installed? && File.exist?(frameworks+"Nu.framework")
-      return <<-EOS.undent
-        Nu.framework was installed to:
-          #{frameworks}/Nu.framework
+  def caveats; <<-EOS.undent
+    Nu.framework was installed to:
+      #{frameworks}/Nu.framework
 
-        You may want to symlink this Framework to a standard OS X location,
-        such as:
-          ln -s "#{frameworks}/Nu.framework" /Library/Frameworks
-      EOS
-    end
-    nil
+    You may want to symlink this Framework to a standard OS X location,
+    such as:
+      ln -s "#{frameworks}/Nu.framework" /Library/Frameworks
+  EOS
   end
 
   test do

@@ -1,3 +1,5 @@
+HOMEBREW_VERSION="0.9.5"
+
 odie() {
   if [[ -t 2 ]] # check whether stderr is a tty.
   then
@@ -70,6 +72,7 @@ then
   fi
 fi
 
+export HOMEBREW_VERSION
 export HOMEBREW_BREW_FILE
 export HOMEBREW_RUBY_PATH
 export HOMEBREW_PREFIX
@@ -146,7 +149,7 @@ fi
 if [[ "$(id -u)" = "0" && "$(/usr/bin/stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
 then
   case "$HOMEBREW_COMMAND" in
-    install|reinstall|postinstall|link|pin|update|upgrade|create|migrate|tap|switch)
+    install|reinstall|postinstall|link|pin|update|upgrade|create|migrate|tap|tap-pin|switch)
       odie <<EOS
 Cowardly refusing to 'sudo brew $HOMEBREW_COMMAND'
 You can use brew with sudo, but only if the brew executable is owned by root.

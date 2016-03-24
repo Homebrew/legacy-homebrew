@@ -1,14 +1,14 @@
 class Nmap < Formula
   desc "Port scanning utility for large networks"
   homepage "https://nmap.org/"
-  url "https://nmap.org/dist/nmap-7.01.tar.bz2"
-  sha256 "cf1fcd2643ba2ef52f47acb3c18e52fa12a4ae4b722804da0e54560704627705"
+  url "https://nmap.org/dist/nmap-7.11.tar.bz2"
+  sha256 "13fa971555dec00e495a5b72c1f9efa1363b8e6c7388a2f05117cb0778c0954a"
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
 
   bottle do
-    sha256 "644e1272f7a88282786489227046ae6adfb1619ba0aab7728f571dd075935db9" => :el_capitan
-    sha256 "19c07ff23d45d33e8e85ef7f8c919e584c2024a5266939a47ac53d171cf21dc6" => :yosemite
-    sha256 "a3d47249831e4959b4fa443c463fd52a59997cc1eb20d21361f79691ca39f1d4" => :mavericks
+    sha256 "1f01d36441f75d412b0e9286239316550690110bf5107e15e0d574d1df4e164a" => :el_capitan
+    sha256 "c9157eea44176abb56d038423a141f21ec0b78be01c216ae0e3a226e20d0c15c" => :yosemite
+    sha256 "561a91b2614b01db6b9fb29f6592f710e37dfba3591df3dcde74852f9012d2ce" => :mavericks
   end
 
   depends_on "openssl"

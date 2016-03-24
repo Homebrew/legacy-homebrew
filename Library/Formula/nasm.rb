@@ -1,14 +1,14 @@
 class Nasm < Formula
   desc "Netwide Assembler (NASM) is an 80x86 assembler"
   homepage "http://www.nasm.us/"
-  url "http://www.nasm.us/pub/nasm/releasebuilds/2.12/nasm-2.12.tar.xz"
-  sha256 "f34cc1e984ed619b8f9e96cea632e3c6fdea5e039069dbcb63397b7bd004f5a8"
+  url "http://www.nasm.us/pub/nasm/releasebuilds/2.12.01/nasm-2.12.01.tar.xz"
+  sha256 "9dbba1ce620512e435ba57e69e811fe8e07d04359e47e0a0b5e94a5dd8367489"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "72d51c01641ae42ba73b229b3473385cacab4227922a25388f8cf1274a72b0cf" => :el_capitan
-    sha256 "d710b580c309528b165b5540ffed42b59e7cc17642ffebbb7f4963b953303489" => :yosemite
-    sha256 "40ce5ef6b1946c4706fb5aa14c8b5a89e65ddf60d78d5ce439369205fd096309" => :mavericks
+    sha256 "3b0bdc6ddb5bdd7ba59f52e8c4043e755e39d4fc5d1ee01e5e3ae7c50f8fc515" => :el_capitan
+    sha256 "21f3c053d9542ad5c7b8d0d787b88dde4bfd08a7ec2e51a4e2f2af5c4477cf7f" => :yosemite
+    sha256 "904315d256c85e6bf5cb776d7c553fb5998192c3fc574256b2b35ae762d92d0e" => :mavericks
   end
 
   head do

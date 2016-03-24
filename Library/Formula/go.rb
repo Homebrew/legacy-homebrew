@@ -9,18 +9,23 @@ class Go < Formula
   head "https://github.com/golang/go.git"
 
   bottle do
-    sha256 "099f9915169facb03b68d2398097d213aac55895429a42230f068c41d099c66b" => :el_capitan
-    sha256 "7adc6b3ef3340c13ab0b1cde9bb870246dc991065aa154dac8b8be5e6bc11585" => :yosemite
-    sha256 "adf969c78e1b224e3d6567d5b0ba061b9a36a43f569ad1a955110e8e840d5b27" => :mavericks
+    revision 2
+    sha256 "c36e89f37ded34f000440af3b74bf7ac40857a09c2d668094601cb44889a12a8" => :el_capitan
+    sha256 "99aa8ee902111b6de1864dbf2ff5a2fa2782e70aadba61991c0c0e70a8e86b5d" => :yosemite
+    sha256 "df04d44e5aff57814b6871689e4ede01fdd4444cf632264ef0d9d77a02e1d406" => :mavericks
   end
 
   option "without-cgo", "Build without cgo"
   option "without-godoc", "godoc will not be installed for you"
   option "without-vet", "vet will not be installed for you"
+  option "without-race", "Build without race detector"
+
+  go_version = version
 
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
-    :revision => "d02228d1857b9f49cd0252788516ff5584266eb6"
+    :branch => "release-branch.go#{go_version}",
+    :revision => "c887be1b2ebd11663d4bf2fbca508c449172339e"
   end
 
   resource "gobootstrap" do
@@ -57,6 +62,12 @@ class Go < Formula
     rm_rf "gobootstrap" # Bootstrap not required beyond compile.
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/go*"]
+
+    # Race detector only supported on amd64 platforms.
+    # https://golang.org/doc/articles/race_detector.html
+    if MacOS.prefer_64_bit? && build.with?("race")
+      system "#{bin}/go", "install", "-race", "std"
+    end
 
     if build.with?("godoc") || build.with?("vet")
       ENV.prepend_path "PATH", bin

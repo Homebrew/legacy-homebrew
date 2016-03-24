@@ -1,9 +1,9 @@
 class Vcsh < Formula
   desc "Config manager based on git"
   homepage "https://github.com/RichiH/vcsh"
-  url "https://github.com/RichiH/vcsh/archive/v1.20150502-1.tar.gz"
-  version "1.20150502-1"
-  sha256 "ffb2f619926eee942da5687262e63f0816b10abdfd7f10bf5f44d50739d5f4d1"
+  url "https://github.com/RichiH/vcsh/archive/v1.20151229-1.tar.gz"
+  version "1.20151229-1"
+  sha256 "7682a517eaf88a86ea5e38ad81707800e965375eaff8b5cfd882e210fe2fef71"
 
   bottle :unneeded
 
@@ -14,6 +14,6 @@ class Vcsh < Formula
   end
 
   test do
-    system "#{bin}/vcsh"
+    assert_match /Initialized empty/, shell_output("#{bin}/vcsh init test").strip
   end
 end

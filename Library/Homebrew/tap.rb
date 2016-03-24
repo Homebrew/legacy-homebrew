@@ -1,4 +1,6 @@
 require "extend/string"
+require "tap_migrations"
+require "formula_renames"
 
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
@@ -31,8 +33,7 @@ class Tap
     repo = repo.strip_prefix "homebrew-"
 
     if user == "Homebrew" && repo == "homebrew"
-      require "core_formula_repository"
-      return CoreFormulaRepository.instance
+      return CoreTap.instance
     end
 
     cache_key = "#{user}/#{repo}".downcase
@@ -70,6 +71,7 @@ class Tap
     @remote = nil
     @formula_dir = nil
     @formula_files = nil
+    @alias_dir = nil
     @alias_files = nil
     @aliases = nil
     @alias_table = nil
@@ -83,7 +85,7 @@ class Tap
   # e.g. `https://github.com/user/homebrew-repo`
   def remote
     @remote ||= if installed?
-      if git?
+      if git? && Utils.git_available?
         path.cd do
           Utils.popen_read("git", "config", "--get", "remote.origin.url").chomp
         end
@@ -96,6 +98,34 @@ class Tap
   # True if this {Tap} is a git repository.
   def git?
     (path/".git").exist?
+  end
+
+  # git HEAD for this {Tap}.
+  def git_head
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "rev-parse", "--verify", "-q", "HEAD").chuzzle }
+  end
+
+  # git HEAD in short format for this {Tap}.
+  def git_short_head
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "rev-parse", "--short=4", "--verify", "-q", "HEAD").chuzzle }
+  end
+
+  # time since git last commit for this {Tap}.
+  def git_last_commit
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "show", "-s", "--format=%cr", "HEAD").chuzzle }
+  end
+
+  # git last commit date for this {Tap}.
+  def git_last_commit_date
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "show", "-s", "--format=%cd", "--date=short", "HEAD").chuzzle }
   end
 
   # The issues URL of this {Tap}.
@@ -131,7 +161,7 @@ class Tap
   end
 
   # @private
-  def core_formula_repository?
+  def core_tap?
     false
   end
 
@@ -269,7 +299,7 @@ class Tap
   # path to the directory of all alias files for this {Tap}.
   # @private
   def alias_dir
-    path/"Aliases"
+    @alias_dir ||= path/"Aliases"
   end
 
   # an array of all alias files of this {Tap}.
@@ -414,5 +444,88 @@ class Tap
   # @private
   def alias_file_to_name(file)
     "#{name}/#{file.basename}"
+  end
+end
+
+# A specialized {Tap} class to mimic the core formula file system, which shares many
+# similarities with normal {Tap}.
+# TODO Separate core formulae with core codes. See discussion below for future plan:
+#      https://github.com/Homebrew/homebrew/pull/46735#discussion_r46820565
+class CoreTap < Tap
+  # @private
+  def initialize
+    @user = "Homebrew"
+    @repo = "homebrew"
+    @name = "Homebrew/homebrew"
+    @path = HOMEBREW_REPOSITORY
+  end
+
+  def self.instance
+    @instance ||= CoreTap.new
+  end
+
+  # @private
+  def uninstall
+    raise "Tap#uninstall is not available for CoreTap"
+  end
+
+  # @private
+  def pin
+    raise "Tap#pin is not available for CoreTap"
+  end
+
+  # @private
+  def unpin
+    raise "Tap#unpin is not available for CoreTap"
+  end
+
+  # @private
+  def pinned?
+    false
+  end
+
+  # @private
+  def command_files
+    []
+  end
+
+  # @private
+  def custom_remote?
+    remote != "https://github.com/#{user}/#{repo}.git"
+  end
+
+  # @private
+  def core_tap?
+    true
+  end
+
+  # @private
+  def formula_dir
+    @formula_dir ||= HOMEBREW_LIBRARY/"Formula"
+  end
+
+  # @private
+  def alias_dir
+    @alias_dir ||= HOMEBREW_LIBRARY/"Aliases"
+  end
+
+  # @private
+  def formula_renames
+    FORMULA_RENAMES
+  end
+
+  # @private
+  def tap_migrations
+    TAP_MIGRATIONS
+  end
+
+  # @private
+  def formula_file_to_name(file)
+    file.basename(".rb").to_s
+  end
+
+  # @private
+  def alias_file_to_name(file)
+    file.basename.to_s
   end
 end

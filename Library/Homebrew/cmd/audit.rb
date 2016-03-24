@@ -247,7 +247,7 @@ class FormulaAuditor
       return
     end
 
-    if oldname = CoreFormulaRepository.instance.formula_renames[name]
+    if oldname = CoreTap.instance.formula_renames[name]
       problem "'#{name}' is reserved as the old name of #{oldname}"
       return
     end
@@ -508,6 +508,8 @@ class FormulaAuditor
     rescue GitHub::HTTPNotFoundError
       return
     end
+
+    return if metadata.nil?
 
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
     if (metadata["forks_count"] < 20) && (metadata["subscribers_count"] < 20) &&

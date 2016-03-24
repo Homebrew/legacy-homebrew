@@ -137,6 +137,16 @@ class PathnameTests < Homebrew::TestCase
     assert_equal "a", File.read(@dst+@src.basename+@file.basename)
   end
 
+  def test_install_renamed_directory_recursive
+    @dst.extend(InstallRenamed)
+    (@dst+@dir.basename).mkpath
+    (@dst+@dir.basename+"another_file").write "a"
+    @dir.mkpath
+    (@dir+"another_file").write "b"
+    @dst.install @dir
+    assert_equal "b", File.read(@dst+@dir.basename+"another_file.default")
+  end
+
   def test_cp_path_sub_file
     @file.write "a"
     @file.cp_path_sub @src, @dst

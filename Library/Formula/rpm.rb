@@ -12,7 +12,7 @@ class RpmDownloadStrategy < CurlDownloadStrategy
 end
 
 class Rpm < Formula
-  desc "RPM package manager"
+  desc "Standard unix software packaging tool"
   homepage "http://www.rpm5.org/"
   url "http://rpm5.org/files/rpm/rpm-5.4/rpm-5.4.15-0.20140824.src.rpm",
       :using => RpmDownloadStrategy
@@ -116,7 +116,7 @@ class Rpm < Formula
     system "#{bin}/rpm", "-vv", "-qa", "--dbpath=#{testpath}"
     rpmdir("%_builddir").mkpath
     specfile = rpmdir("%_specdir")+"test.spec"
-    (specfile).write(test_spec)
+    specfile.write(test_spec)
     system "#{bin}/rpmbuild", "-ba", specfile
     assert File.exist?(testpath/"var/lib/rpm/SRPMS/test-1.0-1.src.rpm")
   end

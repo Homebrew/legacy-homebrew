@@ -3,61 +3,25 @@ brew() {
 }
 
 git() {
-  [[ -n "$HOMEBREW_GIT" ]] || odie "HOMEBREW_GIT is unset!"
-  "$HOMEBREW_GIT" "$@"
-}
-
-which_git() {
-  local git_path
-  local active_developer_dir
-
-  if [[ -n "$HOMEBREW_GIT" ]]
-  then
-    git_path="$HOMEBREW_GIT"
-  elif [[ -n "$GIT" ]]
-  then
-    git_path="$GIT"
-  else
-    git_path="git"
-  fi
-
-  git_path="$(which "$git_path" 2>/dev/null)"
-
-  if [[ -n "$git_path" ]]
-  then
-    git_path="$(chdir "${git_path%/*}" && pwd -P)/${git_path##*/}"
-  fi
-
-  if [[ -n "$HOMEBREW_OSX" && "$git_path" = "/usr/bin/git" ]]
-  then
-    active_developer_dir="$('/usr/bin/xcode-select' -print-path 2>/dev/null)"
-    if [[ -n "$active_developer_dir" && -x "$active_developer_dir/usr/bin/git" ]]
-    then
-      git_path="$active_developer_dir/usr/bin/git"
-    else
-      git_path=""
-    fi
-  fi
-  echo "$git_path"
+  "$HOMEBREW_LIBRARY/ENV/scm/git" "$@"
 }
 
 git_init_if_necessary() {
-  set -e
-  trap '{ rm -rf .git; exit 1; }' EXIT
-
   if [[ ! -d ".git" ]]
   then
+    set -e
+    trap '{ rm -rf .git; exit 1; }' EXIT
     git init
     git config --bool core.autocrlf false
     git config remote.origin.url https://github.com/Homebrew/homebrew.git
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-    git fetch origin
+    git fetch --force --depth=1 origin refs/heads/master:refs/remotes/origin/master
     git reset --hard origin/master
     SKIP_FETCH_HOMEBREW_REPOSITORY=1
+    set +e
+    trap - EXIT
+    return
   fi
-
-  set +e
-  trap - EXIT
 
   if [[ "$(git remote show origin -n)" = *"mxcl/homebrew"* ]]
   then
@@ -292,12 +256,10 @@ EOS
     odie "$HOMEBREW_REPOSITORY must be writable!"
   fi
 
-  HOMEBREW_GIT="$(which_git)"
-  if [[ -z "$HOMEBREW_GIT" ]]
+  if ! git --version >/dev/null 2>&1
   then
     brew install git
-    HOMEBREW_GIT="$(which_git)"
-    if [[ -z "$HOMEBREW_GIT" ]]
+    if ! git --version >/dev/null 2>&1
     then
       odie "Git must be installed and in your PATH!"
     fi
@@ -343,13 +305,14 @@ EOS
         # (so the API does not return 304: unmodified).
         UPSTREAM_SHA_HTTP_CODE="$(curl --silent '--max-time' 3 \
            --output /dev/null --write-out "%{http_code}" \
-           -H "Accept: application/vnd.github.chitauri-preview+sha" \
-           -H "If-None-Match: \"$UPSTREAM_BRANCH_LOCAL_SHA\"" \
+           --user-agent "Homebrew $HOMEBREW_VERSION" \
+           --header "Accept: application/vnd.github.chitauri-preview+sha" \
+           --header "If-None-Match: \"$UPSTREAM_BRANCH_LOCAL_SHA\"" \
            "https://api.github.com/repos/$UPSTREAM_REPOSITORY/commits/$UPSTREAM_BRANCH")"
         [[ "$UPSTREAM_SHA_HTTP_CODE" = "304" ]] && exit
       fi
 
-      git fetch "${QUIET_ARGS[@]}" origin \
+      git fetch --force "${QUIET_ARGS[@]}" origin \
         "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" || \
           odie "Fetching $DIR failed!"
     ) &

@@ -1,8 +1,8 @@
 class Sshuttle < Formula
   desc "Proxy server that works as a poor man's VPN"
   homepage "https://github.com/sshuttle/sshuttle"
-  url "https://github.com/sshuttle/sshuttle/archive/v0.75.tar.gz"
-  sha256 "63714287d8f9128eefafe4e1b9fc9c8367490f9d074a2b2ff2f555c46ff794b2"
+  url "https://pypi.python.org/packages/source/s/sshuttle/sshuttle-0.77.2.tar.gz"
+  sha256 "20cc93802bded9efef1efb89a044abd7ef585cafc4da62b4bd83de944b8694bb"
   head "https://github.com/sshuttle/sshuttle.git"
 
   bottle :unneeded

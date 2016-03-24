@@ -10,7 +10,6 @@ require "software_spec"
 require "install_renamed"
 require "pkg_version"
 require "tap"
-require "core_formula_repository"
 require "keg"
 require "migrator"
 
@@ -142,7 +141,7 @@ class Formula
     @revision = self.class.revision || 0
 
     if path == Formulary.core_path(name)
-      @tap = CoreFormulaRepository.instance
+      @tap = CoreTap.instance
       @full_name = name
     elsif path.to_s =~ HOMEBREW_TAP_PATH_REGEX
       @tap = Tap.fetch($1, $2)
@@ -1062,13 +1061,13 @@ class Formula
   # an array of all core {Formula} names
   # @private
   def self.core_names
-    CoreFormulaRepository.instance.formula_names
+    CoreTap.instance.formula_names
   end
 
   # an array of all core {Formula} files
   # @private
   def self.core_files
-    CoreFormulaRepository.instance.formula_files
+    CoreTap.instance.formula_files
   end
 
   # an array of all tap {Formula} names
@@ -1141,13 +1140,13 @@ class Formula
   # an array of all alias files of core {Formula}
   # @private
   def self.core_alias_files
-    CoreFormulaRepository.instance.alias_files
+    CoreTap.instance.alias_files
   end
 
   # an array of all core aliases
   # @private
   def self.core_aliases
-    CoreFormulaRepository.instance.aliases
+    CoreTap.instance.aliases
   end
 
   # an array of all tap aliases
@@ -1171,13 +1170,13 @@ class Formula
   # a table mapping core alias to formula name
   # @private
   def self.core_alias_table
-    CoreFormulaRepository.instance.alias_table
+    CoreTap.instance.alias_table
   end
 
   # a table mapping core formula name to aliases
   # @private
   def self.core_alias_reverse_table
-    CoreFormulaRepository.instance.alias_reverse_table
+    CoreTap.instance.alias_reverse_table
   end
 
   def self.[](name)
@@ -1187,13 +1186,13 @@ class Formula
   # True if this formula is provided by Homebrew itself
   # @private
   def core_formula?
-    tap && tap.core_formula_repository?
+    tap && tap.core_tap?
   end
 
   # True if this formula is provided by external Tap
   # @private
   def tap?
-    tap && !tap.core_formula_repository?
+    tap && !tap.core_tap?
   end
 
   # @private

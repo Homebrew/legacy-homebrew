@@ -15,7 +15,6 @@ class Suil < Formula
   depends_on "lv2"
   depends_on "gtk+" => :recommended
   depends_on "qt" => :optional
-  depends_on "qt5" => :optional
   depends_on :x11 => :optional
 
   def install

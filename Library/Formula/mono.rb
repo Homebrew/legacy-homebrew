@@ -18,14 +18,14 @@ class Mono < Formula
 
   option "without-fsharp", "Build without support for the F# language."
 
-  resource "fsharp" do
-    url "https://github.com/fsharp/fsharp.git", :tag => "4.0.1.0",
-        :revision => "b22167013d1f4f0c41107fd40935dc1a8fe46386"
-  end
-
   depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "pkg-config" => :build
+
+  resource "fsharp" do
+    url "https://github.com/fsharp/fsharp.git", :tag => "4.0.1.0",
+                                                :revision => "b22167013d1f4f0c41107fd40935dc1a8fe46386"
+  end
 
   link_overwrite "bin/fsharpi"
   link_overwrite "bin/fsharpiAnyCpu"
@@ -64,6 +64,14 @@ class Mono < Formula
         system "make", "install"
       end
     end
+  end
+
+  def caveats; <<-EOS.undent
+    To use the assemblies from other formulae you need to set:
+      export MONO_GAC_PREFIX="#{HOMEBREW_PREFIX}"
+    Note that the 'mono' formula now includes F#. If you have
+    the 'fsharp' formula installed, remove it with 'brew uninstall fsharp'.
+    EOS
   end
 
   test do
@@ -132,13 +140,5 @@ class Mono < Formula
       EOS
       system "#{bin}/xbuild", "test.fsproj"
     end
-  end
-
-  def caveats; <<-EOS.undent
-    To use the assemblies from other formulae you need to set:
-      export MONO_GAC_PREFIX="#{HOMEBREW_PREFIX}"
-    Note that the 'mono' formula now includes F#. If you have
-    the 'fsharp' formula installed, remove it with 'brew uninstall fsharp'.
-    EOS
   end
 end

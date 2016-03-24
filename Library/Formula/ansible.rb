@@ -7,9 +7,10 @@ class Ansible < Formula
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha256 "347001579d8a5692654f622f820e06f790e28d84517ca41a64c3466f0c6ab156" => :el_capitan
-    sha256 "6000987100534bc9ddf530d071e367cd21a22c569c24ef9781a129a8674384ef" => :yosemite
-    sha256 "b22b007ca66ede18a565c4f9e154cfc1a088f24299cc447275bbb2b86fd1e941" => :mavericks
+    revision 1
+    sha256 "be446d21c04beaf79f24b9ee2b2cc8649d07f6997147e54517df6cda43afbaec" => :el_capitan
+    sha256 "e9dfd9b936aa1fde89b88de26dedeffd99870a4e194e4582319136751a39110d" => :yosemite
+    sha256 "a89fd9ab292556da3efaf609562350aec2408c700d1c08f80543ac63b0550811" => :mavericks
   end
 
   devel do
@@ -78,8 +79,8 @@ class Ansible < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.1.2.tar.gz"
-    sha256 "7f51459f84d670444275e615839f4542c93547a12e938a0a4906dafe5f7de153"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "enum34" do

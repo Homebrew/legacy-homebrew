@@ -37,7 +37,7 @@ module Homebrew
     if ARGV.include?("--new-issue") || ARGV.switch?("n")
       auth = :AUTH_TOKEN
 
-      unless HOMEBREW_GITHUB_API_TOKEN
+      unless GitHub.api_credentials
         puts "You can create a personal access token: https://github.com/settings/tokens"
         puts "and then set HOMEBREW_GITHUB_API_TOKEN as authentication method."
         puts
@@ -115,15 +115,8 @@ module Homebrew
   end
 
   def make_request(path, data, auth)
-    headers = {
-      "User-Agent"   => HOMEBREW_USER_AGENT,
-      "Accept"       => "application/vnd.github.v3+json",
-      "Content-Type" => "application/json"
-    }
-
-    if auth == :AUTH_TOKEN || (auth.nil? && HOMEBREW_GITHUB_API_TOKEN)
-      headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}"
-    end
+    headers = GitHub.api_headers
+    headers["Content-Type"] = "application/json"
 
     request = Net::HTTP::Post.new(path, headers)
 

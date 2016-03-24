@@ -1,15 +1,14 @@
 class Racket < Formula
   desc "Modern programming language in the Lisp/Scheme family"
   homepage "https://racket-lang.org/"
-  url "https://mirror.racket-lang.org/installers/6.3/racket-minimal-6.3-src-builtpkgs.tgz"
-  version "6.3"
-  sha256 "72d79026e1301ee222089fb555b3eb7290b95f4b7541fec21b4ddb5842fff081"
+  url "https://mirror.racket-lang.org/installers/6.4/racket-minimal-6.4-src-builtpkgs.tgz"
+  version "6.4"
+  sha256 "cf717d4983f4198fce8973ead5d427bc9da78b73bd51fee16b58c894c2a146e8"
 
   bottle do
-    revision 2
-    sha256 "f7b55fde0d4b967b4c9617b47d81a971826ff91cebbae415d681ffeb7c8df7a9" => :el_capitan
-    sha256 "5d2b3406f75501379c50c6506c9c817bfadadf236ddb106ced5be9d69d513af0" => :yosemite
-    sha256 "fd5d32d41b49e06c0a74669ad64239ccb76c8eb73c99d0d9300f18119ae76886" => :mavericks
+    sha256 "4c4aed2fbf16f3057bf570b383e407c320fb27a624f5df40ac8aa176c809a0b9" => :el_capitan
+    sha256 "2f647fb3d2c13249b85f9a52a97fdce17669bee1102805b8a0a9435397397977" => :yosemite
+    sha256 "6b67a01389d715b9a0cf692dab51b45904fe117f9c1243d5c19b9d0e323c1f4f" => :mavericks
   end
 
   # these two files are amended when (un)installing packages
@@ -49,8 +48,11 @@ class Racket < Formula
 
   def caveats; <<-EOS.undent
     This is a minimal Racket distribution.
-    If you want to use the DrRacket IDE, you may run
+    If you want to build the DrRacket IDE, you may run
       raco pkg install --auto drracket
+
+    The full Racket distribution is available as a cask:
+      brew cask install racket
     EOS
   end
 
@@ -65,9 +67,9 @@ class Racket < Formula
       ^name:
         #{version}
       catalogs:
-        http://download.racket-lang.org/releases/#{version}/catalog/
-        http://pkgs.racket-lang.org
-        http://planet-compats.racket-lang.org
+        https://download.racket-lang.org/releases/#{version}/catalog/
+        https://pkgs.racket-lang.org
+        https://planet-compats.racket-lang.org
       default-scope:
         installation
     EOS

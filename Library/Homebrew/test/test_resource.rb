@@ -94,8 +94,6 @@ class ResourceTests < Homebrew::TestCase
 
   def test_checksum_setters
     assert_nil @resource.checksum
-    @resource.sha1(TEST_SHA1)
-    assert_equal Checksum.new(:sha1, TEST_SHA1), @resource.checksum
     @resource.sha256(TEST_SHA256)
     assert_equal Checksum.new(:sha256, TEST_SHA256), @resource.checksum
   end
@@ -120,7 +118,7 @@ class ResourceTests < Homebrew::TestCase
 
   def test_verify_download_integrity_mismatch
     fn = stub(:file? => true)
-    checksum = @resource.sha1(TEST_SHA1)
+    checksum = @resource.sha256(TEST_SHA256)
 
     fn.expects(:verify_checksum).with(checksum).
       raises(ChecksumMismatchError.new(fn, checksum, Object.new))

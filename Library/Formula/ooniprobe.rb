@@ -6,9 +6,10 @@ class Ooniprobe < Formula
 
   bottle do
     cellar :any
-    sha256 "07723f65b43ed2262115f2d3e854e68ddd19c3656fa26dabaa4774ef7067e894" => :el_capitan
-    sha256 "4afd88781ca598afe301f838eea08e511bf032591d51a21006298a75c435ac69" => :yosemite
-    sha256 "900d2bee5c9769e72ef89f6f20d7a8ee46811810e42fb2a645dceceffdcb1a01" => :mavericks
+    revision 1
+    sha256 "f3449ca2f93c94851b9a12c260716cccaa203e11d9fb021e236c5dd85b27948f" => :el_capitan
+    sha256 "58bec0278e24a0c0c6ddc00df8f5e70f7a74e3f39cbd67701a730b48550fac42" => :yosemite
+    sha256 "a3590d68938f9c971f69fff1969a0c716b1bc267b8c6190bc3195891dd4de7b1" => :mavericks
   end
 
   depends_on "geoip"
@@ -21,8 +22,8 @@ class Ooniprobe < Formula
   # these 4 need to come first or else cryptography will let setuptools
   # easy_install them (which is bad)
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.2.1.tar.gz"
-    sha256 "eab571deb0a152e2f53c404c08a94870a131526896cad08cd43bf86ce3771e3d"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.5.2.tar.gz"
+    sha256 "da9bde99872e46f7bb5cff40a9b1cc08406765efafb583c704de108b6cb821dd"
   end
 
   resource "enum34" do
@@ -47,8 +48,8 @@ class Ooniprobe < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.0.1.tar.gz"
-    sha256 "cfe3092a6a929bc3a97c3b752044b79d09c9b210860c7b4eb5061aea29dcbfd3"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "GeoIP" do

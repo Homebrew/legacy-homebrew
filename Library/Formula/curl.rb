@@ -1,14 +1,15 @@
 class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server"
   homepage "https://curl.haxx.se/"
-  url "https://curl.haxx.se/download/curl-7.47.1.tar.bz2"
-  sha256 "ddc643ab9382e24bbe4747d43df189a0a6ce38fcb33df041b9cb0b3cd47ae98f"
+  url "https://curl.haxx.se/download/curl-7.48.0.tar.bz2"
+  sha256 "864e7819210b586d42c674a1fdd577ce75a78b3dda64c63565abe5aefd72c753"
 
   bottle do
     cellar :any
-    sha256 "738b8d4e2650711a6c9d59b416ef45a4a7e04d48f65344c5623b87224d92f11b" => :el_capitan
-    sha256 "8a945137576544f723c8b76579009c1b1b53a0683208d6123b65727678533340" => :yosemite
-    sha256 "4ce9db9e6332c8cd322f39d48cda624251316fa51942330536d5fddd103779fc" => :mavericks
+    revision 1
+    sha256 "6784a9831c900267195b6d8536ae3a1716665d5918899b95294bbf6c75f9941d" => :el_capitan
+    sha256 "6387cc1a58ff7bb7349f00bea22016a87b9345451b0432b2edc59aaa611cbccf" => :yosemite
+    sha256 "89536ee67d5fc50734ff50e3c55631321a425a99f76f4dd8be2dac84e699f0d7" => :mavericks
   end
 
   keg_only :provided_by_osx
@@ -44,6 +45,12 @@ class Curl < Formula
   depends_on "libmetalink" => :optional
   depends_on "libressl" => :optional
   depends_on "nghttp2" => :optional
+
+  # This patch fixes compile against LibreSSL. From:
+  # https://github.com/curl/curl/commit/240cd84b494e0ff
+  # https://github.com/curl/curl/commit/23ab4816443e2b9
+  # Can be removed on the next release.
+  patch :DATA
 
   def install
     # Throw an error if someone actually tries to rock both SSL choices.
@@ -101,3 +108,19 @@ class Curl < Formula
     filename.verify_checksum stable.checksum
   end
 end
+
+__END__
+diff --git a/lib/vtls/openssl.c b/lib/vtls/openssl.c
+index cbf2d21..f8ccb23 100644
+--- a/lib/vtls/openssl.c
++++ b/lib/vtls/openssl.c
+@@ -95,7 +95,8 @@
+
+ #if (OPENSSL_VERSION_NUMBER >= 0x10000000L)
+ #define HAVE_ERR_REMOVE_THREAD_STATE 1
+-#if (OPENSSL_VERSION_NUMBER >= 0x10100004L)
++#if (OPENSSL_VERSION_NUMBER >= 0x10100004L) && \
++  !defined(LIBRESSL_VERSION_NUMBER)
+ /* OpenSSL 1.1.0-pre4 removed the argument! */
+ #define HAVE_ERR_REMOVE_THREAD_STATE_NOARG 1
+ #endif

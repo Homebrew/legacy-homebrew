@@ -1,17 +1,16 @@
 class Knot < Formula
   desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-2.0.2.tar.xz"
-  sha256 "0418a22f9e801503993b3c872f2403bf73eab5ef7266128789b0531b41ea0c7e"
-  revision 1
+  url "https://secure.nic.cz/files/knot-dns/knot-2.1.1.tar.xz"
+  sha256 "e110d11d4a4c4b5abb091b32fcb073934fb840046e975234323e0fc15f2f8f5b"
 
   head "https://gitlab.labs.nic.cz/labs/knot.git"
 
   bottle do
     cellar :any
-    sha256 "d50cdf56ab983378103904777db2561f26735b5dd54cec6a8e42b0aca4fd0c40" => :el_capitan
-    sha256 "f33daf162fb1f7d48eed000c855312a0c5890a13b83bfd91ae4e7b3272e64a5f" => :yosemite
-    sha256 "f0ad7de6798ae89ce64618345265ea345c404868c869fbaccb9d6060c4329465" => :mavericks
+    sha256 "89f74b85b5a6f42a5051d279d087bf446b42c99ddd89bfd14154d431b3cc94bb" => :el_capitan
+    sha256 "f8377f2c37094fc446f167f954bfc0c3202e4d845317b0e7a140f455b9959f7a" => :yosemite
+    sha256 "8295bd95060e9f067613d3c9742d231b841694afdff96eae13f448e00f1a3d13" => :mavericks
   end
 
   depends_on "automake" => :build

@@ -2,7 +2,8 @@ module InstallRenamed
   def install_p(_, new_basename)
     super do |src, dst|
       if src.directory?
-        dst
+        dst.install(src.children)
+        next
       else
         append_default_if_different(src, dst)
       end

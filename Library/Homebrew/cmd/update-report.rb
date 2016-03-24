@@ -12,7 +12,7 @@ module Homebrew
     hub = ReporterHub.new
 
     begin
-      master_reporter = Reporter.new(CoreFormulaRepository.instance)
+      master_reporter = Reporter.new(CoreTap.instance)
     rescue Reporter::ReporterRevisionUnsetError => e
       raise e if ARGV.homebrew_developer?
       odie "update-report should not be called directly!"
@@ -125,7 +125,7 @@ class Reporter
       new_name = tap.formula_renames[old_name]
       next unless new_name
 
-      if tap.core_formula_repository?
+      if tap.core_tap?
         new_full_name = new_name
       else
         new_full_name = "#{tap}/#{new_name}"

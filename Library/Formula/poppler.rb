@@ -1,13 +1,13 @@
 class Poppler < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
-  url "https://poppler.freedesktop.org/poppler-0.41.0.tar.xz"
-  sha256 "420abaab63caed9e1ee28964a0ba216d1979506726164bc99ad5ade289192a1b"
+  url "https://poppler.freedesktop.org/poppler-0.42.0.tar.xz"
+  sha256 "9fef076ffe2a4f18a4e0da547d814ef5c5e6f8a283afe3387504a0bb1a418010"
 
   bottle do
-    sha256 "cc7172f9b672b09f52140463ac3ac574f79dc83015e2d927cf3abe8b225da6a3" => :el_capitan
-    sha256 "3771644309b386fd69a6678167b73849d718624b7a64c5bdf06e5d5abaf9d8ac" => :yosemite
-    sha256 "df5160db16962c5bbf2a64d352b0fe5ff5e07213b44b5e01cc140bbfda297958" => :mavericks
+    sha256 "c2d7715138d23ac0eac803207bc9c03fcfb96ab5751ccc7ffd83b2a1810db478" => :el_capitan
+    sha256 "1daae4629100e56eea633e327fd37b460f7ff4ab96be15fb7875c28c889e6dfe" => :yosemite
+    sha256 "85132c1566c4dfbd5d8217d9e80b6a49e7e3b57f3f7a032933db3b7b2f416a4b" => :mavericks
   end
 
   option "with-qt", "Build Qt backend"
@@ -28,7 +28,6 @@ class Poppler < Formula
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "openjpeg"
-
   depends_on "qt" => :optional
   depends_on "qt5" => :optional
   depends_on "little-cms2" => :optional
@@ -41,6 +40,7 @@ class Poppler < Formula
   end
 
   def install
+    ENV.cxx11 if MacOS.version < :mavericks
     ENV["LIBOPENJPEG_CFLAGS"] = "-I#{Formula["openjpeg"].opt_include}/openjpeg-1.5"
 
     args = %W[
