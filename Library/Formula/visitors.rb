@@ -24,7 +24,7 @@ class Visitors < Formula
       pipe.puts 'a:80 1.2.3.4 - - [01/Apr/2014:14:28:00 -0400] "GET /1 HTTP/1.1" 200 9 - -'
       pipe.puts 'a:80 1.2.3.4 - - [01/Apr/2014:14:28:01 -0400] "GET /2 HTTP/1.1" 200 9 - -'
       pipe.close_write
-      assert pipe.read.include?("Different pages requested: 2")
+      assert_match(/Different pages requested: 2/, pipe.read)
     end
   end
 end
