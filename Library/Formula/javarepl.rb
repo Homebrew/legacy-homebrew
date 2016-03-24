@@ -17,6 +17,6 @@ class Javarepl < Formula
   end
 
   test do
-    assert pipe_output("#{bin}/javarepl", "System.out.println(64*1024)\n:quit\n").include?("65536")
+    assert_match %r{65536}, pipe_output("#{bin}/javarepl", "System.out.println(64*1024)\n:quit\n")
   end
 end
