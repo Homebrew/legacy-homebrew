@@ -7,9 +7,9 @@ class Arangodb < Formula
   head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
 
   bottle do
-    sha256 "dab863de242a3bcfb833e2335135748657df740e37bac845a057e886e07635e2" => :el_capitan
-    sha256 "6b048787352f99f64720a0a6de04519f9e1488d3a20be37f1e3b0c6e1cd77fb2" => :yosemite
-    sha256 "acd9a070e1dd54e345160ac72378f276ad3b9c5819f72d2ff759299efa908911" => :mavericks
+    sha256 "55b02e0392524ae1cffcc7bcc18bd44a4b10c167940f11db98ee25c267cb92dd" => :el_capitan
+    sha256 "bec740ff6215d3bda3ee7a9e73b2f5c586114d739f728a5c4c00a7d050da95c2" => :yosemite
+    sha256 "02b3a5bf310dba74670eae9bc451ce41cf94d2f11ab9010103b4687d47a5f8ee" => :mavericks
   end
 
   depends_on "go" => :build
