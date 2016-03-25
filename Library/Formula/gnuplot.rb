@@ -21,7 +21,6 @@ class Gnuplot < Formula
   option "with-cairo", "Build the Cairo based terminals"
   option "without-lua", "Build without the lua/TikZ terminal"
   option "with-test", "Verify the build with make check"
-  option "without-emacs", "Do not build Emacs lisp files"
   option "with-wxmac", "Build wxmac support. Need with-cairo to build wxt terminal"
   option "with-tex", "Build with LaTeX support"
   option "with-aquaterm", "Build with AquaTerm support"
@@ -92,7 +91,6 @@ class Gnuplot < Formula
     # Per upstream: "--with-tutorial is horribly out of date."
     args << "--without-tutorial"
     args << "--without-lua" if build.without? "lua"
-    args << "--without-lisp-files" if build.without? "emacs"
     args << ((build.with? "aquaterm") ? "--with-aquaterm" : "--without-aquaterm")
     args << ((build.with? "x11") ? "--with-x" : "--without-x")
 
