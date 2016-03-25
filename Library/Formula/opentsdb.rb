@@ -29,7 +29,9 @@ class Opentsdb < Formula
       system "../configure",
              "--disable-silent-rules",
              "--prefix=#{prefix}",
-             "--mandir=#{man}"
+             "--mandir=#{man}",
+             "--sysconfdir=#{etc}",
+             "--localstatedir=#{var}/opentsdb"
       system "make"
       system "make", "install-exec-am"
       system "make", "install-data-am"
