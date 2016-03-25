@@ -7,7 +7,8 @@ class FbClient < Formula
   head "https://git.server-speed.net/users/flo/fb", :using => :git
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "f9e82a33c953c765995cedc81e8eec04d64d3db96eba7c4e08708c51e0147c3c" => :el_capitan
     sha256 "bb16ff29baa1d2dbbf51a04b9cf0aa0bb5b7690e2fecd3be880b3138b0d21069" => :yosemite
     sha256 "281f3a5eb5092dcf59ae63f96cb011fe2283c6c94ff421b2ce2d42aa311836ce" => :mavericks
     sha256 "2d16d3c1edfb3544a3eb0ff9e4ddc8ccc93c4532d7adab83dc6f21dcae8706bf" => :mountain_lion

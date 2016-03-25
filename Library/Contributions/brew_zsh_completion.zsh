@@ -138,6 +138,12 @@ case "$words[1]" in
     _brew_pinned_taps
     _wanted pinned_taps expl 'pinned taps' compadd -a pinned_taps ;;
   upgrade)
-    _brew_outdated_formulae
-    _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;
+    _arguments \
+      '(--cleanup)--cleanup[remove previously installed formula version(s)]' \
+      '1: :->forms' && return 0
+
+    if [[ "$state" == forms ]]; then
+      _brew_outdated_formulae
+      _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae
+    fi ;;
 esac

@@ -1,10 +1,15 @@
 class Irssi < Formula
   desc "Modular IRC client"
   homepage "https://irssi.org/"
-  url "https://github.com/irssi-import/irssi/releases/download/0.8.17/irssi-0.8.17.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/i/irssi/irssi_0.8.17.orig.tar.gz"
-  sha256 "0ae01f76797fb6d6b8e0f2268b39c7afb90ac62658ec754c82acfc344b8203e9"
-  revision 2
+  url "https://github.com/irssi/irssi/releases/download/0.8.19/irssi-0.8.19.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/i/irssi/irssi_0.8.19.orig.tar.gz"
+  sha256 "fe4f4b778698de8e1c319b9cd9b9ed5534f0ece7ac2bfa0af351a3157c6ec85b"
+
+  bottle do
+    sha256 "d23b2fcfffaec2ff7b06d333522f2fc595f16f25db6034ba3ce557d71c934949" => :el_capitan
+    sha256 "42100f71db945875b591b92e2e410c84ac9fa88609270782fe1998811fe84804" => :yosemite
+    sha256 "45d0e499afa6bacbc98533588da326418de72f2b2f7cebff64edfee25b0d3011" => :mavericks
+  end
 
   head do
     url "https://github.com/irssi/irssi.git"
@@ -12,14 +17,6 @@ class Irssi < Formula
     depends_on "autoconf" => :build
     depends_on "libtool" => :build
     depends_on "lynx" => :build
-  end
-
-  bottle do
-    revision 2
-    sha256 "2446b2960e3bef1f184fbe0801490d2a15ca7b8d61b7652a5dbbf499ec351edc" => :el_capitan
-    sha256 "a3f40b5a09cd11ee4fe46420b03fe8ac99c1603ac560cdd56b373745d5a07b6b" => :yosemite
-    sha256 "58a876749226ac7f862bdd8ba2d8c1b3aa9f5f9e9bc69e6d7671a32899b108e8" => :mavericks
-    sha256 "dbe24bf6031f96b060884f07dcfc33e00fca993001c3676ce949f6f00522ba88" => :mountain_lion
   end
 
   option "with-dante", "Build with SOCKS support"
@@ -31,16 +28,6 @@ class Irssi < Formula
   depends_on "dante" => :optional
 
   def install
-    if build.stable?
-      # Make paths in man page Homebrew-specific
-      # (https://github.com/irssi/irssi/issues/251); can be removed in
-      # next stable release
-      inreplace "docs/irssi.1" do |s|
-        s.gsub! "/usr/share", "#{HOMEBREW_PREFIX}/share"
-        s.gsub! "/etc/irssi.conf", "#{HOMEBREW_PREFIX}/etc/irssi.conf"
-      end
-    end
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -59,10 +46,6 @@ class Irssi < Formula
     else
       args << "--with-perl=no"
     end
-
-    # confuses Perl library path configuration
-    # https://github.com/Homebrew/homebrew/issues/34685
-    ENV.delete "PERL_MM_OPT"
 
     args << "--disable-ssl" if build.without? "openssl"
 

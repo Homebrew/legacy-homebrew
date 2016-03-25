@@ -9,10 +9,10 @@ class BashCompletion < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 2
-    sha256 "fa3223e326e3319c261bbd1b289da4118e7a38887494b82aa4a67c99c6eb99ef" => :el_capitan
-    sha256 "0968d379dccbb2c63459aa20a97df8422740fedb599d529735c01750543792a4" => :yosemite
-    sha256 "7b9e7523a70c0dd79dc3eaa9c868660f0e5bce07d03ce66621535233504903ec" => :mavericks
+    revision 3
+    sha256 "52258306b5c2c04785dd9dd197495cd906815d093bcb4e7d2e580c9b68c23d56" => :el_capitan
+    sha256 "d94667d452b56fff80e554213932e10b8491a305f2750c04f6b958f3ec828e71" => :yosemite
+    sha256 "b17500ede97ac936718d10b3ce4348563fb668c5fa9c460de6a1d85b0c1a9424" => :mavericks
   end
 
   # Backports the following upstream patch from 2.x:
@@ -69,7 +69,7 @@ index 6601937..5184767 100644
      # append any available aliases from config files
      if [[ ${#config[@]} -gt 0 && -n "$aliases" ]]; then
 -        local hosts=$( sed -ne 's/^[ \t]*[Hh][Oo][Ss][Tt]\([Nn][Aa][Mm][Ee]\)\{0,1\}['"$'\t '"']\{1,\}\([^#*?]*\)\(#.*\)\{0,1\}$/\2/p' "${config[@]}" )
-+        local hosts=$( sed -ne 's/^['"$'\t '"']*[Hh][Oo][Ss][Tt]\([Nn][Aa][Mm][Ee]\)\{0,1\}['"$'\t '"']\{1,\}\([^#*?]*\)\(#.*\)\{0,1\}$/\2/p' "${config[@]}" )
++        local hosts=$( sed -ne 's/^[[:blank:]]*[Hh][Oo][Ss][Tt]\([Nn][Aa][Mm][Ee]\)\{0,1\}[[:blank:]]\{1,\}\([^#*?]*\)\(#.*\)\{0,1\}$/\2/p' "${config[@]}" )
          COMPREPLY=( "${COMPREPLY[@]}" $( compgen  -P "$prefix$user" \
              -S "$suffix" -W "$hosts" -- "$cur" ) )
      fi

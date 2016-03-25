@@ -1,15 +1,14 @@
 class Nkf < Formula
   desc "Network Kanji code conversion Filter (NKF)"
   homepage "https://osdn.jp/projects/nkf/"
-  url "http://dl.osdn.jp/nkf/59912/nkf-2.1.3.tar.gz"
-  sha256 "8cb430ae69a1ad58b522eb4927b337b5b420bbaeb69df255919019dc64b72fc2"
+  url "http://dl.osdn.jp/nkf/64158/nkf-2.1.4.tar.gz"
+  sha256 "b4175070825deb3e98577186502a8408c05921b0c8ff52e772219f9d2ece89cb"
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "8ff7763563ac384a0401d5719fd0948c1aaab1a92a1833e37f0fcf5328797f8a" => :el_capitan
-    sha256 "4604f107d1afb7b60216961fae82771bfc79b82c35c1013468b185b96b2691c9" => :yosemite
-    sha256 "be101e0c95328993f661b8d81a23b141cc3f8b863908cc9b7d650eab1b82daa6" => :mavericks
+    sha256 "71a4b7a8a2eef8ae33e8c6f81ebfd8afbcae8237c03720783d2157dcd307b600" => :el_capitan
+    sha256 "de741a793e59bc390e3b919f3d3bab245694e7c92c1a821ff60480078f1ae67d" => :yosemite
+    sha256 "8b34cb6acebf1a6a446572924c3a585e48ad0007dc394670ee94b9c1fe5d61c2" => :mavericks
   end
 
   def install

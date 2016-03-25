@@ -40,6 +40,8 @@ update_git_diff_output_with_changed_filetype: |
   D	Library/Formula/libgsasl.rb
   M	Library/Homebrew/cmd/update.rb
   M	SUPPORTERS.md
+update_git_diff_output_with_formula_rename: |
+  R100	Library/Formula/cv.rb	Library/Formula/progress.rb
 update_git_diff_output_with_restructured_tap: |
   R100	git.rb	Formula/git.rb
   R100	lua.rb	Formula/lua.rb

@@ -3,13 +3,13 @@ class Minidlna < Formula
   homepage "https://sourceforge.net/projects/minidlna/"
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.5/minidlna-1.1.5.tar.gz"
   sha256 "8477ad0416bb2af5cd8da6dde6c07ffe1a413492b7fe40a362bc8587be15ab9b"
+  revision 1
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "4d85c9e347059b147e137d97e4013d6410a2cf8a4ecd624854633b4c65a1615a" => :el_capitan
-    sha256 "1cf829580a368c8bcd0df473557e323219c4513c9c3cba3e7b9a29bf453ce98c" => :yosemite
-    sha256 "6966ecb8d620b6cb074a750926217c19d4f459caced01e28f72c512259387d4e" => :mavericks
+    sha256 "26eca84ae424d6c09eaaafed4c1086f5f0a0b7ac31d85f5b2326ac79fc4f2d13" => :el_capitan
+    sha256 "5f60b419cbaaafe10346bee031fe8ade57776e40833846164280950595d7a601" => :yosemite
+    sha256 "6685427a0ff92f85a312e6b378ed3aa3ce746b0777bd661dbc544883261fa19a" => :mavericks
   end
 
   head do

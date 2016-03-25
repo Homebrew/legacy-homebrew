@@ -1,22 +1,22 @@
 class GstPluginsGood < Formula
   desc "GStreamer plugins (well-supported, under the LGPL)"
-  homepage "http://gstreamer.freedesktop.org/"
+  homepage "https://gstreamer.freedesktop.org/"
 
   stable do
-    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.2.tar.xz"
-    sha256 "876e54dfce93274b98e024f353258d35fa4d49d1f9010069e676c530f6eb6a92"
+    url "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.8.0.tar.xz"
+    sha256 "c20c134d47dbc238d921707a3b66da709c2b4dd89f9d267cec13d1ddf16e9f4d"
 
     depends_on "check" => :optional
   end
 
   bottle do
-    sha256 "2b270292dd58a8b0a703ee00f80f50100eeb48617cfbf024eb4d3beeb25c40d5" => :el_capitan
-    sha256 "5d76d76b1914d9a1f589a32a6795f3e17870ca68820ddce07ab23554e2bd42a9" => :yosemite
-    sha256 "4990905eb444d443e8488858c3cf362da11e66d9c886e25f5fd0f9245d7a5de4" => :mavericks
+    sha256 "d95d88e4355f0319d84d168299f8bde72a741207c7653c9343ed88006e64b5f6" => :el_capitan
+    sha256 "776af71fc8207152af28ca730afeb7e251a29982a6ccd21a45d95b83018fe466" => :yosemite
+    sha256 "76c232b8015d6e3448d0d7738553f4d55cec970f798c8115494b004be5fdeabe" => :mavericks
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gst-plugins-good"
+    url "https://anongit.freedesktop.org/git/gstreamer/gst-plugins-good.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -47,6 +47,7 @@ class GstPluginsGood < Formula
   depends_on "taglib" => :optional
   depends_on "libpng" => :optional
   depends_on "libvpx" => :optional
+  depends_on "pulseaudio" => :optional
 
   depends_on "libogg" if build.with? "flac"
 

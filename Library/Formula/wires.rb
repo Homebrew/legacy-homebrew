@@ -1,14 +1,14 @@
 class Wires < Formula
   desc "WebDriver <-> Marionette proxy"
   homepage "https://github.com/jgraham/wires"
-  url "https://github.com/jgraham/wires/archive/v0.4.2.tar.gz"
-  sha256 "f86fdac8f69f94bd57dc9fdb45851585a24790b069605d033288e419653c9efe"
+  url "https://github.com/jgraham/wires/archive/v0.6.2.tar.gz"
+  sha256 "bbc73c1014dd218b424a82da6e656f638aa672fd0990229eff8c1a005166db07"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0b58c4a03483a791a67a3883ebb07b70c0e16a125d3424f20a299bb2c25f50ab" => :el_capitan
-    sha256 "1bbcdac65c0d297932d132e16ee09753d6c0ae2eaa98d1a124a23eab50486d52" => :yosemite
-    sha256 "cd4173ade452891eae61ef95480abd45cf84cd1716ad8d603e30e10bce356c3b" => :mavericks
+    sha256 "b7408f7a32326df3200fc88ace88a3d19a285cbba1a79631947b150422b43cef" => :el_capitan
+    sha256 "4037fdfaaa442386412bfcb66ed40ab6527b584d2b76e41d5399d018d03b1eba" => :yosemite
+    sha256 "f265f4acd2265a1be067ab453d47aada5db299c948843a8d32e74754e45374d2" => :mavericks
   end
 
   depends_on "rust" => :build

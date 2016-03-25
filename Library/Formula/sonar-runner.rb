@@ -1,8 +1,8 @@
 class SonarRunner < Formula
   desc "Launcher to analyze a project with SonarQube"
-  homepage "http://docs.sonarqube.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner"
-  url "https://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.4/sonar-runner-dist-2.4.zip"
-  sha256 "f794545e23092c8b56d64d58ff571b2599480150b3fc41173b3761d634a16d48"
+  homepage "http://docs.sonarqube.org/display/SONAR/Analyzing+with+SonarQube+Scanner"
+  url "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.5.zip"
+  sha256 "e2ec5f4b73aa7911f10518e304db3af0146a4347b8d06fc1d4a36b8baec0d8cc"
   head "https://github.com/SonarSource/sonar-runner.git"
 
   bottle :unneeded
@@ -15,7 +15,7 @@ class SonarRunner < Formula
   end
 
   def caveats; <<-EOS.undent
-      If this is your first install, you should adjust its default configuration:
+      If this is your first install, you should adjust the default configuration:
         #{libexec}/conf/sonar-runner.properties
 
       after that you should also add a new enviroment variable:

@@ -1,14 +1,14 @@
 class Libgraphqlparser < Formula
   desc "GraphQL query parser in C++ with C and C++ APIs"
   homepage "https://github.com/graphql/libgraphqlparser"
-  url "https://github.com/graphql/libgraphqlparser/archive/v0.2.0.tar.gz"
-  sha256 "5064f63024c20cdc2c41970a6e9a5c7b053565db22f5f8dfb946923cb077f9de"
+  url "https://github.com/graphql/libgraphqlparser/archive/v0.4.1.tar.gz"
+  sha256 "2ed66fd38b6e8a4a39c646fe713b5893d3d6b076dcd34be28a356cb3cb879595"
 
   bottle do
     cellar :any
-    sha256 "a3159b88fa2731edc6e8b36f903f999717fcc0eae25cd943166d4ca8818cd82f" => :el_capitan
-    sha256 "bcd9fa1158621ff40007ab047acd90cd20f60827c7f584b1e1d81065ae1a9efc" => :yosemite
-    sha256 "9d39dfd27728ff7904dc09a02c854bc4c85f43a34c9e6a9d17506df2e883cd66" => :mavericks
+    sha256 "52afe0dcec93ec9b886c3d7ecacf64c81f3887e299d3238aff7b4fd295a24329" => :el_capitan
+    sha256 "4fed85aba87c4cb54168cb1e8c73d6e7d4eee9689b09f18c07137ffdfb850ac3" => :yosemite
+    sha256 "1dfc83c494e8ceef8eb5d757190312d13ecafeb1b88464c44073417989bf5488" => :mavericks
   end
 
   depends_on "cmake" => :build

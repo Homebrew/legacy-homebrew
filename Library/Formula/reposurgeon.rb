@@ -1,15 +1,15 @@
 class Reposurgeon < Formula
   desc "Edit version-control repository history"
   homepage "http://www.catb.org/esr/reposurgeon/"
-  url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.29.tar.xz"
-  sha256 "51105e18a2f350146e23c01ea559a07400c3b715f8ec338206f19c19197b0a0f"
+  url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.33.tar.xz"
+  sha256 "88a88d8fa0f612f5efc7ba5b2ca741713d260a250ada5b1ee01029436c08b571"
   head "https://gitlab.com/esr/reposurgeon.git"
 
   bottle do
-    cellar :any
-    sha256 "afe3bcd343cfe1897e9951720feef41037de0dd2abb2799747956f98c2930cbb" => :yosemite
-    sha256 "bac28e15ce2610589c4adc6a8b40327843fbdbbf3081195fbfa8eb2bc9a17dbd" => :mavericks
-    sha256 "a2b14e3135d25089933abf0bb28e79048d9788972636c70eadb30a37277e45fa" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "7c00e2437c203612a254b1c9474a0a8fe19f09742ec12d69c407b984d52c1659" => :el_capitan
+    sha256 "a31e22200334d34d876fd03cf57e573d963e04d08fe8e8f3f578889e1413c966" => :yosemite
+    sha256 "0e4bc991e7931292adda08465a1493175023f91906dc689623b156c90651683b" => :mavericks
   end
 
   option "without-cython", "Build without cython (faster compile)"
@@ -19,17 +19,16 @@ class Reposurgeon < Formula
   depends_on "xmlto" => :build
 
   resource "cython" do
-    url "http://cython.org/release/Cython-0.23.1.tar.gz"
-    sha256 "bdfd12d6a2a2e34b9a1bbc1af5a772cabdeedc3851703d249a52dcda8378018a"
+    url "http://cython.org/release/Cython-0.23.4.tar.gz"
+    sha256 "fec42fecee35d6cc02887f1eef4e4952c97402ed2800bfe41bbd9ed1a0730d8e"
   end
 
   def install
     # OSX doesn't provide 'python2', but on some Linux distributions
     # 'python' is an alias for python3 so this won't be changed
     # upstream
-    %W[reposurgeon repodiffer].each do |file|
-      inreplace file, "#!/usr/bin/env python2", "#!/usr/bin/env python"
-    end
+    inreplace %w[reposurgeon repodiffer],
+      "#!/usr/bin/env python2", "#!/usr/bin/env python"
 
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     system "make", "install", "prefix=#{prefix}"
@@ -54,14 +53,9 @@ class Reposurgeon < Formula
         email = notacat@hotmail.cat
       EOS
     system "git", "init"
-    touch "homebrew"
-    system "git", "add", "homebrew"
-    system "git", "commit", "--message", "brewing"
+    system "git", "commit", "--allow-empty", "--message", "brewing"
 
-    assertion = lambda do |prog|
-      assert_match "brewing", shell_output("script -q /dev/null #{bin}/#{prog} read list")
-    end
-    assertion["reposurgeon"]
-    assertion["cyreposurgeon"] if build.with? "cython"
+    assert_match "brewing",
+      shell_output("script -q /dev/null #{bin}/reposurgeon read list")
   end
 end

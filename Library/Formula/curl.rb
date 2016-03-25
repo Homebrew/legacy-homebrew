@@ -1,16 +1,15 @@
 class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server"
-  homepage "http://curl.haxx.se/"
-  url "https://github.com/bagder/curl/releases/download/curl-7_46_0/curl-7.46.0.tar.bz2"
-  mirror "http://curl.haxx.se/download/curl-7.46.0.tar.bz2"
-  sha256 "b7d726cdd8ed4b6db0fa1b474a3c59ebbbe4dcd4c61ac5e7ade0e0270d3195ad"
+  homepage "https://curl.haxx.se/"
+  url "https://curl.haxx.se/download/curl-7.48.0.tar.bz2"
+  sha256 "864e7819210b586d42c674a1fdd577ce75a78b3dda64c63565abe5aefd72c753"
 
   bottle do
     cellar :any
-    sha256 "2c307a334fd93b8776054d327e387bc34291f3a8fef5db5de8ec5d227a220b45" => :el_capitan
-    sha256 "cbc2ffc4a6c771f024a59edd27fb2d2f38763abe7da94b52070f0242b9ab0017" => :yosemite
-    sha256 "f0140e5c3e797a5853d5068655de659effa1c486ae9545ba20052d2ae5d43c68" => :mavericks
-    sha256 "4890e0a09d0dc45f8345ec3a60f1ae5a1f22007e7473aed9a2525f13b2702a3e" => :mountain_lion
+    revision 1
+    sha256 "6784a9831c900267195b6d8536ae3a1716665d5918899b95294bbf6c75f9941d" => :el_capitan
+    sha256 "6387cc1a58ff7bb7349f00bea22016a87b9345451b0432b2edc59aaa611cbccf" => :yosemite
+    sha256 "89536ee67d5fc50734ff50e3c55631321a425a99f76f4dd8be2dac84e699f0d7" => :mavericks
   end
 
   keg_only :provided_by_osx
@@ -46,6 +45,12 @@ class Curl < Formula
   depends_on "libmetalink" => :optional
   depends_on "libressl" => :optional
   depends_on "nghttp2" => :optional
+
+  # This patch fixes compile against LibreSSL. From:
+  # https://github.com/curl/curl/commit/240cd84b494e0ff
+  # https://github.com/curl/curl/commit/23ab4816443e2b9
+  # Can be removed on the next release.
+  patch :DATA
 
   def install
     # Throw an error if someone actually tries to rock both SSL choices.
@@ -103,3 +108,19 @@ class Curl < Formula
     filename.verify_checksum stable.checksum
   end
 end
+
+__END__
+diff --git a/lib/vtls/openssl.c b/lib/vtls/openssl.c
+index cbf2d21..f8ccb23 100644
+--- a/lib/vtls/openssl.c
++++ b/lib/vtls/openssl.c
+@@ -95,7 +95,8 @@
+
+ #if (OPENSSL_VERSION_NUMBER >= 0x10000000L)
+ #define HAVE_ERR_REMOVE_THREAD_STATE 1
+-#if (OPENSSL_VERSION_NUMBER >= 0x10100004L)
++#if (OPENSSL_VERSION_NUMBER >= 0x10100004L) && \
++  !defined(LIBRESSL_VERSION_NUMBER)
+ /* OpenSSL 1.1.0-pre4 removed the argument! */
+ #define HAVE_ERR_REMOVE_THREAD_STATE_NOARG 1
+ #endif

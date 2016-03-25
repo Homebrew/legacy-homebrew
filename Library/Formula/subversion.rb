@@ -6,9 +6,10 @@ class Subversion < Formula
   sha256 "8bbf6bb125003d88ee1c22935a36b7b1ab7d957e0c8b5fbfe5cb6310b6e86ae0"
 
   bottle do
-    sha256 "df2bc98152f018db3baf5755538d35fb156c161f84fcdc93f342b07ec480dec7" => :el_capitan
-    sha256 "f81d250ec0907d3c117239aec70fad623f1061b48961343260d1926976b526d6" => :yosemite
-    sha256 "7aadf3862a7d456c07763ca684d225b1924df3a511d8bd36a0b42e30f6a785a1" => :mavericks
+    revision 1
+    sha256 "954a141e7551a2355184d4d81c916220781969de535cbbd0a882ae82f58ca8dc" => :el_capitan
+    sha256 "26c1cab5285cec5eb8bf5d88a67c1520238b21db31268705b3ff16d2d1ad6412" => :yosemite
+    sha256 "d036ab9d228f61e63b12b8c6f845398424caaf7da68bdd8220ad6f5419583c89" => :mavericks
   end
 
   deprecated_option "java" => "with-java"
@@ -76,10 +77,6 @@ class Subversion < Formula
 
       ENV.universal_binary if build.universal?
 
-      # Fix perl bindings Makefile.pl failing with:
-      # Only one of PREFIX or INSTALL_BASE can be given.  Not both.
-      ENV.delete "PERL_MM_OPT"
-
       # scons ignores our compiler and flags unless explicitly passed
       args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}
@@ -90,7 +87,7 @@ class Subversion < Formula
         args << "APU=#{Formula["apr-util"].opt_prefix}"
       end
 
-      scons *args
+      scons(*args)
       scons "install"
     end
 
@@ -194,11 +191,10 @@ class Subversion < Formula
           "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I#{perl_core}"
       end
       system "make", "swig-pl"
-      system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+      system "make", "install-swig-pl"
 
       # Some of the libraries get installed into the wrong place, they end up having the
       # prefix in the directory name twice.
-
       lib.install Dir["#{prefix}/#{lib}/*"]
     end
 

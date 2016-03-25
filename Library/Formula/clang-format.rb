@@ -1,28 +1,28 @@
 class ClangFormat < Formula
   desc "Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2016-01-05"
+  version "2016-03-08"
 
   stable do
-    url "http://llvm.org/releases/3.7.1/llvm-3.7.1.src.tar.xz"
-    sha256 "be7794ed0cec42d6c682ca8e3517535b54555a3defabec83554dbc74db545ad5"
+    url "http://llvm.org/releases/3.8.0/llvm-3.8.0.src.tar.xz"
+    sha256 "555b028e9ee0f6445ff8f949ea10e9cd8be0d084840e21fbbe1d31d51fc06e46"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.7.1/cfe-3.7.1.src.tar.xz"
-      sha256 "56e2164c7c2a1772d5ed2a3e57485ff73ff06c97dff12edbeea1acc4412b0674"
+      url "http://llvm.org/releases/3.8.0/cfe-3.8.0.src.tar.xz"
+      sha256 "04149236de03cf05232d68eb7cb9c50f03062e339b68f4f8a03b650a11536cf9"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.7.1/libcxx-3.7.1.src.tar.xz"
-      sha256 "357fbd4288ce99733ba06ae2bec6f503413d258aeebaab8b6a791201e6f7f144"
+      url "http://llvm.org/releases/3.8.0/libcxx-3.8.0.src.tar.xz"
+      sha256 "36804511b940bc8a7cefc7cb391a6b28f5e3f53f6372965642020db91174237b"
     end
   end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "54dbe7695d83c9dcc08cce26f400f5d348d94d91076d70f795c0e11fbfe8df36" => :el_capitan
-    sha256 "f908cd465f5d9dc1f1732986967480ffa15473d7c83bdfbbdb3e9e9442750f15" => :yosemite
-    sha256 "cb8537c2d51fb29caf8f11b35adcd14362fbf575dcb1c7fbab2879884e5ca1b3" => :mavericks
+    sha256 "e6b26890dc59982f2beb0bf45a6de51c5f63dbcc9739f583a84c47495eae2fa3" => :el_capitan
+    sha256 "f6cd9d90f3acbac3cfbce746ba476f3c1b8633787a9d6bddef1d12dae2f1b563" => :yosemite
+    sha256 "114b346b627ffb49e03d28fb20d0ebe6380090478795cc43b503ba841db4016c" => :mavericks
   end
 
   head do
@@ -33,8 +33,8 @@ class ClangFormat < Formula
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.7.1/libcxx-3.7.1.src.tar.xz"
-      sha256 "357fbd4288ce99733ba06ae2bec6f503413d258aeebaab8b6a791201e6f7f144"
+      url "http://llvm.org/releases/3.8.0/libcxx-3.8.0.src.tar.xz"
+      sha256 "36804511b940bc8a7cefc7cb391a6b28f5e3f53f6372965642020db91174237b"
     end
   end
 

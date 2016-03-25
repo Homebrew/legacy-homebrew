@@ -1,29 +1,25 @@
 class Lsyncd < Formula
   desc "Synchronize local directories with remote targets"
   homepage "https://github.com/axkibe/lsyncd"
-  url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
-  sha256 "aa82fd9bf5737395e374650720c02f033d74a7101b57878ac92f5720ae9e7ece"
-  revision 2
+  url "https://github.com/axkibe/lsyncd/archive/release-2.1.6.tar.gz"
+  sha256 "02c241ee71b6abb23a796ac994a414e1229f530c249b838ae72d2ef74ae0f775"
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "04dd6dfbfe0e66ed04228a3ee941b89a3b0442eb595b2ea455f523a5d4aa5f31" => :el_capitan
-    sha256 "552db4284f88d3b92df0424ccaa276c7bb92ce3ca3e3a7b50c335ebf2f306612" => :yosemite
-    sha256 "e56f564e19f3e8d46401915c139214e1ddc56df82be773a1304596d0adbbfc01" => :mavericks
+    sha256 "077da32f3468d592dbb3cd9c5797286702d501bec1c67d4b1420923c5d52741a" => :el_capitan
+    sha256 "ff0c1043f7a96094627f2be1ec488430499dd2da95c53ee9a8c26656ba197292" => :yosemite
+    sha256 "4e7752758b7bb76ee244056408fe9e9a9033cc3b24914851c221cc9895200561" => :mavericks
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "asciidoc" => :build
-  depends_on "docbook" => :build
-  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
   depends_on "lua"
 
-  # This is an artificial requirement, the resource below is incomplete
-  depends_on :macos => :lion
-
   xnu_headers = {
+    "10.7"     => ["xnu-1699.22.73.tar.gz",  "c9d24560af543e6099b6248bdbcef3581e7ba4af3afd92974719f7c5a8db5bd2"],
+    "10.7.1"   => ["xnu-1699.22.81.tar.gz",  "b1422aadf0d3842f3c97e61178adfddb6596e67ba1d877da7f11e2f455fa8dec"],
+    "10.7.2"   => ["xnu-1699.24.8.tar.gz",   "4268ce69799db51f1b48e400b6fa6a7041b266a1a5404034398aa51b7084b269"],
+    "10.7.3"   => ["xnu-1699.24.23.tar.gz",  "f91a2e8128e220c7ea21ff5c0b61cf76b2afcae83f057d2116837272fd46bead"],
+    "10.7.4"   => ["xnu-1699.26.8.tar.gz",   "76f0e6e703218b3b1620b29b7fabb5eb177c990af20711a90085a5a6afc54022"],
     "10.7.5"   => ["xnu-1699.32.7.tar.gz",   "2163816aae990675d8f45cdced4b680bb112fb7a600eb0063af2c2bc2ea15e15"],
     "10.8"     => ["xnu-2050.7.9.tar.gz",    "25c8fc346d1c209f6d20b456dcb256f1e829e844f67b262c090caf088559f4b1"],
     "10.8.1"   => ["xnu-2050.9.2.tar.gz",    "f342179c625413ae3a74fc1a5747fc555c1353cfef6259c595626469744a6405"],
@@ -41,11 +37,13 @@ class Lsyncd < Formula
     "10.10.1"  => ["xnu-2782.1.97.tar.gz",   "18fd93155c53fa66c48c2c876313311bba55cff260ea10e7b67dd7ed1f4b945c"],
     "10.10.2"  => ["xnu-2782.10.72.tar.gz",  "0725dfc77ce245e37b57d226445217c17d0a7750db099d3ca69a4ad1c7f39356"],
     "10.10.3"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
-    "10.10.4"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
-    "10.10.5"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
-    "10.11"    => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
-    "10.11.1"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
-    "10.11.2"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
+    "10.10.4"  => ["xnu-2782.30.5.tar.gz",  "16fbd88fb5833fdfb6d8169b7c330d344c12b6a644678a1eb68f27c318b8811d"],
+    "10.10.5"  => ["xnu-2782.40.9.tar.gz",  "f9f2524124edebe81bb1ead2f69c3daeed1f37641aef68ac4df5bcffd2ab0898"],
+    "10.11"    => ["xnu-3247.1.106.tar.gz",  "660f8f107d284fe797675b0a266c63016876aa5bb4add99d88ffb9cd9001d84f"],
+    "10.11.1"  => ["xnu-3247.10.11.tar.gz",  "66ff554039e3b8351fdb2103c4dfb6bf8015c6f9a219f70c057b839cb10b1640"],
+    "10.11.2"  => ["xnu-3248.20.55.tar.gz",  "10c3acf0da74d6f4684d6a870b425546fc9c9dcb9c39541556f47cba2440a2ab"],
+    "10.11.3"  => ["xnu-3248.20.55.tar.gz",  "10c3acf0da74d6f4684d6a870b425546fc9c9dcb9c39541556f47cba2440a2ab"],
+    "10.11.4"  => ["xnu-3248.20.55.tar.gz",  "10c3acf0da74d6f4684d6a870b425546fc9c9dcb9c39541556f47cba2440a2ab"],
   }
 
   if xnu_headers.key? MACOS_FULL_VERSION
@@ -56,28 +54,20 @@ class Lsyncd < Formula
     end
   end
 
-  # patch for CVE-2014-8990
-  # https://github.com/axkibe/lsyncd/commit/e9ffda07f0145f50f2756f8ee3fb0775b455122b
-  # https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-8990
-  patch do
-    url "https://gist.githubusercontent.com/tdsmith/d807811d3c6965b0221e/raw/965545662eec39b60d50645487e6ade9d7d43834/cve-2014-8990.diff"
-    sha256 "c6476855acaefd4619bd6900751247c2af12983ed2aff9bdfbf971ffcb662fc2"
-  end
-
   def install
     # XNU Headers
     resource("xnu").stage buildpath/"xnu"
-    ENV.append "CPPFLAGS", "-Ixnu"
 
-    ENV.append "XML_CATALOG_FILES", "#{Formula["docbook"].opt_prefix}/docbook/xml/4.5/catalog.xml"
-    ENV["A2X"] = "#{Formula["asciidoc"].opt_bin}/a2x"
+    args = std_cmake_args
+    args << "-DWITH_INOTIFY=OFF"
+    args << "-DWITH_FSEVENTS=ON"
+    args << "-DXNU_DIR=#{buildpath/"xnu"}"
 
-    system "./autogen.sh"
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--with-fsevents",
-                          "--without-inotify",
-                          "--prefix=#{prefix}"
+    # DESTINATION man
+    inreplace "CMakeLists.txt", "DESTINATION man",
+                                "DESTINATION #{man}"
+
+    system "cmake", ".", *args
     system "make", "install"
   end
 

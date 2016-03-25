@@ -487,7 +487,7 @@ module GitHub
         GitHub #{error}
         Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
           #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
-        and then set the token as: HOMEBREW_GITHUB_API_TOKEN
+        and then set the token as: export HOMEBREW_GITHUB_API_TOKEN="your_new_token"
       EOS
     end
 
@@ -498,11 +498,59 @@ module GitHub
 
   class AuthenticationFailedError < Error
     def initialize(error)
-      super <<-EOS.undent
-        GitHub #{error}
-        HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
+      message = "GitHub #{error}\n"
+      if ENV["HOMEBREW_GITHUB_API_TOKEN"]
+        message << <<-EOS.undent
+          HOMEBREW_GITHUB_API_TOKEN may be invalid or expired; check:
           #{Tty.em}https://github.com/settings/tokens#{Tty.reset}
-      EOS
+        EOS
+      else
+        message << <<-EOS.undent
+          The GitHub credentials in the OS X keychain are invalid.
+          Clear them with:
+            printf "protocol=https\\nhost=github.com\\n" | git credential-osxkeychain erase
+        EOS
+      end
+      super message
+    end
+  end
+
+  def api_credentials
+    @api_credentials ||= begin
+      if ENV["HOMEBREW_GITHUB_API_TOKEN"]
+        ENV["HOMEBREW_GITHUB_API_TOKEN"]
+      else
+        github_credentials = Utils.popen("git credential-osxkeychain get", "w+") do |io|
+          io.puts "protocol=https\nhost=github.com"
+          io.close_write
+          io.read
+        end
+        github_username = github_credentials[/username=(.+)/, 1]
+        github_password = github_credentials[/password=(.+)/, 1]
+        if github_username && github_password
+          [github_password, github_username]
+        else
+          []
+        end
+      end
+    end
+  end
+
+  def api_headers
+    @api_headers ||= begin
+        headers = {
+        "User-Agent" => HOMEBREW_USER_AGENT,
+        "Accept"     => "application/vnd.github.v3+json"
+      }
+      token, username = api_credentials
+      if token && !token.empty?
+        if username && !username.empty?
+          headers[:http_basic_authentication] = [username, token]
+        else
+          headers["Authorization"] = "token #{token}"
+        end
+      end
+      headers
     end
   end
 
@@ -512,15 +560,8 @@ module GitHub
 
     require "net/https"
 
-    headers = {
-      "User-Agent" => HOMEBREW_USER_AGENT,
-      "Accept"     => "application/vnd.github.v3+json"
-    }
-
-    headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-
     begin
-      Kernel.open(url, headers) { |f| yield Utils::JSON.load(f.read) }
+      Kernel.open(url, api_headers) { |f| yield Utils::JSON.load(f.read) }
     rescue OpenURI::HTTPError => e
       handle_api_error(e)
     rescue EOFError, SocketError, OpenSSL::SSL::SSLError => e
@@ -531,7 +572,7 @@ module GitHub
   end
 
   def handle_api_error(e)
-    if e.io.meta["x-ratelimit-remaining"].to_i <= 0
+    if e.io.meta.fetch("x-ratelimit-remaining", 1).to_i <= 0
       reset = e.io.meta.fetch("x-ratelimit-reset").to_i
       error = Utils::JSON.load(e.io.read)["message"]
       raise RateLimitExceededError.new(reset, error)
@@ -543,7 +584,8 @@ module GitHub
     when "404"
       raise HTTPNotFoundError, e.message, e.backtrace
     else
-      raise Error, e.message, e.backtrace
+      error = Utils::JSON.load(e.io.read)["message"] rescue nil
+      raise Error, [e.message, error].compact.join("\n"), e.backtrace
     end
   end
 

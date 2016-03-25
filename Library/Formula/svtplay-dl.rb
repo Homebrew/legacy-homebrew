@@ -1,25 +1,26 @@
 class SvtplayDl < Formula
   desc "Download videos from http://svtplay.se"
   homepage "https://svtplay-dl.se"
-  url "https://pypi.python.org/packages/source/s/svtplay-dl/svtplay-dl-0.30.2016.1.10.tar.gz"
-  sha256 "0f043c83f8e1619d5d37ca44283416c3839df622e638872ce98db75ba9fb0ab6"
+  url "https://pypi.python.org/packages/source/s/svtplay-dl/svtplay-dl-0.30.2016.2.8.tar.gz"
+  sha256 "ca541a5ce2ef5f8fc7587b5d3bc899d7ff0e86f0fc9cb3cb4f9daaef7632f7f1"
 
   bottle do
     cellar :any
-    sha256 "cb19a87fe1f10921c4a5d687730df31a5573d411db21b687e5429055ce241f11" => :el_capitan
-    sha256 "ee0f3cd942da6daada70ee615aa7ac9e122f94317b7dadf634685992c20e1525" => :yosemite
-    sha256 "715638ac542ce6f7e240b79b86493d2fa78864d624e23c02346e1cd849b69366" => :mavericks
+    revision 1
+    sha256 "f700eeed0d80208cc25fc44c97592e92e24057e721227c5549a58db4dc9742c2" => :el_capitan
+    sha256 "7cfbd94fa74c6853b4a84fcd527c0c27ea2bbd72d9dc541ecf9e6c44026f0ac7" => :yosemite
+    sha256 "f7489152a7a3d065520691837f59ea5fb80e9ae834b0dda27c636f1c74ab416c" => :mavericks
   end
 
   # for request security
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.4.2.tar.gz"
-    sha256 "8f1d177d364ea35900415ae24ca3e471be3d5334ed0419294068c49f45913998"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.5.2.tar.gz"
+    sha256 "da9bde99872e46f7bb5cff40a9b1cc08406765efafb583c704de108b6cb821dd"
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.1.2.tar.gz"
-    sha256 "7f51459f84d670444275e615839f4542c93547a12e938a0a4906dafe5f7de153"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "enum34" do

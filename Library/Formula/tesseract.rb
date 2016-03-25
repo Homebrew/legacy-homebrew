@@ -1,14 +1,14 @@
 class Tesseract < Formula
   desc "OCR (Optical Character Recognition) engine"
   homepage "https://github.com/tesseract-ocr/"
-  url "https://github.com/tesseract-ocr/tesseract/archive/3.04.00.tar.gz"
-  sha256 "7e6e48b625e1fba9bc825a4ef8c39f12c60aae1084939133b3c6a00f8f8dc38c"
+  url "https://github.com/tesseract-ocr/tesseract/archive/3.04.01.tar.gz"
+  sha256 "57f63e1b14ae04c3932a2683e4be4954a2849e17edd638ffe91bc5a2156adc6a"
+  revision 1
 
   bottle do
-    revision 1
-    sha256 "07ec3efaa3a9aa56bdb9b2af470e306af9bb6bb093f110ff2df81b8934459230" => :el_capitan
-    sha256 "905b27b4bdba1fe61157c8f75aa44cbc1b7f6fe4c51800a7070dbca760163a65" => :yosemite
-    sha256 "722d846bdfe713b5ffd96e2ae77387d6fa10f13dd3d56aac54be2da2206f5a4e" => :mavericks
+    sha256 "0e1ea373a757f19a7f19f3412cda85b612cc2d230e14cacb26ea0ddc694ca101" => :el_capitan
+    sha256 "99a634c471474235b5c846cd74e242b30691b2a02153e6e1bd63aa4a8f2c9b6f" => :yosemite
+    sha256 "aee2237246941213a2a042c2a305a460751678046ce0c27af832d5da8935667f" => :mavericks
   end
 
   head do
@@ -70,6 +70,11 @@ class Tesseract < Formula
     ENV["LIBLEPT_HEADERSDIR"] = HOMEBREW_PREFIX/"include"
 
     ENV.cxx11
+
+    # Fix broken pkg-config file
+    # Can be removed with next version bump
+    # https://github.com/tesseract-ocr/tesseract/issues/241
+    inreplace "tesseract.pc.in", "@OPENCL_LIB@", "@OPENCL_LDFLAGS@" if build.stable?
 
     system "./autogen.sh" if build.head?
 

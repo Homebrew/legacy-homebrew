@@ -1,15 +1,14 @@
 class ActivemqCpp < Formula
   desc "C++ API for message brokers such as Apache ActiveMQ"
   homepage "https://activemq.apache.org/cms/index.html"
-  url "https://www.apache.org/dyn/closer.cgi?path=activemq/activemq-cpp/3.8.4/activemq-cpp-library-3.8.4-src.tar.bz2"
-  sha256 "9fba18d57f7512ae4f17008d7745d1b4c957b858b585860deadbf9208cb733e3"
+  url "https://www.apache.org/dyn/closer.cgi?path=activemq/activemq-cpp/3.9.2/activemq-cpp-library-3.9.2-src.tar.bz2"
+  sha256 "b3f58fc938cf4fae37192ca317d3d9e4c77caeeeff804ec6f27642201d923bb8"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "2498f3693277a93b0607a04ff7dbdecc018a8621535db12964a2abee3d0550fa" => :yosemite
-    sha256 "1924f8c680b4f5ce033a915623df17779a63aea9a816961360585bf3071c6a22" => :mavericks
-    sha256 "d276773ac0864c7c02bc4a55eac7ee52c73d5d0046ccd7fa5d2ebeb1453f60ee" => :mountain_lion
+    sha256 "5a065ca136501b5f6214f0b1f4779d29bf35cfc3f950c1486bdb324530dfe677" => :el_capitan
+    sha256 "708c717db7170bfa7819882c623ae8f5e1973c603479662b760a539cc2ed5979" => :yosemite
+    sha256 "07d8c3d296a6d9ba23966e035935d97b08016bff53daabbf2da160aea6c984c2" => :mavericks
   end
 
   depends_on "pkg-config" => :build

@@ -6,10 +6,10 @@ class Dovecot < Formula
   sha256 "7ab7139e59e1f0353bf9c24251f13c893cf1a6ef4bcc47e2d44de437108d0b20"
 
   bottle do
-    revision 1
-    sha256 "092c14278b0312c4e245f3e9c185b98b15ba224da347cd4f82aca7c9ba2d575b" => :el_capitan
-    sha256 "7af1f6cfd6dfa6072123ccac3226f27bef2c96ca4adea520521268537d57529f" => :yosemite
-    sha256 "a5de0175355213f91aac5201d00c5b341aeb6baacfb30c5218cc8b17a767cee0" => :mavericks
+    revision 2
+    sha256 "280a50a51c3025c49cbb8682baa39c512451ec5c3d7ea4be119a1351b14e925b" => :el_capitan
+    sha256 "4c9e79a80a3f696f87e9ce4e94015cd3c131f43253d7f546792fefecca461fd9" => :yosemite
+    sha256 "84d4d5d7f6aa337c0ef0e79af8576fbda93d2c41e1940509dd6bcd8b34b58f80" => :mavericks
   end
 
   option "with-pam", "Build with PAM support"
@@ -21,8 +21,8 @@ class Dovecot < Formula
   depends_on "clucene" => :optional
 
   resource "pigeonhole" do
-    url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.11.tar.gz"
-    sha256 "5168b4ac4e173b563dd71f4024452da5a578aa8d5d047d98903489ab4d84ad72"
+    url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.12.tar.gz"
+    sha256 "98a2fd79b0d9effd08c0caf04d483b1caa5e4503dae811e6d436948557bfb702"
   end
 
   resource "stemmer" do

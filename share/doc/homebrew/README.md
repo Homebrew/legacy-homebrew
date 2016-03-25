@@ -21,7 +21,7 @@ However! Fixing build issues is easier than you think: try
 `brew edit $FORMULA` and see how you fare.
 
 ## Contributing
-Read [CONTRIBUTING.md](/CONTRIBUTING.md).
+Read [CONTRIBUTING.md](/.github/CONTRIBUTING.md).
 
 ### Community Forums
 -  [@MacHomebrew](https://twitter.com/MacHomebrew)
@@ -30,4 +30,4 @@ Read [CONTRIBUTING.md](/CONTRIBUTING.md).
 
 ## Supporters
 [A list of the awesome people who gave £5 or more to our
-Kickstarter](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).
+Kickstarter](./Kickstarter-Supporters.md).

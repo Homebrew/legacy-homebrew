@@ -14,9 +14,9 @@ class Portaudio < Formula
     sha256 "1386972e0632b4ebe2b2770f1ade4c5921c7726fb7fa70f764f5fe09df085c5e" => :mountain_lion
   end
 
-  depends_on "pkg-config" => :build
-
   option :universal
+
+  depends_on "pkg-config" => :build
 
   def install
     ENV.universal_binary if build.universal?

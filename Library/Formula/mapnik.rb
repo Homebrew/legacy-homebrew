@@ -1,17 +1,16 @@
 class Mapnik < Formula
   desc "Toolkit for developing mapping applications"
   homepage "http://www.mapnik.org/"
-  url "https://s3.amazonaws.com/mapnik/dist/v3.0.5/mapnik-v3.0.5.tar.bz2"
-  sha256 "d8f771d45b236d987aab44819a517f4c1ed6d7ff2c42c2e51160e37d28c89cc3"
-  revision 1
+  url "https://github.com/mapnik/mapnik/archive/v3.0.9.tar.gz"
+  sha256 "f0242606096e2c4ca2cd0caac1ff0fd5f8054a38b5f288ba38b0e397b5b311b2"
 
   head "https://github.com/mapnik/mapnik.git"
 
   bottle do
     cellar :any
-    sha256 "6b2f666dd55d0e805f15d78d02d60efefbf1637e292bd5390eff4df8e870052d" => :el_capitan
-    sha256 "02ce05b5880cc5638d82814ecfce0f416a053374cd401febb2d33e4fce274c59" => :yosemite
-    sha256 "1e7cd508563618a23e8e7dba57bc967bdee50925c558e7368cae287b0063f544" => :mavericks
+    sha256 "82e145962067bfe676c2ea8ce9caf82fa3de26496079dda9ac05cb16130ddbf1" => :el_capitan
+    sha256 "78fad8f64e9fe57730809dce924f43917bbf2eaf4a0a046e0beffe3b472a4161" => :yosemite
+    sha256 "960999bc14e4e551ef8ffcb3fab0c8aa34f22a4b4cec4a02f39c11696f2583e6" => :mavericks
   end
 
   depends_on "pkg-config" => :build

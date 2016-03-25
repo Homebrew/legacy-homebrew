@@ -1,9 +1,8 @@
 class AndroidNdk < Formula
   desc "Android native-code language toolset"
   homepage "https://developer.android.com/sdk/ndk/index.html"
-  url "https://dl.google.com/android/ndk/android-ndk-r10e-darwin-x86_64.bin"
-  version "r10e"
-  sha256 "728c309e606f63101f1258c9d3d579b80ac74fe74c511ebb71f460ce5c5d084e"
+  url "https://dl.google.com/android/repository/android-ndk-r11b-darwin-x86_64.zip"
+  sha256 "3a2743fb357dc0948d17dc0696e4ab5cd724dc4bc1c36a40e797068fbfc9d976"
 
   bottle :unneeded
 
@@ -17,11 +16,8 @@ class AndroidNdk < Formula
   def install
     bin.mkpath
 
-    chmod 0755, "./android-ndk-#{version}-darwin-x86_64.bin"
-    system "./android-ndk-#{version}-darwin-x86_64.bin"
-
     # Now we can install both 64-bit and 32-bit targeting toolchains
-    prefix.install Dir["android-ndk-#{version}/*"]
+    prefix.install Dir["*"]
 
     # Create a dummy script to launch the ndk apps
     ndk_exec = prefix+"ndk-exec.sh"
@@ -32,7 +28,7 @@ class AndroidNdk < Formula
       test -f "$EXEC" && exec "$EXEC" "$@"
     EOS
     ndk_exec.chmod 0755
-    %w[ndk-build ndk-gdb ndk-stack].each { |app| bin.install_symlink ndk_exec => app }
+    %w[ndk-build ndk-depends ndk-gdb ndk-stack ndk-which].each { |app| bin.install_symlink ndk_exec => app }
   end
 
   def caveats; <<-EOS.undent

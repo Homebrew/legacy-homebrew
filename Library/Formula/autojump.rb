@@ -1,10 +1,17 @@
 class Autojump < Formula
   desc "Shell extension to jump to frequently used directories"
   homepage "https://github.com/wting/autojump"
-  url "https://github.com/wting/autojump/archive/release-v22.2.4.tar.gz"
-  sha256 "816badb0721f735e2b86bdfa8b333112f3867343c7c2263c569f75b4ec91f475"
+  url "https://github.com/wting/autojump/archive/release-v22.3.0.tar.gz"
+  sha256 "800f444b820b3a985e1da2d183fb5e2e23753a2ade53d6e1195678c650379a03"
 
   head "https://github.com/wting/autojump.git"
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "b1d061456b911c1a36216ee3e6569a73aad5e1e9994fb0ba515715a43675811e" => :el_capitan
+    sha256 "08e603c2689a7ac96839cdd6b02f1c1b1803e50598dcd5eaef73d5b7d9275bc6" => :yosemite
+    sha256 "374c3703dab50849119b2d511eeca5fa7523df903fa2ae34acf334c229343182" => :mavericks
+  end
 
   def install
     system "./install.py", "-d", prefix, "-z", zsh_completion

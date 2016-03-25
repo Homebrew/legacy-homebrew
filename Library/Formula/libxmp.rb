@@ -11,6 +11,11 @@ class Libxmp < Formula
     sha256 "11fb81b1cf895ef247d38313c0f1385e9d93a3b0d478a2186b83ad19816c8e7f" => :mavericks
   end
 
+  head do
+    url "git://git.code.sf.net/p/xmp/libxmp"
+    depends_on "autoconf" => :build
+  end
+
   # CC BY-NC-ND licensed set of five mods by Keith Baylis/Vim! for testing purposes
   # Mods from Mod Soul Brother: http://web.archive.org/web/20120215215707/http://www.mono211.com/modsoulbrother/vim.html
   resource "demo_mods" do
@@ -18,21 +23,16 @@ class Libxmp < Formula
     sha256 "df8fca29ba116b10485ad4908cea518e0f688850b2117b75355ed1f1db31f580"
   end
 
-  head do
-    url "git://git.code.sf.net/p/xmp/libxmp"
-    depends_on "autoconf" => :build
-  end
-
   def install
     system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
 
-    (share/"libxmp").install resource("demo_mods")
+    pkgshare.install resource("demo_mods")
   end
 
   test do
-    test_mod = share/"libxmp/give-me-an-om.mod"
+    test_mod = "#{pkgshare}/give-me-an-om.mod"
     (testpath/"libxmp_test.c").write <<-EOS.undent
       #include <stdio.h>
       #include "xmp.h"

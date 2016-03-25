@@ -1,15 +1,16 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2016/sqlite-autoconf-3100200.tar.gz"
-  version "3.10.2"
-  sha256 "a2b3b4bd1291ea7d6c8252f7edff36a4362f2f0e5d5370444ba6cbe313ae2971"
+  url "https://sqlite.org/2016/sqlite-autoconf-3110000.tar.gz"
+  version "3.11.0"
+  sha256 "508d4dcbcf7a7181e95c717a1dc4ae3c0880b3d593be0c4b40abb6c3a0e201fb"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "2878a87f786c26c08ea5eada1304bc3babf352121ee09ba35a1b1b5e7a0fdd7e" => :el_capitan
-    sha256 "400f325179e90308df62073961e57b7dd9cd5f19681090267166a06fbc17a555" => :yosemite
-    sha256 "7271ef8c75e4299e6cace34f13e2bed1b2ce073a381dd10da9083187a06bf9bd" => :mavericks
+    sha256 "6098794c163ac80a69a114df47760597e0e5c62e9be495cb8e84137bc0cc7e99" => :el_capitan
+    sha256 "53838ce48a237a001d1e9fe9617d9bb4b926550f08f8c55f3b2b103874250ed2" => :yosemite
+    sha256 "b139227fcf4d30a7f7a84400a70b1c5853ddb3723e0af6d094d9f6ec9973b679" => :mavericks
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -36,13 +37,16 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://sqlite.org/2016/sqlite-doc-3100200.zip"
-    version "3.10.2"
-    sha256 "21637344807efb9b6c6f615fd98b72620d074c720660940182888a4dbc2af982"
+    url "https://sqlite.org/2016/sqlite-doc-3110000.zip"
+    version "3.11.0"
+    sha256 "4a942d89d5bf0aa70c0a01267a52961632b27512c293eb6452f6efe909dcec50"
   end
 
   def install
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA=1"
+    # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
+    # applications. Set to 250000 (Same value used in Debian and Ubuntu).
+    ENV.append "CPPFLAGS", "-DSQLITE_MAX_VARIABLE_NUMBER=250000"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_RTREE=1" if build.with? "rtree"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1" if build.with? "fts"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS5=1" if build.with? "fts5"

@@ -5,9 +5,11 @@ class Aap < Formula
   sha256 "3f53b2fc277756042449416150acc477f29de93692944f8a77e8cef285a1efd8"
 
   bottle do
-    sha256 "b95b0d83504a5ec5c0d10143f2f85aa9fa21f394fda2cf14bebee8b1b643dd37" => :yosemite
-    sha256 "019cb29542a8d8250e22cc10e389d1a2159a9db99db90dc9392650b288025507" => :mavericks
-    sha256 "e496122256798dc62cd02ffdd0d72c7a1d682243c6743b1b7b0b88fc6b3bd34a" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "32c30b38a37147754c5abfe9a801777b4a798af6dbcce2f15e1693c6027f0fbe" => :el_capitan
+    sha256 "15472b5a56a90d2d83c3ab24eba09e3644867857d8a7c547c82e6937beff3344" => :yosemite
+    sha256 "b141c07f091f90bd883148bf0e3c093d90fc0be7c4f8e7d07df9ae7cae684862" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

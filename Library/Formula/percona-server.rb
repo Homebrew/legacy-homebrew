@@ -5,21 +5,22 @@ class PerconaServer < Formula
   version "5.6.28-76.1"
   sha256 "ab8ab794a58a82132645ae84b74de91c7f9a5bcf81f2162628ce8976a00a4fd4"
 
+  bottle do
+    revision 1
+    sha256 "b283468128a1450e20c73ceb16f5d6454a2cb834b5f7b889118456d6f9693af6" => :el_capitan
+    sha256 "56b11a60d823385bbe3f888d43d2780fbe7ae0ac96745ea624095480b96d0602" => :yosemite
+    sha256 "aa6efe7ebbcdfa1a26530300da885f56a33d3132f953886cdbe309fb545da6ec" => :mavericks
+  end
+
   devel do
-    url "https://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-5.7.10-1rc1/source/tarball/percona-server-5.7.10-1rc1.tar.gz"
-    version "5.7.10-1rc1"
-    sha256 "68de79af4a761522f436b89eeb5bbb43a56dccc2bc352d38c79b6e6be0c4106c"
+    url "https://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-5.7.10-2rc2/source/tarball/percona-server-5.7.10-2rc2.tar.gz"
+    version "5.7.10-2rc2"
+    sha256 "5f920eb8a80c4125f43ac084f51ddc7b004efb2b02a9d2d0ba76fb3c11889019"
 
     resource "boost" do
       url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
       sha256 "727a932322d94287b62abb1bd2d41723eec4356a7728909e38adb65ca25241ca"
     end
-  end
-
-  bottle do
-    sha256 "9ecb4fd01c4e6915f43aea950371cbea98ee483276f8e67a6d8a3e14e1d7a0d9" => :el_capitan
-    sha256 "edadb9ce8663d7324bcb5b88419f940445e6e8672b01dca1695e9b9c2bcf645d" => :yosemite
-    sha256 "fa5eb750936ad85fab7247dbd77308bf53aecd30aa709260f1d3b9cd2e21e3fc" => :mavericks
   end
 
   option :universal
@@ -42,6 +43,8 @@ class PerconaServer < Formula
     :because => "percona, mariadb, and mysql install the same binaries."
   conflicts_with "mysql-connector-c",
     :because => "both install MySQL client libraries"
+  conflicts_with "mariadb-connector-c",
+    :because => "both install plugins"
 
   fails_with :llvm do
     build 2334
@@ -49,14 +52,15 @@ class PerconaServer < Formula
   end
 
   # Where the database files should be located. Existing installs have them
-  # under var/percona, but going forward they will be under var/msyql to be
+  # under var/percona, but going forward they will be under var/mysql to be
   # shared with the mysql and mariadb formulae.
   def datadir
     @datadir ||= (var/"percona").directory? ? var/"percona" : var/"mysql"
   end
 
-  def pour_bottle?
-    datadir == var/"mysql"
+  pour_bottle? do
+    reason "The bottle needs a var/mysql datadir (yours is var/percona)."
+    satisfy { datadir == var/"mysql" }
   end
 
   def install

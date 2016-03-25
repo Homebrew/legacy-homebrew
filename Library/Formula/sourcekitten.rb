@@ -1,13 +1,13 @@
 class Sourcekitten < Formula
   desc "Framework and command-line tool for interacting with SourceKit"
   homepage "https://github.com/jpsim/SourceKitten"
-  url "https://github.com/jpsim/SourceKitten.git", :tag => "0.7.4", :revision => "9b5c8d05813fb9e817f24ebe2142915f03132bf1"
+  url "https://github.com/jpsim/SourceKitten.git", :tag => "0.11.0", :revision => "6415bc91fde389c9b4866e2b61e1189be4c9796c"
   head "https://github.com/jpsim/SourceKitten.git"
 
   bottle do
     cellar :any
-    sha256 "c97a6eeaca66c30b023c90b2dde23c32ca0f1ce3b0829e6ac9fc2d5cdfca57c1" => :el_capitan
-    sha256 "d0067e81e9da2fcbe80e048fe7d7d38ffa01401f30ad063f2394863c35ec7a6a" => :yosemite
+    sha256 "1bda0fb0e9b44be800aa7533ea4ea374ac24d211d4d0ba694272219e0f212b3c" => :el_capitan
+    sha256 "3f4b1800796273788fd4d22329927aeca7f3fed0db616b700d3804ee37b9c5ab" => :yosemite
   end
 
   depends_on :xcode => ["7.1", :build]
@@ -17,6 +17,8 @@ class Sourcekitten < Formula
   end
 
   test do
-    system "#{bin}/sourcekitten", "syntax", "--text", "import Foundation // Hello World"
+    # Rewrite test after sandbox issues investigated.
+    # https://github.com/Homebrew/homebrew/pull/50211
+    system "#{bin}/sourcekitten", "version"
   end
 end

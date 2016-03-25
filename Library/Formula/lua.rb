@@ -12,10 +12,11 @@ class Lua < Formula
     sha256 "a84d3ebd9afa4a61b0120471e5a0dfcc670d294701a64edebd25fcc815fe76f8" => :mavericks
   end
 
-  def pour_bottle?
+  pour_bottle? do
+    reason "The bottle needs to be installed into /usr/local."
     # DomT4: I'm pretty sure this can be fixed, so don't leave this in place forever.
     # https://github.com/Homebrew/homebrew/issues/44619
-    HOMEBREW_PREFIX.to_s == "/usr/local"
+    satisfy { HOMEBREW_PREFIX.to_s == "/usr/local" }
   end
 
   fails_with :llvm do

@@ -1,16 +1,15 @@
 class Openssl < Formula
   desc "SSL/TLS cryptography library"
   homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-1.0.2e.tar.gz"
-  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2e.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2e.tar.gz"
-  sha256 "e23ccafdb75cfcde782da0151731aa2185195ac745eea3846133f2e05c0e0bff"
-  revision 1
+  url "https://www.openssl.org/source/openssl-1.0.2g.tar.gz"
+  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2g.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2g.tar.gz"
+  sha256 "b784b1b3907ce39abf4098702dade6365522a253ad1552e267a9a0e89594aa33"
 
   bottle do
-    sha256 "ed8aab358427f6456f99b59dc04667fd5dada7a4bd60eb0a2ce40c20ed6c125c" => :el_capitan
-    sha256 "23a4c64aef59d211a4de12cd72c6109d96822065b1743f6db3cb45d623891989" => :yosemite
-    sha256 "a46133fb0a514504984083e34b3c65c9b770ce2ceb543e013e55be891ac68434" => :mavericks
+    sha256 "b1de0682c7a838a75da3a06ddad2b9700d208b2faaaa1b51c0889ba403c7dd22" => :el_capitan
+    sha256 "68e5432c7b863341bc0c42c9a9391c11ba244519f110ba7c5ef4d97eb5c6b8fa" => :yosemite
+    sha256 "cdb9ddcc2bc683afa836b40258acbd40fa82dc67b68b245b7413d85e18d98ca0" => :mavericks
   end
 
   keg_only :provided_by_osx,
@@ -23,14 +22,16 @@ class Openssl < Formula
 
   depends_on "makedepend" => :build
 
-  # Xcode 7 Clang fix introduced regression which makes older Clang versions
-  # incorrectly declare suitable instructions.
-  # https://github.com/openssl/openssl/issues/494
-  # https://svn.macports.org/repository/macports/trunk/dports/devel/openssl/files/fix-Apple-clang-version-detection.patch
-  if MacOS.version <= :mountain_lion
+  # Replace with upstream url if they merge the more robust fix
+  # https://github.com/openssl/openssl/pull/597
+  if MacOS.version <= :snow_leopard
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/patches/312f6228/openssl/fix-Apple-clang-version-detection.patch"
-      sha256 "a3e0e13e6c70d85d916bb88cbddc134952794d6292fbab4f2740ac9a07759606"
+      url "https://raw.githubusercontent.com/Homebrew/patches/3f1dc8ea145a70543aded8101a0c725abf82fc45/openssl/revert-pass-pure-constants-verbatim.patch"
+      sha256 "e38f84181a56e70028ade8408ad70aaffaea386b7e1b35de55728ae878d544aa"
+    end
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/3f1dc8ea145a70543aded8101a0c725abf82fc45/openssl/tshort-asm.patch"
+      sha256 "f161e2fc1395efcb53d785004d67d4962d28aa8ce282a91020f12809c03b2afd"
     end
   end
 

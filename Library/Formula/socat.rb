@@ -1,22 +1,20 @@
 class Socat < Formula
   desc "netcat on steroids"
   homepage "http://www.dest-unreach.org/socat/"
-  url "http://www.dest-unreach.org/socat/download/socat-1.7.3.0.tar.gz"
-  sha256 "f8de4a2aaadb406a2e475d18cf3b9f29e322d4e5803d8106716a01fd4e64b186"
+  url "http://www.dest-unreach.org/socat/download/socat-1.7.3.1.tar.gz"
+  sha256 "a8cb07b12bcd04c98f4ffc1c68b79547f5dd4e23ddccb132940f6d55565c7f79"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "f611b1af13a4ffd67edb2e051112b65d5ae72c04fd1a6cdb1bd17fdc37dfed92" => :el_capitan
-    sha256 "a989fcc760a1e05a53b4193ec49d16d84072b29311366b2f5c38af4490338fef" => :yosemite
-    sha256 "dc80a1cfabde2f6abdf4a898bd92d4f8ff9a90a0464e61f5862bde0cb2f1ffe3" => :mavericks
-    sha256 "1956257e901dbb67a3286950059c7edca5cb08e435fa87b038cc3ef306def1ea" => :mountain_lion
+    sha256 "6ecb3cbe4ce22509a88db917005018e634954fb0950d49ddf6f75d1fa6b6a789" => :el_capitan
+    sha256 "8e7444400aab2b0dcf49580fc2d52ce587706827385c58379fbfadddca55da35" => :yosemite
+    sha256 "8dbf0e7e4163d0e88deb6048e151840f1cf7cfec974cd34a3866e2a1030c25df" => :mavericks
   end
 
   devel do
-    url "http://www.dest-unreach.org/socat/download/socat-2.0.0-b8.tar.bz2"
-    sha256 "c804579db998fb697431c82829ae03e6a50f342bd41b8810332a5d0661d893ea"
-    version "2.0.0-b8"
+    url "http://www.dest-unreach.org/socat/download/socat-2.0.0-b9.tar.gz"
+    version "2.0.0-b9"
+    sha256 "f9496ea44898d7707507a728f1ff16b887c80ada63f6d9abb0b727e96d5c281a"
   end
 
   depends_on "readline"
@@ -29,6 +27,7 @@ class Socat < Formula
   end
 
   test do
-    assert_match "HTTP/1.0", pipe_output("#{bin}/socat - tcp:www.google.com:80", "GET / HTTP/1.0\r\n\r\n")
+    output = pipe_output("#{bin}/socat - tcp:www.google.com:80", "GET / HTTP/1.0\r\n\r\n")
+    assert_match "HTTP/1.0", output
   end
 end

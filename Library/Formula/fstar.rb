@@ -2,18 +2,18 @@ class Fstar < Formula
   desc "Language with a type system for program verification"
   homepage "https://www.fstar-lang.org/"
   url "https://github.com/FStarLang/FStar.git",
-    :tag => "v0.9.1.1",
-    :revision => "c41ea17778ff2fef4e75d56604ce1804e1985f33"
+    :tag => "v0.9.2.0",
+    :revision => "2a8ce0b3dfbfb9703079aace0d73f2479f0d0ce2"
   head "https://github.com/FStarLang/FStar.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4ea2e7095a45f83ea0a540ca21ddee443ebe228d9e347bb928ad23f9fec0c969" => :el_capitan
-    sha256 "5e022feb56c07ec0a1cd052a18d1b7d2ed87b42826fa741606fe286d07e939c3" => :yosemite
-    sha256 "2200a3110f65c07e2bce81147c783b3e973b46efb7f757c63e2d7af24450074b" => :mavericks
+    revision 1
+    sha256 "862e16a525bec7ff0d7536cf2d408b19fb30b0d5449264852485749ca7a6554b" => :el_capitan
+    sha256 "9e3974a724b8d484939ad01f52cbf836153a46693bc5ba0215b2a76e606c7e49" => :yosemite
+    sha256 "a70dcda3237a775449d95f640610add3ea4201f514dab28a5d8158caf5135ecf" => :mavericks
   end
 
-  depends_on "mono" => :build
   depends_on "opam" => :build
   depends_on "ocaml" => :recommended
   depends_on "z3" => :recommended
@@ -24,8 +24,8 @@ class Fstar < Formula
   end
 
   resource "batteries" do
-    url "https://github.com/ocaml-batteries-team/batteries-included/archive/v2.3.1.tar.gz"
-    sha256 "df778b90fcdb26288d9d92a86e51dd75d6bb7c6e41888c748c7508e8ea58b1d4"
+    url "https://github.com/ocaml-batteries-team/batteries-included/archive/v2.4.0.tar.gz"
+    sha256 "f13ff15efa35c272e1e63a2604f92c1823d5685cd73d3d6cf00f25f80178439f"
   end
 
   def install
@@ -43,9 +43,8 @@ class Fstar < Formula
       cp r.cached_download, archives/original_name
       modules << "#{r.name}=#{r.version}"
     end
-    system "opam", "install", *modules
 
-    system "make", "-C", "src/"
+    system "opam", "install", *modules
     system "opam", "config", "exec", "--",
     "make", "-C", "src/ocaml-output/"
 
@@ -67,9 +66,6 @@ class Fstar < Formula
   end
 
   def caveats; <<-EOS.undent
-    F* standard library is available in #{prefix}/stdlib:
-    - alias fstar='fstar.exe --include #{prefix}/stdlib --prims prims.fst'
-
     F* code can be extracted to OCaml code.
     To compile the generated OCaml code, you must install the
     package 'batteries' from the Opam package manager:
@@ -78,21 +74,19 @@ class Fstar < Formula
 
     F* code can be extracted to F# code.
     To compile the generated F# (.NET) code, you must install
-    Mono and the FSharp compilers:
+    the 'mono' package that includes the fsharp compiler:
     - brew install mono
     EOS
   end
 
   test do
     system "#{bin}/fstar.exe",
-    "--include", "#{prefix}/stdlib",
     "--include", "#{prefix}/examples/unit-tests",
-    "--prims", "prims.fst",
     "--admit_fsi", "FStar.Set",
-    "set.fsi", "heap.fst",
-    "st.fst", "all.fst",
-    "list.fst", "string.fst",
-    "int32.fst", "unit1.fst",
+    "FStar.Set.fsi", "FStar.Heap.fst",
+    "FStar.ST.fst", "FStar.All.fst",
+    "FStar.List.fst", "FStar.String.fst",
+    "FStar.Int32.fst", "unit1.fst",
     "unit2.fst", "testset.fst"
   end
 end

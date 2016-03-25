@@ -5,10 +5,11 @@ class Visitors < Formula
   sha256 "d2149e33ffe96b1f52b0587cff65973b0bc0b24ec43cdf072a782c1bd52148ab"
 
   bottle do
-    cellar :any
-    sha256 "fd3a509f025daac959cac9f3e4cb6d6d3b5fdf5983182f44602f10eb7920b1c3" => :mavericks
-    sha256 "338234df5fe8c3487bd412adb5ab87dbca45825a0e53f38dd97927eacdd7b93f" => :mountain_lion
-    sha256 "33a3eeddc20a421ae83a51b223e2ad4f801374a40bb7cf2947d5635cc08393ec" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "60d139c48a4d3c8b457462530893ff11c681e512cf707ba6819a783eb17d3c4c" => :el_capitan
+    sha256 "2d0a3e1a40e08ae6b4892731b0cd1f3a495e8eba42476630b7863fc057e85df3" => :yosemite
+    sha256 "c94f334e326f511b486e4b63b5e62ee7a59121ea5d790a8e5854ff4b57abb5e6" => :mavericks
   end
 
   def install
@@ -24,7 +25,7 @@ class Visitors < Formula
       pipe.puts 'a:80 1.2.3.4 - - [01/Apr/2014:14:28:00 -0400] "GET /1 HTTP/1.1" 200 9 - -'
       pipe.puts 'a:80 1.2.3.4 - - [01/Apr/2014:14:28:01 -0400] "GET /2 HTTP/1.1" 200 9 - -'
       pipe.close_write
-      assert pipe.read.include?("Different pages requested: 2")
+      assert_match(/Different pages requested: 2/, pipe.read)
     end
   end
 end

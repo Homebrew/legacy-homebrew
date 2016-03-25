@@ -1,16 +1,16 @@
 class Brotli < Formula
   desc "Generic-purpose lossless compression algorithm by Google."
   homepage "https://github.com/google/brotli"
-  url "https://github.com/google/brotli/archive/v0.2.0.tar.gz"
-  sha256 "634d1089ee21b35e0ec5066cb5e44dd097e04e679e1e8c50bffa2b0dc77c2c29"
+  url "https://github.com/google/brotli/archive/v0.3.0.tar.gz"
+  sha256 "5d49eb1a6dd19304dd683c293abf66c8a419728f4c6d0f390fa7deb2a39eaae2"
 
   head "https://github.com/google/brotli.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "eb883283303c6689c5f7ecc26a66d1591b5aaa2919b3f243b0da880f33f8871a" => :el_capitan
-    sha256 "fca2a2933a4f4b5d4e81dbcb6b6b2ae38ea72b26c3d2d1666f70a95f74048d63" => :yosemite
-    sha256 "025ba928b046520276d955178429a894d4e3b6fb1917cc49f2a4486a5b1a28a3" => :mavericks
+    sha256 "55d144b12585d2135be9ec4f7880798eabda037e14c48209b4bc7da064407da8" => :el_capitan
+    sha256 "380c2852c24248fcbdeb2aa25848b958765131fa7126103603f7603ad1510b9b" => :yosemite
+    sha256 "79e2367abe6f3e1958a8857052bd406312fc4db60ce603d594e708bd4dc6bd4a" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

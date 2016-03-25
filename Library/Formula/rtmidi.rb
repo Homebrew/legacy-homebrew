@@ -1,23 +1,25 @@
 class Rtmidi < Formula
   desc "C++ classes that provide a common API for realtime MIDI input/output"
   homepage "https://www.music.mcgill.ca/~gary/rtmidi/"
-  url "https://github.com/thestk/rtmidi/archive/2.1.0.tar.gz"
-  sha256 "52e6822fc413d5d3963c5b7bfe412ed69233bb81a7f04d6097f5b56aafa28934"
+  url "https://github.com/thestk/rtmidi/archive/2.1.1.tar.gz"
+  sha256 "a015fbed67c777c7bc7bbcb96c07386ba3a8ff21006b411331e6f0b9f3f14d11"
 
   bottle do
     cellar :any
-    sha256 "2abe3e651405114e4a667eb1d3491be8fde15a62d7605622449a92a6ab78a443" => :yosemite
-    sha256 "4516090de14fa3f4caa5e7bc277f4d64d269dcad32488cc195395572803e6186" => :mavericks
-    sha256 "329d88e5bbe8d96549707288b9599213cc16f9df64880d6de035fc0f50c10d14" => :mountain_lion
+    sha256 "cd2de94d4142db7007d85e48ee11568101d7addd164a80340c6d198744059feb" => :el_capitan
+    sha256 "2c13437c6b86ed8332cea90bb0d666f15706daf728fabc0200878bd3f1870874" => :yosemite
+    sha256 "0718f6114ed75db09006bf375abf1c14e1142e716030de05d9843f63a70c3759" => :mavericks
   end
 
   depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
-    system "autoconf"
+    system "./autogen.sh", "--no-configure"
     system "./configure", "--prefix=#{prefix}"
-    system "make", "librtmidi.a"
-    lib.install Dir["*.a", "*.dylib"]
+    system "make"
+    lib.install Dir[".libs/*.a", ".libs/*.dylib"]
     include.install Dir["*.h"]
   end
 

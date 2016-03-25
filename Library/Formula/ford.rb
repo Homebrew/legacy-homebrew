@@ -1,16 +1,16 @@
 class Ford < Formula
   desc "Automatic documentation generator for modern Fortran programs"
   homepage "https://github.com/cmacmackin/ford/"
-  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.5.0.tar.gz"
-  sha256 "90d350e8891a74043420447b2980b1edac44f2654990309afd9349a7fbcd3509"
+  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.5.2.tar.gz"
+  sha256 "a30853b48aa05d3af6f8f8f1f4b3dc9c55a0104bd964cbdfa1bb113c5c3953ce"
 
   head "https://github.com/cmacmackin/ford.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7f5652924ddd58db0758bce7defb39fe294c4af6cf25c5727b5938a41829483f" => :el_capitan
-    sha256 "71ecbc702d0e2dedf7163cc28a59e85b1b3b0a1e4efcfe6eca5b92b5bd465294" => :yosemite
-    sha256 "07c3b805459499e4408ec484cdb546e4f3e8bfc1717eeef0977ac0700ff43ad3" => :mavericks
+    sha256 "4bd8c0e12fc7f9bdca82315720e9dcf55487dd9bc8eacb618c2a068e42b82209" => :el_capitan
+    sha256 "0ab461e2572ea07ce74cab04f496d49152eb20de4c71f8a38e97770bf4e613c1" => :yosemite
+    sha256 "ab42ac7eb9f88a0a333ed06182887e654d6dbe7bafbe9c3cbf0348867a55b7e7" => :mavericks
   end
 
   depends_on "graphviz"

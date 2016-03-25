@@ -5,8 +5,9 @@ class ArgpStandalone < Formula
   sha256 "dec79694da1319acd2238ce95df57f3680fea2482096e483323fddf3d818d8be"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
+    sha256 "798e6ddb78957f9ad33662287b5971aaf3a43f3646e84691d56b3b85ca06d47f" => :el_capitan
     sha256 "c926ac0ad3b8dbb8c3e08299ade556470f81d3a88eb51dc60e7cfe107da533e8" => :yosemite
     sha256 "789a73a54793c058ee419824d76d603562d56fe6c2bce37c6b5b47f8f0ddce2a" => :mavericks
     sha256 "c1d91ec4ec7f0abee15fa5f58860057d8e8c58e25fd9231107f716bcd5e2a607" => :mountain_lion

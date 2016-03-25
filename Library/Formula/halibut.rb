@@ -15,6 +15,9 @@ class Halibut < Formula
   end
 
   def install
+    # Reported to Simon Tatham (anakin@pobox.com) on 8th Mar 2016.
+    ENV.deparallelize
+
     bin.mkpath
     man1.mkpath
 

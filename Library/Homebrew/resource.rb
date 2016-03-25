@@ -165,4 +165,19 @@ class Resource
       super(target/name)
     end
   end
+
+  class Patch < Resource
+    attr_reader :patch_files
+
+    def initialize(&block)
+      @patch_files = []
+      super "patch", &block
+    end
+
+    def apply(*paths)
+      paths.flatten!
+      @patch_files.concat(paths)
+      @patch_files.uniq!
+    end
+  end
 end

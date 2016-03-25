@@ -1,14 +1,14 @@
 class Openrtsp < Formula
   desc "Command-line RTSP client"
   homepage "http://www.live555.com/openRTSP"
-  url "http://www.live555.com/liveMedia/public/live.2015.10.29.tar.gz"
-  sha256 "05bb03b58c9a758a735a2c5bb0b993c5e157d7a60b08df49cc29619d02fbc962"
+  url "http://www.live555.com/liveMedia/public/live.2016.03.14.tar.gz"
+  sha256 "67574112d881ce7729faa844d987b04dbc71dee88d1a811dc6499155f194683b"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "19ebd75fbe2409869df5c1c9a90c3ffd146bf8f329f223dc6ee251fa44d1a4fc" => :el_capitan
-    sha256 "0c1083767885bf851959a9e74590f89b5d3a02b3c04965f3a9309162ec80bb34" => :yosemite
-    sha256 "4b65fe1d10e54ee81c429768ae37e0d6836e1cf50fc3c6d168e86e82adfb952a" => :mavericks
+    sha256 "49c9594da046dfef7005a6e56b66ce5d7ca7075b6d26865c7d5be9a0e2a0c8f5" => :el_capitan
+    sha256 "55c86ff5826840c9fdb00495d89a290d0fb99689b7cd45ea0bb7cb4cd836e304" => :yosemite
+    sha256 "bf8ecebfae81a65b78bb72d17606dad99b59da3ca04b84575141d64651b93c6c" => :mavericks
   end
 
   option "32-bit"

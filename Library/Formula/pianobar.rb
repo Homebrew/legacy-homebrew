@@ -3,15 +3,15 @@ class Pianobar < Formula
   homepage "https://github.com/PromyLOPh/pianobar/"
   url "https://6xq.net/pianobar/pianobar-2015.11.22.tar.bz2"
   sha256 "23fbc9e6f55b3277dba7a0f68ff721bad7f1eeea504c616ba008841686de322b"
-  revision 1
+  revision 2
 
   head "https://github.com/PromyLOPh/pianobar.git"
 
   bottle do
     cellar :any
-    sha256 "16428a35d4a9726a41fe84432f3f5a8bdc6e851dbce3d4859548478fe4f2f3d2" => :el_capitan
-    sha256 "9d1166dc514af671b40a4508f41f2b714c26c17ec226d58c8a5977e1cb80a530" => :yosemite
-    sha256 "15c7a6e24c8f5b847c210e9fa3c5046cdda5c72dbde4384d877b321322f5f145" => :mavericks
+    sha256 "ae2777bec3c7664e866ac6205357cee19f63bb8159e141ba0954151ffde90703" => :el_capitan
+    sha256 "67d3706de8414abc75069b5e99d48f458f1f0cef76fbd2e3d136aed7c3143a8b" => :yosemite
+    sha256 "5a13b2aa7a3374ef89e3f4c69bfadb334e6911bf8c4584d9bef588daac57cfc7" => :mavericks
   end
 
   depends_on "pkg-config" => :build

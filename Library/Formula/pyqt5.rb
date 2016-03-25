@@ -3,11 +3,12 @@ class Pyqt5 < Formula
   homepage "https://www.riverbankcomputing.com/software/pyqt/download5"
   url "https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz"
   sha256 "0a70ef94fbffcf674b0dde024aae2a2a7a3f5a8c42806109ff7df2c941bd8386"
+  revision 1
 
   bottle do
-    sha256 "b9e313a98af2b16a6ab3df8e0c2d7d153b80f49211741a565945049a18765c51" => :el_capitan
-    sha256 "c298d8b38ca10572c1026c5489dc879b64de97ae083847c78f547d388b8b2e26" => :yosemite
-    sha256 "33f2dfb85349db6826d9653512e608bde4f99f6297957c0c7c4ee8457d09ef9f" => :mavericks
+    sha256 "9372001ae57afee47b5326439e9ecdac778ff18279515f45d4a0b8209247ab89" => :el_capitan
+    sha256 "6c66da7a5f6716181e0fcb35970b65dacd8bd1bc023ac9e0ab790c47921f74e3" => :yosemite
+    sha256 "84cdcdfe9b984806871383c129f01b6857eae3805a20b82bef3ba474237408ed" => :mavericks
   end
 
   option "with-debug", "Build with debug symbols"
@@ -68,7 +69,7 @@ class Pyqt5 < Formula
         Network
         Quick
         Svg
-        WebKit
+        WebEngineWidgets
         Widgets
         Xml
       ].each { |mod| system python, "-c", "import PyQt5.Qt#{mod}" }

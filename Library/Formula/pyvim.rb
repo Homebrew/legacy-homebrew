@@ -1,31 +1,31 @@
 class Pyvim < Formula
   desc "Pure Python Vim clone"
   homepage "https://pypi.python.org/pypi/pyvim"
-  url "https://pypi.python.org/packages/source/p/pyvim/pyvim-0.0.13.tar.gz"
-  sha256 "efc4054d2fae78df13182ad78e018d479963833a990d7e99d58ee4fe2db2c1cd"
+  url "https://pypi.python.org/packages/source/p/pyvim/pyvim-0.0.16.tar.gz"
+  sha256 "5c4b6fde5528845cf9a10267a6d598a24f2523d5b3ad451410860916cdf45378"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fcea9e888f429a9a73f9dc6bb2ff32c7cc7611472917e4772c7c00b905d0b601" => :el_capitan
-    sha256 "d0304e69bae47a478f4d67d8f956a86b75a26514be8a32d8db8493462d5b8f5e" => :yosemite
-    sha256 "cb336a0de0525d41c388683d8274b2ecfdee007729dc854ca80abc18926089c3" => :mavericks
+    sha256 "5e73f934e89da7871b0fd645dcf75ae6cb2f3e7eba0326ad80de39a8e442a28a" => :el_capitan
+    sha256 "514e9c6314fe574df2306a80a4eaf7227136de74419d2edae735acd5039ea39f" => :yosemite
+    sha256 "05555d583b3aacb1e5f52273faf5f819f4087076896076ce28e572607467f070" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "ptpython" do
-    url "https://pypi.python.org/packages/source/p/ptpython/ptpython-0.28.tar.gz"
-    sha256 "f4bc7c4b129925be316c60669b5c0a5cc97edc0fb381fd007aa0ecc81758ee1d"
+    url "https://pypi.python.org/packages/source/p/ptpython/ptpython-0.31.tar.gz"
+    sha256 "a70ac512efc7b3c3e1ed6adba56f7214d5ed48729f9dac474e9a73472152006f"
   end
 
   resource "prompt_toolkit" do
-    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.57.tar.gz"
-    sha256 "de6019e1ebe99647d1b6640f09a02961b26144a91d9964ed93a41ccada9a9fae"
+    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.60.tar.gz"
+    sha256 "b44acc4cf3fb9f7331343ae170eac06f853a66e28cdd4ccfeee7c8dad0dec33d"
   end
 
   resource "pyflakes" do
-    url "https://pypi.python.org/packages/source/p/pyflakes/pyflakes-1.0.0.tar.gz"
-    sha256 "f39e33a4c03beead8774f005bd3ecf0c3f2f264fa0201de965fce0aff1d34263"
+    url "https://pypi.python.org/packages/source/p/pyflakes/pyflakes-1.1.0.tar.gz"
+    sha256 "e5f959931987e2be178781554b485d52342ec9f1b43f891d2dad07a691c7a89a"
   end
 
   resource "docopt" do
@@ -44,8 +44,8 @@ class Pyvim < Formula
   end
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.1.tar.gz"
-    sha256 "13a0ef5fafd7b16cf995bc28fe7aab0780dab1b2fda0fc89e033709af8b8a47b"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.1.3.tar.gz"
+    sha256 "88e4c8a91b2af5962bfa5ea2447ec6dd357018e86e94c7d14bd8cacbc5b55d81"
   end
 
   resource "six" do

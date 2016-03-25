@@ -307,8 +307,10 @@ class Version
     m = /[-_]((?:\d+\.)*\d\.\d+-(?:p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
     return m.captures.first unless m.nil?
 
-    # URL with no extension e.g. https://waf.io/waf-1.8.12
-    m = /-((?:\d+\.)*\d+)$/.match(spec_s)
+    # URL with no extension
+    # e.g. https://waf.io/waf-1.8.12
+    # e.g. https://codeload.github.com/gsamokovarov/jump/tar.gz/v0.7.1
+    m = /[-v]((?:\d+\.)*\d+)$/.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. lame-398-1
@@ -368,7 +370,8 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. http://mirrors.jenkins-ci.org/war/1.486/jenkins.war
-    m = /\/(\d\.\d+(\.\d)?)\//.match(spec_s)
+    # e.g. https://github.com/foo/bar/releases/download/0.10.11/bar.phar
+    m = /\/(\d\.\d+(\.\d+)?)\//.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. http://www.ijg.org/files/jpegsrc.v8d.tar.gz

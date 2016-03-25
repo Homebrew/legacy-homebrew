@@ -31,8 +31,8 @@ class Portmidi < Formula
     # Fix outdated SYSROOT to avoid: No rule to make target `/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/CoreAudio.framework', needed by `latency'.  Stop.
     inreplace "pm_common/CMakeLists.txt", "set(CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk CACHE", "set(CMAKE_OSX_SYSROOT /#{MacOS.sdk_path} CACHE"
 
-    system "make -f pm_mac/Makefile.osx"
-    system "make -f pm_mac/Makefile.osx install"
+    system "make", "-f", "pm_mac/Makefile.osx"
+    system "make", "-f", "pm_mac/Makefile.osx install"
 
     if build.with? "python"
       cd "pm_python" do

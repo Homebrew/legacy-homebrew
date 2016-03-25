@@ -8,22 +8,28 @@ class Wine < Formula
   head "git://source.winehq.org/git/wine.git"
 
   stable do
-    url "https://dl.winehq.org/wine/source/1.8/wine-1.8.tar.bz2"
-    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.8.tar.bz2"
-    sha256 "f33b45c18112b2071fbf9edee0e8c575407f9e2a9855ca4ee918ed33efa7c6f4"
+    url "https://dl.winehq.org/wine/source/1.8/wine-1.8.1.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.8.1.tar.bz2"
+    sha256 "149ad3daaf8593b36c5c061285df0ec2a25e20ea48c61323be91088c4d22ca97"
+
+    # Patch to fix MSI creation issues.
+    # https://bugs.winehq.org/show_bug.cgi?id=40129
+    patch do
+      url "https://bugs.winehq.org/attachment.cgi?id=53632"
+      sha256 "b9f98711cfe62228f5d84ab394394008ee10127bebcea7ef966d24127b466e0a"
+    end
   end
 
   bottle do
-    revision 1
-    sha256 "53e26919518160d16b0a8df3772a67afc0ca67cfc925add2bc64f91c4a6cdac7" => :el_capitan
-    sha256 "19bf33a8d93a20d55ea7906eb523f232beeb52dda7212bcc16c07db95c6eae98" => :yosemite
-    sha256 "7a674fb6ce534c1ace457eec2040e9430ca4e831aaa0f18824972aa94a1355cf" => :mavericks
+    sha256 "04203794850697cab2119e3a5ac31a77119067780b3f468e4f195279e77bd11c" => :el_capitan
+    sha256 "9c0a4c424a60284e7020df46301c7cb559a0bec187ba402fd221644fec7bedf3" => :yosemite
+    sha256 "2c332eb04f43ea0f7ae6d953a21be102348f156d6b2b407043914d6bf53e40dd" => :mavericks
   end
 
   devel do
-    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.1.tar.bz2"
-    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.1.tar.bz2"
-    sha256 "0b3265fb9ae82ddf1b3629bac61bd2340b7b4cfa7210f696c679e8e4a5b80bb6"
+    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.6.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.6.tar.bz2"
+    sha256 "3d2b862feefd89eca954c1cbc16a28e0ce851aeea1555bc1842ffc9aab2c1557"
   end
 
   # note that all wine dependencies should declare a --universal option in their formula,

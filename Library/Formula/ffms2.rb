@@ -1,15 +1,16 @@
 class Ffms2 < Formula
   desc "Libav/ffmpeg based source library and Avisynth plugin"
   homepage "https://github.com/FFMS/ffms2"
-  url "https://github.com/FFMS/ffms2/archive/2.21.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/f/ffms2/ffms2_2.21.orig.tar.gz"
-  sha256 "c2c23ce2254e293376f786aafc20a345f4dc970f5b2efef3fa38e40d7d510202"
+  url "https://github.com/FFMS/ffms2/archive/2.22.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/f/ffms2/ffms2_2.22.orig.tar.gz"
+  sha256 "7c5202fa2e49186fb3bb815e5b12ca71f05ec09cb707ffd9465852e21a06fdad"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "b48b3b7b10eb88a08a5556f40a71deb0ac10d62e89a681b3d9577ad32229023e" => :yosemite
-    sha256 "857d0e62a8120ef2fd00327862f7a6b8afb8755082e14f2ac5d600c84b6819d7" => :mavericks
-    sha256 "cf9039480a3baf42907ed3082f5e6bd9b7183ab2a615908aceaf8e5e54204f52" => :mountain_lion
+    sha256 "265169583ade2f063b8fd1cb86533652bf61629f48b0b7960afe7bccdc9686f2" => :el_capitan
+    sha256 "551433ae260b3476b395cd5b0ea867cfbdb24eb522b728548acfb584a25cd664" => :yosemite
+    sha256 "d739243fd8e0a29949eb70dccb0de80d48876c501d6a74e3b0c2e0c4b9110fd0" => :mavericks
   end
 
   head do
@@ -50,7 +51,7 @@ class Ffms2 < Formula
   test do
     # download small sample and check that the index was created
     resource("videosample").stage do
-      system "ffmsindex", "lm20.avi"
+      system bin/"ffmsindex", "lm20.avi"
       assert File.exist? "lm20.avi.ffindex"
     end
   end

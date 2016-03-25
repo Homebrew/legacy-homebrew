@@ -165,7 +165,9 @@ class SoftwareSpec
   end
 
   def patch(strip = :p1, src = nil, &block)
-    patches << Patch.create(strip, src, &block)
+    p = Patch.create(strip, src, &block)
+    dependency_collector.add(p.resource) if p.is_a? ExternalPatch
+    patches << p
   end
 
   def fails_with(compiler, &block)
@@ -342,5 +344,19 @@ class BottleSpecification
       checksums[checksum.hash_type] << { checksum => osx }
     end
     checksums
+  end
+end
+
+class PourBottleCheck
+  def initialize(formula)
+    @formula = formula
+  end
+
+  def reason(reason)
+    @formula.pour_bottle_check_unsatisfied_reason = reason
+  end
+
+  def satisfy(&block)
+    @formula.send(:define_method, :pour_bottle?, &block)
   end
 end

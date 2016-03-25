@@ -5,7 +5,8 @@ class Cpputest < Formula
   sha256 "8c5d00be3a08ea580e51e5cfe26f05d05c6bf546206ff67dbb3757d48c109653"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "5ad7b1baccaa82cc4774b77447e5cef3c71ddc039a37a2745021ad4a97a67eb2" => :el_capitan
     sha256 "0a423cd7875cf7e7e1d650b47fc81b2f609f7e4306e63939d8a8f73949bd38b7" => :yosemite
     sha256 "e20d81ca7436928b79328b32c19158def2e31da83b698531c71c6503cf6ff626" => :mavericks
     sha256 "dbde383c51725ef3fb71480f59627e64158c5639cb827e76d7c944b0d354fa9b" => :mountain_lion

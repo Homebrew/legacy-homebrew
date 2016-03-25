@@ -3,14 +3,14 @@ class Gtkx < Formula
   homepage "http://gtk.org/"
 
   stable do
-    url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.29.tar.xz"
-    sha256 "0741c59600d3d810a223866453dc2bbb18ce4723828681ba24aa6519c37631b8"
+    url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.30.tar.xz"
+    sha256 "0d15cec3b6d55c60eac205b1f3ba81a1ed4eadd9d0f8e7c508bc7065d0c4ca50"
   end
 
   bottle do
-    sha256 "6fe4412e294c0f935a1d48e01f684ea41c5407ee59272876ac51860e579bfd0e" => :el_capitan
-    sha256 "69d6672184cee248b9a9e336863ae462f2c3795fffb111db4f5ea3f85571691c" => :yosemite
-    sha256 "04a5ac94c8ba358085f7301f287af51a09388d28906e8cc75e1501535c4e83e5" => :mavericks
+    sha256 "2fce410cbdf902f513030a18bc5002ec844bde1b115355e2a168ca2101cd6625" => :el_capitan
+    sha256 "3fe1d4c9e0de77d30e45c88d40de344d829c404abb2af06ef4ca6233f87f25e5" => :yosemite
+    sha256 "995560643ea4d66d24f8147361adf910be6504be8eb58a8c2411a06c17c19944" => :mavericks
   end
 
   head do
@@ -22,6 +22,7 @@ class Gtkx < Formula
     depends_on "gtk-doc" => :build
   end
 
+  option :universal
   option "with-quartz-relocation", "Build with quartz relocation support"
 
   depends_on "pkg-config" => :build
@@ -47,13 +48,15 @@ class Gtkx < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = ["--disable-dependency-tracking",
             "--disable-silent-rules",
             "--prefix=#{prefix}",
             "--disable-glibtest",
             "--enable-introspection=yes",
             "--with-gdktarget=quartz",
-            "--disable-visibility",]
+            "--disable-visibility"]
 
     args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
 

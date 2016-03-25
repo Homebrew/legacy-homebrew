@@ -1,13 +1,13 @@
 class GambitScheme < Formula
   desc "Complete, portable implementation of Scheme"
   homepage "http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page"
-  url "https://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_9.tgz"
-  sha256 "17e4a2eebbd0f5ebd807b4ad79a98b89b2a5eef00199c318a885db4ef950f14f"
+  url "https://www.iro.umontreal.ca/~gambit/download/gambit/v4.8/source/gambit-v4_8_4.tgz"
+  sha256 "b3153649440bde0f613c09b5038e2cc887784277e078cdea3e6703e4a582a0bf"
 
   bottle do
-    sha256 "d1d2cf026e85f5c62ebe7373c1eed03cd84c590ef3f588cba447fc912f9287d6" => :yosemite
-    sha256 "7de3b06bde1d0a2a8ce3288dfed388aa4161f0753692cb53eade22372eba1bd3" => :mavericks
-    sha256 "24f6d6f75f044bec4c7d0a87cc65e66234cc68e772d6a9d86ccd13495ce6aba5" => :mountain_lion
+    sha256 "9a71e8cff4ec71eedeebbe5fd7aaa44def0c59674f31aee5aa0cfee8542f3315" => :el_capitan
+    sha256 "6c1c2cd0f268d2888c3827b7296c560bdaafb095a25bb360e288ebf9eb22975d" => :yosemite
+    sha256 "d2bf0e670cf92cfb968b77aaba4c8d543f9d81fcf15f70a1aa838ef7c4cd4abc" => :mavericks
   end
 
   conflicts_with "ghostscript", :because => "both install `gsc` binaries"

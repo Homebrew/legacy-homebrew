@@ -7,10 +7,11 @@ class Qjson < Formula
   head "https://github.com/flavio/qjson.git"
 
   bottle do
-    revision 1
-    sha256 "17cfd3051322f724d3796b104bf14a47d54e81f0421462619d8462e5b848d297" => :yosemite
-    sha256 "0b4e1a589d1d479724f05e22afdfcb5aede88ec01aae7917956171b799772abc" => :mavericks
-    sha256 "86d22c75328ecce5a07483b20ea2d9470c37a7f40184471d262a233e89e8cbdf" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "4d47edace9872cd7cb267ca6e77c7f7d55400918cbdc57d45e4ee5d12087f4da" => :el_capitan
+    sha256 "a505ef97e0a0a3e05013ef1aa641af1104dedb363ff75c7d23b2c3dee5299649" => :yosemite
+    sha256 "2563c0f4d42e92136279434e9e73201b3117993d2eaa949359dab9c148d71710" => :mavericks
   end
 
   depends_on "cmake" => :build

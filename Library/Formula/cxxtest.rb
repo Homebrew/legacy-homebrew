@@ -6,7 +6,8 @@ class Cxxtest < Formula
   sha256 "1c154fef91c65dbf1cd4519af7ade70a61d85a923b6e0c0b007dc7f4895cf7d8"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "d35cfbbea5de989734e9f859531b203dffc870fdf931a5a7f12302adc7354c87" => :el_capitan
     sha256 "a69d95d4c027024e6c14a999c679106cf6259e22bb748205d93dbc5d0596a8e3" => :yosemite
     sha256 "2e8e487aac953d698f38f89ae9946572f8d072ec35b91683aa66bc147cec2fa4" => :mavericks
     sha256 "de1e98e94198507c65ecb17ae240b995ae8f03dadeafbde27bb704df2e10737c" => :mountain_lion

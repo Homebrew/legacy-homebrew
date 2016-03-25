@@ -3,18 +3,21 @@ class OpenSceneGraph < Formula
   homepage "http://www.openscenegraph.org/projects/osg"
   url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.4.0.zip"
   sha256 "5c727d84755da276adf8c4a4a3a8ba9c9570fc4b4969f06f1d2e9f89b1e3040e"
+  revision 1
 
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
 
   bottle do
-    sha256 "d24a9ba62fdd3d700e8c326e0ac8786229a4d84ca9786fac58b1ff8d785148ff" => :yosemite
-    sha256 "a2bb83a0e02b1f5a75e802053cba6c81b6928c716fb805caf7d53becc9e0ee8e" => :mavericks
-    sha256 "86e946339bf8293c784e4ceb78b2ff5f203bf7166427d2e66abb462d6f03e406" => :mountain_lion
+    sha256 "d75dbe609dc34b520dd70a8a04548252e3cb68e9faa28221420ceb7e5e56f2cf" => :mavericks
   end
 
   option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
+
+  # Currently does not build on 10.10+, possibly due to Xcode 7 issue
+  # https://github.com/Homebrew/homebrew/pull/46776
+  depends_on MaximumMacOSRequirement => :mavericks
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build

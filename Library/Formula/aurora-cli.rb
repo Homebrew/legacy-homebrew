@@ -1,14 +1,14 @@
 class AuroraCli < Formula
   desc "Apache Aurora Scheduler Client"
   homepage "https://aurora.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=aurora/0.11.0/apache-aurora-0.11.0.tar.gz"
-  sha256 "578775be7e16ff33f861956eb281d77a19f4caf23d27d9d6f8e6ce1f03ef63e9"
+  url "https://www.apache.org/dyn/closer.cgi?path=/aurora/0.12.0/apache-aurora-0.12.0.tar.gz"
+  sha256 "682e953237811d4fb0c94a08fd027c967de637be4260a32c19ee1e77c0f930e9"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "972ec962a20a2ff5965021f9debd1250a218872930f329fe02ce24b89f3ddabf" => :el_capitan
-    sha256 "d9f55f00969a914f59c19774431fe6001428bb51e3c5340912091cd3a3a89b38" => :yosemite
-    sha256 "7b50d4dd3e5a6cf77aee79f41d63c0a4c33fe9cd2c31bb4f5f5892f1bb118b1d" => :mavericks
+    sha256 "e8d5aee38fffe50c8740ee6923ed2436507d36ea5a08dd2b2e936dfd9225548d" => :el_capitan
+    sha256 "77ad7b569d4a9bb3c270f3721961b7a228e5fce02e878d5c73557591eb4c7fa8" => :yosemite
+    sha256 "5ba53fa10ce2d6d90b2b3b02ae70b989d2cef48e40996fb03914145d17adf1b3" => :mavericks
   end
 
   depends_on :java => "1.8+"
@@ -22,7 +22,7 @@ class AuroraCli < Formula
   end
 
   test do
-    ENV["AURORA_CONFIG_ROOT"] = "#{testpath}"
+    ENV["AURORA_CONFIG_ROOT"] = "#{testpath}/"
     (testpath/"clusters.json").write <<-EOS.undent
         [{
           "name": "devcluster",

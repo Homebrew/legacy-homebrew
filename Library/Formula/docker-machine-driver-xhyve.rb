@@ -16,13 +16,12 @@ class DockerMachineDriverXhyve < Formula
 
   depends_on :macos => :yosemite
   depends_on "go" => :build
-  depends_on "docker-machine"
+  depends_on "docker-machine" => :recommended
 
   def install
     (buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve").install Dir["{*,.git,.gitignore}"]
 
     ENV["GOPATH"] = "#{buildpath}/gopath"
-    ENV["GO15VENDOREXPERIMENT"] = "1"
 
     cd buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve" do
       if build.head?

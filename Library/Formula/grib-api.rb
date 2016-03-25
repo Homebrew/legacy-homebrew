@@ -1,14 +1,16 @@
 class GribApi < Formula
   desc "Encode and decode grib messages (editions 1 and 2)"
   homepage "https://software.ecmwf.int/wiki/display/GRIB/Home"
-  url "https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.14.3-Source.tar.gz"
-  sha256 "da29650a5d58d27509a055db3685f28789b06d94fafb2527fd1ddacad8eae4a7"
+  url "https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.14.7-Source.tar.gz"
+  sha256 "a42b9b0bd6bd2364897c13feafd09adba6a52e05866db61d2d7ab5ee0534f1f7"
 
   bottle do
-    sha256 "7b95c615906d92606038ac56c65672f4028de4d1333cf02ea9cc9ca3c04f3a16" => :el_capitan
-    sha256 "f152472b23c9708ac5dd5a5e6cdcbaeadc79d9888b0b384d850a2f40ce4f0da9" => :yosemite
-    sha256 "3a72bb44150630fff2eadcdf07dfb6c8e71812934701634222958921f44ee6ab" => :mavericks
+    sha256 "225eccf4e850b18d3b46ac35d55618f0348256794473795ee0ca8a7fbc319ec2" => :el_capitan
+    sha256 "87a9bbc980bdd0e7b4aded23fe8e1063004f26141d1efc4a3b49ab2700c4a353" => :yosemite
+    sha256 "6a10d0d9a39fda3c06505fd0b8a3f2fded6652bb2ac4e11a80d2cbcd5eb5441c" => :mavericks
   end
+
+  option "with-static", "Build static instead of shared library."
 
   depends_on :fortran
   depends_on "cmake" => :build
@@ -21,7 +23,9 @@ class GribApi < Formula
 
   def install
     mkdir "build" do
-      system "cmake", "..", *std_cmake_args
+      args = std_cmake_args
+      args << "-DBUILD_SHARED_LIBS=OFF" if build.with? "static"
+      system "cmake", "..", *args
       system "make", "install"
     end
   end

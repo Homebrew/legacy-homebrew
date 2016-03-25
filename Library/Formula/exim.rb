@@ -1,15 +1,14 @@
 class Exim < Formula
   desc "Complete replacement for sendmail"
-  homepage "http://exim.org"
-  url "http://ftp.exim.org/pub/exim/exim4/old/exim-4.85.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.exim.org/pub/exim/exim4/old/exim-4.85.tar.bz2"
-  sha256 "13211f2bbc5400d095a9b4be075eb1347e0d98676fdfe4be8a3b4d56281daaa4"
+  homepage "https://exim.org"
+  url "http://ftp.exim.org/pub/exim/exim4/exim-4.86.2.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.exim.org/pub/exim/exim4/exim-4.86.2.tar.bz2"
+  sha256 "7756deafd0583776e091f2efcba9b36203e668cf420d8876f314980803636eb3"
 
   bottle do
-    revision 1
-    sha256 "78e5eb89f3b324114f453d64f9a6955f60abe8fcde2e0c32acc19649e1cdbacb" => :yosemite
-    sha256 "beae28cb7ca235377eeb0bc04218154a2a0c29ec2942fbae52ac67f321e99b41" => :mavericks
-    sha256 "28f88bffa0447b615552d5a80c31ff8a762afd801a803429cf015af00aafae8b" => :mountain_lion
+    sha256 "9386715ff3734f8efa535cfd0e4766a248cd2cc48b71cde72292001a1fc208a8" => :el_capitan
+    sha256 "51d1fda02c60d0e7652c79a0fb92b60ee0b81031cc372b05b5874f74e80c13db" => :yosemite
+    sha256 "466f841e61afbd9ed4143a19fdff554b57a44591edc22ba5151dc01dcbb77f16" => :mavericks
   end
 
   deprecated_option "support-maildir" => "with-maildir"

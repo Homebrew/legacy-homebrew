@@ -34,7 +34,7 @@ Before submitting a new formula make sure your package:
 *   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release versions belong.
 *   passes all `brew audit --strict --online $FORMULA` tests.
 
-Before submitting a new formula make sure you read over our [contribution guidelines](https://github.com/Homebrew/homebrew/blob/master/CONTRIBUTING.md).
+Before submitting a new formula make sure you read over our [contribution guidelines](https://github.com/Homebrew/homebrew/blob/master/.github/CONTRIBUTING.md).
 
 ## Grab the URL
 
@@ -74,7 +74,7 @@ so you can override this with `brew create <url> --set-name <name>`.
 
 A SSL/TLS (https) [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) is preferred, if one is available.
 
-Try to summarize from the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) what the formula does in the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription. Note that the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription is automatically preprended with the formula name.
+Try to summarize from the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) what the formula does in the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription. Note that the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription is automatically prepended with the formula name.
 
 ## Check the build system
 
@@ -104,7 +104,15 @@ We generally try to not duplicate system libraries and complicated tools in core
 
 One very special exception is OpenSSL. Anything that uses OpenSSL *should* be built using Homebrew’s shipped OpenSSL and our test bot's post-install `audit` will warn if it detects you haven't done this.
 
-Homebrew’s OpenSSL is [`keg_only`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#keg_only-class_method) to avoid conflicting with the system so sometimes formulae need to have environmental variables set or special configuration flags passed to locate our OpenSSL. You can see this mechanism in the [clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28) formula. Usually this is unnecessary because when OpenSSL is specified as a dependency Homebrew temporarily prepends the `$PATH` with that prefix.
+Homebrew’s OpenSSL is
+[`keg_only`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#keg_only-class_method)
+to avoid conflicting with the system so sometimes formulae need to
+have environment variables set or special configuration flags passed
+to locate our OpenSSL. You can see this mechanism in the
+[clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28)
+formula. Usually this is unnecessary because when OpenSSL is specified
+as a dependency Homebrew temporarily prepends the `$PATH` with that
+prefix.
 
 Homebrew maintains a special [tap that provides other useful system duplicates](https://github.com/Homebrew/homebrew-dupes).
 
@@ -165,7 +173,7 @@ Sometimes there’s hard conflict between formulae, and it can’t be avoided or
 `mbedtls` ships and compiles a "Hello World" executable. This is obviously non-essential to `mbedtls`’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
 
 [pdftohtml](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/pdftohtml.rb) provides an example of a serious
-conflict, where both formula ship a identically-named binary that is essential to functionality, so a [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) is preferable.
+conflict, where both formula ship an identically-named binary that is essential to functionality, so a [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) is preferable.
 
 As a general rule, [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) should be a last-resort option. It’s a fairly blunt instrument.
 
@@ -241,11 +249,19 @@ Check the top of the e.g. `./configure` output. Some configure scripts do not re
 
 Please add a [`test do`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#test-class_method) block to the formula. This will be run by `brew test foo` and the [Brew Test Bot](Brew-Test-Bot.md).
 
-The [`test do`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#test-class_method) block automatically creates and changes to a temporary directory which is deleted after run. You can access this [`Pathname`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Pathname) with the [`testpath`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#testpath-instance_method) function.
+The
+[`test do`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#test-class_method)
+block automatically creates and changes to a temporary directory which
+is deleted after run. You can access this
+[`Pathname`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Pathname)
+with the
+[`testpath`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#testpath-instance_method)
+function.  The environment variable `HOME` is set to `testpath` within
+the `test do` block.
 
 We want tests that don't require any user input and test the basic functionality of the application. For example `foo build-foo input.foo` is a good test and (despite their widespread use) `foo --version` and `foo --help` are bad tests. However, a bad test is better than no test at all.
 
-See [cmake](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/cmake.rb) for an example of a formula with a good test. A basic `CMakeLists.txt` file is written CMake uses it to generate Makefiles. This test checks that CMake doesn't e.g. segfault during basic operation.
+See [cmake](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/cmake.rb) for an example of a formula with a good test. The formula writes a basic `CMakeLists.txt` file into the test directory then calls CMake to generate Makefiles. This test checks that CMake doesn't e.g. segfault during basic operation.  Another good example is [tinyxml2](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/tinyxml2.rb), which writes a small C++ source file into the test directory, compiles and links it against the tinyxml2 library and finally checks that the resulting program runs successfully.
 
 ## Manuals
 
@@ -272,7 +288,7 @@ When importing classes, Homebrew will require the formula and then create an ins
 *   `foo-bar.rb` => `FooBar`
 *   `foobar.rb` => `Foobar`
 
-Thus, if you change the name of the class, you must also rename the file. Filenames should be all lowercase.
+Thus, if you change the name of the class, you must also rename the file. Filenames should be all lowercase, and class names should be the strict CamelCase equivalent, e.g. formulae `gnu-go` and `sdl_mixer` become classes `GnuGo` and `SdlMixer`, even if part of their name is an acronym.
 
 Add aliases by creating symlinks in `Library/Aliases`.
 
@@ -303,7 +319,7 @@ The established standard for Git commit messages is:
 
 * the first line is a commit summary of *50 characters or less*
 * two (2) newlines, then
-* explain the commit throughly
+* explain the commit thoroughly
 
 At Homebrew, we like to put the name of the formula up front like so: `foobar 7.3 (new formula)`.
 This may seem crazy short, but you’ll find that forcing yourself to summarise the commit encourages you to be atomic and concise. If you can’t summarise it in 50-80 characters, you’re probably trying to commit two commits as one. For a more thorough explanation, please read Tim Pope’s excellent blog post, [A Note About Git Commit Messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
@@ -815,7 +831,7 @@ When using Homebrew's `gfortran` compiler, the standard `CFLAGS` are used and us
 
 # How to start over (reset to  upstream `master`)
 
-Have you created a real mess in git which stops you from creating a commit you want to submit to us? You might want to consider consider starting again from scratch. Your changes can be reset to the Homebrew's `master` branch by running:
+Have you created a real mess in git which stops you from creating a commit you want to submit to us? You might want to consider starting again from scratch. Your changes can be reset to the Homebrew's `master` branch by running:
 
 ```shell
 git checkout -f master

@@ -13,10 +13,8 @@ class Emacs < Formula
   end
 
   devel do
-    # Savannah doesn't support HTTPS clones so prefer the Github mirror to
-    # http://git.sv.gnu.org/r/emacs.git
-    url "https://github.com/emacs-mirror/emacs.git", :branch => "emacs-25"
-    version "25.0-dev"
+    url "http://alpha.gnu.org/gnu/emacs/pretest/emacs-25.0.92.tar.xz"
+    sha256 "c29733959ae2c6a7c1d5f9465b4d06c93977cc1f3905313d992051a16590568e"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end

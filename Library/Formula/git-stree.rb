@@ -6,7 +6,8 @@ class GitStree < Formula
   sha256 "5504ac90871c73c92c21f5cd84b0bf956c521b237749e2b2dd699dbe0c096af8"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "534f4d90c47779faa6df5d3bfa1f072596d0b3e7367bd3035d3782a6461e6b0c" => :el_capitan
     sha256 "dbd601412c4920f9a9767f38070df9cf184b0a08f4f1f1bc1e3bf3ec1fff6dd2" => :yosemite
     sha256 "d87889c5632ff79899110cbf182723da6ee5e9165f0ce88cacdbc7ac92476548" => :mavericks
     sha256 "7c4faa41a4c8b218ccb7ad0dd13e9312bead1f4ec518d3e9edf16e4897efb000" => :mountain_lion

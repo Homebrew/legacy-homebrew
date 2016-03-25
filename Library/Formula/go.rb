@@ -1,32 +1,31 @@
 class Go < Formula
   desc "Go programming environment"
   homepage "https://golang.org"
-  url "https://storage.googleapis.com/golang/go1.5.3.src.tar.gz"
-  mirror "https://fossies.org/linux/misc/go1.5.3.src.tar.gz"
-  version "1.5.3"
-  sha256 "754e06dab1c31ab168fc9db9e32596734015ea9e24bc44cae7f237f417ce4efe"
+  url "https://storage.googleapis.com/golang/go1.6.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.6.src.tar.gz"
+  version "1.6"
+  sha256 "a96cce8ce43a9bf9b2a4c7d470bc7ee0cb00410da815980681c8353218dcf146"
 
   head "https://github.com/golang/go.git"
 
   bottle do
-    sha256 "b09e84e2e63314ab38d76c366ff13afa53106ec2e53987c2e75d9e591848121e" => :el_capitan
-    sha256 "9553fcf68bcd70e75ab755785f5dd6285f3608e2e71324c3ba1a4f736c84a8c9" => :yosemite
-    sha256 "ccce62ff1470060646749876b79d33d3092f60de8409bb5fd02e7412aa4aff72" => :mavericks
-  end
-
-  devel do
-    url "https://storage.googleapis.com/golang/go1.6beta2.src.tar.gz"
-    version "1.6beta2"
-    sha256 "8b23d15a3edf1d154ceea5e9ca6370fc60e7f57fb1c28aa8a44c40f8f3167c6d"
+    revision 2
+    sha256 "c36e89f37ded34f000440af3b74bf7ac40857a09c2d668094601cb44889a12a8" => :el_capitan
+    sha256 "99aa8ee902111b6de1864dbf2ff5a2fa2782e70aadba61991c0c0e70a8e86b5d" => :yosemite
+    sha256 "df04d44e5aff57814b6871689e4ede01fdd4444cf632264ef0d9d77a02e1d406" => :mavericks
   end
 
   option "without-cgo", "Build without cgo"
   option "without-godoc", "godoc will not be installed for you"
   option "without-vet", "vet will not be installed for you"
+  option "without-race", "Build without race detector"
+
+  go_version = version
 
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
-    :revision => "d02228d1857b9f49cd0252788516ff5584266eb6"
+    :branch => "release-branch.go#{go_version}",
+    :revision => "c887be1b2ebd11663d4bf2fbca508c449172339e"
   end
 
   resource "gobootstrap" do
@@ -63,6 +62,12 @@ class Go < Formula
     rm_rf "gobootstrap" # Bootstrap not required beyond compile.
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/go*"]
+
+    # Race detector only supported on amd64 platforms.
+    # https://golang.org/doc/articles/race_detector.html
+    if MacOS.prefer_64_bit? && build.with?("race")
+      system "#{bin}/go", "install", "-race", "std"
+    end
 
     if build.with?("godoc") || build.with?("vet")
       ENV.prepend_path "PATH", bin

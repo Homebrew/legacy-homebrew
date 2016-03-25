@@ -1,14 +1,14 @@
 class NanopbGenerator < Formula
   desc "ANSI C library for encoding and decoding Protocol Buffer messages"
   homepage "https://koti.kapsi.fi/jpa/nanopb/docs/index.html"
-  url "https://koti.kapsi.fi/~jpa/nanopb/download/nanopb-0.3.4.tar.gz"
-  sha256 "300e3025ed64cc8e557341c92cd613ef56567f87bb63d75b3718b5899c00f69c"
+  url "https://koti.kapsi.fi/~jpa/nanopb/download/nanopb-0.3.5.tar.gz"
+  sha256 "3dd539671403d578425f15c6b4b6ba7390ee9a20369b969637ef1d18487e150e"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "037dba88b75b1e7aee033d7ba2458cbf09894ad8f25b97992b8f7a14acc9a64a" => :el_capitan
-    sha256 "312ea6f80babf9d9ee7a06687a97cf40389d718b80a580d07e59d57602a3c66d" => :yosemite
-    sha256 "3bb238213b8d28fb4730e0eee3032f0ac25bc8ba16186aa689c28553a90053e5" => :mavericks
+    sha256 "e48c213f1af09ef52f38a874991dcd5bc6e2fe86e5404a7b272160d4a9cea5cb" => :el_capitan
+    sha256 "1390bb0c55b7b6a278588d3648b1ca6441fd2294d6f62d34e8552405710093eb" => :yosemite
+    sha256 "cf5dabc592b4c8d4b338915dcbc1bddb9a000fe0c087bd03c2f13ff0981c2edd" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

@@ -3,12 +3,12 @@ class Atk < Formula
   homepage "https://library.gnome.org/devel/atk/"
   url "https://download.gnome.org/sources/atk/2.18/atk-2.18.0.tar.xz"
   sha256 "ce6c48d77bf951083029d5a396dd552d836fff3c1715d3a7022e917e46d0c92b"
+  revision 1
 
   bottle do
-    revision 1
-    sha256 "35c6f979fd70a1d6795be0eb39af47ce2dc107ee37916463779edd4432005d7e" => :el_capitan
-    sha256 "86f832cb5899fd42461aa8622bc29e5a63789426e928e20f092bb9268565d00c" => :yosemite
-    sha256 "cb32c119e17261370f0aa7271686a3736b5d1f4bdda19f5bac7fde3f00532401" => :mavericks
+    sha256 "fe1c92ea4289e68e062a861b7b150ccf69beba70e95d38f7f028b52ca2f6314d" => :el_capitan
+    sha256 "7cd7097c3dd7a00e9a16bd22740e1dc242ca7a6e8e7d78d35204ecfa345e8c44" => :yosemite
+    sha256 "2b108c87daaaf48d7628f8e4187533533c726331c55d0182327551366525829b" => :mavericks
   end
 
   option :universal

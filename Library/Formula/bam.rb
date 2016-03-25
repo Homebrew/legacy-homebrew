@@ -7,7 +7,8 @@ class Bam < Formula
   head "https://github.com/matricks/bam.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "40501301dcb3d0af9ca402535d91b79729a684978299d52f3595274f0385a9a6" => :el_capitan
     sha256 "832033a89e90b4152690ac9738af8db839f322e79b7169bc8bdf1a866707cf22" => :yosemite
     sha256 "ba4ee90c3fc9001761bf2c09906c5c3df66c6175d7b763fa3527c3c512c2f2d5" => :mavericks
     sha256 "73362b46dfe24dc3d6c4bb59bdb9d0403ec717054428f78bc9dd32a93343a187" => :mountain_lion

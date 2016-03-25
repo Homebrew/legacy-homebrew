@@ -2,16 +2,16 @@ class OpenshiftCli < Formula
   desc "OpenShift command-line interface tools"
   homepage "https://www.openshift.com/"
   url "https://github.com/openshift/origin.git",
-    :tag => "v1.1.1",
-    :revision => "e1d9873c1d5711b83fd3dd7eefe83a88ceb92c08"
+    :tag => "v1.1.4",
+    :revision => "3941102b8a022b5f2d9ec2c94d1f13d519fa9c31"
 
   head "https://github.com/openshift/origin.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fbbdc3abc10d12dda8e1db85f9b140e337ba925151fd32c4a93a4af52d48997b" => :el_capitan
-    sha256 "60f65184cd48a58dd0afbac64a64aba7b795b64a38b682b40edea3b653d0c6bb" => :yosemite
-    sha256 "3ab7e60d60b20530e37ea3c7a468857a66e7b33dd974eaace646de7d628efe29" => :mavericks
+    sha256 "1437f92fe5b2d09273068c623ee2a6bca67a97e4c52bfa0bddaff4dce2f00c4b" => :el_capitan
+    sha256 "c9acbb6246d196bdc9f4d3bac2110551835f2e1597942cb94429a9fdd7ffd437" => :yosemite
+    sha256 "cd56908b06507599caf52db95ebae58e3a9f9a5a7ea9e14703bc3a24501fc700" => :mavericks
   end
 
   depends_on "go" => :build
@@ -20,7 +20,7 @@ class OpenshiftCli < Formula
     # this is necessary to avoid having the version marked as dirty
     (buildpath/".git/info/exclude").atomic_write "/.brew_home"
 
-    system "make", "all", "WHAT=cmd/openshift", "GOFLAGS=-v"
+    system "make", "all", "WHAT=cmd/openshift", "GOFLAGS=-v", "OS_OUTPUT_GOPATH=1"
 
     arch = MacOS.prefer_64_bit? ? "amd64" : "x86"
     bin.install "_output/local/bin/darwin/#{arch}/openshift"

@@ -22,7 +22,7 @@ class Analog < Formula
   def install
     system "make", "CC=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
-                   "DEFS='-DLANGDIR=\"#{share/"analog/lang/"}\"' -DHAVE_ZLIB",
+                   "DEFS='-DLANGDIR=\"#{pkgshare}/lang/\"' -DHAVE_ZLIB",
                    "LIBS=-lz",
                    "OS=OSX"
 

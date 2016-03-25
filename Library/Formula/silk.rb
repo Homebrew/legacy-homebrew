@@ -5,22 +5,33 @@ class Silk < Formula
   sha256 "56b9c481305737057cd8ca07758bfd476a21e3cf905943a2068cb2aa6120007a"
 
   bottle do
-    sha256 "b7d3b94b4934e686934092de3e35b579fcd9df42e919d3c2254c7376fc993034" => :yosemite
-    sha256 "0fccbeb99d27c04f5f8b5ecdc57866444852e77bdc124cfea97be13069a314aa" => :mavericks
-    sha256 "add00c8ccdbf6c9ad91f015be30191ab73bc0b834add1214353c55f8780dc4fb" => :mountain_lion
+    revision 1
+    sha256 "0bfae0e3ca1afd61819501ee8f2f43ae9e945cc3cc903bcc9682deaab4e94357" => :el_capitan
+    sha256 "3654785d4b84d693e808af69c4d9945cbd68a7bfb0ff6f1028ea405ec25ce74c" => :yosemite
+    sha256 "d096816e48aecd4f1b87bc016611d0082aea5becf3c43112826e61cff7dd48fd" => :mavericks
   end
+
+  option "with-python", "Build with the PySiLK python interface"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libfixbuf"
   depends_on "yaf"
+  depends_on :python => :optional
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--enable-ipv6",
-                          "--enable-data-rootdir=#{var}/silk"
+    args = %W[
+      --prefix=#{prefix}
+      --disable-dependency-tracking
+      --mandir=#{man}
+      --enable-ipv6
+      --enable-data-rootdir=#{var}/silk
+    ]
+
+    if build.with? "python"
+      args << "--with-python" << "--with-python-prefix=#{prefix}"
+    end
+    system "./configure", *args
     system "make"
     system "make", "install"
 

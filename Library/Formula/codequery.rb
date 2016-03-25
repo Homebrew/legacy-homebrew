@@ -6,6 +6,7 @@ class Codequery < Formula
 
   bottle do
     cellar :any
+    sha256 "0705afd5f032c11dec91fb317c721098f66ca5bc3193116d6a0848dd67be6b25" => :el_capitan
     sha256 "622d9750948ae1eeef67c4f2824b3af800a671bec6a358ffef3019711991796b" => :yosemite
     sha256 "ff3d941bf41fd5d9cb0947bddf3236846722a2ea6fdbb24e7f291c039a56140a" => :mavericks
     sha256 "e5e30987a1a4ca4358f2dcb6848df9cfef4d8bfce49aa72831a22cbe6125d8a6" => :mountain_lion

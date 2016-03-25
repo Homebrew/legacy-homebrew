@@ -5,10 +5,11 @@ class Tinyproxy < Formula
   sha256 "be559b54eb4772a703ad35239d1cb59d32f7cf8a739966742622d57df88b896e"
 
   bottle do
-    revision 1
-    sha256 "c38d434bfc1c9b1f659a1c2275872c288b13dbf4f9300adc07a39e836e0f15f7" => :yosemite
-    sha256 "97fc5062add3375191da067af89b6e9ddd3c5a306c3feffad4c821e532a9ef2f" => :mavericks
-    sha256 "ced9b61ab07ac9dbc0e89a8763c6506e7ebb1309bf709400be9643025d64e63b" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "004c6319701e7529b252e1860321cf14369a74029a6f05523662365ff1292f1b" => :el_capitan
+    sha256 "b68a1b323a20f689b96e7405f2c491c66849fa011beb450dcf417be491557da4" => :yosemite
+    sha256 "7bba647101259e9299a8a61177fcba2966b056091e9b1a28a43207e612a0bcfc" => :mavericks
   end
 
   depends_on "asciidoc" => :build
@@ -84,6 +85,7 @@ class Tinyproxy < Formula
         <key>ProgramArguments</key>
         <array>
             <string>#{opt_sbin}/tinyproxy</string>
+            <string>-d</string>
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>

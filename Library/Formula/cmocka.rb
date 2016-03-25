@@ -7,6 +7,7 @@ class Cmocka < Formula
 
   bottle do
     cellar :any
+    sha256 "df6195f9a7d312247e0a98cca755216d970a5131d8c6482094ef516c97b9dcd0" => :el_capitan
     sha256 "33765424588cf149679e394842f6132dbb003913e774bc30d0115294952c3cad" => :yosemite
     sha256 "28ea3d6de51e920dae544f9b4f36288a04f1ee6215dd34f833c6e98bc43de0f9" => :mavericks
     sha256 "544f9a2bd42b2a868322cc9942afb191733260bb33e8a2731a53311b6c538d7d" => :mountain_lion

@@ -1,17 +1,17 @@
 class Keybase < Formula
   desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io/"
-  url "https://github.com/keybase/client/archive/v1.0.9-0.tar.gz"
-  version "1.0.9-0"
-  sha256 "01999048454877bc3b6a2934a8c1bfda4ebef31400698627a23b94450d5b2409"
+  url "https://github.com/keybase/client/archive/v1.0.14-1.tar.gz"
+  version "1.0.14-1"
+  sha256 "ef8f6d01206428a99558885ecec8de99089a60fe5f4b6e6f425e01a3fb368853"
 
   head "https://github.com/keybase/client.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "772674d37beb75b8f37ad764a5c11c90b2ea22a9390e93f5451724ebad015451" => :el_capitan
-    sha256 "b2119bd160ed5aa05d404cf6bc821f75540e52fdacfa5eb7125ba8c6525b8ca0" => :yosemite
-    sha256 "190289ba1a9c1c8e9ce8711ab08dccaa2b92494e7ab8dc29f6936528a97b14a2" => :mavericks
+    sha256 "7bb1a2c16840f219e24fe79e2b125a89324416bd8a9f3e42c75231a58c31fc00" => :el_capitan
+    sha256 "91c6561cedf3bc485d27d82a55e9a66385cff3db17ce27d47b0f6e5b5d231d7a" => :yosemite
+    sha256 "12198ddd5fd25e5c77f154428470ca21504f6495fd9f8c3e7f44df7d05fa73e5" => :mavericks
   end
 
   depends_on "go" => :build
@@ -19,7 +19,6 @@ class Keybase < Formula
   def install
     ENV["GOPATH"] = buildpath
     ENV["GOBIN"] = buildpath
-    ENV["GO15VENDOREXPERIMENT"] = "1"
     (buildpath/"src/github.com/keybase/client/").install "go"
 
     system "go", "build", "-a", "-tags", "production brew", "github.com/keybase/client/go/keybase"

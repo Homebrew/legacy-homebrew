@@ -1,18 +1,15 @@
 class Libssh < Formula
   desc "C library SSHv1/SSHv2 client and server protocols"
   homepage "https://www.libssh.org/"
-  url "https://red.libssh.org/attachments/download/154/libssh-0.7.1.tar.xz"
-  mirror "http://sources.buildroot.net/libssh-0.7.1.tar.xz"
-  sha256 "2fc7ccf96d3263cbd8ab520118cb94d9a2e11714c61e22b3f761fc5352fd046d"
-
+  url "https://red.libssh.org/attachments/download/195/libssh-0.7.3.tar.xz"
+  sha256 "26ef46be555da21112c01e4b9f5e3abba9194485c8822ab55ba3d6496222af98"
   head "git://git.libssh.org/projects/libssh.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "09f1395ab2b200acc9ef148ce34ffd06e793c5d01e81b38e514fc04178de8446" => :el_capitan
-    sha256 "99d3af0dd4b187716008cda69583b5a2bbae9e2df86404eda2b8938b60f71bd5" => :yosemite
-    sha256 "59db885db693b5064a45bd89cbe603bfb4261908e8bac03eafd6d8180d400a7a" => :mavericks
+    sha256 "d631ef47a2de9b3947f24ad4b9704761c1fcd6caaca0dcda62566c2e9fee14f3" => :el_capitan
+    sha256 "dbb548a37ef0b7923c24fb138a0cf227b47d0be577a56adc5d8b4a63c2ac0564" => :yosemite
+    sha256 "c173a69c283ab16bdbd1478f87505548fb7cff83e04752d6f776721b85764b2e" => :mavericks
   end
 
   depends_on "cmake" => :build

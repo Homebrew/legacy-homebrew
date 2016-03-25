@@ -1,8 +1,8 @@
 class Gradle < Formula
   desc "Build system based on the Groovy language"
   homepage "https://www.gradle.org/"
-  url "https://downloads.gradle.org/distributions/gradle-2.10-bin.zip"
-  sha256 "66406247f745fc6f05ab382d3f8d3e120c339f34ef54b86f6dc5f6efc18fbb13"
+  url "https://downloads.gradle.org/distributions/gradle-2.12-bin.zip"
+  sha256 "e77064981906cd0476ff1e0de3e6fef747bd18e140960f1915cca8ff6c33ab5c"
 
   bottle :unneeded
 

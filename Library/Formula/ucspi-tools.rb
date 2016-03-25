@@ -1,7 +1,7 @@
 class UcspiTools < Formula
   desc "Various tools to handle UCSPI connections"
   homepage "https://github.com/younix/ucspi/blob/master/README.md"
-  revision 8
+  revision 9
 
   stable do
     url "https://github.com/younix/ucspi/archive/v1.2.tar.gz"
@@ -11,8 +11,8 @@ class UcspiTools < Formula
     # moves much quicker than the ucspi project. Since ucspi-tools breaks
     # every LibreSSL update vendor until new release is available.
     resource "libressl" do
-      url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.2.5.tar.gz"
-      sha256 "e3caded0469d8dc64f4ca2fe8e499ada4dd014e84d1c5a71818d39e54e6c914b"
+      url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.2.6.tar.gz"
+      sha256 "1ee19994cffd047d40f63ba149115dba18a681b0cc923beec301bf424b58d64f"
     end
 
     # LibreSSL renamed a function between the 2.1.3 and 2.1.4 release which ucspi uses.
@@ -25,9 +25,9 @@ class UcspiTools < Formula
   end
 
   bottle do
-    sha256 "d271b18626a2ac4cc998136c556a9749b798689a597d964d0964f847e850cce0" => :el_capitan
-    sha256 "6b653a80ec8359106c38339dc528525cf25168176272cd0cb9864c88da30c135" => :yosemite
-    sha256 "b358cf2d0ae16aae4321760f358e59f14ff2e31ebb3d1f931c246842cdf7e4c0" => :mavericks
+    sha256 "322251b7175bedac948f15b4c98efbd3d609fbd1ad9c17cf75b8ebc5f1a1f3f3" => :el_capitan
+    sha256 "d2f09ec3533244d6b627ed3c1dcb8cdb28ff65614c3aaff0990906921878c352" => :yosemite
+    sha256 "4de9eecb0450e6f2f017af6129ddd31f3a428fcfefef33b676df891fd9f30dfd" => :mavericks
   end
 
   head do

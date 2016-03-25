@@ -1,8 +1,8 @@
 class Elasticsearch < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.1.1/elasticsearch-2.1.1.tar.gz"
-  sha256 "ebd69c0483f20ba7e51caa9606d4e3ce5fe2667e1216c799f0cdbb815c317ce6"
+  url "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.2.1/elasticsearch-2.2.1.tar.gz"
+  sha256 "7d43d18a8ee8d715d827ed26b4ff3d939628f5a5b654c6e8de9d99bf3a9b2e03"
 
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
@@ -32,7 +32,7 @@ class Elasticsearch < Formula
     rm_f Dir["bin/*.exe"]
 
     # Install everything else into package directory
-    libexec.install "bin", "config", "lib"
+    libexec.install "bin", "config", "lib", "modules"
 
     # Set up Elasticsearch for local development:
     inreplace "#{libexec}/config/elasticsearch.yml" do |s|
@@ -116,7 +116,8 @@ class Elasticsearch < Formula
     system "#{libexec}/bin/plugin", "list"
     pid = "#{testpath}/pid"
     begin
-      system "#{bin}/elasticsearch", "-d", "-p", pid, "--path.data", testpath
+      mkdir testpath/"config"
+      system "#{bin}/elasticsearch", "-d", "-p", pid, "--path.home", testpath
       sleep 10
       system "curl", "-XGET", "localhost:9200/"
     ensure

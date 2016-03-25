@@ -1,20 +1,23 @@
 require "language/go"
 
+# Please don't update this formula until the release is official via
+# mailing list or blog post. There's a history of GitHub tags moving around.
+# https://github.com/hashicorp/vault/issues/1051
 class Vault < Formula
   desc "Secures, stores, and tightly controls access to secrets"
   homepage "https://vaultproject.io/"
   url "https://github.com/hashicorp/vault.git",
-      :tag => "v0.4.0",
-      :revision => "b3da917b2305b23693cf2594f9d29e52acc514cf"
+      :tag => "v0.5.0",
+      :revision => "a7b0aadc9ea6a33875dd6bdd9d11d3146b29beb1"
   revision 1
 
   head "https://github.com/hashicorp/vault.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "41aacbabd07b3084f62d4beb27e524185a07c349ead5f532f8c095d2cc37cbe9" => :el_capitan
-    sha256 "60c643c46e4bdedf3cb278e4929edfa58471b192a828aed4ca902f79179109ad" => :yosemite
-    sha256 "9e2a67a91df6f2734354bd58a0e1061f0a5cd146d3b976c99e52af17a3a62a3d" => :mavericks
+    sha256 "08ce84108d5b403aebed4b91dcb427e619cb86e8fbbbeec983411aa17bd604c3" => :el_capitan
+    sha256 "2a09b553384c15e2152f24371b2751366ef065a7f856c1643685733a1ef88abb" => :yosemite
+    sha256 "35425eeda9c1936e524ccb235d9e0f9aac9e39e4db11e04012beae929e58c569" => :mavericks
   end
 
   depends_on "go" => :build
@@ -28,12 +31,12 @@ class Vault < Formula
 
   go_resource "golang.org/x/tools" do
     url "https://go.googlesource.com/tools.git",
-        :revision => "997b3545fd86c3a2d8e5fe6366174d7786e71278"
+        :revision => "fe74a4186116b8d7dd38a723993e0d84f8834b34"
   end
 
   go_resource "github.com/mitchellh/gox" do
     url "https://github.com/mitchellh/gox.git",
-        :revision => "a5a468f84d74eb51ece602cb113edeb37167912f"
+        :revision => "39862d88e853ecc97f45e91c1cdcb1b312c51eaa"
   end
 
   # gox dependency

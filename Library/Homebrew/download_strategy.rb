@@ -451,7 +451,7 @@ class S3DownloadStrategy < CurlDownloadStrategy
       raise
     end
 
-    if @url !~ %r{^https?://+([^.]+).s3.amazonaws.com/+(.+)$}
+    if @url !~ %r{^https?://([^.].*)\.s3\.amazonaws\.com/(.+)$}
       raise "Bad S3 URL: " + @url
     end
     bucket = $1

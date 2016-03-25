@@ -3,16 +3,18 @@ class Libbluray < Formula
   homepage "https://www.videolan.org/developers/libbluray.html"
   url "https://download.videolan.org/pub/videolan/libbluray/0.9.2/libbluray-0.9.2.tar.bz2"
   sha256 "efc994f42d2bce6af2ce69d05ba89dbbd88bcec7aca065de094fb3a7880ce7ea"
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "c4846d3177db8aa304557818adb03a0a7e8b49cc5dcd2b699b3759ea7a9c6e14" => :el_capitan
-    sha256 "841c95e8ca17c6353ef5bfdbf4ce286eaf69156f804e70c6e775d7abc4d49e2f" => :yosemite
-    sha256 "52659042ef08c69a3b7325bdda9f76e9d1bcff090d00908905e090e6697bba7e" => :mavericks
+    revision 1
+    sha256 "511cb44fcba46fa25f3ceca929b61e869f83371e0c31763d4ad6040dc1e6cc8d" => :el_capitan
+    sha256 "5e15b1228092358f8681b0ab446159e6018d861b03c29662ddcd03255fedc894" => :yosemite
+    sha256 "99d884c4fa47063e6fd3afd4ca9472cc2eec22ca476646e0f00f1e72567ce2dc" => :mavericks
   end
 
   head do
-    url "git://git.videolan.org/libbluray.git"
+    url "https://git.videolan.org/git/libbluray.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

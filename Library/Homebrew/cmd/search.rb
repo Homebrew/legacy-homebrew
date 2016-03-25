@@ -93,6 +93,8 @@ module Homebrew
     when %r{^/(.*)/$} then Regexp.new($1)
     else /.*#{Regexp.escape(query)}.*/i
     end
+  rescue RegexpError
+    odie "#{query} is not a valid regex"
   end
 
   def search_taps(rx)

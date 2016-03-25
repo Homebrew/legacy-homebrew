@@ -1,8 +1,8 @@
 class AppEnginePython < Formula
   desc "Google App Engine"
   homepage "https://cloud.google.com/appengine/docs"
-  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.30.zip"
-  sha256 "d908f031672f8a95da0cc9230253a9985cfd57f6721d89606ccea21c8e00b471"
+  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.34.zip"
+  sha256 "492f837f295c33db14bb26f51fdabae94727463a40c764e31301352683f0235d"
 
   bottle :unneeded
 
@@ -12,8 +12,7 @@ class AppEnginePython < Formula
     :because => "both install the same binaries"
 
   def install
-    cd ".."
-    share.install "google_appengine" => name
+    pkgshare.install Dir["*"]
     %w[
       _python_runtime.py
       _php_runtime.py

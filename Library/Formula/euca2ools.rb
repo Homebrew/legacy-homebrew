@@ -6,7 +6,8 @@ class Euca2ools < Formula
   head "https://github.com/eucalyptus/euca2ools.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "a6d395aecd3867c81d5789cfb1d0c07dc583ca1964669cfd7af53359e24f347c" => :el_capitan
     sha256 "8c7ef23097472b3b801d13abdfb4d416ea8156ea69915b5ab09051f7bbc1e4c8" => :yosemite
     sha256 "fe63a3a7c44cd0f276962ff87e3f39d02ed667f09006f1357a30ce96616a0b34" => :mavericks
     sha256 "fd09cae80f9a8648fc1a7048bd8eb3f2856c6df746baeae2ded8f33829eafb5b" => :mountain_lion

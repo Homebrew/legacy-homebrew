@@ -1,17 +1,17 @@
 class X265 < Formula
   desc "H.265/HEVC encoder"
   homepage "http://x265.org"
-  url "https://bitbucket.org/multicoreware/x265/downloads/x265_1.8.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/x/x265/x265_1.8.orig.tar.gz"
-  sha256 "760e6280c688f1ea90c492d19fc6d4084ca1c4b0ea9b2e3c736d32565c30d857"
+  url "https://bitbucket.org/multicoreware/x265/downloads/x265_1.9.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/x/x265/x265_1.9.orig.tar.gz"
+  sha256 "3e4654133ed957a98708fdb4cb9a154d9e80922b84e26e43fc462a101c5b15c8"
 
   head "https://bitbucket.org/multicoreware/x265", :using => :hg
 
   bottle do
     cellar :any
-    sha256 "6072f1038e151fd63ad5ba9e29ba90f98cf5697995af2ee10784d4dfaa9361bb" => :el_capitan
-    sha256 "665b73272db7bf4d8e47b17c15cc858c78043987de5eec8a5cf3600b2c58550c" => :yosemite
-    sha256 "d4dcbdd3119e0fdcf39dac6dc08d1beab14948ca3172bc5c00b9a64f157ec7bf" => :mavericks
+    sha256 "2e13c1ef59fd23193c577de8819858fcebe755e40c0448bdee423a2bce0e6e4b" => :el_capitan
+    sha256 "962bad9f05baa67d0e911ce7eb08cc92ad77a6d8124a61af5aa03467cc3cd9f3" => :yosemite
+    sha256 "3b889f2c294fd916c51699eed1d3c80f9acb28b25d07ebcd71f36ed6410eeabb" => :mavericks
   end
 
   option "with-16-bit", "Build a 16-bit x265 (default: 8-bit)"

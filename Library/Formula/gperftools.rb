@@ -1,16 +1,14 @@
 class Gperftools < Formula
   desc "Multi-threaded malloc() and performance analysis tools"
-  homepage "https://code.google.com/p/gperftools/"
-  url "https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/gperftools-2.4.tar.gz"
-  sha256 "982a37226eb42f40714e26b8076815d5ea677a422fb52ff8bfca3704d9c30a2d"
+  homepage "https://github.com/gperftools/gperftools"
+  url "https://github.com/gperftools/gperftools/releases/download/gperftools-2.5/gperftools-2.5.tar.gz"
+  sha256 "6fa2748f1acdf44d750253e160cf6e2e72571329b42e563b455bde09e9e85173"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "ed20c4f8ac1be86d15eb5d634a42da8e087acbdf235db4b7d103f405f1af17c2" => :el_capitan
-    sha256 "a3e20ad0d06dff8197c8b940e50e30d3e5e31ac7370b041d5f375c5865380311" => :yosemite
-    sha256 "a8129731beef1d0ec4f026b1c1da67ef8bb715c094fe2c5e384bcc139bc0e46d" => :mavericks
-    sha256 "e699b94174325abdf47246370a3169760633a180a01f50e453ad651f1125e80c" => :mountain_lion
+    sha256 "b53926eaf6db1fa5ff0e9c3412628db838a070ce57d16581f9d596a9728b47ca" => :el_capitan
+    sha256 "9ce10dbc6d575ce7004ac8fa5e97d188bbd0d5dbb76e1058e5c5069e9a8e4c11" => :yosemite
+    sha256 "6036aafcbbce98242174d9481b14112ec947598452f493878b1394d08e6ca275" => :mavericks
   end
 
   fails_with :llvm do

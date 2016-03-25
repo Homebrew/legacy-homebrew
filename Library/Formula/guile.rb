@@ -13,6 +13,15 @@ class Guile < Formula
     sha256 "51f5f379e25fab5cf8fb7cede02841aa716c0e90356705be2abc6a18c6af5371" => :mountain_lion
   end
 
+  devel do
+    url "http://git.savannah.gnu.org/r/guile.git",
+        :tag => "v2.1.2",
+        :revision => "d236022eb0d285af3d462de9e99a212eba459df2"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "gettext" => :build
+  end
+
   head do
     url "http://git.sv.gnu.org/r/guile.git"
 
@@ -40,7 +49,7 @@ class Guile < Formula
   end
 
   def install
-    system "./autogen.sh" if build.head?
+    system "./autogen.sh" unless build.stable?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libreadline-prefix=#{Formula["readline"].opt_prefix}",

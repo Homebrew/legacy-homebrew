@@ -4,10 +4,8 @@ require "utils"
 require "extend/ENV"
 require "formula_cellar_checks"
 require "official_taps"
-require "tap_migrations"
 require "cmd/search"
 require "date"
-require "formula_renames"
 
 module Homebrew
   def audit
@@ -186,6 +184,7 @@ class FormulaAuditor
       [/^  keg_only/,                      "keg_only"],
       [/^  option/,                        "option"],
       [/^  depends_on/,                    "depends_on"],
+      [/^  (go_)?resource/,                "resource"],
       [/^  def install/,                   "install method"],
       [/^  def caveats/,                   "caveats method"],
       [/^  test do/,                       "test block"],
@@ -224,17 +223,12 @@ class FormulaAuditor
       end
     end
 
-    if Object.const_defined?("GithubGistFormula") && formula.class < GithubGistFormula
-      problem "GithubGistFormula is deprecated, use Formula instead"
+    classes = %w[GithubGistFormula ScriptFileFormula AmazonWebServicesFormula]
+    klass = classes.find do |c|
+      Object.const_defined?(c) && formula.class < Object.const_get(c)
     end
 
-    if Object.const_defined?("ScriptFileFormula") && formula.class < ScriptFileFormula
-      problem "ScriptFileFormula is deprecated, use Formula instead"
-    end
-
-    if Object.const_defined?("AmazonWebServicesFormula") && formula.class < AmazonWebServicesFormula
-      problem "AmazonWebServicesFormula is deprecated, use Formula instead"
-    end
+    problem "#{klass} is deprecated, use Formula instead" if klass
   end
 
   # core aliases + tap alias names + tap alias full name
@@ -253,7 +247,7 @@ class FormulaAuditor
       return
     end
 
-    if oldname = CoreFormulaRepository.instance.formula_renames[name]
+    if oldname = CoreTap.instance.formula_renames[name]
       problem "'#{name}' is reserved as the old name of #{oldname}"
       return
     end
@@ -415,7 +409,7 @@ class FormulaAuditor
       problem "Description shouldn't start with an indefinite article (#{$1})"
     end
 
-    if desc =~ /^#{formula.name}\s/i
+    if desc.downcase.start_with? "#{formula.name} "
       problem "Description shouldn't include the formula name"
     end
   end
@@ -515,10 +509,12 @@ class FormulaAuditor
       return
     end
 
+    return if metadata.nil?
+
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
-    if (metadata["forks_count"] < 10) && (metadata["subscribers_count"] < 10) &&
-       (metadata["stargazers_count"] < 20)
-      problem "GitHub repository not notable enough (<10 forks, <10 watchers and <20 stars)"
+    if (metadata["forks_count"] < 20) && (metadata["subscribers_count"] < 20) &&
+       (metadata["stargazers_count"] < 50)
+      problem "GitHub repository not notable enough (<20 forks, <20 watchers and <50 stars)"
     end
 
     if Date.parse(metadata["created_at"]) > (Date.today - 30)
@@ -883,11 +879,11 @@ class FormulaAuditor
         problem "`#{$1}` is now unnecessary"
       end
 
-      if line =~ /#\{share\}\/#{formula.name}/
+      if line =~ %r{#\{share\}/#{Regexp.escape(formula.name)}[/'"]}
         problem "Use \#{pkgshare} instead of \#{share}/#{formula.name}"
       end
 
-      if line =~ /share\/"#{formula.name}"/
+      if line =~ %r{share/"#{Regexp.escape(formula.name)}[/'"]}
         problem "Use pkgshare instead of (share/\"#{formula.name}\")"
       end
     end
@@ -902,11 +898,11 @@ class FormulaAuditor
   end
 
   def audit_reverse_migration
-    # Only enforce for new formula being re-added to core
+    # Only enforce for new formula being re-added to core and official taps
     return unless @strict
-    return unless formula.core_formula?
+    return unless formula.tap && formula.tap.official?
 
-    if TAP_MIGRATIONS.key?(formula.name)
+    if formula.tap.tap_migrations.key?(formula.name)
       problem <<-EOS.undent
        #{formula.name} seems to be listed in tap_migrations.rb!
        Please remove #{formula.name} from present tap & tap_migrations.rb
@@ -1130,6 +1126,7 @@ class ResourceAuditor
            %r{^http://www\.mirrorservice\.org/},
            %r{^http://launchpad\.net/},
            %r{^http://bitbucket\.org/},
+           %r{^http://hackage\.haskell\.org/},
            %r{^http://(?:[^/]*\.)?archive\.org}
         problem "Please use https:// for #{p}"
       when %r{^http://search\.mcpan\.org/CPAN/(.*)}i

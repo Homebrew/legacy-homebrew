@@ -1,18 +1,18 @@
 class Pulseaudio < Formula
   desc "Sound system for POSIX OSes"
-  homepage "http://pulseaudio.org"
-  url "http://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-7.1.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/p/pulseaudio/pulseaudio_7.1.orig.tar.xz"
-  sha256 "e667514a28328f92aceea754a224a0150dddfe7e9a71b4c6d31489220153b9d9"
+  homepage "https://wiki.freedesktop.org/www/Software/PulseAudio/"
+  url "https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-8.0.tar.xz"
+  sha256 "690eefe28633466cfd1ab9d85ebfa9376f6b622deec6bfee5091ac9737cd1989"
 
   bottle do
-    sha256 "f674ea5ddb567fb340daba6e543da67ff1ee5a8bbb9b348aafe2f955d7eefc71" => :el_capitan
-    sha256 "c21196124d2e7380d39247522641496c2e41b601d6243e7760ded77a4f323711" => :yosemite
-    sha256 "5254734a6518763905f8f7f0644deaae6e71ed719fdfcc26f5b873a6762d093a" => :mavericks
+    revision 1
+    sha256 "ec432b0c8e3462f1e8c66b3042ac55f64fa0f050797a6a21914766dd649c15b0" => :el_capitan
+    sha256 "7c904d263248a34400e7014542b2fc966b375959a8ed86cd48619c4aaa4b4534" => :yosemite
+    sha256 "95fd865d58978d8f06e76e8ed49893b45f37b69656d831d6c66cfd28a0b6495c" => :mavericks
   end
 
   head do
-    url "http://anongit.freedesktop.org/git/pulseaudio/pulseaudio.git"
+    url "https://anongit.freedesktop.org/git/pulseaudio/pulseaudio.git"
     depends_on "automake" => :build
     depends_on "autoconf" => :build
     depends_on "intltool" => :build
@@ -32,7 +32,7 @@ class Pulseaudio < Formula
   depends_on "libtool" => :run
   depends_on "json-c"
   depends_on "libsndfile"
-  depends_on "libsamplerate"
+  depends_on "libsoxr"
   depends_on "openssl"
 
   depends_on :x11 => :optional

@@ -7,7 +7,8 @@ class Curaengine < Formula
   head "https://github.com/Ultimaker/CuraEngine.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "3ff512abcab846bd63db5a6bfb11b544c416284b46d978cd7db854879e5421d9" => :el_capitan
     sha256 "eef2771a72371fd9d541d83cf5ba92c88f1ab614017e03860f59bfacaa5eb948" => :yosemite
     sha256 "4cfea42552a3acb1ec939d882ef38bfd766a15f0f462f595e6da5f6d851a0437" => :mavericks
     sha256 "6ada916641459b6d059985c82d61a197a92bf724e7d5770a0bbcf60b6d6361a3" => :mountain_lion

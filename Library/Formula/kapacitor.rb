@@ -2,135 +2,120 @@ require "language/go"
 
 class Kapacitor < Formula
   desc "Open source time series data processor"
-  homepage "https://github.com/influxdb/kapacitor"
-  url "https://github.com/influxdb/kapacitor.git",
-    :tag => "v0.2.0",
-    :revision => "18b2061efb263aae326f51bd74d7023a221996ef"
+  homepage "https://github.com/influxdata/kapacitor"
+  url "https://github.com/influxdata/kapacitor.git",
+    :tag => "v0.11.0",
+    :revision => "97ac4edb295c9f11b5c428fe5906bc6aa4e0865b"
 
-  head "https://github.com/influxdb/kapacitor.git"
+  head "https://github.com/influxdata/kapacitor.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4c75d2db70eb2c5952209f79cab6dccb4c3766a107082405da7db0151c45031e" => :el_capitan
-    sha256 "5c5097b0507ebd543a2519167bb8fd876b87fdb3e3289c22a1583e4c7a2aa5a5" => :yosemite
-    sha256 "40cea054a5b5579108fee3d6217cafd789cc39d910f3d930905d96668f32eb9c" => :mavericks
+    sha256 "a9dd1fec28dc4863bb8983721ad79213a3911eeed2934fd963ecf37bf772096c" => :el_capitan
+    sha256 "52de9ce4609f2d138e5ff8b2bc69dbf6dbc3beb8c9f5ede2c8d12816e385f4ca" => :yosemite
+    sha256 "115703595c641ed2007eec944ae4605b95a1ca4550440b19a5712585f88af7fd" => :mavericks
   end
 
   depends_on "go" => :build
 
-  go_resource "github.com/armon/go-metrics" do
-    url "https://github.com/armon/go-metrics.git",
-      :revision => "6c5fa0d8f48f4661c9ba8709799c88d425ad20f0"
+  go_resource "github.com/BurntSushi/toml" do
+    url "https://github.com/BurntSushi/toml.git",
+    :revision => "bbd5bb678321a0d6e58f1099321dfa73391c1b6f"
   end
 
   go_resource "github.com/boltdb/bolt" do
     url "https://github.com/boltdb/bolt.git",
-      :revision => "6e1ca38c6a73025366cd8705553b404746ee6e63"
+    :revision => "c2610ee091a94978d6092586b2b98b78cd8f7aca"
   end
 
-  go_resource "github.com/gogo/protobuf" do
-    url "https://github.com/gogo/protobuf.git",
-      :revision => "d3235f01ecae4901dd9f7ea6af57a352c0189deb"
-  end
-
-  go_resource "github.com/gorhill/cronexpr" do
-    url "https://github.com/gorhill/cronexpr.git",
-      :revision => "a557574d6c024ed6e36acc8b610f5f211c91568a"
-  end
-
-  go_resource "github.com/hashicorp/go-msgpack" do
-    url "https://github.com/hashicorp/go-msgpack.git",
-      :revision => "fa3f63826f7c23912c15263591e65d54d080b458"
-  end
-
-  go_resource "github.com/hashicorp/raft" do
-    url "https://github.com/hashicorp/raft.git",
-      :revision => "d136cd15dfb7876fd7c89cad1995bc4f19ceb294"
-  end
-
-  go_resource "github.com/hashicorp/raft-boltdb" do
-    url "https://github.com/hashicorp/raft-boltdb.git",
-      :revision => "d1e82c1ec3f15ee991f7cc7ffd5b67ff6f5bbaee"
-  end
-
-  go_resource "github.com/influxdb/enterprise-client" do
-    url "https://github.com/influxdb/enterprise-client.git",
-      :revision => "25665cba4f54fa822546c611c9414ac31aa10faa"
-  end
-
-  go_resource "github.com/influxdb/influxdb" do
-    url "https://github.com/influxdb/influxdb.git",
-      :revision => "45502d288f79b60051a7ec9260ad59dacb5b1a6c"
-  end
-
-  go_resource "github.com/twinj/uuid" do
-    url "https://github.com/twinj/uuid.git",
-      :revision => "89173bcdda19db0eb88aef1e1cb1cb2505561d31"
-  end
-
-  go_resource "golang.org/x/crypto" do
-    url "https://go.googlesource.com/crypto.git",
-      :revision => "beef0f4390813b96e8e68fd78570396d0f4751fc"
-  end
-
-  go_resource "gopkg.in/fatih/pool.v2" do
-    url "https://gopkg.in/fatih/pool.v2.git",
-      :revision => "cba550ebf9bce999a02e963296d4bc7a486cb715"
-  end
-
-  go_resource "github.com/BurntSushi/toml" do
-    url "https://github.com/BurntSushi/toml.git",
-      :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
-  end
-
-  go_resource "github.com/kimor79/gollectd" do
-    url "https://github.com/kimor79/gollectd.git",
-      :revision => "61d0deeb4ffcc167b2a1baa8efd72365692811bc"
-  end
-
-  go_resource "gopkg.in/gomail.v2" do
-    url "https://gopkg.in/gomail.v2.git",
-      :revision => "41f3572897373c5538c50a2402db15db079fa4fd"
-  end
-
-  go_resource "github.com/serenize/snaker" do
-    url "https://github.com/serenize/snaker.git",
-      :revision => "d88cc11617e4f179fa2c821a60908d5fabd7bdad"
-  end
-
-  go_resource "github.com/shurcooL/markdownfmt" do
-    url "https://github.com/shurcooL/markdownfmt.git",
-      :revision => "c6ad3c69d14e5089336af1e41e595f0826df1b82"
+  go_resource "github.com/cenkalti/backoff" do
+    url "https://github.com/cenkalti/backoff.git",
+    :revision => "32cd0c5b3aef12c76ed64aaf678f6c79736be7dc"
   end
 
   go_resource "github.com/dustin/go-humanize" do
     url "https://github.com/dustin/go-humanize.git",
-      :revision => "64dbdae0d393b7d71480a6dace78456396b55286"
+    :revision => "8929fe90cee4b2cb9deb468b51fb34eba64d1bf0"
+  end
+
+  go_resource "github.com/gogo/protobuf" do
+    url "https://github.com/gogo/protobuf.git",
+    :revision => "4168943e65a2802828518e95310aeeed6d84c4e5"
+  end
+
+  go_resource "github.com/gorhill/cronexpr" do
+    url "https://github.com/gorhill/cronexpr.git",
+    :revision => "f0984319b44273e83de132089ae42b1810f4933b"
+  end
+
+  go_resource "github.com/influxdata/influxdb" do
+    url "https://github.com/influxdata/influxdb.git",
+    :revision => "5e8e849ebdeb66e13a4c32069acd101e23f368f9"
+  end
+
+  go_resource "github.com/influxdb/usage-client" do
+    url "https://github.com/influxdb/usage-client.git",
+    :revision => "475977e68d79883d9c8d67131c84e4241523f452"
+  end
+
+  go_resource "github.com/kimor79/gollectd" do
+    url "https://github.com/kimor79/gollectd.git",
+    :revision => "b5dddb1667dcc1e6355b9305e2c1608a2db6983c"
   end
 
   go_resource "github.com/mattn/go-runewidth" do
     url "https://github.com/mattn/go-runewidth.git",
-      :revision => "d96d1bd051f2bd9e7e43d602782b37b93b1b5666"
+    :revision => "d6bea18f789704b5f83375793155289da36a3c7f"
   end
 
   go_resource "github.com/russross/blackfriday" do
     url "https://github.com/russross/blackfriday.git",
-      :revision => "300106c228d52c8941d4b3de6054a6062a86dda3"
+    :revision => "b43df972fb5fdf3af8d2e90f38a69d374fe26dd0"
+  end
+
+  go_resource "github.com/serenize/snaker" do
+    url "https://github.com/serenize/snaker.git",
+    :revision => "8824b61eca66d308fcb2d515287d3d7a28dba8d6"
   end
 
   go_resource "github.com/shurcooL/go" do
     url "https://github.com/shurcooL/go.git",
-      :revision => "ee4d3ba2f39466dd17fc55dd260e89b8963640f8"
+    :revision => "4df21823efe0d75ceac67879b43bcd28c8b864ad"
+  end
+
+  go_resource "github.com/shurcooL/markdownfmt" do
+    url "https://github.com/shurcooL/markdownfmt.git",
+    :revision => "f9ece38f23b0150fcfaa82de98ec43ce0b98a83e"
   end
 
   go_resource "github.com/shurcooL/sanitized_anchor_name" do
     url "https://github.com/shurcooL/sanitized_anchor_name.git",
-      :revision => "10ef21a441db47d8b13ebcc5fd2310f636973c77"
+    :revision => "10ef21a441db47d8b13ebcc5fd2310f636973c77"
+  end
+
+  go_resource "github.com/stretchr/testify" do
+    url "https://github.com/stretchr/testify.git",
+    :revision => "f390dcf405f7b83c997eac1b06768bb9f44dec18"
+  end
+
+  go_resource "github.com/twinj/uuid" do
+    url "https://github.com/twinj/uuid.git",
+    :revision => "89173bcdda19db0eb88aef1e1cb1cb2505561d31"
+  end
+
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git",
+    :revision => "c197bcf24cde29d3f73c7b4ac6fd41f4384e8af6"
+  end
+
+  go_resource "gopkg.in/gomail.v2" do
+    url "https://gopkg.in/gomail.v2.git",
+    :revision => "84856b343c307d0d076818e93d6122b71591c4a7"
   end
 
   def install
     ENV["GOPATH"] = buildpath
-    kapacitor_path = buildpath/"src/github.com/influxdb/kapacitor"
+    kapacitor_path = buildpath/"src/github.com/influxdata/kapacitor"
     kapacitor_path.install Dir["*"]
     revision = `git rev-parse HEAD`
 
@@ -189,17 +174,25 @@ class Kapacitor < Formula
   end
 
   test do
-    logo = <<-EOS.undent
-      '##:::'##::::'###::::'########:::::'###:::::'######::'####:'########::'#######::'########::
-       ##::'##::::'## ##::: ##.... ##:::'## ##:::'##... ##:. ##::... ##..::'##.... ##: ##.... ##:
-       ##:'##::::'##:. ##:: ##:::: ##::'##:. ##:: ##:::..::: ##::::: ##:::: ##:::: ##: ##:::: ##:
-       #####::::'##:::. ##: ########::'##:::. ##: ##:::::::: ##::::: ##:::: ##:::: ##: ########::
-       ##. ##::: #########: ##.....::: #########: ##:::::::: ##::::: ##:::: ##:::: ##: ##.. ##:::
-       ##:. ##:: ##.... ##: ##:::::::: ##.... ##: ##::: ##:: ##::::: ##:::: ##:::: ##: ##::. ##::
-       ##::. ##: ##:::: ##: ##:::::::: ##:::: ##:. ######::'####:::: ##::::. #######:: ##:::. ##:
-      ..::::..::..:::::..::..:::::::::..:::::..:::......:::....:::::..::::::.......:::..:::::..::
-    EOS
     (testpath/"config.toml").write shell_output("kapacitord config")
-    assert_match /#{logo}/m, shell_output("kapacitord -config #{testpath}/config.toml", 1)
+
+    inreplace testpath/"config.toml" do |s|
+      s.gsub! /\[\[influxdb\]\]\n  enabled = true/m, "[[influxdb]]\n  enabled = false"
+      s.gsub! %r{data_dir = "/.*/.kapacitor}, "data_dir = \"#{testpath}/kapacitor"
+      s.gsub! %r{/.*/.kapacitor/replay}, "#{testpath}/kapacitor/replay"
+      s.gsub! %r{/.*/.kapacitor/tasks}, "#{testpath}/kapacitor/tasks"
+    end
+
+    pid = fork do
+      exec "#{bin}/kapacitord -config #{testpath}/config.toml"
+    end
+    sleep 2
+
+    begin
+      shell_output("#{bin}/kapacitor level info")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

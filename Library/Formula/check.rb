@@ -1,6 +1,6 @@
 class Check < Formula
   desc "C unit testing framework"
-  homepage "http://check.sourceforge.net/"
+  homepage "https://libcheck.github.io/check/"
   url "https://downloads.sourceforge.net/project/check/check/0.10.0/check-0.10.0.tar.gz"
   sha256 "f5f50766aa6f8fe5a2df752666ca01a950add45079aa06416b83765b1cf71052"
 

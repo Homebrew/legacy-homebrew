@@ -1,15 +1,15 @@
 class Sha2 < Formula
   desc "Implementation of SHA-256, SHA-384, and SHA-512 hash algorithms"
-  homepage "https://www.aarongifford.com/computers/sha.html"
-  url "https://www.aarongifford.com/computers/sha2-1.0.1.tgz"
+  homepage "http://aarongifford.com/computers/sha.html"
+  url "https://aarongifford.com/computers/sha2-1.0.1.tgz"
   sha256 "67bc662955c6ca2fa6a0ce372c4794ec3d0cd2c1e50b124e7a75af7e23dd1d0c"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "e087ba4357e2ed9d75bd2d25253c0982ac742db854d1c7c6792671d58e05bdc8" => :yosemite
-    sha256 "7bb393c6de372210c1343a76094063a344f59f7bfeed67210abc749e9dfb93aa" => :mavericks
-    sha256 "dc28fabf8cd4680b5ff534de7ef19ad95c4b839f6b891f80292e6ac9bd0952ad" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 3
+    sha256 "84ce281185ba415257d8507e9b16ba8dc3189ec8b8414d21a6421d5979a025d2" => :el_capitan
+    sha256 "da63b7e9be95c91bcdc3290e3c6caee12016c5d59960144ea26f8c6438dfe680" => :yosemite
+    sha256 "34650fbb427aa57f452acc23a338696756792907bd7e127d7b495a7fd7e4573a" => :mavericks
   end
 
   option "without-test", "Skip compile-time tests"
@@ -24,7 +24,7 @@ class Sha2 < Formula
 
   test do
     (testpath/"checkme.txt").write "homebrew"
-    assert_match "12c87370d1b5472793e67682596b60efe2c6038d63d04134a1a88544509737b4",
-      pipe_output("#{bin}/sha2 -q -256 #{testpath}/checkme.txt")
+    output = "12c87370d1b5472793e67682596b60efe2c6038d63d04134a1a88544509737b4"
+    assert_match output, pipe_output("#{bin}/sha2 -q -256 #{testpath}/checkme.txt")
   end
 end

@@ -5,6 +5,7 @@ class FlowTools < Formula
   sha256 "80bbd3791b59198f0d20184761d96ba500386b0a71ea613c214a50aa017a1f67"
 
   bottle do
+    sha256 "2b41c1415b50e7123c5268dce7c656aba825a16c061691ee8eaf06e39d622cec" => :el_capitan
     sha256 "0d3814f50d6bc8d06c808176bc0b6f725f429b231a21eabe49fadf6729a7d27b" => :yosemite
     sha256 "dc15779397a7f60c67b20c314b4513133c0883a5eafb3e972e744b8a70ca1060" => :mavericks
     sha256 "9a101e543b0fc763624f15bf373e60908645dab3ba2360e477eae403cd578e0a" => :mountain_lion

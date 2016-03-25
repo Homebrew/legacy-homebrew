@@ -7,7 +7,8 @@ class EulerPy < Formula
   head "https://github.com/iKevinY/EulerPy.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "914a6ad292704a5bcc8798a524c9613995a45bba30bbd38559e282b64a8bb027" => :el_capitan
     sha256 "cb5678aba9536bbc64c2a2cc6c6a0808b19d00f8f228099f415f6e4bdb7f4de6" => :yosemite
     sha256 "429bf72a785e8d4d7fd50d76364806998ef63e0ec4dd5df8352fb2b52db9eb83" => :mavericks
     sha256 "0751ec60117c432ce0cfd264442d3f8f9394ea876fb8f5b08c26fe8ffe831168" => :mountain_lion
