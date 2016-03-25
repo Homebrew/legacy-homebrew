@@ -48,11 +48,6 @@ class PreCommit < Formula
     sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
-  resource "simplejson" do
-    url "https://pypi.python.org/packages/source/s/simplejson/simplejson-3.8.1.tar.gz"
-    sha256 "428ac8f3219c78fb04ce05895d5dff9bd813c05a9a7922c53dc879cd32a12493"
-  end
-
   resource "virtualenv" do
     url "https://pypi.python.org/packages/source/v/virtualenv/virtualenv-14.0.6.tar.gz"
     sha256 "1ffb6a02d8999e9c97ad8f04b1d2ba44421dfb8f8a98b54aea5c6fdfb53bc526"
@@ -61,36 +56,6 @@ class PreCommit < Formula
   resource "functools32" do
     url "https://pypi.python.org/packages/source/f/functools32/functools32-3.2.3-2.tar.gz"
     sha256 "f6253dfbe0538ad2e387bd8fdfd9293c925d63553f5813c4e587745416501e6d"
-  end
-
-  resource "autopep8" do
-    url "https://pypi.python.org/packages/source/a/autopep8/autopep8-1.2.1.tar.gz"
-    sha256 "d0a7cdc397e46be0d91a968acb3f561cc1b9244f5df94a2514cf32acfc8a2e94"
-  end
-
-  resource "flake8" do
-    url "https://pypi.python.org/packages/source/f/flake8/flake8-2.5.0.tar.gz"
-    sha256 "8216c8c6ee092ae93d51f89bc91045648c88cd9be77d60cf47df7ca26ee4f88c"
-  end
-
-  resource "plumbum" do
-    url "https://pypi.python.org/packages/source/p/plumbum/plumbum-1.6.0.tar.gz"
-    sha256 "74c931a79d1c1851ee7a2d8b7f594c810930e46a6bdea7961e177d3670ed350e"
-  end
-
-  resource "pyflakes" do
-    url "https://pypi.python.org/packages/source/p/pyflakes/pyflakes-1.0.0.tar.gz"
-    sha256 "f39e33a4c03beead8774f005bd3ecf0c3f2f264fa0201de965fce0aff1d34263"
-  end
-
-  resource "pep8" do
-    url "https://pypi.python.org/packages/source/p/pep8/pep8-1.6.2.tar.gz"
-    sha256 "b8b7e35630b5539e26a197dfc6005be9e1e9a135496b377723a8ebc01b9bcbff"
-  end
-
-  resource "mccabe" do
-    url "https://pypi.python.org/packages/source/m/mccabe/mccabe-0.3.1.tar.gz"
-    sha256 "5f7ea6fb3aa9afe146d07fd6d5cedf788747d8b0c29e44732453c2b2db1e3d16"
   end
 
   def install
