@@ -15,8 +15,8 @@ To enable users to do rich queries without the problems above, Homebrew provides
 
 From the manpage:
 
-  * `info --json=<version>` (--all|--installed|<formula>):
-    Print a JSON representation of <formula>. Currently the only accepted value
+  * `info --json=<version> (--all|--installed|<formula>)`:
+    Print a JSON representation of `<formula>`. Currently the only accepted value
     for <version> is `v1`.
 
     Pass `--all` to get information on all formulae, or `--installed` to get
