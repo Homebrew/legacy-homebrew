@@ -69,7 +69,7 @@ index 6601937..5184767 100644
      # append any available aliases from config files
      if [[ ${#config[@]} -gt 0 && -n "$aliases" ]]; then
 -        local hosts=$( sed -ne 's/^[ \t]*[Hh][Oo][Ss][Tt]\([Nn][Aa][Mm][Ee]\)\{0,1\}['"$'\t '"']\{1,\}\([^#*?]*\)\(#.*\)\{0,1\}$/\2/p' "${config[@]}" )
-+        local hosts=$( sed -ne 's/^['"$'\t '"']*[Hh][Oo][Ss][Tt]\([Nn][Aa][Mm][Ee]\)\{0,1\}['"$'\t '"']\{1,\}\([^#*?]*\)\(#.*\)\{0,1\}$/\2/p' "${config[@]}" )
++        local hosts=$( sed -ne 's/^[[:blank:]]*[Hh][Oo][Ss][Tt]\([Nn][Aa][Mm][Ee]\)\{0,1\}[[:blank:]]\{1,\}\([^#*?]*\)\(#.*\)\{0,1\}$/\2/p' "${config[@]}" )
          COMPREPLY=( "${COMPREPLY[@]}" $( compgen  -P "$prefix$user" \
              -S "$suffix" -W "$hosts" -- "$cur" ) )
      fi
