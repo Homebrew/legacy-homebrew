@@ -39,7 +39,7 @@ class Geocouch < Formula
     #  Install geocouch build files.
     (share/"geocouch").mkpath
     rm_rf share/"geocouch/ebin/"
-    (share/"geocouch").install Dir["ebin"]
+    (share/"geocouch").install ebin
 
     #  Install geocouch.plist for launchctl support.
     (share/"geocouch").install Dir[couchdb_dir/"etc/launchd/org.apache.couchdb.plist.tpl.in"]
@@ -59,7 +59,7 @@ class Geocouch < Formula
     (share/"geocouch/geocouch.plist").chmod 0644
 
     #  Install geocouch.ini into couchdb.
-    (etc/"couchdb/default.d").install Dir["etc/couchdb/default.d/geocouch.ini"]
+    (etc/"couchdb/default.d").install etc/couchdb/default.d/geocouch.ini
 
     #  Install tests into couchdb.
     test_files = Dir["share/www/script/test/*.js"]
