@@ -18,6 +18,8 @@ class Docker < Formula
   option "without-completions", "Disable bash/zsh completions"
 
   depends_on "go" => :build
+  depends_on "libtool" => :run if build.with?("experimental")
+  depends_on "yubico-piv-tool" => :recommended if build.with?("experimental")
 
   def install
     ENV["AUTO_GOPATH"] = "1"
