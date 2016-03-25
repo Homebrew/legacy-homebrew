@@ -1,9 +1,9 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
-  homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.9.2.tar.gz"
-  sha256 "98b0eceb767b2062ff185221294e35a27d276cb2d74cf3450b646af2d90121bc"
-  head "https://github.com/untitaker/vdirsyncer.git"
+  homepage "https://github.com/pimutils/vdirsyncer"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.9.3.tar.gz"
+  sha256 "8ca2941bb99c5b67f0f9e7cae3dd65fcbd64b8969515c68d44e6f3cd9cfc50f2"
+  head "https://github.com/pimutils/vdirsyncer"
 
   bottle do
     cellar :any_skip_relocation
