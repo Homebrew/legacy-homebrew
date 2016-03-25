@@ -18,8 +18,8 @@ class Sleepwatcher < Formula
     end
 
     # Build and install binary
-    cd "sources" do
-      system "mv", "../sleepwatcher.8", "."
+    Dir.chdir("sources") do
+      move("../sleepwatcher.8", ".")
       system "make", "install", "PREFIX=#{prefix}"
     end
 

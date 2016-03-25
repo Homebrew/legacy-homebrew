@@ -39,7 +39,7 @@ class Geocouch < Formula
     #  Install geocouch build files.
     (share/"geocouch").mkpath
     rm_rf share/"geocouch/ebin/"
-    (share/"geocouch").install Dir["ebin"]
+    (share/"geocouch").install ebin
 
     #  Install geocouch.plist for launchctl support.
     (share/"geocouch").install Dir[couchdb_dir/"etc/launchd/org.apache.couchdb.plist.tpl.in"]
@@ -59,7 +59,7 @@ class Geocouch < Formula
     (share/"geocouch/geocouch.plist").chmod 0644
 
     #  Install geocouch.ini into couchdb.
-    (etc/"couchdb/default.d").install Dir["etc/couchdb/default.d/geocouch.ini"]
+    (etc/"couchdb/default.d").install etc/couchdb/default.d/geocouch.ini
 
     #  Install tests into couchdb.
     test_files = Dir["share/www/script/test/*.js"]
@@ -78,7 +78,7 @@ class Geocouch < Formula
     (couchdb_share/"www/script/test/geocouch").mkpath
     (couchdb_share/"www/script/test/geocouch").install test_files
     Dir[(couchdb_share/"www/script/test/geocouch/*.js")].each  \
-      { |geotest| system "cd #{couchdb_share/"www/script/test"};  ln -s geocouch/#{File.basename(geotest)} ." }
+      { |geotest| Dir.chdir("#{couchdb_share/"www/script/test"}"); ln("ln -s geocouch/#{File.basename(geotest)} .") }
     #  Complete the install by referencing the geocouch tests in couch_tests.js
     #  (which runs the tests).
     test_lines = test_files.map { |testline| testline.gsub(/^.*\/(.*)$/, 'loadTest("\1");' + "\n") }
