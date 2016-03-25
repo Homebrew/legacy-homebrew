@@ -16,8 +16,8 @@ end
 class Monetdb < Formula
   desc "Column-store database"
   homepage "https://www.monetdb.org/"
-  url "https://www.monetdb.org/downloads/sources/Jul2015-SP2/MonetDB-11.21.13.zip"
-  sha256 "1638d74fbfbccc61e7e72e470114e24f6b31f3449e28b14febeffa8bd380ef69"
+  url "https://www.monetdb.org/downloads/sources/Jul2015-SP3/MonetDB-11.21.17.zip"
+  sha256 "9c4133a5b878a2554844b678dcf8ec8bb3066aaab706fc4feb9c2d820940f72e"
 
   bottle do
     revision 1
