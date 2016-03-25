@@ -18,12 +18,12 @@ class Gnuplot < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-cairo",  "Build the Cairo based terminals"
-  option "without-lua",  "Build without the lua/TikZ terminal"
-  option "with-test",  "Verify the build with make check"
+  option "with-cairo", "Build the Cairo based terminals"
+  option "without-lua", "Build without the lua/TikZ terminal"
+  option "with-test", "Verify the build with make check"
   option "without-emacs", "Do not build Emacs lisp files"
   option "with-wxmac", "Build wxmac support. Need with-cairo to build wxt terminal"
-  option "with-tex",  "Build with LaTeX support"
+  option "with-tex", "Build with LaTeX support"
   option "with-aquaterm", "Build with AquaTerm support"
 
   deprecated_option "with-x" => "with-x11"
@@ -87,6 +87,10 @@ class Gnuplot < Formula
       args << "--with-qt=no"
     end
 
+    # The tutorial requires the deprecated subfigure TeX package installed
+    # or it halts in the middle of the build for user-interactive resolution.
+    # Per upstream: "--with-tutorial is horribly out of date."
+    args << "--without-tutorial"
     args << "--without-lua" if build.without? "lua"
     args << "--without-lisp-files" if build.without? "emacs"
     args << ((build.with? "aquaterm") ? "--with-aquaterm" : "--without-aquaterm")
@@ -94,10 +98,8 @@ class Gnuplot < Formula
 
     if build.with? "tex"
       args << "--with-latex"
-      args << "--with-tutorial"
     else
       args << "--without-latex"
-      args << "--without-tutorial"
     end
 
     system "./prepare" if build.head?
