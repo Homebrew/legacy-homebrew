@@ -6,10 +6,9 @@ class Binutils < Formula
   sha256 "9615feddaeedc214d1a1ecd77b6697449c952eab69d79ab2125ea050e944bcc1"
 
   bottle do
-    sha256 "ab393fd01e8bb2f9ff697efa3e14765eb32468a46380ce8c2db0d5baf1b588b5" => :el_capitan
-    sha256 "299f9bbdf522b68b803ce6cdb109a34b018459f3815771b3530ba95e06ee19f7" => :yosemite
-    sha256 "30b13f1b4ddfe09f5140c2f00d0d34d42ed471ed2ab241405d8f5b7d3fb8eb41" => :mavericks
-    sha256 "689d5c651fba64a18fed5f8f66ba9d156af7f3b8787e383afe8979f535432d64" => :mountain_lion
+    sha256 "6290d3d2b56f5b9450043d1f71d0597e7405e6d27c1c6eddd54f1f6bb5ff96f0" => :el_capitan
+    sha256 "12f87ef4be8a0ea5d92cf9ef2f6bb3db8b1836c61d7ab0a95ddcea3a6b8dc37f" => :yosemite
+    sha256 "a82e26a42ba2775534c7b3651feacfd1d3be7b4e83cfbe3635c7f728ac2cbb4d" => :mavericks
   end
 
   # No --default-names option as it interferes with Homebrew builds.
