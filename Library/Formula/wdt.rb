@@ -36,13 +36,12 @@ class Wdt < Formula
     ENV.cxx11
     ENV.libcxx if ENV.compiler == :clang
 
-    args = %w[
+    args = %W[
       -DOPENSSL_ROOT_DIR=#{Formula["openssl"].opt_prefix}
+      -DFOLLY_SOURCE_DIR=#{buildpath}/folly
     ]
 
     (buildpath/"folly").install resource("folly")
-
-    args << "-DFOLLY_SOURCE_DIR=" + buildpath/"folly"
 
     mktemp do
       mkdir "wdt"
@@ -56,6 +55,23 @@ class Wdt < Formula
 
   test do
     system "#{bin}/wdt", "--version"
+
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <wdt/Wdt.h>
+      using namespace facebook::wdt;
+      int main() {
+        Wdt::initializeWdt("test");
+        return 0;
+      }
+    EOS
+
+    ENV.cxx11
+
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-o", "test",
+                    "-I#{Formula["openssl"].opt_include}",
+                    "-L#{HOMEBREW_PREFIX}/lib",
+                    "-lboost_system", "-lwdt"
+    system "./test"
   end
 end
 
