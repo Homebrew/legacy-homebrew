@@ -484,7 +484,7 @@ module GitHub
   class RateLimitExceededError < Error
     def initialize(reset, error)
       super <<-EOS.undent
-        GitHub #{error}
+        GitHub API Error: #{error}
         Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
           #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
         and then set the token as: export HOMEBREW_GITHUB_API_TOKEN="your_new_token"
@@ -506,9 +506,12 @@ module GitHub
         EOS
       else
         message << <<-EOS.undent
-          The GitHub credentials in the OS X keychain are invalid.
+          The GitHub credentials in the OS X keychain may be invalid.
           Clear them with:
             printf "protocol=https\\nhost=github.com\\n" | git credential-osxkeychain erase
+          Or create a personal access token:
+            #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
+          and then set the token as: export HOMEBREW_GITHUB_API_TOKEN="your_new_token"
         EOS
       end
       super message
@@ -536,22 +539,52 @@ module GitHub
     end
   end
 
-  def api_headers
-    @api_headers ||= begin
-        headers = {
-        "User-Agent" => HOMEBREW_USER_AGENT,
-        "Accept"     => "application/vnd.github.v3+json"
-      }
-      token, username = api_credentials
-      if token && !token.empty?
-        if username && !username.empty?
-          headers[:http_basic_authentication] = [username, token]
-        else
-          headers["Authorization"] = "token #{token}"
+  def api_credentials_type
+    token, username = api_credentials
+    if token && !token.empty?
+      if username && !username.empty?
+        :keychain
+      else
+        :environment
+      end
+    else
+      :none
+    end
+  end
+
+  def api_credentials_error_message(response_headers)
+    @api_credentials_error_message_printed ||= begin
+      unauthorized = (response_headers["status"] == "401 Unauthorized")
+      scopes = response_headers["x-accepted-oauth-scopes"].to_s.split(", ")
+      if !unauthorized && scopes.empty?
+        credentials_scopes = response_headers["x-oauth-scopes"].to_s.split(", ")
+
+        case GitHub.api_credentials_type
+        when :keychain
+          onoe <<-EOS.undent
+            Your OS X keychain GitHub credentials do not have sufficient scope!
+            Scopes they have: #{credentials_scopes}
+            Create a personal access token: https://github.com/settings/tokens
+            and then set HOMEBREW_GITHUB_API_TOKEN as the authentication method instead.
+          EOS
+        when :environment
+          onoe <<-EOS.undent
+            Your HOMEBREW_GITHUB_API_TOKEN does not have sufficient scope!
+            Scopes it has: #{credentials_scopes}
+            Create a new personal access token: https://github.com/settings/tokens
+            and then set the new HOMEBREW_GITHUB_API_TOKEN as the authentication method instead.
+          EOS
         end
       end
-      headers
+      true
     end
+  end
+
+  def api_headers
+    {
+      "User-Agent" => HOMEBREW_USER_AGENT,
+      "Accept"     => "application/vnd.github.v3+json"
+    }
   end
 
   def open(url, &_block)
@@ -560,8 +593,17 @@ module GitHub
 
     require "net/https"
 
+    headers = api_headers
+    token, username = api_credentials
+    case api_credentials_type
+    when :keychain
+      headers[:http_basic_authentication] = [username, token]
+    when :environment
+      headers["Authorization"] = "token #{token}"
+    end
+
     begin
-      Kernel.open(url, api_headers) { |f| yield Utils::JSON.load(f.read) }
+      Kernel.open(url, headers) { |f| yield Utils::JSON.load(f.read) }
     rescue OpenURI::HTTPError => e
       handle_api_error(e)
     rescue EOFError, SocketError, OpenSSL::SSL::SSLError => e
@@ -577,6 +619,8 @@ module GitHub
       error = Utils::JSON.load(e.io.read)["message"]
       raise RateLimitExceededError.new(reset, error)
     end
+
+    GitHub.api_credentials_error_message(e.io.meta)
 
     case e.io.status.first
     when "401", "403"
