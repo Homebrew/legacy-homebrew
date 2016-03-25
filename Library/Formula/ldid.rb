@@ -2,8 +2,8 @@ class Ldid < Formula
   desc "Lets you manipulate the signature block in a Mach-O binary"
   homepage "https://cydia.saurik.com/info/ldid/"
   url "git://git.saurik.com/ldid.git",
-    :tag => "v1.1.2",
-    :revision => "604cc486bdefb246c984a21dbb30cdaf8b0a7f4d"
+    :tag => "v1.2.1",
+    :revision => "e4b7adc1e02c9f0e16cc9ae2841192b386f6d4ea"
 
   head "git://git.saurik.com/ldid.git"
 
@@ -17,6 +17,7 @@ class Ldid < Formula
   depends_on "openssl"
 
   def install
+    inreplace "./make.sh", /^.*\/Applications\/Xcode-5.1.1.app.*/, ""
     system "./make.sh"
     bin.install "ldid"
   end
