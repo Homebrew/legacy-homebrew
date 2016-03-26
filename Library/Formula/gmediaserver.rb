@@ -4,6 +4,13 @@ class Gmediaserver < Formula
   url "http://download.savannah.gnu.org/releases/gmediaserver/gmediaserver-0.13.0.tar.gz"
   sha256 "357030911bcce4ac9e47c2c9219b72e88705a8465899d4e0553bce540fb0fd12"
 
+  bottle do
+    cellar :any
+    sha256 "1b20b013ea46981088574c32051c03d25e3d17a74adaac5a779823ae82281742" => :el_capitan
+    sha256 "a8d5e2fbf6a6f8297a530aaf6047d2f7e5fee3a7534e21dc9cc20318c2b22488" => :yosemite
+    sha256 "5aaaa3901d076d60f75ff8d68c8c93b828b7e8bf6a04806c56fe14ac68bb74bc" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libupnp"
   depends_on "libmagic"
