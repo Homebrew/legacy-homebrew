@@ -6,9 +6,9 @@ class Commonmark < Formula
 
   bottle do
     cellar :any
-    sha256 "729f196f3a6626fe62cff16635d0272eeed7e240b2f56bbf0cd93b3c6a86efdc" => :el_capitan
-    sha256 "57a3a5d4f4b94bde7797103cc89fd2483a27c18d146aeb09568dfa7594d56a88" => :yosemite
-    sha256 "250035b28f09bf54ed339aa995b69a1ee7bedf35b5f8bc7d0d48050da10d6f57" => :mavericks
+    sha256 "c2893dcdee74722df71f79f507b83e247894d8a2b2563dd6988461c68beb6a7b" => :el_capitan
+    sha256 "e6d49d7007c548b6174882a2756eef63676baa4e1bcbfecf22ddfaba95bd66d5" => :yosemite
+    sha256 "6b762bda0196ebb620089e6cba94b7dd3abb252cf2f9d6ab99d3af7824733a2b" => :mavericks
   end
 
   depends_on "cmake" => :build
