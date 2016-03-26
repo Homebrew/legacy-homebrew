@@ -22,6 +22,7 @@ class Mytop < Formula
   conflicts_with "mariadb", :because => "both install `mytop` binaries"
   conflicts_with "innotop", :because => "both install `perllocal.pod`"
   conflicts_with "percona-toolkit", :because => "both install `perllocal.pod`"
+  conflicts_with "pgtap", :because => "both install `perllocal.pod`"
 
   resource "DBD::mysql" do
     url "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz"
