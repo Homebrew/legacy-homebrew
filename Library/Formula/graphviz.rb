@@ -73,10 +73,11 @@ class Graphviz < Formula
     args << "--without-x" if build.without? "x11"
     args << "--without-rsvg" if build.without? "librsvg"
 
-    if build.with? "bindings"
+    if build.stable? && build.with?("bindings")
       # http://www.graphviz.org/mantisbt/view.php?id=2486
+      # Fixed in HEAD to use "undefined dynamic_lookup".
       inreplace "configure", 'PYTHON_LIBS="-lpython$PYTHON_VERSION_SHORT"',
-                             'PYTHON_LIBS="-L$PYTHON_PREFIX/lib -lpython$PYTHON_VERSION_SHORT"'
+                             'PYTHON_LIBS="-undefined dynamic_lookup"'
     end
 
     if build.head?
@@ -94,7 +95,7 @@ class Graphviz < Formula
       prefix.install "macosx/build/Release/Graphviz.app"
     end
 
-    (bin+"gvmap.sh").unlink
+    (bin/"gvmap.sh").unlink
   end
 
   test do
