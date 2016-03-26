@@ -14,10 +14,11 @@ class Libupnp < Formula
   option "with-ipv6", "Enable IPv6 support"
 
   def install
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--prefix=#{prefix}"
-           ]
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
 
     args << "--enable-ipv6" if build.with? "ipv6"
 
