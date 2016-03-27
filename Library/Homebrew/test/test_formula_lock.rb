@@ -27,8 +27,9 @@ class FormulaLockTests < Homebrew::TestCase
     @nonsuch_dir = FormulaLock.new("bar")
     assert_nothing_raised { @nonsuch_dir.lock }
     assert_nothing_raised { @nonsuch_dir.unlock }
-    FormulaLock::LOCKDIR.children.each(&:unlink)
-    FormulaLock.send(:remove_const, :LOCKDIR)
-    FormulaLock.const_set(:LOCKDIR, @tmp_lockdir)
+    ensure
+      FormulaLock::LOCKDIR.children.each(&:unlink)
+      FormulaLock.send(:remove_const, :LOCKDIR)
+      FormulaLock.const_set(:LOCKDIR, @tmp_lockdir)
   end
 end
