@@ -6,11 +6,11 @@ class Libowfat < Formula
   head ":pserver:cvs:@cvs.fefe.de:/cvs", :using => :cvs
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "38df950df07f7c18a5ddb953eed10e37519d8fec707d1b8debf33f541a92eaeb" => :yosemite
-    sha256 "dece66a8665d9fd69fff3504d19eee4f0689c2afeb818ff8567b311eaf34e9ec" => :mavericks
-    sha256 "32a8ba6a9e3aae2a75f2c44712b9e99b1981084f6c475c1829f235ed10df2bda" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "b8f9b6f14ef4ca9e703ef458659604738f2f6b11899fb9546d8764dde47de4c0" => :el_capitan
+    sha256 "f84024088302c6452f32f2398d0c39a59ee7f2a2eda117e516608e0299763dda" => :yosemite
+    sha256 "a05b57c64730e4780012a06b61224a63e492173e3d6fa191516e408e9578a105" => :mavericks
   end
 
   def install
