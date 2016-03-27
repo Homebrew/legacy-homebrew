@@ -9,8 +9,7 @@ class Sshrc < Formula
   bottle :unneeded
 
   def install
-    bin.install "sshrc"
-    bin.install "moshrc"
+    bin.install %w[sshrc moshrc]
   end
 
   test do
