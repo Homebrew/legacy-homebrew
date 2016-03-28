@@ -12,8 +12,6 @@ class Libpng < Formula
     sha256 "22b421d6d8034884fb0b697001b0965cb19f3b3a32c0c619ead86250e6f2a40d" => :mavericks
   end
 
-  keg_only :provided_pre_mountain_lion
-
   head do
     url "https://github.com/glennrp/libpng.git"
 
@@ -21,6 +19,8 @@ class Libpng < Formula
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
+
+  keg_only :provided_pre_mountain_lion
 
   option :universal
 
