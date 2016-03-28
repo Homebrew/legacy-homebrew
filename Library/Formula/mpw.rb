@@ -1,6 +1,6 @@
 class Mpw < Formula
   desc "Master Password for the terminal"
-  homepage "http://masterpasswordapp.com"
+  homepage "https://ssl.masterpasswordapp.com/"
   url "https://ssl.masterpasswordapp.com/mpw-2.1-cli4-0-gf6b2287.tar.gz"
   version "2.1-cli4"
   sha256 "6ea76592eb8214329072d04f651af99d73de188a59ef76975d190569c7fa2b90"
@@ -18,7 +18,7 @@ class Mpw < Formula
   depends_on "openssl"
 
   resource "libscrypt" do
-    url "http://masterpasswordapp.com/libscrypt-b12b554.tar.gz"
+    url "https://ssl.masterpasswordapp.com/libscrypt-b12b554.tar.gz"
     sha256 "c726daec68a345e420896f005394a948dc5a6924713ed94b684c856d4c247f0b"
   end
 
