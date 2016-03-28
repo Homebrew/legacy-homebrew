@@ -130,14 +130,17 @@ rescue Interrupt => e
   $stderr.puts # seemingly a newline is typical
   exit 130
 rescue BuildError => e
+  report_analytics_exception(e)
   e.dump
   exit 1
 rescue RuntimeError, SystemCallError => e
+  report_analytics_exception(e)
   raise if e.message.empty?
   onoe e
   $stderr.puts e.backtrace if ARGV.debug?
   exit 1
 rescue Exception => e
+  report_analytics_exception(e)
   onoe e
   if internal_cmd
     $stderr.puts "#{Tty.white}Please report this bug:"
