@@ -51,4 +51,8 @@ class Pop2imap < Formula
     man1.install "pop2imap.1"
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
+
+  test do
+    File.exist? "#{bin}/pop2imap"
+  end
 end
