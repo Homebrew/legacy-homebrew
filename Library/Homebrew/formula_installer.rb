@@ -202,6 +202,8 @@ class FormulaInstaller
 
     oh1 "Installing #{Tty.green}#{formula.full_name}#{Tty.reset}" if show_header?
 
+    report_analytics_event("install", formula.full_name)
+
     @@attempted << formula
 
     if pour_bottle?(:warn => true)
