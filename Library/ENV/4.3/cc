@@ -201,6 +201,10 @@ class Cmd
   end
 
   def keep?(path)
+    # The logic in this method will eventually become the default,
+    # but is currently opt-in.
+    return keep_orig?(path) unless ENV["HOMEBREW_EXPERIMENTAL_FILTER_FLAGS_ON_DEPS"]
+
     # first two paths: reject references to Cellar or opt paths
     # for unspecified dependencies
     if path.start_with?(cellar) || path.start_with?(opt)
@@ -211,6 +215,11 @@ class Cmd
     else
       !path.start_with?("/opt", "/sw", "/usr/X11")
     end
+  end
+
+  # The original less-smart version of keep_orig; will eventually be removed
+  def keep_orig?(path)
+    path.start_with?(prefix, cellar, tmpdir) || !path.start_with?("/opt", "/sw", "/usr/X11")
   end
 
   def cflags
