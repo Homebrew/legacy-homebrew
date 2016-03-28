@@ -25,7 +25,17 @@ class GrOsmosdr < Formula
     sha256 "e75a178d6ebf182b048ebfe6e0657c49f0dc109779170bad7ffcb17463f2fc22"
   end
 
+  # Required for GNU Radio VOLK engine
+  # See https://trac.macports.org/ticket/37124
+  resource "Cheetah" do
+    url "https://pypi.python.org/packages/source/C/Cheetah/Cheetah-2.4.4.tar.gz"
+    sha256 "be308229f0c1e5e5af4f27d7ee06d90bb19e6af3059794e5fd536a6f29a9b550"
+  end
+
   def install
+    ENV["CHEETAH_INSTALL_WITHOUT_SETUPTOOLS"] = "1"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+
     resource("cmake").stage do
       args = %W[
         --prefix=#{buildpath}/cmake
@@ -51,6 +61,10 @@ class GrOsmosdr < Formula
     end
 
     ENV.prepend_path "PATH", buildpath/"cmake/bin"
+
+    resource("Cheetah").stage do
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
+    end
 
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
