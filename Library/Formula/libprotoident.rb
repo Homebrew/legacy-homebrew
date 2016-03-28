@@ -1,5 +1,5 @@
 class Libprotoident < Formula
-  desc "Libprotoident performs application layer protocol identification"
+  desc "Performs application layer protocol identification for flows"
   homepage "http://research.wand.net.nz/software/libprotoident.php"
   url "http://research.wand.net.nz/software/libprotoident/libprotoident-2.0.7.tar.gz"
   sha256 "5063497274e546b01b0606c8906a292cbe1e2ba8d6f3b6cd25de16a91fef635e"
