@@ -82,7 +82,10 @@ class GrOsmosdr < Formula
   end
 
   test do
-    system "#{bin}/osmocom_siggen_nogui", "-h"
+    Language::Python.each_python(build) do |python, version|
+      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
+      system "#{bin}/osmocom_siggen_nogui", "-h"
+    end
   end
 end
 
