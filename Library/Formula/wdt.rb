@@ -67,10 +67,10 @@ class Wdt < Formula
 
     ENV.cxx11
 
-    system ENV.cxx, "test.cpp", "-L#{lib}", "-o", "test",
-                    "-I#{Formula["openssl"].opt_include}",
-                    "-L#{HOMEBREW_PREFIX}/lib",
-                    "-lboost_system", "-lwdt"
+    system *(ENV.cxx.split + %W[test.cpp -L#{lib} -o test
+                                -I#{Formula["openssl"].opt_include}
+                                -L#{HOMEBREW_PREFIX}/lib
+                                -lboost_system -lwdt])
     system "./test"
   end
 end
