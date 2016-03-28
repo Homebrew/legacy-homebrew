@@ -3,24 +3,23 @@ class Swift < Formula
   homepage "https://github.com/apple/swift"
 
   stable do
-    url "https://github.com/apple/swift/archive/swift-2.2-SNAPSHOT-2016-03-01-a.tar.gz"
-    version "2.2-SNAPSHOT-2016-03-01-a"
-    sha256 "cefd56b08df9ed4867985ce2669b9ca544b8fbda75b0e8932047a2474d7db209"
+    url "https://github.com/apple/swift/archive/swift-2.2-RELEASE.tar.gz"
+    sha256 "6dfb9de14201b9804974b1f221573cfb3e24fd657ec3bf132bf3c75de02565f5"
 
-    swift_tag = "swift-#{version}"
+    swift_tag = "swift-#{version}-RELEASE"
     resource "cmark" do
       url "https://github.com/apple/swift-cmark/archive/#{swift_tag}.tar.gz"
-      sha256 "aa2e91c790cf1826a4ee0a04769f397b1abfaefd92139816a9d56ceec38f715a"
+      sha256 "09c8da18c37f32cd0eb82b252a172481f5403c1bc6ab5740f92e87f8d1e79991"
     end
 
     resource "clang" do
       url "https://github.com/apple/swift-clang/archive/#{swift_tag}.tar.gz"
-      sha256 "662b94727e17339e7aedd01aef02f881e04dee2aff4a696460020d96fe906d93"
+      sha256 "ba9220e61971a55d13f501dc30f452a5c272e4d897b444a5220f2e23dbbfc2f8"
     end
 
     resource "llvm" do
       url "https://github.com/apple/swift-llvm/archive/#{swift_tag}.tar.gz"
-      sha256 "0cc42660906b5d756e7bba30db9ef301cb6765dbed95f32fdd3fd70b52aa0651"
+      sha256 "b975b816773aa9d888a9139f51acd1b57fd58959bb391f8f65645a2f9b6d4cc4"
     end
   end
 
