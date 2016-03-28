@@ -12,6 +12,13 @@ class Libmodplug < Formula
     sha256 "328cd2470af295b2d48ddd948e006a6df5ff13b23f9c05dceb9be75954142359" => :mountain_lion
   end
 
+  resource "testmod" do
+    # Most favourited song on modarchive:
+    # http://modarchive.org/index.php?request=view_by_moduleid&query=60395
+    url "http://api.modarchive.org/downloads.php?moduleid=60395#2ND_PM.S3M"
+    sha256 "f80735b77123cc7e02c4dad6ce8197bfefcb8748b164a66ffecd206cc4b63d97"
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -19,13 +26,6 @@ class Libmodplug < Formula
                           "--prefix=#{prefix}"
 
     system "make", "install"
-  end
-
-  resource "testmod" do
-    # Most favourited song on modarchive:
-    # http://modarchive.org/index.php?request=view_by_moduleid&query=60395
-    url "http://api.modarchive.org/downloads.php?moduleid=60395#2ND_PM.S3M"
-    sha256 "f80735b77123cc7e02c4dad6ce8197bfefcb8748b164a66ffecd206cc4b63d97"
   end
 
   test do
