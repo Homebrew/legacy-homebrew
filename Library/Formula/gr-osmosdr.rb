@@ -6,9 +6,11 @@ class GrOsmosdr < Formula
   head "git://git.osmocom.org/gr-osmosdr"
 
   depends_on "cmake" => :build
+  depends_on "swig" => :build
+  depends_on :python if MacOS.version <= :snow_leopard
+  depends_on "boost"
   depends_on "gnuradio"
   depends_on "librtlsdr" => :recommended
-  depends_on :python => :recommended
   depends_on "hackrf" => :optional
   depends_on "libbladerf" => :optional
   depends_on "uhd" => :optional
