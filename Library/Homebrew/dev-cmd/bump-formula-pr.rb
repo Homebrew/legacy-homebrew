@@ -25,7 +25,7 @@ module Homebrew
     else
       [:stable, formula.stable]
     end
-    odie "#{formula}: no #{requested_spec} specification found!" unless formula
+    odie "#{formula}: no #{requested_spec} specification found!" unless formula_spec
 
     hash_type, old_hash = if (checksum = formula_spec.checksum)
       [checksum.hash_type.to_s, checksum.hexdigest]
