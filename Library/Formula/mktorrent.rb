@@ -15,7 +15,7 @@ class Mktorrent < Formula
   depends_on "openssl"
 
   def install
-    system "make USE_PTHREADS=1 USE_OPENSSL=1 USE_LONG_OPTIONS=1"
+    system "make", "USE_PTHREADS=1", "USE_OPENSSL=1", "USE_LONG_OPTIONS=1"
     bin.install "mktorrent"
   end
 end
