@@ -182,7 +182,7 @@ class Tap
     Utils.ensure_git_installed!
     ohai "Tapping #{name}" unless quiet
     remote = options[:clone_target] || "https://github.com/#{user}/homebrew-#{repo}"
-    args = %W[clone #{remote} #{path}]
+    args = %W[clone #{remote} #{path} --config core.autocrlf=false]
     args << "--depth=1" unless options.fetch(:full_clone, false)
     args << "-q" if quiet
 
