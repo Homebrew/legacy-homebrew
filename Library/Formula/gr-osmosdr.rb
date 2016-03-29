@@ -56,7 +56,6 @@ class GrOsmosdr < Formula
       end
 
       system "./bootstrap", *args
-      system "make"
       system "make", "install"
     end
 
