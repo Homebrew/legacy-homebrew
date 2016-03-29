@@ -6,9 +6,9 @@ class Ffmpeg < Formula
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha256 "edaa154c01bb19193486c0b7e4028f23022580c7fd9bea086574b682521fb4b2" => :el_capitan
-    sha256 "5c0dd21caf975cbcbd0e6e854ac09d89d2f11d9eec42d4a7698374c8e5d70b82" => :yosemite
-    sha256 "cda255f85915e7ec2a1c750f9ca9501b344320219e86da07f76bcd45fa8bf16c" => :mavericks
+    sha256 "754cd2da64d2dda3aab3bca329757e102c781678ee9289e3ed238f5a639229cf" => :el_capitan
+    sha256 "b9a08881ea2053b739b92cb7dfdef4ce704ffef1776c68173e5e08c996c94004" => :yosemite
+    sha256 "1ce859c211f6759e1eac392ca85f91f99d89e464520312edd9f96618e97626b3" => :mavericks
   end
 
   option "without-x264", "Disable H.264 encoder"
