@@ -158,6 +158,9 @@ class Cmd
       "-fuse-linker-plugin"
       # clang doesn't support these flags
       args << arg unless tool =~ /^clang/
+    when "--fast-math"
+      arg = "-ffast-math" if tool =~ /^clang/
+      args << arg
     when "-Wno-deprecated-register"
       # older gccs don't support these flags
       args << arg unless tool =~ /^g..-4.[02]/
