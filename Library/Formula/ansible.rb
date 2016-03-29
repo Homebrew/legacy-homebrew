@@ -225,6 +225,11 @@ class Ansible < Formula
     sha256 "6467a3a074f0f042dc610f994c4f67a26d10f4e2e6b4d12adfb8380dc7a5d169"
   end
 
+  resource "dnspython" do
+    url "https://pypi.python.org/packages/source/d/dnspython/dnspython-1.12.0.zip"
+    sha256 "63bd1fae61809eedb91f84b2185816fac1270ae51494fbdd36ea25f904a8502f"
+  end
+
   resource "funcsigs" do
     url "https://pypi.python.org/packages/source/f/funcsigs/funcsigs-0.4.tar.gz"
     sha256 "d83ce6df0b0ea6618700fe1db353526391a8a3ada1b7aba52fed7a61da772033"
