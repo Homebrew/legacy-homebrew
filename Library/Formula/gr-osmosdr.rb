@@ -76,7 +76,7 @@ class GrOsmosdr < Formula
     The XML block definitions have been installed to:
       #{share}/gnuradio/grc/blocks/
 
-    It might be necessary to add this to the block search path in either the config file at ~/.gnuradio/config.conf or in the environment variable GRC_BLOCKS_PATH.
+    It might be necessary to add this to the block search path either in the config file at ~/.gnuradio/config.conf or in the environment variable GRC_BLOCKS_PATH.
     See https://gnuradio.org/redmine/projects/gnuradio/wiki/GNURadioCompanion#Installing-the-XML-Block-Definition for more information.
     EOS
   end
