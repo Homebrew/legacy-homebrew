@@ -67,8 +67,8 @@ class Tesseract < Formula
   def install
     if build.with? "training-tools"
       icu4c = Formula["icu4c"]
-      ENV.append "CFLAGS", "-I#{icu4c.include}"
-      ENV.append "LDFLAGS", "-L#{icu4c.lib}"
+      ENV.append "CFLAGS", "-I#{icu4c.opt_include}"
+      ENV.append "LDFLAGS", "-L#{icu4c.opt_lib}"
     end
 
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
