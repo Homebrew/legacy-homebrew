@@ -1,8 +1,8 @@
 class Bork < Formula
   desc "Bash DSL for config management"
   homepage "https://github.com/mattly/bork"
-  url "https://github.com/mattly/bork/archive/v0.9.1.tar.gz"
-  sha256 "01ff60779582d5ec67080d43a6325d3f5f213dd3dbbbd1ba0989e0253bdc73aa"
+  url "https://github.com/mattly/bork/archive/v0.10.0.tar.gz"
+  sha256 "c06433ee2879b89e116a940c1549089e41e6e07da9bc1241a305bc72c14a9494"
 
   bottle :unneeded
 
