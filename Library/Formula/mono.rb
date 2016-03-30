@@ -1,8 +1,8 @@
 class Mono < Formula
   desc "Cross platform, open source .NET development framework"
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-4.2.2.30.tar.bz2"
-  sha256 "57858cd033be9915d7abdc5158c1faae8fa05757c3b7117cab3d703aa696c56b"
+  url "http://download.mono-project.com/sources/mono/mono-4.2.3.4.tar.bz2"
+  sha256 "4703d390416a6e9977585f13711f59a6d54431086c2dbacee49888dcc31937be"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
