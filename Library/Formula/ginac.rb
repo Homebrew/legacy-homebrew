@@ -1,5 +1,5 @@
 class Ginac < Formula
-  desc "GiNaC is Not a Computer algebra system"
+  desc "Not a Computer algebra system"
   homepage "http://www.ginac.de/"
   url "http://www.ginac.de/ginac-1.6.7.tar.bz2"
   sha256 "cea5971b552372017ea654c025adb44d5f1b3e3ce0a739da2fe95189572b85db"
