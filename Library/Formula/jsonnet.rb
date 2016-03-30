@@ -1,8 +1,8 @@
 class Jsonnet < Formula
   desc "Domain specific configuration language for defining JSON data."
   homepage "https://google.github.io/jsonnet/doc/"
-  url "https://github.com/google/jsonnet/archive/v0.8.5.tar.gz"
-  sha256 "514df86f954150baac5cace169bc7df3c6989d61c6d95cf5c0f483a68e84dcac"
+  url "https://github.com/google/jsonnet/archive/v0.8.7.tar.gz"
+  sha256 "c1cc21fcc8b6d590bc13af05e5932b07ec0e00c1a9737a01f858a7aefca52ffb"
 
   bottle do
     cellar :any_skip_relocation
