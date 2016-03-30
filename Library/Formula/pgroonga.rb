@@ -3,6 +3,7 @@ class Pgroonga < Formula
   homepage "https://pgroonga.github.io/"
   url "http://packages.groonga.org/source/pgroonga/pgroonga-1.0.5.tar.gz"
   sha256 "96e221f3da161b1b8c2c208df7ee74870718c7c71bff1c22aebad39ac29b7376"
+  revision 1
 
   bottle do
     cellar :any
