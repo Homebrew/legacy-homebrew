@@ -26,9 +26,9 @@ class GitlabCiMultiRunner < Formula
   end
 
   resource "prebuilt.tar.gz" do
-    url "https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/v1.0.4/docker/prebuilt.tar.gz",
+    url "https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/v1.1.0/docker/prebuilt.tar.gz",
       :using => :nounzip
-    sha256 "43dedd023672990e27289e97bf74f493576956418148f6227917b8511e8aadfd"
+    sha256 "f6fcac012eee0fa9d6419f8d045110898dcff6f516b396b9e14bfffa2ccaceb4"
   end
 
   def install
