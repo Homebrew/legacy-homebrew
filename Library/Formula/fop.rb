@@ -6,10 +6,9 @@ class Fop < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "045c5ece618205ac658e61aac6b76c1295c819bbdb2fa812e324f3ada15ef6bc" => :el_capitan
-    sha256 "eec4b2d93c9a4f2e75b18cd1bdb68851df2a34e58ca3bbba68a2b046b735625f" => :yosemite
-    sha256 "b5b8cdf1a93d104f5927e4916684e97ea91092fcf9525caa929d55ff15822e2b" => :mavericks
-    sha256 "6cceeca2b10749a6e5457bbbb9156ed7d026a80a71fdfe30ff7a588cbb8e259d" => :mountain_lion
+    sha256 "657c88e138769d842e0f48daf3abd3798194eca420a3327fa5b0b667e7dfbece" => :el_capitan
+    sha256 "a3ce519cfe5f54a0823515e2e75f878373d47e8174f9d470976db9ca2f792759" => :yosemite
+    sha256 "38602cef629a33f05149c3411ea6b82451deec872aa6cbe1fa8203ad2ee875fb" => :mavericks
   end
 
   resource "hyph" do
