@@ -100,10 +100,9 @@ module OS
         end
       rescue SDKLocator::NoSDKError
         sdk = @locator.latest_sdk
-      ensure
-        # only return an SDK older than the OS version if it was specifically requested
-        sdk if v || (!sdk.nil? && sdk.version >= version)
       end
+      # Only return an SDK older than the OS version if it was specifically requested
+      sdk if v || (!sdk.nil? && sdk.version >= version)
     end
 
     # Returns the path to an SDK or nil, following the rules set by #sdk.
