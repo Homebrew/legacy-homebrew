@@ -1,8 +1,8 @@
 class Fop < Formula
   desc "XSL-FO print formatter for making PDF or PS documents"
   homepage "https://xmlgraphics.apache.org/fop/index.html"
-  url "https://www.apache.org/dyn/closer.cgi?path=/xmlgraphics/fop/binaries/fop-2.0-bin.tar.gz"
-  sha256 "1e90cfc9e07c2da088592860fa4651a7640c9e1e3500b71a613a5dea03eb3665"
+  url "https://www.apache.org/dyn/closer.cgi?path=/xmlgraphics/fop/binaries/fop-2.1-bin.tar.gz"
+  sha256 "a93b59aa4d0b6d573c9090d8f21dee6c7d0c449a4bd2d48a1723e233dfb423ea"
 
   bottle do
     cellar :any_skip_relocation
@@ -16,10 +16,6 @@ class Fop < Formula
     url "https://downloads.sourceforge.net/project/offo/offo-hyphenation-utf8/0.1/offo-hyphenation-fop-stable-utf8.zip"
     sha256 "0b4e074635605b47a7b82892d68e90b6ba90fd2af83142d05878d75762510128"
   end
-
-  # fixes broken default java path as in
-  # http://svn.apache.org/viewvc/ant/core/trunk/src/script/ant?r1=1238725&r2=1434680&pathrev=1434680&view=patch
-  patch :DATA
 
   def install
     libexec.install Dir["*"]
@@ -60,22 +56,3 @@ class Fop < Formula
     File.exist? testpath/"test.pdf"
   end
 end
-
-__END__
-diff --git a/fop b/fop
-index aca642b..1cae344 100755
---- a/fop
-+++ b/fop
-@@ -81,7 +81,11 @@ case "`uname`" in
-   CYGWIN*) cygwin=true ;;
-   Darwin*) darwin=true
-            if [ -z "$JAVA_HOME" ] ; then
--             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
-+               if [ -x '/usr/libexec/java_home' ] ; then
-+                   JAVA_HOME=`/usr/libexec/java_home`
-+               elif [ -d "/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home" ]; then
-+                   JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
-+               fi
-            fi
-            ;;
- esac
