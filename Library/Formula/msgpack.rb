@@ -1,8 +1,8 @@
 class Msgpack < Formula
   desc "Library for a binary-based efficient data interchange format"
   homepage "https://msgpack.org/"
-  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-1.3.0/msgpack-1.3.0.tar.gz"
-  sha256 "b539c9aa1bbe728b9c43bfae7120353461793fa007363aae8e4bb8297948b4b7"
+  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-1.4.1/msgpack-1.4.1.tar.gz"
+  sha256 "8ac512f52b30572f0244d6f521847ef3c54a59097dc05b479ac282bf1374f22e"
 
   bottle do
     cellar :any
@@ -62,7 +62,7 @@ class Msgpack < Formula
       }
     EOS
 
-    system ENV.cc, "-o", "test", "test.c", "-lmsgpack"
+    system ENV.cc, "-o", "test", "test.c", "-lmsgpackc"
     assert_equal "1\n2\n3\n", `./test`
   end
 end
