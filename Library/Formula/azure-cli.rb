@@ -1,9 +1,9 @@
 class AzureCli < Formula
   desc "Official Azure CLI"
   homepage "https://github.com/azure/azure-xplat-cli"
-  url "https://github.com/Azure/azure-xplat-cli/archive/v0.9.18-hotfix.tar.gz"
-  version "0.9.18"
-  sha256 "b53b6df87373eaff2d773d9fbcb6ef4ad96455e0b402117c0ff0d44c3c1ff3e0"
+  url "https://github.com/Azure/azure-xplat-cli/archive/v0.9.19-March2016.tar.gz"
+  version "0.9.19"
+  sha256 "8f0e4093a2a91097a2621f01cad435cc5856dadbe3e343c3538409e2c9386b11"
 
   head "https://github.com/azure/azure-xplat-cli.git", :branch => "dev"
 
