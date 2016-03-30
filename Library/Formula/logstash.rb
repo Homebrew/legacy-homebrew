@@ -4,12 +4,12 @@ class Logstash < Formula
   url "https://download.elastic.co/logstash/logstash/logstash-2.3.0.tar.gz"
   sha256 "d802803ac6dc7e9215b19764dd8fbaa74c75fa1d8bf387508fb0d0d8d36b0241"
 
-  bottle :unneeded
-
   head do
     url "https://github.com/elastic/logstash.git"
     depends_on :java => "1.8"
   end
+
+  bottle :unneeded
 
   depends_on :java => "1.7+"
 
