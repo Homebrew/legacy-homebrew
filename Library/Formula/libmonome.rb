@@ -1,8 +1,8 @@
 class Libmonome < Formula
   desc "Interact with monome devices via C, Python, or FFI"
   homepage "http://illest.net/libmonome/"
-  url "https://github.com/monome/libmonome/archive/1.2.tar.gz"
-  sha256 "c4af0d1e029049e35e0afff148109f41f839afd7cbcd431a2632585e80c57190"
+  url "https://github.com/monome/libmonome/releases/download/v1.4.0/libmonome-1.4.0.tar.bz2"
+  sha256 "0a04ae4b882ea290f3578bcba8e181c7a3b333b35b3c2410407126d5418d149a"
 
   head "https://github.com/monome/libmonome.git"
 
@@ -18,7 +18,7 @@ class Libmonome < Formula
   def install
     inreplace "wscript", "-Werror", ""
     system "./waf", "configure", "--prefix=#{prefix}"
-    system "./waf build"
-    system "./waf install"
+    system "./waf", "build"
+    system "./waf", "install"
   end
 end
