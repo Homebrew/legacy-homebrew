@@ -7,6 +7,12 @@ class Rtags < Formula
 
   head "https://github.com/Andersbakken/rtags.git"
 
+  bottle do
+    sha256 "7eba56cbea17e32c329164835d782d120a3aacacbe8d1cdf0e5761a52bf7f6e3" => :el_capitan
+    sha256 "f344da9acdca6ffd14e18eff1cd2b6f1bb446b25c182328cc27c4832b46d8854" => :yosemite
+    sha256 "fc16449d0ae6e8a1104833ef97839d82d9f3fab840e9e4bd069fab41bc77e36b" => :mavericks
+  end
+
   depends_on "cmake" => :build
   depends_on "llvm" => "with-clang"
   depends_on "openssl"
