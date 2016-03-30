@@ -86,10 +86,22 @@ module OS
       @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
     end
 
-    # Returns the requested SDK, if installed.
-    # If the requested SDK is not installed returns either:
-    # a) The newest SDK (if any SDKs are available), or
-    # b) nil
+    # If a specific SDK is requested
+    #   a) The requested SDK is returned, if it's installed.
+    #   b) If the requested SDK is not installed, the newest SDK (if any SDKs
+    #      are available) is returned.
+    #   c) If no SDKs are available, nil is returned.
+    # If no specific SDK is requested
+    #   a) For Xcode >= 7, the latest SDK is returned even if the latest SDK is
+    #      named after a newer OS version than the running OS. The
+    #      MACOSX_DEPLOYMENT_TARGET must be set to the OS for which you're
+    #      actually building (usually the running OS version).
+    #      https://github.com/Homebrew/homebrew/pull/50355
+    #      https://developer.apple.com/library/ios/documentation/DeveloperTools/Conceptual/WhatsNewXcode/Articles/Introduction.html#//apple_ref/doc/uid/TP40004626
+    #      Section "About SDKs and Simulator"
+    #   b) For Xcode < 7, proceed as if the SDK for the running OS version had
+    #      specifically been requested according to the rules above.
+
     def sdk(v = nil)
       @locator ||= SDKLocator.new
       begin
