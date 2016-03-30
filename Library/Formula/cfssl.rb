@@ -8,10 +8,10 @@ class Cfssl < Formula
   head "https://github.com/cloudflare/cfssl.git"
 
   bottle do
-    cellar :any
-    sha256 "1c28f3caabe350a72649f2cb4ebefe53cd28888ea3385a44253ed44e0165a03d" => :el_capitan
-    sha256 "a3ad35a05b855341a92ff410d63cfd1dc275f613ad31243d4062f0d3365e11c3" => :yosemite
-    sha256 "a5f1d86658b3c0927bbecd0c4aed184f0285c1a638762113aa70f4a2053c163e" => :mavericks
+    cellar :any_skip_relocation
+    sha256 "eaf7ab4cb575473fe5a9bee2f5fe28d8fa0fa1721ecf6a29c8c0bcd7af5a5fb8" => :el_capitan
+    sha256 "828599bcc735eb04e77e3a8400f3e1aa41035de41f33a84d65da0dd76b0fe073" => :yosemite
+    sha256 "5ad2bb997d85b6b6863e130f32142bf5674ac19169136b62d0109b71e8c46694" => :mavericks
   end
 
   depends_on "go" => :build
