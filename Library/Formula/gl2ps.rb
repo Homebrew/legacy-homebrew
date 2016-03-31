@@ -3,6 +3,7 @@ class Gl2ps < Formula
   homepage "http://www.geuz.org/gl2ps/"
   url "http://geuz.org/gl2ps/src/gl2ps-1.3.9.tgz"
   sha256 "8a680bff120df8bcd78afac276cdc38041fed617f2721bade01213362bcc3640"
+  revision 1
 
   bottle do
     cellar :any
