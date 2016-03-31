@@ -30,7 +30,7 @@ class Portmidi < Formula
   def install
     inreplace "pm_mac/Makefile.osx", "PF=/usr/local", "PF=#{prefix}"
 
-	# need to create include/lib directories since make won't create them itself
+    # need to create include/lib directories since make won't create them itself
     include.mkpath
     lib.mkpath
 
