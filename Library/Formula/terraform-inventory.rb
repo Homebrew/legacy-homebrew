@@ -3,8 +3,8 @@ require "language/go"
 class TerraformInventory < Formula
   desc "Terraform State → Ansible Dynamic Inventory"
   homepage "https://github.com/adammck/terraform-inventory"
-  url "https://github.com/adammck/terraform-inventory/archive/v0.6.tar.gz"
-  sha256 "af09a2606db728fd046e0ce5a6960386e5f766f8d187eea15220764fd669187e"
+  url "https://github.com/adammck/terraform-inventory/archive/v0.6.1.tar.gz"
+  sha256 "9cdcbc5ce4247b72bb72923d01246f51252a88908d760d766daeac51dd8feed9"
   head "https://github.com/adammck/terraform-inventory.git"
 
   bottle do
@@ -18,7 +18,7 @@ class TerraformInventory < Formula
 
   go_resource "github.com/stretchr/testify" do
     url "https://github.com/stretchr/testify.git",
-    :revision => "1f4a1643a57e798696635ea4c126e9127adb7d3c"
+    :revision => "f390dcf405f7b83c997eac1b06768bb9f44dec18"
   end
 
   def install
