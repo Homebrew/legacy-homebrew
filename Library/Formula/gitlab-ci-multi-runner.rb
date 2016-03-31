@@ -6,6 +6,7 @@ class GitlabCiMultiRunner < Formula
   url "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner.git",
     :tag => "v1.1.0",
     :revision => "a23a25ab6423988d93e2382af3674f4b76cc2813"
+  revision 1
 
   head "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner.git"
 
