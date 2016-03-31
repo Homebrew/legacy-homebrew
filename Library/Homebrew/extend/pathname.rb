@@ -239,7 +239,7 @@ class Pathname
   # @private
   def version
     require "version"
-    Version.parse(self)
+    Version.parse(basename)
   end
 
   # @private
