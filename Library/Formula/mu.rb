@@ -29,10 +29,6 @@ class Mu < Formula
     # shipped by default with Mac OS X is too old.
     ENV["EMACS"] = "no" if build.without? "emacs"
 
-    # https://github.com/djcb/mu/issues/380
-    # https://github.com/djcb/mu/issues/332
-    ENV.O0 if MacOS.version >= :mavericks && ENV.compiler == :clang
-
     system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -48,6 +44,10 @@ class Mu < Formula
     EOS
   end
 
+  # Regression test for:
+  # https://github.com/djcb/mu/issues/397
+  # https://github.com/djcb/mu/issues/380
+  # https://github.com/djcb/mu/issues/332
   test do
     mkdir (testpath/"cur")
 
