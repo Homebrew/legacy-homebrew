@@ -11,7 +11,6 @@ class Portmidi < Formula
     sha256 "091871a9be11e7af35cd455bb55e8020ce911ac768ac0569fa489d7b34fd715e" => :yosemite
     sha256 "c950ba2eed6221f1734ab05fe44c263eedbabd7510bec2de3333c61984bfb87c" => :mavericks
   end
-
   option "with-java", "Build java based app and bindings. You need the Java SDK for this."
 
   depends_on "cmake" => :build
