@@ -10,6 +10,12 @@ class Jenkins < Formula
     sha256 "7ff7759e1d7a097e018c8001db5f4248db04d0bf39f9b0f06934c124a936cfa2"
   end
 
+  devel do
+    url "http://mirrors.jenkins-ci.org/war-rc/2.0/jenkins.war"
+    version "2.0-rc"
+    sha256 "7ff7759e1d7a097e018c8001db5f4248db04d0bf39f9b0f06934c124a936cfa2"
+  end
+
   head do
     url "https://github.com/jenkinsci/jenkins.git"
     depends_on "maven" => :build
