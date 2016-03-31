@@ -11,6 +11,8 @@ class Jmeter < Formula
     sha256 "b1f29631e5920214ae3e881d49d384ae26650a8f4543e635c319a783305daf38" => :mavericks
   end
 
+  option "with-plugins", "add JMeterPlugins Standard, Extras, ExtrasLibs, WebDriver and Hadoop"
+
   resource "jmeterplugins-standard" do
     url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-1.3.1.zip"
     sha256 "33ed06ce794819a50d57eda8624f41a97b9901c17c7bb5aec89bc4a7959edffe"
@@ -40,8 +42,6 @@ class Jmeter < Formula
     url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Hadoop-1.3.1.zip"
     sha256 "0478ed7198f65d070eb3c9c28f94118272693a9689a406746c4bdd9e7d028ab4"
   end
-
-  option "with-plugins", "add JMeterPlugins Standard, Extras, ExtrasLibs, WebDriver and Hadoop"
 
   def install
     # Remove windows files
