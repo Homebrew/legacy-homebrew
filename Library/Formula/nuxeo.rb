@@ -1,10 +1,9 @@
 class Nuxeo < Formula
   desc "Enterprise Content Management"
   homepage "https://nuxeo.github.io/"
-  url "https://cdn.nuxeo.com/nuxeo-7.10/nuxeo-cap-7.10-tomcat.zip"
-  version "7.10"
-  sha256 "9e95fb4e3dd0fdac49395ae8b429c6cc7db3c621ecd4d0dff74ea706a2aba723"
-  revision 1
+  url "https://cdn.nuxeo.com/nuxeo-8.1/nuxeo-cap-8.1-tomcat.zip"
+  version "8.1"
+  sha256 "d1fb98489e001caacf2aad5102ce0e5b135481263ba366b3ad773a289ea80aa9"
 
   bottle do
     cellar :any_skip_relocation
