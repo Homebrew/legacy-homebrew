@@ -1,8 +1,8 @@
 class Elixirscript < Formula
   desc "Elixir to JavaScript compiler"
   homepage "https://github.com/bryanjos/elixirscript"
-  url "https://github.com/bryanjos/elixirscript/archive/v0.16.0.tar.gz"
-  sha256 "1ccc52501be1d762e823c6174aa5db1de200f4edc96b39f1057fa8aefeb6212e"
+  url "https://github.com/bryanjos/elixirscript/archive/v0.17.0.tar.gz"
+  sha256 "7670686cd3bf73b787d4f71b854f528bc7245ab2f740d2806ef0b8d9155f7476"
 
   bottle do
     cellar :any_skip_relocation
@@ -12,13 +12,20 @@ class Elixirscript < Formula
   end
 
   depends_on "elixir" => :build
+  depends_on "node" => :build
 
   def install
+    ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
+
     system "mix", "local.hex", "--force"
     system "mix", "deps.get"
-    system "mix", "escript.build"
+    system "npm", "install"
+    system "mix", "std_lib"
+    system "mix", "clean"
+    system "mix", "compile"
+    system "mix", "dist"
     bin.install "elixirscript"
-    prefix.install "priv/Elixir.js", "LICENSE"
+    prefix.install Dir["priv/*"], "LICENSE"
   end
 
   test do
