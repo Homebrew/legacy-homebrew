@@ -3,8 +3,8 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git",
-    :tag => "1.7.1",
-    :revision => "7b3aa47527366a200161ea154549faaf85878bc9"
+    :tag => "1.7.3",
+    :revision => "6901aa644a9bcc0667207008db71471abf756b82"
 
   bottle do
     cellar :any
@@ -66,7 +66,8 @@ class Osquery < Formula
       end
     end
 
-    system "cmake", ".", *std_cmake_args
+    # Append libboost_thread-mt since osquery expects cpp-netlib-0.12.
+    system "cmake", ".", "-DCMAKE_EXE_LINKER_FLAGS=-lboost_thread-mt", *std_cmake_args
     system "make"
     system "make", "install"
   end
