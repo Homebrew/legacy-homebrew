@@ -1,8 +1,8 @@
 class Libagar < Formula
   desc "Cross-platform GUI toolkit"
   homepage "http://libagar.org/"
-  url "http://stable.hypertriton.com/agar/agar-1.4.1.tar.gz"
-  sha256 "b0e62b754f134c3c0dd070a4fa62fa552654356eebab3d55e32d5d9b151a275e"
+  url "http://stable.hypertriton.com/agar/agar-1.5.0.tar.gz"
+  sha256 "82342ded342c578141984befe9318f3d376176e5f427ae3278f8985f26663c00"
   head "http://dev.csoft.net/agar/trunk", :using => :svn
 
   bottle do
