@@ -7,9 +7,9 @@ class Gl2ps < Formula
 
   bottle do
     cellar :any
-    sha256 "af82ad002b72c82f5b8a044cd00e1ad95f2ec44817587c1840e17b97c607bebc" => :el_capitan
-    sha256 "482602fc793e919858a03aedfd1c40efd1763fea28fa71f02831ca1b906a3d9d" => :yosemite
-    sha256 "89f18a491419c552d7b833290f9e7e25dfecece961ed2c0cd9c68a8352a1015a" => :mavericks
+    sha256 "f98527a92984dcb172b803c0a5503a06a3fec0c7ff980f1921adc0d77fda19c3" => :el_capitan
+    sha256 "884f489b6106f81cfe2821230065333e36894e9316fa90b9af4ef84a1d7af749" => :yosemite
+    sha256 "22504f9aa0239aa8395bb6a9c48b374885b7fb20603da15e28d730cf97a2990d" => :mavericks
   end
 
   depends_on "cmake" => :build
