@@ -3,22 +3,22 @@ require "language/go"
 class Gauge < Formula
   desc "Test automation tool that supports executable documentation"
   homepage "http://getgauge.io"
-  url "https://github.com/getgauge/gauge/archive/v0.3.2.tar.gz"
-  sha256 "6ac9f0c5cea6fcce33a6e69f98dc23d70128ae9144759a0695078c93015a80aa"
+  url "https://github.com/getgauge/gauge/archive/v0.4.0.tar.gz"
+  sha256 "510dddbf70eb041aee460c6fc93e71542d06c45bf246f7d689ae44a445f57bbb"
   head "https://github.com/getgauge/gauge.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a49f272891725f85573f70c87ce11dedd2bbe9b868e1c27c9ae9213f9074cbfc" => :el_capitan
-    sha256 "35ad85d7b6aeec27adad5b3aa5ea745c9bfd597c912513089a5665fee926e5e7" => :yosemite
-    sha256 "35d4318b170ddf1659101a525d5b0e91ac04510584432be7f5d3dd20a18188fa" => :mavericks
+    sha256 "1bb93557140d17321f4eabedc08e89f47f114856947b1e3f41a199a9f5983a11" => :el_capitan
+    sha256 "4681d2a182665e0589b4343496ad87ddeb937f74ca973eeea882a68104dabd0c" => :yosemite
+    sha256 "ff77e91da209db15a31193ef43c8c0502accf46384cf02c2901d63f973520d0d" => :mavericks
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/getgauge/common" do
     url "https://github.com/getgauge/common.git",
-        :revision => "2c28867db53c862e386b12fb6ac7829e469758ea"
+        :revision => "702bc5040f898e4782ea5e61e85f034845474570"
   end
 
   go_resource "github.com/daviddengcn/go-colortext" do
@@ -28,7 +28,7 @@ class Gauge < Formula
 
   go_resource "github.com/golang/protobuf" do
     url "https://github.com/golang/protobuf.git",
-        :revision => "68415e7123da32b07eab49c96d2c4d6158360e9b"
+        :revision => "552c7b9542c194800fd493123b3798ef0a832032"
   end
 
   go_resource "github.com/mattn/go-isatty" do
@@ -72,6 +72,16 @@ class Gauge < Formula
     url "https://gopkg.in/fsnotify.v1",
         :revision => "96c060f6a6b7e0d6f75fddd10efeaca3e5d1bcb0",
         :using => :git
+  end
+
+  go_resource "golang.org/x/net/" do
+    url "https://github.com/golang/net.git",
+      :revision => "4599ae7937fce9b670ce32b8ad32bbb7ae726b3e"
+  end
+
+  go_resource "google.golang.org/grpc" do
+    url "https://github.com/grpc/grpc-go.git",
+        :revision => "89f694edb447e224bd0ffff7a03f9161ce486482"
   end
 
   def install
