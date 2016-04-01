@@ -20,6 +20,6 @@ class Neofetch < Formula
   end
 
   test do
-    system "#{bin}/neofetch --test --config off"
+    system "#{bin}/neofetch", "--test", "--config off"
   end
 end
