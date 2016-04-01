@@ -1,8 +1,8 @@
 class SsllabsScan < Formula
   desc "This tool is a command-line client for the SSL Labs APIs."
   homepage "https://github.com/ssllabs/ssllabs-scan/"
-  url "https://github.com/ssllabs/ssllabs-scan/archive/v1.2.0.tar.gz"
-  sha256 "c8becd57a4aa65f5c4c32824e392d8373ae169ff055192107e9411032dfcd017"
+  url "https://github.com/ssllabs/ssllabs-scan/archive/v1.3.0.tar.gz"
+  sha256 "ec631177900ff07e1299e116638346e4ae95c878cfd317e9e1e8dfd73ecde514"
 
   bottle do
     cellar :any_skip_relocation
