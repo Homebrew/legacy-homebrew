@@ -6,7 +6,6 @@ class Megatools < Formula
 
   bottle do
     cellar :any
-    sha256 "2d3149d6133aa4c0c26d5419c0944a9cec9060b3e472424802b6ec8985d437dd" => :el_capitan
   end
 
   depends_on "pkg-config" => :build
