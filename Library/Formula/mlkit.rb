@@ -18,7 +18,7 @@ class Mlkit < Formula
     # code. Because of this difference, the ENV.m64 and ENV.m32 flags
     # are not sufficient for the formula as clang is used by both
     # tools in a single makefile target. For the mlton-compilation of
-    # sml-code, no arch tags are used for the clang assembler
+    # sml-code, no arch flags are used for the clang assembler
     # invocation. Thus, on a 32-bit machine, both the mlton-compiled
     # binary (the mlkit compiler) and the 32-bit native code generated
     # by the mlkit compiler will be running 32-bit code.
