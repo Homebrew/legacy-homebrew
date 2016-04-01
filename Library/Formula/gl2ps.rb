@@ -3,7 +3,7 @@ class Gl2ps < Formula
   homepage "http://www.geuz.org/gl2ps/"
   url "http://geuz.org/gl2ps/src/gl2ps-1.3.9.tgz"
   sha256 "8a680bff120df8bcd78afac276cdc38041fed617f2721bade01213362bcc3640"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
@@ -16,7 +16,12 @@ class Gl2ps < Formula
   depends_on "libpng"
 
   def install
-    system "cmake", ".", *std_cmake_args
+    # Prevent linking against X11's libglut.dylib when it's present
+    # Reported to upstream's mailing list gl2ps@geuz.org (1st April 2016)
+    # http://www.geuz.org/pipermail/gl2ps/2016/000433.html
+    # Reported to cmake's bug tracker, as well (1st April 2016)
+    # https://public.kitware.com/Bug/view.php?id=16045
+    system "cmake", ".", "-DGLUT_glut_LIBRARY=/System/Library/Frameworks/GLUT.framework", *std_cmake_args
     system "make", "install"
   end
 
