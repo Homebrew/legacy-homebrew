@@ -1,8 +1,8 @@
 class Jags < Formula
   desc "Just Another Gibbs Sampler for Bayesian MCMC simulation"
   homepage "http://mcmc-jags.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Source/JAGS-4.0.1.tar.gz"
-  sha256 "3619312cd9ce8163db4d5a51c961078061f6256382a2e93041ee22f7c09ba00e"
+  url "https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Source/JAGS-4.2.0.tar.gz"
+  sha256 "af3e9d2896d3e712f99e2a0c81091c6b08f096650af6aa9d0c631c0790409cf7"
 
   bottle do
     cellar :any
