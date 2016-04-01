@@ -3,8 +3,8 @@ require "language/go"
 class Scw < Formula
   desc "Manage BareMetal Servers from Command Line (as easily as with Docker)"
   homepage "https://github.com/scaleway/scaleway-cli"
-  url "https://github.com/scaleway/scaleway-cli/archive/v1.8.1.tar.gz"
-  sha256 "9cb8626a8ab254aa602ded0a46ad0c34f88c9f89e7da28049b166996f494dde9"
+  url "https://github.com/scaleway/scaleway-cli/archive/v1.9.0.tar.gz"
+  sha256 "2cf48fb0985d8767330cf4eb48b321101bd9ffde5c479c66e1abe0fee50aec4b"
   head "https://github.com/scaleway/scaleway-cli.git"
 
   bottle do
