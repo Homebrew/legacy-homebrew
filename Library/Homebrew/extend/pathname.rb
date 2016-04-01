@@ -27,17 +27,27 @@ module DiskUsageExtension
 
   def compute_disk_usage
     if directory?
+      scanned_files = Set.new
       @file_count = 0
       @disk_usage = 0
       find do |f|
-        if !f.directory? && !f.symlink? && f.basename.to_s != ".DS_Store"
-          @file_count += 1
-          @disk_usage += f.size
+        if f.directory?
+          @disk_usage += f.lstat.size
+        else
+          @file_count += 1 if f.basename.to_s != ".DS_Store"
+          # use Pathname#lstat instead of Pathname#stat to get info of symlink itself.
+          stat = f.lstat
+          file_id = [stat.dev, stat.ino]
+          # count hardlinks only once.
+          unless scanned_files.include?(file_id)
+            @disk_usage += stat.size
+            scanned_files.add(file_id)
+          end
         end
       end
     else
       @file_count = 1
-      @disk_usage = size
+      @disk_usage = lstat.size
     end
   end
 end
