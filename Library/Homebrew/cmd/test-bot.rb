@@ -874,9 +874,17 @@ module Homebrew
     p ARGV
 
     tap = resolve_test_tap
-    # Tap repository if required, this is done before everything else
-    # because Formula parsing and/or git commit hash lookup depends on it.
-    safe_system "brew", "tap", tap.name unless tap.installed?
+    if tap.installed?
+      # make sure Tap is not a shallow clone.
+      # bottle revision and bottle upload rely on full clone.
+      if (tap.path/".git/shallow").exist?
+        safe_system "git", "-C", tap.path, "fetch", "--unshallow"
+      end
+    else
+      # Tap repository if required, this is done before everything else
+      # because Formula parsing and/or git commit hash lookup depends on it.
+      safe_system "brew", "tap", tap.name, "--full"
+    end
 
     if ARGV.include? "--ci-upload"
       return test_ci_upload(tap)
