@@ -317,11 +317,23 @@ If \fB\-\-pinned\fR is passed, show the versions of pinned formulae, or only the
 Show the git log for the given formulae\. Options that \fBgit\-log\fR(1) recognizes can be passed before the formula list\.
 .
 .TP
-\fBmissing\fR [\fIformulae\fR]
+\fBmissing\fR [\fB\-\-quiet\fR|\fB\-\-verbose\fR|\fB\-\-json=v1\fR] [\fIformulae\fR]
 Check the given \fIformulae\fR for missing dependencies\.
 .
 .IP
 If no \fIformulae\fR are given, check all installed brews\.
+.
+.IP
+By default, missing formulae are displayed as per\-formula lists in interactive shells, and as a single, non\-repeating list otherwise\.
+.
+.IP
+If \fB\-\-quiet\fR is passed, list only the names of missing brews (takes precedence over \fB\-\-verbose\fR\.
+.
+.IP
+If \fB\-\-verbose\fR is passed, display per\-formula lists of missing brews\.
+.
+.IP
+If \fB\-\-json=\fR\fIversion\fR is passed, the output will be in JSON format\. The only valid version is \fBv1\fR\.
 .
 .TP
 \fBmigrate\fR [\fB\-\-force\fR] \fIformulae\fR

@@ -249,7 +249,7 @@ class IntegrationCommandTests < Homebrew::TestCase
     EOS
 
     (HOMEBREW_CELLAR/"bar/1.0").mkpath
-    assert_match "foo", cmd("missing")
+    assert_match "foo", cmd_fail("missing")
   ensure
     (HOMEBREW_CELLAR/"bar").rmtree
     foo_file.unlink
@@ -391,7 +391,7 @@ class IntegrationCommandTests < Homebrew::TestCase
     EOS
     (HOMEBREW_CELLAR/"testball/0.0.1/foo").mkpath
 
-    assert_equal "testball", cmd("outdated")
+    assert_equal "testball", cmd_fail("outdated")
   ensure
     formula_file.unlink
     FileUtils.rm_rf HOMEBREW_CELLAR/"testball"

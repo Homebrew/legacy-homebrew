@@ -237,9 +237,20 @@ specified (pinned) formulae if <var>formulae</var> are given.
 See also <code>pin</code>, <code>unpin</code>.</p></dd>
 <dt><code>log</code> [<code>git-log-options</code>] <var>formula</var> ...</dt><dd><p>Show the git log for the given formulae. Options that <code>git-log</code>(1)
 recognizes can be passed before the formula list.</p></dd>
-<dt><code>missing</code> [<var>formulae</var>]</dt><dd><p>Check the given <var>formulae</var> for missing dependencies.</p>
+<dt><code>missing</code> [<code>--quiet</code>|<code>--verbose</code>|<code>--json=v1</code>] [<var>formulae</var>]</dt><dd><p>Check the given <var>formulae</var> for missing dependencies.</p>
 
-<p>If no <var>formulae</var> are given, check all installed brews.</p></dd>
+<p>If no <var>formulae</var> are given, check all installed brews.</p>
+
+<p>By default, missing formulae are displayed as per-formula lists in
+interactive shells, and as a single, non-repeating list otherwise.</p>
+
+<p>If <code>--quiet</code> is passed, list only the names of missing brews (takes
+precedence over <code>--verbose</code>.</p>
+
+<p>If <code>--verbose</code> is passed, display per-formula lists of missing brews.</p>
+
+<p>If <code>--json=</code><var>version</var> is passed, the output will be in JSON format. The only
+valid version is <code>v1</code>.</p></dd>
 <dt><code>migrate</code> [<code>--force</code>] <var>formulae</var></dt><dd><p>Migrate renamed packages to new name, where <var>formulae</var> are old names of
 packages.</p>
 
