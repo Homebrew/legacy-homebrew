@@ -1,14 +1,14 @@
 class CrystalLang < Formula
   desc "Fast and statically typed, compiled language with Ruby-like syntax"
   homepage "http://crystal-lang.org/"
-  url "https://github.com/crystal-lang/crystal/archive/0.14.2.tar.gz"
-  sha256 "0fdbb8c0ebbc1da0024b19fac193763654b474e3e2db957a4543bfc5ad5dba67"
+  url "https://github.com/crystal-lang/crystal/archive/0.15.0.tar.gz"
+  sha256 "d79445ec92faa2a045af150fca4886d90ecd9fba27451003b68118c8714b26bd"
   head "https://github.com/manastech/crystal.git"
 
   bottle do
-    sha256 "c6791c15e931c8c4894af36dfdd6689ff63a94677d0828772d5473443c62951d" => :el_capitan
-    sha256 "25bc1c73b8a0fc24d66b66ceeab8a0a3a8674ea55fa3f94b9c54b212e17a2b42" => :yosemite
-    sha256 "dac7f07a399532b349acf99095e51647c70754e9ef2565d3aed4465e1dd95008" => :mavericks
+    sha256 "ad7c29c8fb31a01bf7c84d53188897afeaefdd6dc8d6d14490d15f6f9ea37af4" => :el_capitan
+    sha256 "4009fdf987166c815428738a1fd2e6d784846899a9d36685f3380f19f00b6b8f" => :yosemite
+    sha256 "51f05828adedb594550f42ee1f4c3e3352aa9c110249786ed0c69acce247e2ad" => :mavericks
   end
 
   option "without-release", "Do not build the compiler in release mode"
@@ -20,9 +20,9 @@ class CrystalLang < Formula
   depends_on "libyaml" if build.with?("shards")
 
   resource "boot" do
-    url "https://github.com/crystal-lang/crystal/releases/download/0.13.0/crystal-0.13.0-1-darwin-x86_64.tar.gz"
-    version "0.13.0"
-    sha256 "06a9485240387ae145e6cad07889cd40a632b0f2a13aa33470b21f59e76a0680"
+    url "https://github.com/crystal-lang/crystal/releases/download/0.14.2/crystal-0.14.2-1-darwin-x86_64.tar.gz"
+    version "0.14.2"
+    sha256 "f75036b1950035b49a73faa125acd9ff031cecab7020f15cd4db4c4ee6417bfa"
   end
 
   resource "shards" do
