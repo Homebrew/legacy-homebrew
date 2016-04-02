@@ -193,7 +193,16 @@ module Homebrew
           bottle_branch = "pull-bottle-#{issue}"
           "https://github.com/BrewTestBot/homebrew-#{tap.repo}/compare/homebrew:master...pr-#{issue}"
         end
-        curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
+
+        bottle_commit_fallbacked = false
+        begin
+          curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
+        rescue ErrorDuringExecution
+          raise if !ARGV.include?("--legacy") || bottle_commit_fallbacked
+          bottle_commit_url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+          bottle_commit_fallbacked = true
+          retry
+        end
 
         safe_system "git", "checkout", "-B", bottle_branch, revision
         pull_patch bottle_commit_url
