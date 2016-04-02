@@ -75,16 +75,16 @@ For example, you can create a tap for an alternative `vim` formula. Without
 pinning it, the behavior will be
 
 ```bash
-brew install vim                     # installs from Homebrew/homebrew
+brew install vim                     # installs from homebrew/core
 brew install username/repo/vim       # installs from your custom repo
 ```
 
 However if you pin the tap with `brew tap-pin username/repo`, you will need to
-use `homebrew/homebrew` to refer to the core formula.
+use `homebrew/core` to refer to the core formula.
 
 ```bash
 brew install vim                     # installs from your custom repo
-brew install homebrew/homebrew/vim   # installs from Homebrew/homebrew
+brew install homebrew/core/vim       # installs from homebrew/core
 ```
 
 Do note that pinned taps are prioritized only when the formula name is directly
