@@ -11,6 +11,8 @@
 # --junit:         Generate a JUnit XML test results file.
 # --no-bottle:     Run brew install without --build-bottle
 # --keep-old:      Run brew bottle --keep-old to build new bottles for a single platform.
+# --legacy         Bulid formula from legacy Homebrew/homebrew repo.
+#                  (TODO remove it when it's not longer necessary)
 # --HEAD:          Run brew install with --HEAD
 # --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
 # --tap=<tap>:     Use the git repository of the given tap
@@ -329,7 +331,11 @@ module Homebrew
         # the right commit to BrewTestBot.
         unless travis_pr
           diff_start_sha1 = current_sha1
-          test "brew", "pull", "--clean", @url
+          if ARGV.include?("--legacy")
+            test "brew", "pull", "--clean", "--legacy", @url
+          else
+            test "brew", "pull", "--clean", @url
+          end
           diff_end_sha1 = current_sha1
         end
         @short_url = @url.gsub("https://github.com/", "")
@@ -747,6 +753,7 @@ module Homebrew
 
     ARGV << "--verbose"
     ARGV << "--keep-old" if ENV["UPSTREAM_BOTTLE_KEEP_OLD"]
+    ARGV << "--legacy" if ENV["UPSTREAM_BOTTLE_LEGACY"]
 
     bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
     return if bottles.empty?
@@ -767,8 +774,13 @@ module Homebrew
     safe_system "brew", "update"
 
     if pr
-      pull_pr = "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
-      safe_system "brew", "pull", "--clean", pull_pr
+      if ARGV.include?("--legacy")
+        pull_pr = "https://github.com/Homebrew/homebrew/pull/#{pr}"
+        safe_system "brew", "pull", "--clean", "--legacy", pull_pr
+      else
+        pull_pr = "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
+        safe_system "brew", "pull", "--clean", pull_pr
+      end
     end
 
     bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
