@@ -7,26 +7,36 @@ git() {
 }
 
 git_init_if_necessary() {
+  if [[ -n "$HOMEBREW_OSX" ]]
+  then
+    OFFICIAL_REMOTE="https://github.com/Homebrew/brew.git"
+  else
+    OFFICIAL_REMOTE="https://github.com/Linuxbrew/brew.git"
+  fi
+
   if [[ ! -d ".git" ]]
   then
     set -e
     trap '{ rm -rf .git; exit 1; }' EXIT
     git init
     git config --bool core.autocrlf false
-    git config remote.origin.url https://github.com/Homebrew/homebrew.git
+    git config remote.origin.url "$OFFICIAL_REMOTE"
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
     git fetch --force --depth=1 origin refs/heads/master:refs/remotes/origin/master
     git reset --hard origin/master
     SKIP_FETCH_HOMEBREW_REPOSITORY=1
     set +e
     trap - EXIT
-    return
-  fi
-
-  if [[ "$(git remote show origin -n)" = *"mxcl/homebrew"* ]]
-  then
-    git remote set-url origin https://github.com/Homebrew/homebrew.git &&
-    git remote set-url --delete origin ".*mxcl\/homebrew.*"
+  else
+    set -e
+    git config --bool core.autocrlf false
+    git config --replace-all remote.origin.url "$OFFICIAL_REMOTE"
+    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    git fetch --force --depth=1 origin refs/heads/master:refs/remotes/origin/master
+    git reset --hard origin/master
+    git gc --auto
+    SKIP_FETCH_HOMEBREW_REPOSITORY=1
+    set +e
   fi
 }
 
