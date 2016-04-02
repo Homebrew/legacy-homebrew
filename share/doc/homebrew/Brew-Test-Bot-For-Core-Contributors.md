@@ -3,8 +3,8 @@ If a build has run and passed on `brew test-bot` then it can be used to quickly 
 
 There are two types of Jenkins jobs you will interact with:
 
-## [Homebrew Pull Requests](http://bot.brew.sh/job/Homebrew%20Pull%20Requests/)
-This job automatically builds any pull requests submitted to Homebrew/homebrew. On success or failure it updates the pull request status (see more details on the [main Brew Test Bot wiki page](Brew-Test-Bot.md)). On a successful build it automatically uploads bottles.
+## [Homebrew Pull Requests](http://bot.brew.sh/job/Homebrew%20Core%20Pull%20Requests/)
+This job automatically builds any pull requests submitted to Homebrew/homebrew-core. On success or failure it updates the pull request status (see more details on the [main Brew Test Bot wiki page](Brew-Test-Bot.md)). On a successful build it automatically uploads bottles.
 
 ## [Homebrew Testing](http://bot.brew.sh/job/Homebrew%20Testing/)
 This job is manually triggered to run [`brew test-bot`](https://github.com/Homebrew/homebrew/blob/master/Library/Homebrew/cmd/test-bot.rb) with user-specified parameters. On a successful build it automatically uploads bottles.
