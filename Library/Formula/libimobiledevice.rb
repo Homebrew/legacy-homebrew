@@ -22,18 +22,25 @@ class Libimobiledevice < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libtasn1"
-  depends_on "libplist"
+  depends_on "libplist" => "with-python"
   depends_on "usbmuxd"
   depends_on "openssl"
+	depends_on :python => :optional
+
+  option "with-cython", "Compile with Cython support - for Python bindings"
 
   def install
+    args = []
+    if build.without? "with-cython"
+      # As long as libplist builds without Cython
+      # bindings, libimobiledevice must as well.
+      args << "--without-cython"
+    end
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          # As long as libplist builds without Cython
-                          # bindings, libimobiledevice must as well.
-                          "--without-cython"
+                          *args
     system "make", "install"
   end
 end
