@@ -16,7 +16,6 @@ class Duck < Formula
   depends_on :java => ["1.8+", :build]
   depends_on :xcode => ["7.1+", :build]
   depends_on "ant" => :build
-  depends_on "maven" => :build
 
   def install
     revision = version.to_s.rpartition(".").last
