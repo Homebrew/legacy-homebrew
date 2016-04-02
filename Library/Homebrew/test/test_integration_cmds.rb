@@ -695,7 +695,9 @@ class IntegrationCommandTests < Homebrew::TestCase
     assert (share/"notpruneable").directory?
     refute (share/"pruneable_symlink").symlink?
 
-    assert_equal "Nothing pruned",
+    assert_match "Nothing pruned\n" \
+      "No apps unlinked from /Applications\n" \
+      "No apps unlinked from /Users/", # ...<username>/Applications
       cmd("prune", "--verbose")
   ensure
     share.rmtree
