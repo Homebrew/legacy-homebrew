@@ -258,7 +258,8 @@ EOS
 
   if ! git --version >/dev/null 2>&1
   then
-    brew install git
+    # we cannot install brewed git if homebrew/core is unavailable.
+    [[ -d "$HOMEBREW_LIBRARY/Taps/homebrew/homebrew-core" ]] && brew install git
     if ! git --version >/dev/null 2>&1
     then
       odie "Git must be installed and in your PATH!"
