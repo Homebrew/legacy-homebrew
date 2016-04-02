@@ -1,6 +1,6 @@
 # Acceptable Formulae
 Some formulae should not go in
-[Homebrew/homebrew](https://github.com/Homebrew/homebrew). But there are
+[homebrew/core](https://github.com/Homebrew/homebrew-core). But there are
 additional [Interesting Taps & Branches](Interesting-Taps-&-Branches.md) and anyone can start their
 own!
 
@@ -57,7 +57,7 @@ point it to the downloaded archive in order to avoid loading.
 
 ### We don’t like binary formulae
 Our policy is that formulae in the core repository
-([Homebrew/homebrew](https://github.com/Homebrew/homebrew)) must be built
+([homebrew/core](https://github.com/Homebrew/homebrew-core)) must be built
 from source (or produce cross-platform binaries like e.g. Java). Binary-only
 formulae should go to [homebrew/binary](https://github.com/Homebrew/homebrew-binary) or [homebrew-cask](https://github.com/caskroom/homebrew-cask).
 
