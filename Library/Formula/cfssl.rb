@@ -4,14 +4,15 @@ class Cfssl < Formula
   desc "CloudFlare's PKI toolkit"
   homepage "https://cfssl.org/"
   url "https://github.com/cloudflare/cfssl/archive/1.2.0.tar.gz"
-  sha256 "30301696fa7ab59aca0cf7883ee82b9b42e0e7c0022269f51454b476a9a2edf9"
+  sha256 "28e1d1ec6862eb926336490e2fcd1de626113d3e227293a4138fec59b7b6e443"
+  revision 1
   head "https://github.com/cloudflare/cfssl.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "eaf7ab4cb575473fe5a9bee2f5fe28d8fa0fa1721ecf6a29c8c0bcd7af5a5fb8" => :el_capitan
-    sha256 "828599bcc735eb04e77e3a8400f3e1aa41035de41f33a84d65da0dd76b0fe073" => :yosemite
-    sha256 "5ad2bb997d85b6b6863e130f32142bf5674ac19169136b62d0109b71e8c46694" => :mavericks
+    sha256 "436f54d1fe2ad4e44fcb710cfde9378b5b08c9087cc02bad4f3a53c8d6444826" => :el_capitan
+    sha256 "c033af911befdd43633a264b0eeb2a181ab64eb50929c5c6dc94824697f57967" => :yosemite
+    sha256 "efd7ebbc6a9d6a073790aa84db32d1c3457a65036a0ce09c907ad69d8e3bfe2b" => :mavericks
   end
 
   depends_on "go" => :build
