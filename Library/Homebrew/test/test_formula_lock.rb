@@ -19,4 +19,17 @@ class FormulaLockTests < Homebrew::TestCase
   def test_locking_existing_lock_suceeds
     assert_nothing_raised { @lock.lock }
   end
+
+  def test_locking_file_in_nonexistent_cache_directory
+    @tmp_lockdir = FormulaLock::LOCKDIR
+    FormulaLock.send(:remove_const, :LOCKDIR)
+    FormulaLock.const_set(:LOCKDIR, @tmp_lockdir + "nonsuch/")
+    @nonsuch_dir = FormulaLock.new("bar")
+    assert_nothing_raised { @nonsuch_dir.lock }
+    assert_nothing_raised { @nonsuch_dir.unlock }
+    ensure
+      FormulaLock::LOCKDIR.children.each(&:unlink)
+      FormulaLock.send(:remove_const, :LOCKDIR)
+      FormulaLock.const_set(:LOCKDIR, @tmp_lockdir)
+  end
 end
