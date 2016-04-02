@@ -310,8 +310,15 @@ module Homebrew
       patch_args << "-p2" if ARGV.include?("--legacy")
       patch_args << patchpath
 
+      start_revision = `git rev-parse HEAD`.strip
+
       begin
         safe_system "git", "am", *patch_args
+        if ARGV.include?("--legacy")
+          safe_system "git", "filter-branch", "-f", "--msg-filter",
+                             "sed -E -e \"s/ (#[0-9]+)/ Homebrew\\/homebrew\\1/g\"",
+                             "#{start_revision}..HEAD"
+        end
       rescue ErrorDuringExecution
         if ARGV.include? "--resolve"
           odie "Patch failed to apply: try to resolve it."
