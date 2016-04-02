@@ -6,6 +6,8 @@ require "descriptions"
 
 module Homebrew
   def update_report
+    oh1 "Homebrew update report" if ARGV.verbose?
+
     # migrate to new directories based tap structure
     migrate_taps
 

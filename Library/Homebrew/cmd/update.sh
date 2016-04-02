@@ -142,6 +142,8 @@ pull() {
   INITIAL_BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null)"
   UPSTREAM_BRANCH="$(upstream_branch)"
 
+  [[ -n "$HOMEBREW_VERBOSE" ]] && ohai "Updating $DIR"
+
   # Used for testing purposes, e.g., for testing formula migration after
   # renaming it in the currently checked-out branch. To test run
   # "brew update --simulate-from-current-branch"
@@ -284,6 +286,8 @@ EOS
   # this procedure will be removed in the future if it seems unnecessary
   rename_taps_dir_if_necessary
 
+  [[ -n "$HOMEBREW_VERBOSE" ]] && oh1 "Fetching updates for all Git repositories"
+
   # kill all of subprocess on interrupt
   trap '{ pkill -P $$; wait; exit 130; }' SIGINT
 
@@ -320,6 +324,8 @@ EOS
 
   wait
   trap - SIGINT
+
+  [[ -n "$HOMEBREW_VERBOSE" ]] && oh1 "Updating all Git repositories"
 
   for DIR in "$HOMEBREW_REPOSITORY" "$HOMEBREW_LIBRARY"/Taps/*/*
   do
