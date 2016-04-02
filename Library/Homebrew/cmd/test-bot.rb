@@ -787,8 +787,7 @@ module Homebrew
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
     system "brew", "bottle", *bottle_args
 
-    remote_repo = tap.core_tap? ? "homebrew" : "homebrew-#{tap.repo}"
-    remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
+    remote = "git@github.com:BrewTestBot/homebrew-#{tap.repo}.git"
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
