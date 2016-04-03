@@ -54,10 +54,10 @@ edavis/emacs
 
 ## Formula duplicate names
 
-If your tap contains a formula that is also present in master, that's fine,
+If your tap contains a formula that is also present in core Homebrew, that's fine,
 but it means that you must install it explicitly by default.
 
-If you would like to prioritize a tap over master, you can use
+If you would like to prioritize a tap over core, you can use
 `brew tap-pin username/repo` to pin the tap,
 and use `brew tap-unpin username/repo` to revert the pin.
 

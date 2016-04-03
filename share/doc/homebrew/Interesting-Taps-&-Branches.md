@@ -1,6 +1,6 @@
 # Interesting Taps & Branches
 A Tap is homebrew-speak for a git repository containing extra formulae.
-Homebrew has the capability to add (and remove) multiple taps to your local installation with the `brew tap` and `brew untap` command. Type `man brew` in your Terminal. The main repository https://github.com/Homebrew/homebrew-core often called "Homebrew/core" is always built-in.
+Homebrew has the capability to add (and remove) multiple taps to your local installation with the `brew tap` and `brew untap` command. Type `man brew` in your Terminal. The main repository https://github.com/Homebrew/homebrew-core, often called "Homebrew/core", is always built-in.
 
 ## Main Taps
 
@@ -36,7 +36,7 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
 
 *   [homebrew/x11](https://github.com/Homebrew/homebrew-x11): Formulae with hard X11 dependencies.
 
-`brew search` looks in these main taps and as well in [Homebrew/homebrew](https://github.com/Homebrew/homebrew). So don't worry about missing stuff. We will add other taps to the search as they become well maintained and popular.
+`brew search` looks in these main taps as well as in [Homebrew/core](https://github.com/Homebrew/homebrew-core). So don't worry about missing stuff. We will add other taps to the search as they become well maintained and popular.
 
 You can be added as a maintainer for one of the Homebrew organization taps and aid the project! If you are interested write to our list: homebrew-discuss@googlegroups.com. We want your help!
 
