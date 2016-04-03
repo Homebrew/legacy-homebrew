@@ -176,7 +176,7 @@ If it’s not in `man brew`, it’s probably an external command. These are docu
 If it’s been a while, bump it with a “bump” comment. Sometimes we miss requests and there are plenty of them. Maybe we were thinking on something. It will encourage consideration. In the meantime if you could rebase the pull request so that it can be cherry-picked more easily we will love you for a long time.
 
 ### Can I edit formulae myself?
-Yes! It’s easy! Just `brew edit $FORMULA`. You don’t have to submit modifications back to*Homebrew/homebrew-core*, just edit the formula as you personally need it and `brew install`. As a bonus `brew update` will merge your changes with upstream so you can still keep the formula up-to-date **with** your personal modifications!
+Yes! It’s easy! Just `brew edit $FORMULA`. You don’t have to submit modifications back to *Homebrew/homebrew-core*, just edit the formula as you personally need it and `brew install`. As a bonus `brew update` will merge your changes with upstream so you can still keep the formula up-to-date **with** your personal modifications!
 
 ### Can I make new formulae?
 Yes! It’s easy! Just `brew create URL` Homebrew will then open the

@@ -29,7 +29,7 @@ Before submitting a new formula make sure your package:
 *   meets all our [Acceptable Formulae](Acceptable-Formulae.md) requirements
 *   isn't already in Homebrew (check `brew search $FORMULA`)
 *   isn't in another official [Homebrew tap](https://github.com/Homebrew)
-*   isn't already waiting to be merged (check the [issue tracker](https://github.com/Homebrew/homebrew-core/issues))
+*   isn't already waiting to be merged (check the [issue tracker](https://github.com/Homebrew/homebrew-core/pulls))
 *   is still supported by upstream (i.e. doesn't require extensive patching)
 *   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release versions belong.
 *   passes all `brew audit --strict --online $FORMULA` tests.
@@ -109,7 +109,7 @@ Homebrew’s OpenSSL is
 to avoid conflicting with the system so sometimes formulae need to
 have environment variables set or special configuration flags passed
 to locate our OpenSSL. You can see this mechanism in the
-[clamav](https://github.com/Homebrew/homebrew-core/blob/master/Formula/clamav.rb#L28)
+[clamav](https://github.com/Homebrew/homebrew-core/blob/ae2206f3e5bb2a7c0065ae1b164d2d011b85858b/Formula/clamav.rb#L38)
 formula. Usually this is unnecessary because when OpenSSL is specified
 as a dependency Homebrew temporarily prepends the `$PATH` with that
 prefix.
@@ -170,7 +170,7 @@ Sometimes there’s hard conflict between formulae, and it can’t be avoided or
 
 `mbedtls` is a good [example](https://github.com/Homebrew/homebrew-core/blob/master/Formula/mbedtls.rb) formula for minor conflict.
 
-`mbedtls` ships and compiles a "Hello World" executable. This is obviously non-essential to `mbedtls`’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
+`mbedtls` ships and compiles a "Hello World" executable. This is obviously non-essential to `mbedtls`’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just [remove it](https://github.com/Homebrew/homebrew-core/blob/ae2206f3e5bb2a7c0065ae1b164d2d011b85858b/Formula/mbedtls.rb#L27-L28) during the installation process.
 
 [pdftohtml](https://github.com/Homebrew/homebrew-core/blob/master/Formula/pdftohtml.rb) provides an example of a serious
 conflict, where both formula ship an identically-named binary that is essential to functionality, so a [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) is preferable.
@@ -332,12 +332,12 @@ Ensure you reference any relevant GitHub issue e.g. `Closes #12345` in the commi
 
 Now you just need to push your commit to GitHub.
 
-If you haven’t forked Homebrew yet, [go to the repo and hit the fork button](https://github.com/Homebrew/homebrew).
+If you haven’t forked Homebrew yet, [go to the homebrew-core repo and hit the fork button](https://github.com/Homebrew/homebrew-core).
 
-If you have already forked Homebrew on GitHub, then you can manually push (just make sure you have been pulling from the Homebrew/homebrew master):
+If you have already forked Homebrew on GitHub, then you can manually push (just make sure you have been pulling from the Homebrew/homebrew-core master):
 
 ```shell
-git push https://github.com/myname/homebrew/ <what-you-called-your-branch>
+git push https://github.com/myname/homebrew-core/ <what-you-called-your-branch>
 ```
 
 Now, please [open a pull request](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/How-To-Open-a-Homebrew-Pull-Request-(and-get-it-merged).md#how-to-open-a-homebrew-pull-request-and-get-it-merged) for your changes.
@@ -481,7 +481,7 @@ Instead of `git diff | pbcopy`, for some editors `git diff >> path/to/your/formu
 
 # Advanced Formula Tricks
 
-If anything isn’t clear, you can usually figure it out by `grep`ping the `$(brew --repo homebrew/core` directory. Please submit a pull request to amend this document if you think it will help!
+If anything isn’t clear, you can usually figure it out by `grep`ping the `$(brew --repo homebrew/core)` directory. Please submit a pull request to amend this document if you think it will help!
 
 ## Unstable versions (`devel`, `head`)
 
@@ -837,3 +837,5 @@ Have you created a real mess in git which stops you from creating a commit you w
 git checkout -f master
 git reset --hard origin/master
 ```
+
+You may need to do this in both the main Homebrew directory and the `$(brew --repo homebrew/core)` tap if you have modified both.
