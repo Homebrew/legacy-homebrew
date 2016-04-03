@@ -1,8 +1,8 @@
 class Jenv < Formula
   desc "Manage your Java environment"
   homepage "http://www.jenv.be"
-  url "https://github.com/gcuisinier/jenv/archive/0.4.3.tar.gz"
-  sha256 "aa8e5f9da2e89f3c28550bdcc49746b29b14a82ee0b06025dda4a859aa26b69b"
+  url "https://github.com/gcuisinier/jenv/archive/0.4.4.tar.gz"
+  sha256 "74b48d9c33ceae4e141272c4096086c6ec1a8f10073da379b816518615c79881"
   head "https://github.com/gcuisinier/jenv.git"
 
   bottle :unneeded

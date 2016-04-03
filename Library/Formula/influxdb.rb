@@ -3,23 +3,16 @@ require "language/go"
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
-  url "https://github.com/influxdata/influxdb/archive/v0.10.2.tar.gz"
-  sha256 "4d537534c96c387a3f11275680c678fc9aec819a9283143762812d5d189f8e6f"
+  url "https://github.com/influxdata/influxdb/archive/v0.11.0.tar.gz"
+  sha256 "04b4a1c9b2a84c44c0820eacf28a8ef7b301b27e4ed224d23c9fc4d63c2e644e"
+
+  head "https://github.com/influxdata/influxdb.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a021fa63eed5afaeb5852631a51023a34b1eff7c9877478d076d03e3df6c9199" => :el_capitan
-    sha256 "15f9ff77895b88a4d7a4b6f60597a59fd3d6715aee057514babddcce0d16c7c2" => :yosemite
-    sha256 "596f3e437b855050a1f05a68f6de053c9625492c2cd05695ead960915f86876a" => :mavericks
-  end
-
-  head do
-    url "https://github.com/influxdata/influxdb.git"
-
-    go_resource "github.com/influxdata/usage-client" do
-      url "https://github.com/influxdata/usage-client.git",
-      :revision => "475977e68d79883d9c8d67131c84e4241523f452"
-    end
+    sha256 "d31080b1c23ad1714d3747bfa5fd40d271dd2eb9a39c0ada0edb4dcfa05fdbaa" => :el_capitan
+    sha256 "97da776ca586004ff3940473a2d8fec34261b40e10a346405123faf6acf656fc" => :yosemite
+    sha256 "4993701bd639a55cab9b26cd1c33f426e27bd501a9e247c92a5f1873d18d9cda" => :mavericks
   end
 
   depends_on "go" => :build
@@ -89,8 +82,8 @@ class Influxdb < Formula
     :revision => "d1e82c1ec3f15ee991f7cc7ffd5b67ff6f5bbaee"
   end
 
-  go_resource "github.com/influxdb/usage-client" do
-    url "https://github.com/influxdb/usage-client.git",
+  go_resource "github.com/influxdata/usage-client" do
+    url "https://github.com/influxdata/usage-client.git",
     :revision => "475977e68d79883d9c8d67131c84e4241523f452"
   end
 
@@ -131,28 +124,26 @@ class Influxdb < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    if build.head?
-      influxdb_path = buildpath/"src/github.com/influxdata/influxdb"
-    else
-      influxdb_path = buildpath/"src/github.com/influxdb/influxdb"
-    end
+    influxdb_path = buildpath/"src/github.com/influxdata/influxdb"
     influxdb_path.install Dir["*"]
 
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version=0.11.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.12.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version=0.10.2 -X main.branch=0.10.0 -X main.commit=845ce867189724762a6637f17da742f2ca0a9625", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.11.0 -X main.branch=0.11 -X main.commit=1572060c6890f5c6f6e540155d99238aca8617e3", "./..."
       end
     end
 
     inreplace influxdb_path/"etc/config.sample.toml" do |s|
       s.gsub! "/var/lib/influxdb/data", "#{var}/influxdb/data"
       s.gsub! "/var/lib/influxdb/meta", "#{var}/influxdb/meta"
-      s.gsub! "/var/lib/influxdb/hh", "#{var}/influxdb/hh"
       s.gsub! "/var/lib/influxdb/wal", "#{var}/influxdb/wal"
+    end
+    unless build.head?
+      inreplace influxdb_path/"etc/config.sample.toml", "/var/lib/influxdb/hh", "#{var}/influxdb/hh"
     end
 
     bin.install "bin/influxd"
@@ -163,8 +154,10 @@ class Influxdb < Formula
 
     (var/"influxdb/data").mkpath
     (var/"influxdb/meta").mkpath
-    (var/"influxdb/hh").mkpath
     (var/"influxdb/wal").mkpath
+    unless build.head?
+      (var/"influxdb/hh").mkpath
+    end
   end
 
   plist_options :manual => "influxd -config #{HOMEBREW_PREFIX}/etc/influxdb.conf"
@@ -210,8 +203,10 @@ class Influxdb < Formula
     inreplace testpath/"config.toml" do |s|
       s.gsub! %r{/.*/.influxdb/data}, "#{testpath}/influxdb/data"
       s.gsub! %r{/.*/.influxdb/meta}, "#{testpath}/influxdb/meta"
-      s.gsub! %r{/.*/.influxdb/hh}, "#{testpath}/influxdb/hh"
       s.gsub! %r{/.*/.influxdb/wal}, "#{testpath}/influxdb/wal"
+    end
+    if File.readlines(testpath/"config.toml").grep(%r{.influxdb/hh}).any?
+      inreplace testpath/"config.toml", %r{/.*/.influxdb/hh}, "#{testpath}/influxdb/hh"
     end
 
     pid = fork do

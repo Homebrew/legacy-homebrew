@@ -8,16 +8,15 @@ class OpenSceneGraph < Formula
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
 
   bottle do
-    sha256 "d75dbe609dc34b520dd70a8a04548252e3cb68e9faa28221420ceb7e5e56f2cf" => :mavericks
+    revision 1
+    sha256 "d34411461ff10b207645ac58981b71476b0e7da7d4461ea636fe2d530be5872a" => :el_capitan
+    sha256 "d85daf3e7ffa72f7fbfa2c3c9d0423689cce7f2864545775ded0899616f07c86" => :yosemite
+    sha256 "64d9990922aeff846ae9263e4f4457c6173d4b3be998150206c113490506e4ff" => :mavericks
   end
 
   option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
-
-  # Currently does not build on 10.10+, possibly due to Xcode 7 issue
-  # https://github.com/Homebrew/homebrew/pull/46776
-  depends_on MaximumMacOSRequirement => :mavericks
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
@@ -55,6 +54,7 @@ class OpenSceneGraph < Formula
 
     args = std_cmake_args
     args << "-DBUILD_DOCUMENTATION=" + ((build.with? "docs") ? "ON" : "OFF")
+    args << "-DCMAKE_CXX_FLAGS=-Wno-error=narrowing" # or: -Wno-c++11-narrowing
 
     if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.arch_64_bit}"

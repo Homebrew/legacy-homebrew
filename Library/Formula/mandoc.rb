@@ -4,13 +4,13 @@ class Mandoc < Formula
   url "http://mdocml.bsd.lv/snapshots/mdocml-1.13.3.tar.gz"
   sha256 "23ccab4800d50bf4c327979af5d4aa1a6a2dc490789cb67c4c3ac1bd40b8cad8"
 
+  head "anoncvs@mdocml.bsd.lv:/cvs", :module => "mdocml", :using => :cvs
+
   bottle do
     sha256 "15a8ba3a50c95ba6c5b02fd77991fd0f5e9cd8fccfed9c96b9f6afb171cbffba" => :yosemite
     sha256 "66bf930eb1fbbe1be9cfab3f5a4d2582de2f9cd550d5e98894513d75f62e4ef2" => :mavericks
     sha256 "79987dc1387313f384f8943306a41b37ee2b35ca90d06456a956b79fbaf61673" => :mountain_lion
   end
-
-  head "anoncvs@mdocml.bsd.lv:/cvs", :module => "mdocml", :using => :cvs
 
   option "without-sqlite", "Only install the mandoc/demandoc utilities."
   option "without-cgi", "Don't build man.cgi (and extra CSS files)."

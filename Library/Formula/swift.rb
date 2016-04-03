@@ -1,32 +1,31 @@
 class Swift < Formula
   desc "High-performance system programming language"
   homepage "https://github.com/apple/swift"
-  url "https://github.com/apple/swift/archive/swift-2.2-SNAPSHOT-2015-12-31-a.tar.gz"
-  version "2.2-SNAPSHOT-2015-12-31-a"
-  sha256 "d899e995c9cfa8987e470f0ad799f311ba9d8ae54ca889c4a22e60ac44bea26a"
 
   stable do
-    swift_tag = "swift-#{version}"
+    url "https://github.com/apple/swift/archive/swift-2.2-RELEASE.tar.gz"
+    sha256 "6dfb9de14201b9804974b1f221573cfb3e24fd657ec3bf132bf3c75de02565f5"
 
+    swift_tag = "swift-#{version}-RELEASE"
     resource "cmark" do
-      url "https://github.com/apple/swift-cmark/archive/0.22.0.tar.gz"
-      sha256 "7fa11223b9a29a411fbc440aba2a756ccc8b6228d8c2b367e8f568968e3eb569"
+      url "https://github.com/apple/swift-cmark/archive/#{swift_tag}.tar.gz"
+      sha256 "09c8da18c37f32cd0eb82b252a172481f5403c1bc6ab5740f92e87f8d1e79991"
     end
 
     resource "clang" do
       url "https://github.com/apple/swift-clang/archive/#{swift_tag}.tar.gz"
-      sha256 "9660637e380472e3c30244d43f0d56499483a10dd960a8ae5323a0ba374152a2"
+      sha256 "ba9220e61971a55d13f501dc30f452a5c272e4d897b444a5220f2e23dbbfc2f8"
     end
 
     resource "llvm" do
       url "https://github.com/apple/swift-llvm/archive/#{swift_tag}.tar.gz"
-      sha256 "4730fb75898110ed892d4cc35f2f58b457879c51283b19cccf797c443b3bc05e"
+      sha256 "b975b816773aa9d888a9139f51acd1b57fd58959bb391f8f65645a2f9b6d4cc4"
     end
   end
 
   bottle do
-    sha256 "d68a3462b09fd3746605fc8877b13f12d8772b143b0da9e8759d5e61a6f5699e" => :el_capitan
-    sha256 "48c36f01a912a6f466449a44d7e5bbad90a6a618379b13e4ea5a0d2fcae980cd" => :yosemite
+    sha256 "c0b8bed3990381cda9d84142f1eac4ef4f378d20e88e59fb7c0878bce0e89bab" => :el_capitan
+    sha256 "ebb1b44f3fb466deec1e7b5b198a4ec31388e47fc8e452124e2ae65d7c03884f" => :yosemite
   end
 
   head do
@@ -51,6 +50,13 @@ class Swift < Formula
   depends_on "ninja" => :build
   depends_on :xcode => ["7.0", :build]
 
+  # According to the official llvm readme, GCC 4.7+ is required
+  fails_with :gcc_4_0
+  fails_with :gcc
+  ("4.3".."4.6").each do |n|
+    fails_with :gcc => n
+  end
+
   def install
     workspace = buildpath.parent
     build = workspace/"build"
@@ -74,7 +80,14 @@ class Swift < Formula
         "--build-jobs=#{ENV.make_jobs}"
     end
     bin.install "#{build}/swift-macosx-x86_64/bin/swift",
-                "#{build}/swift-macosx-x86_64/bin/swiftc"
+                "#{build}/swift-macosx-x86_64/bin/swift-autolink-extract",
+                "#{build}/swift-macosx-x86_64/bin/swift-compress",
+                "#{build}/swift-macosx-x86_64/bin/swift-demangle",
+                "#{build}/swift-macosx-x86_64/bin/swift-ide-test",
+                "#{build}/swift-macosx-x86_64/bin/swift-llvm-opt",
+                "#{build}/swift-macosx-x86_64/bin/swiftc",
+                "#{build}/swift-macosx-x86_64/bin/sil-extract",
+                "#{build}/swift-macosx-x86_64/bin/sil-opt"
     (lib/"swift").install "#{build}/swift-macosx-x86_64/lib/swift/macosx/",
                           "#{build}/swift-macosx-x86_64/lib/swift/shims/"
   end

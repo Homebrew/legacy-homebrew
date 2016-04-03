@@ -1,16 +1,15 @@
 class Abcmidi < Formula
   desc "Converts abc music notation files to MIDI files"
   homepage "http://www.ifdo.ca/~seymour/runabc/top.html"
-  url "http://ifdo.ca/~seymour/runabc/abcMIDI-2015-08-06.zip"
-  version "2015-08-06"
-  sha256 "6ada64028344b5d778714bca02e41ed98a97c656aa45ea0e4a21de926502304e"
+  url "http://www.ifdo.ca/~seymour/runabc/abcMIDI-2016.03.03.zip"
+  version "2016-03-03"
+  sha256 "a9070dbb49758474805252d1a3e837aef8dc1266f6415f8eccc7df118af3dc1e"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "aa5e2f014d6b0cfccc6170c01db070dde3e55b8c620792d64f94da49d59d32d4" => :el_capitan
-    sha256 "e427b95a6b3a7d1ee12b5cd2d30bdd87f41bc77a8834fc9f15bfe4d77f22e1db" => :yosemite
-    sha256 "211c580f9941f3e3c6189c57ebb902e33bcfc54d24292de4e08f7a146d2c85e1" => :mavericks
-    sha256 "09c43c49c3a7dae429429acc2a31b0942ba540636fa598a648576e007cde988f" => :mountain_lion
+    sha256 "f94a95a09103ae6db8b8b58abbed55dfbd6b2c66ca63aa3128915dacf16cf2a4" => :el_capitan
+    sha256 "8c6720778cf90577c598fe35eb76a9afa05f522335c39600435bbc26d59ff7df" => :yosemite
+    sha256 "adb9d06a2dea9d285dc73ccbc7146e9badb026a5900f325fdc760cacd02f7857" => :mavericks
   end
 
   def install
@@ -22,9 +21,6 @@ class Abcmidi < Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    # The Makefile is broken when using --prefix (value is added to path twice).
-    # abcmidi author is notified (2012-06-20). In the meantime, here's a fix.
-    inreplace "Makefile", "$(DESTDIR)${prefix}", "$(DESTDIR)"
     system "make", "install"
   end
 

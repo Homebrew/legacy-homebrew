@@ -37,8 +37,6 @@ module Homebrew
       end
     end
 
-    migrate_taps :force => true unless ARGV.dry_run?
-
     if ObserverPathnameExtension.total.zero?
       puts "Nothing pruned" if ARGV.verbose?
     else

@@ -20,9 +20,9 @@ class Libmpdclient < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "doxygen" => :build
-
   option :universal
+
+  depends_on "doxygen" => :build
 
   def install
     inreplace "autogen.sh", "libtoolize", "glibtoolize"

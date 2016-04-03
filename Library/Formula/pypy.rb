@@ -1,15 +1,14 @@
 class Pypy < Formula
-  desc "Implementation of Python 2 in Python"
+  desc "Highly performant implementation of Python 2 in Python"
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-4.0.1-src.tar.bz2"
-  sha256 "29f5aa6ba17b34fd980e85172dfeb4086fdc373ad392b1feff2677d2d8aea23c"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-src.tar.bz2"
+  sha256 "1573c9284d3ec236c8e6ef3b954753932dff29462c54b5885b761d1ee68b6e05"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "9858ef67776f49023fcc9c9d4dc1d0f9b9fb7aac44b3dc75f068595c81bc1ab2" => :el_capitan
-    sha256 "aa61ea9ffbfd0687050aca6f6e077a73827b07beee93b61a895eb0733201dea6" => :yosemite
-    sha256 "e3e878f72e437a8c6046d8ae45e0c8936405ceebbf143282e901f8beb2a7ee06" => :mavericks
+    sha256 "6cba73759073f9e94969eef79e220ef41b7a94001b6d73f7aff4b3ce0b231098" => :el_capitan
+    sha256 "cf6103bb1fb5f2c2302d08e103b2f2182e2642a22366fcdc026922be7280ef88" => :yosemite
+    sha256 "199e09036f4598cfbc639ffe7fac9a9891b2d05af0422baa165a7a71f49c8a58" => :mavericks
   end
 
   option "without-bootstrap", "Translate Pypy with system Python instead of " \
@@ -29,13 +28,13 @@ class Pypy < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-19.4.tar.gz"
-    sha256 "214bf29933f47cf25e6faa569f710731728a07a19cae91ea64f826051f68a8cf"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-20.2.2.tar.gz"
+    sha256 "24fcfc15364a9fe09a220f37d2dcedc849795e3de3e4b393ee988e66a9cbd85a"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-8.0.2.tar.gz"
-    sha256 "46f4bd0d8dfd51125a554568d646fe4200a3c2c6c36b9f2d06d2212148439521"
+    url "https://pypi.python.org/packages/source/p/pip/pip-8.1.0.tar.gz"
+    sha256 "d8faa75dd7d0737b16d50cd0a56dc91a631c79ecfd8d38b80f6ee929ec82043e"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391

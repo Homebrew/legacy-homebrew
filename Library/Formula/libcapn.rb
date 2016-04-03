@@ -1,15 +1,33 @@
 class Libcapn < Formula
   desc "C library to send push notifications to Apple devices"
   homepage "http://libcapn.org/"
-  url "http://libcapn.org/download/libcapn-1.0.0-src.tar.gz"
-  sha256 "2c80b3adedf8e2250c6e4d3047998903b8efc7af018032ed04b712158ea02983"
   head "https://github.com/adobkin/libcapn.git"
+
+  stable do
+    url "https://github.com/adobkin/libcapn/archive/1.1.0.tar.gz"
+    sha256 "fbe93f8fad4247b898d518ea0f38484eb062cd830a41bb26a6ac4b95cbf076e4"
+
+    resource "jansson" do
+      url "https://github.com/akheron/jansson/archive/v2.5.tar.gz"
+      sha256 "f328f25fc74a14b6a636245ad28d4cd3affd792f7ffaab4c021a99b3694e4287"
+    end
+  end
 
   bottle do
     cellar :any
-    sha256 "09cbbfc8fb5037b3ec0c5ef70e79dbbf47370fb382284857ea333c3459179f9f" => :yosemite
-    sha256 "1113b788db1d53843e20693d668f5847957c04c83eefb14da41bf57778e61f48" => :mavericks
-    sha256 "eb99972edf809a3d2ea12c56bd7461574f4a108565e9ad75e1341cbf846f2b80" => :mountain_lion
+    sha256 "228057a01ee8f67b8cb4122798d12e19b596c7cb1c5c7bc216ade96a0a632ef4" => :el_capitan
+    sha256 "35071a03d946979792e7ac7792e2bf6e94073c242ccf58066fefd0d49c7d72d4" => :yosemite
+    sha256 "70d7e47ff2ad168c6f26e61d86805b4e0d1c37015c1e3528d589195a66e9d185" => :mavericks
+  end
+
+  devel do
+    url "https://github.com/adobkin/libcapn/archive/2.0.0-beta.tar.gz"
+    sha256 "551dccfa66b616a390e3c9fc8ac35869a076c979246728e9343f9eeb50d66551"
+    version "2.0.0-beta"
+
+    resource "jansson" do
+      url "https://github.com/akheron/jansson.git", :revision => "e44b2231b50aea5de78b7ea2debec0d5327cd711"
+    end
   end
 
   depends_on "cmake" => :build
@@ -17,30 +35,43 @@ class Libcapn < Formula
   depends_on "openssl"
 
   def install
+    if build.stable?
+      (buildpath/"jansson").install resource("jansson")
+    elsif build.devel?
+      (buildpath/"src/third_party/jansson").install resource("jansson")
+    end
     cmake_args = std_cmake_args
     cmake_args << "-DOPENSSL_ROOT_DIR=#{Formula["openssl"].opt_prefix}"
     system "cmake", ".", *cmake_args
     system "make", "install"
+    example = if build.stable?
+      "docs/send_push.c"
+    elsif build.head? || build.devel?
+      "examples/send_push_message.c"
+    end
+    (doc/"examples").install example
   end
 
   test do
-    (testpath/"test_install.c").write <<-TEST_SCRIPT.undent
-    #include <apn.h>
-    int main() {
-        apn_ctx_ref ctx = NULL;
-        apn_error_ref error;
-        if (apn_init(&ctx, "apns-dev-cert.pem", "apns-dev-key.pem", NULL, &error) == APN_ERROR) {
-            apn_error_free(&error);
-            return 1;
-        }
-        apn_close(ctx);
-        apn_free(&ctx);
-        return 0;
-    }
-    TEST_SCRIPT
-
-    flags = ["-I#{include}/capn", "-L#{lib}/capn", "-lcapn"] + ENV.cflags.to_s.split
-    system ENV.cc, "-o", "test_install", "test_install.c", *flags
-    system "./test_install"
+    spec = Tab.for_name("libcapn").source["spec"]
+    example = if spec == "stable"
+      "send_push.c"
+    elsif spec == "head" || spec == "devel"
+      "send_push_message.c"
+    end
+    cp "#{doc}/examples/#{example}", testpath
+    flags = [
+      "-I#{Formula["openssl"].opt_prefix}/include",
+      "-I#{include}/capn",
+      "-L#{lib}/capn",
+      "-lcapn",
+      ENV.cflags.to_s.split,
+    ].flatten
+    system ENV.cc, "-o", "example", example, *flags
+    if spec == "stable"
+      assert_match /unable to use specified SSL certificate \(12\)/, shell_output("./example", 1)
+    elsif spec == "head" || spec == "devel"
+      assert_match /unable to use specified PKCS12 file \(errno: 9012\)/, shell_output("./example", 255)
+    end
   end
 end

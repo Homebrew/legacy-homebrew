@@ -6,10 +6,16 @@ class Fmdiff < Formula
   head "https://github.com/brunodefraine/fmscripts.git"
 
   bottle do
-    sha256 "345e00779b91f98c2e675344572b8b93345f049ece5f8df136a7fd561d7dd1e9" => :el_capitan
-    sha256 "157f975ba1f93d323bf215bb0e18e3d474071d1a5060211fea4176c4a872ccb7" => :yosemite
-    sha256 "af27122257b358518d38a86d8bdc1242b17e7f1fe6e5e08dc7b7a8a3b1151148" => :mavericks
+    revision 1
+    sha256 "ba9108d500e3cf771c1f1b0430d7fe92c3e5743265dc001c1dbd70d260fbbd7a" => :el_capitan
+    sha256 "11aa1ef52e2f54cc99f5ad2587d204bc83e9f08aa5eb2823f2831376e8b53846" => :yosemite
+    sha256 "9905051e6b7fea4e23e0c9a1adedae94e6a52c0f471a955a532320849fd8ae18" => :mavericks
   end
+
+  # Needs FileMerge.app, which has been part of Xcode since Xcode 4 (OS X 10.7)
+  # Prior to that it was included in the Developer Tools package.
+  # "make" has logic for checking both possibilities.
+  depends_on :xcode if MacOS.version >= :lion
 
   def install
     system "make"

@@ -5,16 +5,15 @@ class GitAnnex < Formula
 
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-6.20160126/git-annex-6.20160126.tar.gz"
-  sha256 "dc59f670a3d0bdb90db8fc6cadba8003708219bb0dc3d56867a9246d825c0d11"
+  url "https://hackage.haskell.org/package/git-annex-6.20160318/git-annex-6.20160318.tar.gz"
+  sha256 "5c0067d161a3cd6b93822f85eb82e5cb4895d913b2593bc4fe3b74d3ed426e0b"
 
   head "git://git-annex.branchable.com/"
 
   bottle do
-    revision 2
-    sha256 "1a6e76b4cbaa7c2eac95a79fc9f3a948dde4381cd1b76b1a9826e3329d29104b" => :el_capitan
-    sha256 "9659d18566c349478235e04c5dcf2606a8630617bc777387889fe4f9f260c08a" => :yosemite
-    sha256 "35becaff87bf133d5f9cd154287cb0e71086ee77a287f3182b85f9ad46cd6da0" => :mavericks
+    sha256 "dc6f7f776503ac93fe17e5ed464d4b965608117616bb9019d88949dfea938645" => :el_capitan
+    sha256 "e50e95ee15709b5361bc902e2ef94175e522da084b29e2fa29cf4dc9b7ada095" => :yosemite
+    sha256 "e138769b1201e9a0a6328d64ca9c01353ec94ac5ac5fb61d0a816fe31e79f36f" => :mavericks
   end
 
   option "with-git-union-merge", "Build the git-union-merge tool"
@@ -24,11 +23,12 @@ class GitAnnex < Formula
   depends_on "pkg-config" => :build
   depends_on "gsasl"
   depends_on "libidn"
+  depends_on "libmagic"
   depends_on "gnutls"
   depends_on "quvi"
 
   def install
-    install_cabal_package :using => ["alex", "happy", "c2hs"], :flags => ["Webapp"] do
+    install_cabal_package :using => ["alex", "happy", "c2hs"] do
       # this can be made the default behavior again once git-union-merge builds properly when bottling
       if build.with? "git-union-merge"
         system "make", "git-union-merge", "PREFIX=#{prefix}"

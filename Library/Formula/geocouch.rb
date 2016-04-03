@@ -2,8 +2,8 @@ class Geocouch < Formula
   desc "Spatial index for CouchDB"
   homepage "https://github.com/couchbase/geocouch"
   url "https://github.com/couchbase/geocouch/archive/couchdb1.3.x.tar.gz"
-  sha256 "0f678b5b79f5385c5c11349b662bb897047c72e8056dfb19f0f1e484d9348953"
   version "1.3.0"
+  sha256 "0f678b5b79f5385c5c11349b662bb897047c72e8056dfb19f0f1e484d9348953"
 
   head "https://github.com/couchbase/geocouch.git"
 
@@ -37,29 +37,29 @@ class Geocouch < Formula
     system "make"
 
     #  Install geocouch build files.
-    (share/"geocouch").mkpath
-    rm_rf share/"geocouch/ebin/"
-    (share/"geocouch").install Dir["ebin"]
+    pkgshare.mkpath
+    rm_rf pkgshare/"ebin/"
+    pkgshare.install "ebin"
 
     #  Install geocouch.plist for launchctl support.
-    (share/"geocouch").install Dir[couchdb_dir/"etc/launchd/org.apache.couchdb.plist.tpl.in"]
-    mv share/"geocouch/org.apache.couchdb.plist.tpl.in", share/"geocouch/geocouch.plist"
-    inreplace (share/"geocouch/geocouch.plist"), "<string>org.apache.couchdb</string>", \
+    pkgshare.install couchdb_dir/"etc/launchd/org.apache.couchdb.plist.tpl.in"
+    mv pkgshare/"org.apache.couchdb.plist.tpl.in", pkgshare/"geocouch.plist"
+    inreplace (pkgshare/"geocouch.plist"), "<string>org.apache.couchdb</string>", \
       "<string>geocouch</string>"
-    inreplace (share/"geocouch/geocouch.plist"), "<key>HOME</key>", <<-EOS.lstrip.chop
+    inreplace (pkgshare/"geocouch.plist"), "<key>HOME</key>", <<-EOS.lstrip.chop
       <key>ERL_FLAGS</key>
       <string>-pa #{geocouch_share}/ebin</string>
       <key>HOME</key>
     EOS
-    inreplace (share/"geocouch/geocouch.plist"), "%bindir%/%couchdb_command_name%", \
+    inreplace (pkgshare/"geocouch.plist"), "%bindir%/%couchdb_command_name%", \
       HOMEBREW_PREFIX/"bin/couchdb"
     #  Turn off RunAtLoad and KeepAlive (to simplify experience for first-timers).
-    inreplace (share/"geocouch/geocouch.plist"), "<true/>", \
+    inreplace (pkgshare/"geocouch.plist"), "<true/>", \
       "<false/>"
-    (share/"geocouch/geocouch.plist").chmod 0644
+    (pkgshare/"geocouch.plist").chmod 0644
 
     #  Install geocouch.ini into couchdb.
-    (etc/"couchdb/default.d").install Dir["etc/couchdb/default.d/geocouch.ini"]
+    (etc/"couchdb/default.d").install "etc/couchdb/default.d/geocouch.ini"
 
     #  Install tests into couchdb.
     test_files = Dir["share/www/script/test/*.js"]
@@ -81,9 +81,9 @@ class Geocouch < Formula
       { |geotest| system "cd #{couchdb_share/"www/script/test"};  ln -s geocouch/#{File.basename(geotest)} ." }
     #  Complete the install by referencing the geocouch tests in couch_tests.js
     #  (which runs the tests).
-    test_lines = test_files.map { |testline| testline.gsub(/^.*\/(.*)$/, 'loadTest("\1");' + "\n") }
+    test_lines = test_files.map { |testline| testline.gsub(%r{^.*\/(.*)$}, 'loadTest("\1");' + "\n") }
     system "(echo;  echo '//REPLACE_ME') >> '#{couchdb_share}/www/script/couch_tests.js'"
-    inreplace (couchdb_share/"www/script/couch_tests.js"), /^\/\/REPLACE_ME$/,  \
+    inreplace (couchdb_share/"www/script/couch_tests.js"), %r{^\/\/REPLACE_ME$},  \
       "//  GeoCouch Tests...\n#{test_lines}//  ...GeoCouch Tests\n"
   end
 

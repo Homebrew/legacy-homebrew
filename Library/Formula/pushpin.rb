@@ -60,7 +60,7 @@ class Pushpin < Formula
 
     system "./configure", "--prefix=#{prefix}", "--configdir=#{etc}", "--rundir=#{var}/run", "--logdir=#{var}/log", "--extraconf=QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
     system "make"
-    system "make install"
+    system "make", "install"
 
     pyenv = { :PYTHONPATH => ENV["PYTHONPATH"] }
     %w[pushpin].each do |f|

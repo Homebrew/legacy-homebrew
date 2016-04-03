@@ -7,6 +7,8 @@ class Ghi < Formula
 
   bottle :unneeded
 
+  depends_on "pygments.rb" => :ruby
+
   def install
     bin.install "ghi"
     man1.install "man/ghi.1"

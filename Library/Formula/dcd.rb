@@ -15,9 +15,9 @@ class Dcd < Formula
 
   devel do
     url "https://github.com/Hackerpilot/DCD.git",
-      :tag => "v0.9.0-alpha2",
-      :revision => "ce5ac2d978c10fe71df31325c45e0ad772ff7bee"
-    version "0.9.0-alpha2"
+      :tag => "v0.9.0-alpha3",
+      :revision => "396c3c3cf1d49217d5536754f6e743a53d06b4d3"
+    version "0.9.0-alpha3"
   end
 
   depends_on "dmd" => :build

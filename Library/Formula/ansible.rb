@@ -7,10 +7,10 @@ class Ansible < Formula
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    revision 1
-    sha256 "be446d21c04beaf79f24b9ee2b2cc8649d07f6997147e54517df6cda43afbaec" => :el_capitan
-    sha256 "e9dfd9b936aa1fde89b88de26dedeffd99870a4e194e4582319136751a39110d" => :yosemite
-    sha256 "a89fd9ab292556da3efaf609562350aec2408c700d1c08f80543ac63b0550811" => :mavericks
+    revision 2
+    sha256 "457a6bcbe29bde7543544dbd44d702e9d6ee51135dc59687cd923f8737a3d31d" => :el_capitan
+    sha256 "339d9bc27942b45d7322f6960422718523a92dbd167869bb3f5cb80d54075369" => :yosemite
+    sha256 "d0684bc344e8bfee3ecdc79316c24b57cf06c1417cc84a79643c10d81ea74d96" => :mavericks
   end
 
   devel do
@@ -223,6 +223,11 @@ class Ansible < Formula
   resource "debtcollector" do
     url "https://pypi.python.org/packages/source/d/debtcollector/debtcollector-1.2.0.tar.gz"
     sha256 "6467a3a074f0f042dc610f994c4f67a26d10f4e2e6b4d12adfb8380dc7a5d169"
+  end
+
+  resource "dnspython" do
+    url "https://pypi.python.org/packages/source/d/dnspython/dnspython-1.12.0.zip"
+    sha256 "63bd1fae61809eedb91f84b2185816fac1270ae51494fbdd36ea25f904a8502f"
   end
 
   resource "funcsigs" do

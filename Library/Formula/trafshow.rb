@@ -1,14 +1,17 @@
 class Trafshow < Formula
   desc "Continuous network traffic display"
-  homepage "http://soft.risp.ru/trafshow/index_en.shtml"
+  # Upstream homepage down since late 2014, but only displays a manpage.
+  # homepage "http://soft.risp.ru/trafshow/index_en.shtml"
+  homepage "https://web.archive.org/web/20130707021442/http://soft.risp.ru/trafshow/index_en.shtml"
   url "http://distcache.freebsd.org/ports-distfiles/trafshow-5.2.3.tgz"
   sha256 "ea7e22674a66afcc7174779d0f803c1f25b42271973b4f75fab293b8d7db11fc"
 
   bottle do
-    cellar :any
-    sha256 "b09387706ec1b936ded262d795d2371a9e5f9682c06ee4d32e7d434a2291dea9" => :mavericks
-    sha256 "9df6fd0a83650199c086577968ad5d89d66ebf5d7c947064c63f061bf28cbe10" => :mountain_lion
-    sha256 "3783dc9d296d39390c792a347a72b9bebac5ab73a1e0b242af406d5505b0dc4f" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "f2f8e1186255da073184663a41ef7204fd940ea0a536968a1adf4023dfd795b2" => :el_capitan
+    sha256 "625b0432b1ac6577ad821ea28203bc2a67b621d58ba5758e96d112114e88e700" => :yosemite
+    sha256 "11db46856f6d5fc2ebf80d3934b0c0d00d6ab61dd0e9663bc997d5d43a105747" => :mavericks
   end
 
   depends_on "libtool" => :build
@@ -27,14 +30,13 @@ class Trafshow < Formula
   end
 
   def install
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
+    cp Dir["#{Formula["libtool"].opt_pkgshare}/*/config.{guess,sub}"], buildpath
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-slang"
     system "make"
-
     bin.install "trafshow"
     man1.install "trafshow.1"
     etc.install ".trafshow" => "trafshow.default"

@@ -529,6 +529,9 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     Display where Homebrew's `.git` directory is located. For standard installs,
     the `prefix` and `repository` are the same directory.
 
+  * `--repository` <user>`/`<repo>:
+    Display where tap <user>`/`<repo>'s directory is located.
+
   * `--version`:
     Print the version number of brew to standard error and exit.
 
@@ -557,7 +560,7 @@ can take several different forms:
 
   * An arbitrary URL:
     Homebrew can install formulae via URL, e.g.
-    `https://raw.github.com/Homebrew/homebrew/master/Library/Formula/git.rb`.
+    `https://raw.github.com/Homebrew/homebrew-core/master/Formula/git.rb`.
     The formula file will be cached for later use.
 
 ## ENVIRONMENT
@@ -723,4 +726,8 @@ Former maintainers with significant contributions include Jack Nagel, Adam Vande
 
 ## BUGS
 
-See our issues on GitHub: <https://github.com/Homebrew/homebrew/issues>
+See our issues on GitHub:
+
+ * Homebrew <https://github.com/Homebrew/homebrew/issues>
+
+ * Homebrew/homebrew-core <https://github.com/Homebrew/homebrew-core/issues>

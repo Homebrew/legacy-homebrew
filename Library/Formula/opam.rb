@@ -3,8 +3,8 @@ class Opam < Formula
   homepage "https://opam.ocaml.org"
   url "https://github.com/ocaml/opam/archive/1.2.2.tar.gz"
   sha256 "3e4a05df6ff8deecba019d885ebe902eb933acb6e2fc7784ffee1ee14871e36a"
-  head "https://github.com/ocaml/opam.git"
   revision 1
+  head "https://github.com/ocaml/opam.git"
 
   bottle do
     cellar :any_skip_relocation
@@ -96,10 +96,6 @@ class Opam < Formula
     zsh_completion.install "shell/opam_completion_zsh.sh" => "_opam"
   end
 
-  test do
-    system "#{bin}/opam", "--help"
-  end
-
   def caveats; <<-EOS.undent
     OPAM uses ~/.opam by default for its package database, so you need to
     initialize it first by running (as a normal user):
@@ -117,5 +113,9 @@ class Opam < Formula
     Documentation and tutorials are available at https://opam.ocaml.org, or
     via "man opam" and "opam --help".
     EOS
+  end
+
+  test do
+    system "#{bin}/opam", "--help"
   end
 end

@@ -3,11 +3,12 @@ class Groonga < Formula
   homepage "http://groonga.org/"
   url "http://packages.groonga.org/source/groonga/groonga-6.0.0.tar.gz"
   sha256 "a14c93240dcf749eb583087988703b72dada4a06ab3f6f2e985a3fe3828b4f6c"
+  revision 1
 
   bottle do
-    sha256 "9ac07ea19fc045b6415e094a9b7296f4cd61288a938f07a630f5f6336b70a4fc" => :el_capitan
-    sha256 "c6fc0d63c17ada91e9c7ac530dd5c2d68a8fc4e8173b1a2db22d12876fa958e3" => :yosemite
-    sha256 "54aa53e214ef43861b5990f78d6ee127359a2d12c8c9ea8c60fd57e791c8820a" => :mavericks
+    sha256 "6d689d96def16b1519a5cf56cda44c3fa1faac896eb8e70c3995bf882bfd5c9b" => :el_capitan
+    sha256 "5d45d7d58c454dad31b7c218bbe1733dba140dc78af9bf633621658bc3872abb" => :yosemite
+    sha256 "9b914098f34d412e38148e127d2f1555f4b7bbf836f67ad4a550b1132d7edb07" => :mavericks
   end
 
   head do

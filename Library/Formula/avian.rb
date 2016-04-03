@@ -1,6 +1,6 @@
 class Avian < Formula
   desc "Lightweight VM and class library for a subset of Java features"
-  homepage "http://oss.readytalk.com/avian/"
+  homepage "https://readytalk.github.io/avian/"
   url "https://github.com/ReadyTalk/avian/archive/v1.2.0.tar.gz"
   sha256 "e3639282962239ce09e4f79f327c679506d165810f08c92ce23e53e86e1d621c"
   head "https://github.com/ReadyTalk/avian.git"

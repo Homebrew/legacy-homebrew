@@ -1,6 +1,4 @@
 require "extend/string"
-require "tap_migrations"
-require "formula_renames"
 
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
@@ -32,7 +30,7 @@ class Tap
     user = "Homebrew" if user == "homebrew"
     repo = repo.strip_prefix "homebrew-"
 
-    if user == "Homebrew" && repo == "homebrew"
+    if user == "Homebrew" && (repo == "homebrew" || repo == "core")
       return CoreTap.instance
     end
 
@@ -71,6 +69,7 @@ class Tap
     @remote = nil
     @formula_dir = nil
     @formula_files = nil
+    @alias_dir = nil
     @alias_files = nil
     @aliases = nil
     @alias_table = nil
@@ -181,7 +180,7 @@ class Tap
     Utils.ensure_git_installed!
     ohai "Tapping #{name}" unless quiet
     remote = options[:clone_target] || "https://github.com/#{user}/homebrew-#{repo}"
-    args = %W[clone #{remote} #{path}]
+    args = %W[clone #{remote} #{path} --config core.autocrlf=false]
     args << "--depth=1" unless options.fetch(:full_clone, false)
     args << "-q" if quiet
 
@@ -298,7 +297,7 @@ class Tap
   # path to the directory of all alias files for this {Tap}.
   # @private
   def alias_dir
-    path/"Aliases"
+    @alias_dir ||= path/"Aliases"
   end
 
   # an array of all alias files of this {Tap}.
@@ -446,21 +445,33 @@ class Tap
   end
 end
 
-# A specialized {Tap} class to mimic the core formula file system, which shares many
-# similarities with normal {Tap}.
-# TODO Separate core formulae with core codes. See discussion below for future plan:
-#      https://github.com/Homebrew/homebrew/pull/46735#discussion_r46820565
+# A specialized {Tap} class for the core formulae
 class CoreTap < Tap
+  if OS.mac?
+    OFFICIAL_REMOTE = "https://github.com/Homebrew/homebrew-core"
+  else
+    OFFICIAL_REMOTE = "https://github.com/Linuxbrew/homebrew-core"
+  end
+
   # @private
   def initialize
-    @user = "Homebrew"
-    @repo = "homebrew"
-    @name = "Homebrew/homebrew"
-    @path = HOMEBREW_REPOSITORY
+    super "Homebrew", "core"
   end
 
   def self.instance
     @instance ||= CoreTap.new
+  end
+
+  def self.ensure_installed!(options = {})
+    return if instance.installed?
+    args = ["tap", instance.name]
+    args << "-q" if options.fetch(:quiet, true)
+    safe_system HOMEBREW_BREW_FILE, *args
+  end
+
+  def install(options = {})
+    options = { :clone_target => OFFICIAL_REMOTE }.merge(options)
+    super options
   end
 
   # @private
@@ -484,13 +495,8 @@ class CoreTap < Tap
   end
 
   # @private
-  def command_files
-    []
-  end
-
-  # @private
   def custom_remote?
-    remote != "https://github.com/#{user}/#{repo}.git"
+    remote != OFFICIAL_REMOTE
   end
 
   # @private
@@ -500,22 +506,34 @@ class CoreTap < Tap
 
   # @private
   def formula_dir
-    HOMEBREW_LIBRARY/"Formula"
+    @formula_dir ||= begin
+      self.class.ensure_installed!
+      super
+    end
   end
 
   # @private
   def alias_dir
-    HOMEBREW_LIBRARY/"Aliases"
+    @alias_dir ||= begin
+      self.class.ensure_installed!
+      super
+    end
   end
 
   # @private
   def formula_renames
-    FORMULA_RENAMES
+    @formula_renames ||= begin
+      self.class.ensure_installed!
+      super
+    end
   end
 
   # @private
   def tap_migrations
-    TAP_MIGRATIONS
+    @tap_migrations ||= begin
+      self.class.ensure_installed!
+      super
+    end
   end
 
   # @private

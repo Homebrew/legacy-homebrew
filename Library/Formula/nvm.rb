@@ -24,8 +24,8 @@ class Nvm < Formula
     Add the following to #{shell_profile} or your desired shell
     configuration file:
 
-      export NVM_DIR=~/.nvm
-      . $(brew --prefix nvm)/nvm.sh
+      export NVM_DIR="$HOME/.nvm"
+      . "$(brew --prefix nvm)/nvm.sh"
 
     You can set $NVM_DIR to any location, but leaving it unchanged from
     #{prefix} will destroy any nvm-installed Node installations

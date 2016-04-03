@@ -1,3 +1,7 @@
+# This is a hack to force old Homebrew to perform core/formula separation migration.
+# On some old system, `brew update` will try to load `tap_migrations.rb` file.
+require "migrate_remote"
+
 TAP_MIGRATIONS = {
   "adobe-air-sdk" => "homebrew/binary",
   "afuse" => "homebrew/fuse",
@@ -6,6 +10,8 @@ TAP_MIGRATIONS = {
   "apple-gcc42" => "homebrew/dupes",
   "appswitch" => "homebrew/binary",
   "archivemount" => "homebrew/fuse",
+  "arpon" => "homebrew/boneyard",
+  "asm6" => "homebrew/boneyard",
   "atari++" => "homebrew/x11",
   "auctex" => "homebrew/tex",
   "authexec" => "homebrew/boneyard",
@@ -30,7 +36,6 @@ TAP_MIGRATIONS = {
   "clusterit" => "homebrew/x11",
   "cmucl" => "homebrew/binary",
   "comparepdf" => "homebrew/boneyard",
-  "connect" => "homebrew/boneyard",
   "coremod" => "homebrew/boneyard",
   "curlftpfs" => "homebrew/x11",
   "cwm" => "homebrew/x11",
@@ -59,6 +64,7 @@ TAP_MIGRATIONS = {
   "feh" => "homebrew/x11",
   "ffts" => "homebrew/boneyard",
   "figtoipe" => "homebrew/head-only",
+  "fleet-db" => "homebrew/boneyard",
   "fox" => "homebrew/x11",
   "freeglut" => "homebrew/x11",
   "freerdp" => "homebrew/x11",
@@ -123,6 +129,7 @@ TAP_MIGRATIONS = {
   "latex-mk" => "homebrew/tex",
   "libdlna" => "homebrew/boneyard",
   "libgtextutils" => "homebrew/science",
+  "libodbc++" => "homebrew/boneyard",
   "libqxt" => "homebrew/boneyard",
   "librets" => "homebrew/boneyard",
   "libspotify" => "homebrew/binary",
@@ -145,6 +152,7 @@ TAP_MIGRATIONS = {
   "mysqlreport" => "homebrew/boneyard",
   "net6" => "homebrew/boneyard",
   "newick-utils" => "homebrew/science",
+  "ngrok" => "homebrew/boneyard",
   "nlopt" => "homebrew/science",
   "ntfs-3g" => "homebrew/fuse",
   "octave" => "homebrew/science",
@@ -247,6 +255,7 @@ TAP_MIGRATIONS = {
   "xpdf" => "homebrew/x11",
   "xplot" => "homebrew/x11",
   "xspringies" => "homebrew/x11",
+  "xulrunner" => "homebrew/boneyard",
   "yarp" => "homebrew/x11",
   "ydict" => "homebrew/boneyard",
 }

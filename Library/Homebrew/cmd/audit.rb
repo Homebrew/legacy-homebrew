@@ -509,6 +509,8 @@ class FormulaAuditor
       return
     end
 
+    return if metadata.nil?
+
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
     if (metadata["forks_count"] < 20) && (metadata["subscribers_count"] < 20) &&
        (metadata["stargazers_count"] < 50)
@@ -902,8 +904,8 @@ class FormulaAuditor
 
     if formula.tap.tap_migrations.key?(formula.name)
       problem <<-EOS.undent
-       #{formula.name} seems to be listed in tap_migrations.rb!
-       Please remove #{formula.name} from present tap & tap_migrations.rb
+       #{formula.name} seems to be listed in tap_migrations.json!
+       Please remove #{formula.name} from present tap & tap_migrations.json
        before submitting it to Homebrew/homebrew.
       EOS
     end

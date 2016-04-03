@@ -5,8 +5,6 @@ class Libarchive < Formula
   mirror "https://github.com/libarchive/libarchive/archive/v3.1.2.tar.gz"
   sha256 "eb87eacd8fe49e8d90c8fdc189813023ccc319c5e752b01fb6ad0cc7b2c53d5e"
 
-  depends_on "xz" => :optional
-
   bottle do
     cellar :any
     revision 1
@@ -17,6 +15,8 @@ class Libarchive < Formula
   end
 
   keg_only :provided_by_osx
+
+  depends_on "xz" => :optional
 
   def install
     system "./configure", "--prefix=#{prefix}",

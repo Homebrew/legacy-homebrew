@@ -1,5 +1,3 @@
-require "extend/ENV"
-
 module Homebrew
   #
   # Usage:
@@ -41,8 +39,7 @@ module Homebrew
       safe_system "git", "reset", "--hard", start_sha1
 
       # update ENV["PATH"]
-      ENV.extend(Stdenv)
-      ENV.prepend_path "PATH", "#{curdir}/bin"
+      ENV["PATH"] = "#{curdir}/bin:/usr/local/bin:/usr/bin:/bin"
 
       # run brew update
       oh1 "Running brew update..."
