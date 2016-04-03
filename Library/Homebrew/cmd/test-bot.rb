@@ -639,8 +639,15 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "-ffdx" unless ENV["HOMEBREW_RUBY"] == "1.8.7"
-      pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/*.lock"
+      git "clean", "-ffdx"
+      HOMEBREW_REPOSITORY.cd do
+        safe_system "git", "reset", "--hard"
+        safe_system "git", "checkout", "-f", "master"
+        # This will uninstall all formulae, as long as
+        # HOMEBREW_REPOSITORY == HOMEBREW_PREFIX, which is true on the test bots
+        safe_system "git", "clean", "-ffdx", "--exclude=/Library/Taps/" unless ENV["HOMEBREW_RUBY"] == "1.8.7"
+      end
+      pr_locks = "#{@repository}/.git/refs/remotes/*/pr/*/*.lock"
       Dir.glob(pr_locks) { |lock| FileUtils.rm_rf lock }
     end
 
@@ -660,6 +667,10 @@ module Homebrew
         test "brew", "cleanup", "--prune=7"
         git "gc", "--auto"
         test "git", "clean", "-ffdx"
+        HOMEBREW_REPOSITORY.cd do
+          safe_system "git", "reset", "--hard"
+          safe_system "git", "clean", "-ffdx", "--exclude=/Library/Taps/"
+        end
         if ARGV.include? "--local"
           FileUtils.rm_rf ENV["HOMEBREW_HOME"]
           FileUtils.rm_rf ENV["HOMEBREW_LOGS"]

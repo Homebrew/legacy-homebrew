@@ -1,3 +1,7 @@
+# This is a hack to force old Homebrew to perform core/formula separation migration.
+# On some old system, `brew update` will try to load `tap_migrations.rb` file.
+require "migrate_remote"
+
 TAP_MIGRATIONS = {
   "adobe-air-sdk" => "homebrew/binary",
   "afuse" => "homebrew/fuse",

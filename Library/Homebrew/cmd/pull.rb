@@ -307,7 +307,7 @@ module Homebrew
 
       # Fall back to three-way merge if patch does not apply cleanly
       patch_args << "-3"
-      patch_args << "-p2" if ARGV.include?("--legacy")
+      patch_args << "-p2" if ARGV.include?("--legacy") && !base_url.include?("BrewTestBot/homebrew-core")
       patch_args << patchpath
 
       start_revision = `git rev-parse HEAD`.strip
