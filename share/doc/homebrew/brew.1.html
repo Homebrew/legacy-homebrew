@@ -214,14 +214,13 @@ be linked or which would be deleted by <code>brew link --overwrite</code>, but w
 actually link or delete any files.</p>
 
 <p>If <code>--force</code> is passed, Homebrew will allow keg-only formulae to be linked.</p></dd>
-<dt><code>linkapps</code> [<code>--local</code>] [<var>formulae</var>]</dt><dd><p>Find installed formulae that have compiled <code>.app</code>-style "application"
-packages for OS X, and symlink those apps into <code>/Applications</code>, allowing
-for easier access.</p>
+<dt><code>linkapps</code> [<code>--local</code>] [<var>formulae</var>]</dt><dd><p>Find installed formulae that provide <code>.app</code>-style OS X apps and symlink them
+into <code>/Applications</code>, allowing for easier access.</p>
 
-<p>If no <var>formulae</var> are provided, all of them will have their .apps symlinked.</p>
+<p>If no <var>formulae</var> are provided, all of them will have their apps symlinked.</p>
 
-<p>If provided, <code>--local</code> will move them into the user's <code>~/Applications</code>
-directory instead of the system directory. It may need to be created, first.</p></dd>
+<p>If provided, <code>--local</code> will symlink them into the user's <code>~/Applications</code>
+directory instead of the system directory.</p></dd>
 <dt><code>ls</code>, <code>list</code> [<code>--full-name</code>]</dt><dd><p>List all installed formulae. If <code>--full-name</code> is passed, print formulae with
 full-qualified names.</p></dd>
 <dt><code>ls</code>, <code>list</code> <code>--unbrewed</code></dt><dd><p>List all files in the Homebrew prefix not installed by Homebrew.</p></dd>
@@ -268,7 +267,9 @@ valid version is <code>v1</code>.</p></dd>
 <dt><code>pin</code> <var>formulae</var></dt><dd><p>Pin the specified <var>formulae</var>, preventing them from being upgraded when
 issuing the <code>brew upgrade</code> command. See also <code>unpin</code>.</p></dd>
 <dt><code>prune</code> [<code>--dry-run</code>]</dt><dd><p>Remove dead symlinks from the Homebrew prefix. This is generally not
-needed, but can be useful when doing DIY installations.</p>
+needed, but can be useful when doing DIY installations. Also remove broken
+app symlinks from <code>/Applications</code> and <code>~/Applications</code> that were previously
+created by <code>brew linkapps</code>.</p>
 
 <p>If <code>--dry-run</code> or <code>-n</code> is passed, show what would be removed, but do not
 actually remove anything.</p></dd>
@@ -336,9 +337,15 @@ for temporarily disabling a formula:
 
 <p>If <code>--dry-run</code> or <code>-n</code> is passed, Homebrew will list all files which would
 be unlinked, but will not actually unlink or delete any files.</p></dd>
-<dt><code>unlinkapps</code> [<code>--local</code>] [<var>formulae</var>]</dt><dd><p>Removes links created by <code>brew linkapps</code>.</p>
+<dt><code>unlinkapps</code> [<code>--local</code>] [<code>--dry-run</code>] [<var>formulae</var>]</dt><dd><p>Remove symlinks created by <code>brew linkapps</code> from <code>/Applications</code>.</p>
 
-<p>If no <var>formulae</var> are provided, all linked app will be removed.</p></dd>
+<p>If no <var>formulae</var> are provided, all linked apps will be removed.</p>
+
+<p>If provided, <code>--local</code> will remove symlinks from the user's <code>~/Applications</code>
+directory instead of the system directory.</p>
+
+<p>If <code>--dry-run</code> or <code>-n</code> is passed, Homebrew will list all symlinks which
+would be removed, but will not actually delete any files.</p></dd>
 <dt><code>unpack</code> [<code>--git</code>|<code>--patch</code>] [<code>--destdir=</code><var>path</var>] <var>formulae</var></dt><dd><p>Unpack the source files for <var>formulae</var> into subdirectories of the current
 working directory. If <code>--destdir=</code><var>path</var> is given, the subdirectories will
 be created in the directory named by <code>&lt;path></code> instead.</p>

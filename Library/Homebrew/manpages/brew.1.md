@@ -267,14 +267,13 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     If `--force` is passed, Homebrew will allow keg-only formulae to be linked.
 
   * `linkapps` [`--local`] [<formulae>]:
-    Find installed formulae that have compiled `.app`-style "application"
-    packages for OS X, and symlink those apps into `/Applications`, allowing
-    for easier access.
+    Find installed formulae that provide `.app`-style OS X apps and symlink them
+    into `/Applications`, allowing for easier access.
 
-    If no <formulae> are provided, all of them will have their .apps symlinked.
+    If no <formulae> are provided, all of them will have their apps symlinked.
 
-    If provided, `--local` will move them into the user's `~/Applications`
-    directory instead of the system directory. It may need to be created, first.
+    If provided, `--local` will symlink them into the user's `~/Applications`
+    directory instead of the system directory.
 
   * `ls`, `list` [`--full-name`]:
     List all installed formulae. If `--full-name` is passed, print formulae with
@@ -341,7 +340,9 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
 
   * `prune` [`--dry-run`]:
     Remove dead symlinks from the Homebrew prefix. This is generally not
-    needed, but can be useful when doing DIY installations.
+    needed, but can be useful when doing DIY installations. Also remove broken
+    app symlinks from `/Applications` and `~/Applications` that were previously
+    created by `brew linkapps`.
 
     If `--dry-run` or `-n` is passed, show what would be removed, but do not
     actually remove anything.
@@ -446,10 +447,16 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     If `--dry-run` or `-n` is passed, Homebrew will list all files which would
     be unlinked, but will not actually unlink or delete any files.
 
-  * `unlinkapps` [`--local`] [<formulae>]:
-    Removes links created by `brew linkapps`.
+  * `unlinkapps` [`--local`] [`--dry-run`] [<formulae>]:
+    Remove symlinks created by `brew linkapps` from `/Applications`.
 
-    If no <formulae> are provided, all linked app will be removed.
+    If no <formulae> are provided, all linked apps will be removed.
+
+    If provided, `--local` will remove symlinks from the user's `~/Applications`
+    directory instead of the system directory.
+
+    If `--dry-run` or `-n` is passed, Homebrew will list all symlinks which
+    would be removed, but will not actually delete any files.
 
   * `unpack` [`--git`|`--patch`] [`--destdir=`<path>] <formulae>:
     Unpack the source files for <formulae> into subdirectories of the current

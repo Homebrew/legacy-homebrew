@@ -516,6 +516,18 @@ _brew_uninstall ()
     __brew_complete_installed
 }
 
+_brew_unlinkapps ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--dry-run --local"
+        return
+        ;;
+    esac
+    __brew_complete_installed
+}
+
 _brew_unpack ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -618,7 +630,7 @@ _brew ()
     install|instal|reinstall)   _brew_install ;;
     irb)                        _brew_irb ;;
     link|ln)                    _brew_link ;;
-    linkapps|unlinkapps)        _brew_linkapps ;;
+    linkapps)                   _brew_linkapps ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
     man)                        _brew_man ;;
@@ -638,6 +650,7 @@ _brew ()
     tap-unpin)                  _brew_tap_unpin ;;
     tests)                      _brew_tests ;;
     uninstall|remove|rm)        _brew_uninstall ;;
+    unlinkapps)                 _brew_unlinkapps ;;
     unpack)                     _brew_unpack ;;
     unpin)                      __brew_complete_formulae ;;
     untap|tap-info|tap-pin)     __brew_complete_tapped ;;

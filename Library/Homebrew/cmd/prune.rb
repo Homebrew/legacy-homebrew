@@ -1,5 +1,6 @@
 require "keg"
 require "cmd/tap"
+require "cmd/unlinkapps"
 
 module Homebrew
   def prune
@@ -45,5 +46,7 @@ module Homebrew
       print "and #{d} directories " if d > 0
       puts "from #{HOMEBREW_PREFIX}"
     end unless ARGV.dry_run?
+
+    unlinkapps_prune(:dry_run => ARGV.dry_run?, :quiet => true)
   end
 end
