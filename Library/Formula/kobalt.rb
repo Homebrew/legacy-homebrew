@@ -37,7 +37,7 @@ class Kobalt < Formula
       }
     EOS
 
-    system "#{bin}/kobaltw", "assemble"
+    system "#{bin}/kobaltw", "--log", "2", "assemble"
     output = "kobaltBuild/libs/test-1.0.jar"
     assert File.exist?(output), "Couldn't find #{output}"
 
