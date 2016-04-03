@@ -3,6 +3,7 @@ class Cowsay < Formula
   homepage "https://web.archive.org/web/20120225123719/http://www.nog.net/~tony/warez/cowsay.shtml"
   url "http://ftp.acc.umu.se/mirror/cdimage/snapshot/Debian/pool/main/c/cowsay/cowsay_3.03.orig.tar.gz"
   sha256 "0b8672a7ac2b51183780db72618b42af8ec1ce02f6c05fe612510b650540b2af"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -16,11 +17,16 @@ class Cowsay < Formula
   # url "http://www.nog.net/~tony/warez/cowsay-3.03.tar.gz"
 
   def install
+    puts "TTY is: #{ENV['TTY']}"
+    ohai "Normal install"
     system "/bin/sh", "install.sh", prefix
     mv prefix/"man", share
   end
 
   test do
+    puts "Environment:"
+    system "env | sort"
+    puts "Normal tests:"
     output = shell_output("#{bin}/cowsay moo")
     assert_match "moo", output  # bubble
     assert_match "^__^", output # cow
