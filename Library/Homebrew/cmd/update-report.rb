@@ -1,3 +1,6 @@
+# This is a hack to force old Homebrew to perform core/formula separation migration.
+require "migrate_remote"
+
 require "formula_versions"
 require "migrator"
 require "formulary"
