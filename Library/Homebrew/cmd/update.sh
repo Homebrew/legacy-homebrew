@@ -31,7 +31,7 @@ git_init_if_necessary() {
     set -e
     git config --bool core.autocrlf false
     git config --replace-all remote.origin.url "$OFFICIAL_REMOTE"
-    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    git config --replace-all remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
     git fetch --force --depth=1 origin refs/heads/master:refs/remotes/origin/master
     git reset --hard origin/master
     git gc --auto
