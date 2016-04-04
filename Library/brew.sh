@@ -57,9 +57,13 @@ then
   unset HOMEBREW_RUBY_PATH
 fi
 
-if [[ "$(uname -s)" = "Darwin" ]]
+HOMEBREW_SYSTEM="$(uname -s)"
+if [[ "$HOMEBREW_SYSTEM" = "Darwin" ]]
 then
   HOMEBREW_OSX="1"
+elif [[ "$HOMEBREW_SYSTEM" = "Linux" ]]
+then
+  HOMEBREW_LINUX="1"
 fi
 
 if [[ -z "$HOMEBREW_RUBY_PATH" ]]
@@ -72,13 +76,47 @@ then
   fi
 fi
 
-export HOMEBREW_VERSION
+HOMEBREW_CURL="/usr/bin/curl"
+HOMEBREW_PROCESSOR="$(uname -p)"
+if [[ -n "$HOMEBREW_OSX" ]]
+then
+  HOMEBREW_PRODUCT="Homebrew"
+  HOMEBREW_SYSTEM="Macintosh"
+  # This is i386 even on x86_64 machines
+  [[ "$HOMEBREW_PROCESSOR" = "i386" ]] && HOMEBREW_PROCESSOR="Intel"
+  HOMEBREW_OSX_VERSION="$(/usr/bin/sw_vers -productVersion)"
+  HOMEBREW_OS_VERSION="Mac OS X $HOMEBREW_OSX_VERSION"
+
+  HOMEBREW_OSX_VERSION_NUMERIC="$(printf "%02d%02d%02d" $(echo "${HOMEBREW_OSX_VERSION//./ }"))"
+  if [[ "$HOMEBREW_OSX_VERSION_NUMERIC" -lt "100900" &&
+        -x "$HOMEBREW_PREFIX/opt/curl/bin/curl" ]]
+  then
+    HOMEBREW_CURL="$HOMEBREW_PREFIX/opt/curl/bin/curl"
+  fi
+else
+  HOMEBREW_PRODUCT="${HOMEBREW_SYSTEM}brew"
+  [[ -n "$HOMEBREW_LINUX" ]] && HOMEBREW_OS_VERSION="$(lsb_release -sd 2>/dev/null)"
+  HOMEBREW_OS_VERSION="${HOMEBREW_PRODUCT:=$(uname -r)}"
+fi
+HOMEBREW_USER_AGENT="$HOMEBREW_PRODUCT/$HOMEBREW_VERSION ($HOMEBREW_SYSTEM; $HOMEBREW_PROCESSOR $HOMEBREW_OS_VERSION)"
+HOMEBREW_CURL_VERSION="$("$HOMEBREW_CURL" --version 2>/dev/null | head -n1 | awk '{print $1"/"$2}')"
+HOMEBREW_USER_AGENT_CURL="$HOMEBREW_USER_AGENT $HOMEBREW_CURL_VERSION"
+
+# Declared in bin/brew
 export HOMEBREW_BREW_FILE
-export HOMEBREW_RUBY_PATH
 export HOMEBREW_PREFIX
 export HOMEBREW_REPOSITORY
 export HOMEBREW_LIBRARY
+
+# Declared in brew.sh
+export HOMEBREW_VERSION
 export HOMEBREW_CELLAR
+export HOMEBREW_RUBY_PATH
+export HOMEBREW_CURL
+export HOMEBREW_OS_VERSION
+export HOMEBREW_OSX_VERSION
+export HOMEBREW_USER_AGENT
+export HOMEBREW_USER_AGENT_CURL
 
 if [[ -n "$HOMEBREW_OSX" ]]
 then

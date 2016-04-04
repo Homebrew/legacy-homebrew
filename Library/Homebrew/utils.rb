@@ -309,18 +309,13 @@ def quiet_system(cmd, *args)
 end
 
 def curl(*args)
-  brewed_curl = HOMEBREW_PREFIX/"opt/curl/bin/curl"
-  curl = if MacOS.version <= "10.8" && brewed_curl.exist?
-    brewed_curl
-  else
-    Pathname.new "/usr/bin/curl"
-  end
+  curl = Pathname.new ENV["HOMEBREW_CURL"]
   raise "#{curl} is not executable" unless curl.exist? && curl.executable?
 
   flags = HOMEBREW_CURL_ARGS
   flags = flags.delete("#") if ARGV.verbose?
 
-  args = [flags, HOMEBREW_USER_AGENT, *args]
+  args = [flags, HOMEBREW_USER_AGENT_CURL, *args]
   args << "--verbose" if ENV["HOMEBREW_CURL_VERBOSE"]
   args << "--silent" if !$stdout.tty? || ENV["TRAVIS"]
 
@@ -594,7 +589,7 @@ module GitHub
 
   def api_headers
     {
-      "User-Agent" => HOMEBREW_USER_AGENT,
+      "User-Agent" => HOMEBREW_USER_AGENT_RUBY,
       "Accept"     => "application/vnd.github.v3+json"
     }
   end
