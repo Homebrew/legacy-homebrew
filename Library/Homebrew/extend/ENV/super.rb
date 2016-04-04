@@ -53,6 +53,7 @@ module Superenv
     self["HOMEBREW_BREW_FILE"] = HOMEBREW_BREW_FILE.to_s
     self["HOMEBREW_PREFIX"] = HOMEBREW_PREFIX.to_s
     self["HOMEBREW_CELLAR"] = HOMEBREW_CELLAR.to_s
+    self["HOMEBREW_OPT"] = "#{HOMEBREW_PREFIX}/opt"
     self["HOMEBREW_TEMP"] = HOMEBREW_TEMP.to_s
     self["HOMEBREW_SDKROOT"] = effective_sysroot
     self["HOMEBREW_OPTFLAGS"] = determine_optflags
@@ -66,6 +67,7 @@ module Superenv
     self["HOMEBREW_ISYSTEM_PATHS"] = determine_isystem_paths
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
+    self["HOMEBREW_DEPENDENCIES"] = determine_dependencies
 
     if MacOS::Xcode.without_clt? || (MacOS::Xcode.installed? && MacOS::Xcode.version.to_i >= 7)
       self["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s
@@ -182,6 +184,10 @@ module Superenv
     paths << MacOS::X11.lib.to_s if x11?
     paths << "#{effective_sysroot}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries"
     paths.to_path_s
+  end
+
+  def determine_dependencies
+    deps.map {|d| d.name}.join(",")
   end
 
   def determine_cmake_prefix_path
