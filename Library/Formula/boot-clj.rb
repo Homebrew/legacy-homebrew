@@ -13,6 +13,16 @@ class BootClj < Formula
     bin.install "boot.sh" => "boot"
   end
 
+  def post_install
+    # Work correctly in sandboxes.
+    # (Q.v. <https://github.com/Homebrew/homebrew/pull/44254>)
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{ENV["HOME"]}"
+
+    # Use the wrapper to update Boot's JAR files too.
+    # (Q.v. <https://github.com/boot-clj/boot/tree/2.2.0#install>)
+    system bin/"boot", "--update"
+  end
+
   test do
     ENV.java_cache
 
