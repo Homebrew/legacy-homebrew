@@ -9,7 +9,6 @@ class PerconaToolkit < Formula
 
   bottle :disable, "To use the user's database of choice."
 
-  depends_on :mysql
   depends_on "openssl"
 
   conflicts_with "mytop", :because => "both install `perllocal.pod`"
