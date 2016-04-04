@@ -14,7 +14,11 @@ class Libmemcached < Formula
   end
 
   option "with-sasl", "Build with sasl support"
+  option "with-static", "Build static library"
+  option "with-memaslap", "Build with load generation and benchmark tool support"
+  option "with-hsieh-hash", "Build with hsieh hashing support"
 
+  depends_on "libevent" # requires --enable-libmemcachedprotocol
   if build.with? "sasl"
     depends_on "memcached" => "enable-sasl"
   else
@@ -27,11 +31,17 @@ class Libmemcached < Formula
   def install
     ENV.append_to_cflags "-undefined dynamic_lookup" if MacOS.version <= :leopard
 
-    args = ["--prefix=#{prefix}"]
-
-    if build.with? "sasl"
-      args << "--with-memcached-sasl=#{Formula["memcached"].bin}/memcached"
-    end
+    args = [
+      "--prefix=#{prefix}",
+      "--disable-dependency-tracking",
+      "--enable-libmemcachedprotocol",
+      "--with-memcached=#{Formula["memcached"].opt_bin}/memcached",
+      "--enable-shared"
+    ]
+    args << "--enable-static=no" if build.without? "static"
+    args << "--disable-sasl" if build.without? "sasl"
+    args << "--enable-memaslap" if build.with? "memaslap"
+    args << "--enable-hsieh_hash" if build.with? "hsieh-hash"
 
     system "./configure", *args
     system "make", "install"
