@@ -8,6 +8,8 @@ class Dasht < Formula
 
   depends_on "sqlite"
   depends_on "socat"
+  depends_on "wget"
+  depends_on "w3m"
 
   def install
     bin.install Dir["bin/*"]
