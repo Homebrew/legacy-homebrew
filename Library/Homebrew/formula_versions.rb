@@ -1,4 +1,7 @@
 require "formula"
+# This is a hack to force old Homebrew to perform core/formula separation migration.
+# On some old system, `brew update` will try to load `formula_versions.rb` file.
+require "migrate_remote"
 
 class FormulaVersions
   IGNORED_EXCEPTIONS = [

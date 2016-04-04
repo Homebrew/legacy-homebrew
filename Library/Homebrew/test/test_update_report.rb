@@ -29,10 +29,6 @@ class ReportTests < Homebrew::TestCase
     @hub = ReporterHub.new
   end
 
-  def teardown
-    FileUtils.rm_rf HOMEBREW_LIBRARY.join("Taps")
-  end
-
   def perform_update(fixture_name = "")
     Formulary.stubs(:factory).returns(stub(:pkg_version => "1.0"))
     FormulaVersions.stubs(:new).returns(stub(:formula_at_revision => "2.0"))
@@ -91,6 +87,8 @@ class ReportTests < Homebrew::TestCase
     perform_update("update_git_diff_output_with_restructured_tap")
     assert_equal %w[foo/bar/git foo/bar/lua], @hub.select_formula(:A)
     assert_empty @hub.select_formula(:D)
+  ensure
+    tap.path.parent.rmtree
   end
 
   def test_update_homebrew_simulate_homebrew_php_restructuring
@@ -101,6 +99,8 @@ class ReportTests < Homebrew::TestCase
     perform_update("update_git_diff_simulate_homebrew_php_restructuring")
     assert_empty @hub.select_formula(:A)
     assert_equal %w[foo/bar/git foo/bar/lua], @hub.select_formula(:D)
+  ensure
+    tap.path.parent.rmtree
   end
 
   def test_update_homebrew_with_tap_formulae_changes
@@ -112,5 +112,7 @@ class ReportTests < Homebrew::TestCase
     assert_equal %w[foo/bar/lua], @hub.select_formula(:A)
     assert_equal %w[foo/bar/git], @hub.select_formula(:M)
     assert_empty @hub.select_formula(:D)
+  ensure
+    tap.path.parent.rmtree
   end
 end
