@@ -89,14 +89,6 @@ class Macvim < Formula
       args << "--enable-pythoninterp"
     end
 
-    # configure appends "SDKS/..." to the value of `xcode-select -print-path`,
-    # but this isn't correct on recent Xcode, so we need to set it manually.
-    # This is a bug, and it should be fixed upstream.
-    unless MacOS::CLT.installed?
-      args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer"
-      args << "--with-macsdk=#{MacOS.version}"
-    end
-
     system "./configure", *args
     system "make"
 
