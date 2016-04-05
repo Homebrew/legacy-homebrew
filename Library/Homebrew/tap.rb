@@ -470,7 +470,7 @@ class CoreTap < Tap
   end
 
   def install(options = {})
-    options = { :clone_target => OFFICIAL_REMOTE }.merge(options)
+    options[:clone_target] ||= OFFICIAL_REMOTE
     super options
   end
 
