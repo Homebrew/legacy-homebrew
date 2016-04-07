@@ -319,10 +319,10 @@ class Python3 < Formula
   def caveats
     text = <<-EOS.undent
       Pip and setuptools have been installed. To update them
-        pip3 install --upgrade pip setuptools
+        python3 -m pip install --upgrade pip setuptools
 
       You can install Python packages with
-        pip3 install <package>
+        python3 -m pip install <package>
 
       They will install into the site-package directory
         #{site_packages}

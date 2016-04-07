@@ -321,10 +321,10 @@ class Python < Formula
 
   def caveats; <<-EOS.undent
     Pip and setuptools have been installed. To update them
-      pip install --upgrade pip setuptools
+      python -m pip install --upgrade pip setuptools
 
     You can install Python packages with
-      pip install <package>
+      python -m pip install <package>
 
     They will install into the site-package directory
       #{site_packages}
