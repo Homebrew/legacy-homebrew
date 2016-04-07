@@ -32,6 +32,7 @@ class Rust < Formula
   end
 
   option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."
+  option "with-src", "Keep the src around for use with racer for code completion."
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :run
@@ -84,8 +85,25 @@ class Rust < Formula
       system "make", "install"
     end
 
+    if build.with? "src"
+      Dir.glob(["src/llvm/*", "src/test/*", "src/librustdoc/*", "src/etc/snapshot.pyc"]) do |f|
+        if File.directory?(f)
+          rm_r(f)
+        else
+          File.delete(f)
+        end
+      end
+      (share/"rust_src").install "src"
+    end
+
     rm_rf prefix/"lib/rustlib/uninstall.sh"
     rm_rf prefix/"lib/rustlib/install.log"
+  end
+
+  if build.with? "src"
+    def caveats
+      "You must set RUST_SRC_PATH=#{HOMEBREW_PREFIX}/share/rust_src/src in your ENV."
+    end
   end
 
   test do
