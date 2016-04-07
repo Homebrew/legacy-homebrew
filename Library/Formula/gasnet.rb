@@ -4,6 +4,7 @@ class Gasnet < Formula
   url "https://gasnet.lbl.gov/GASNet-1.26.0.tar.gz"
   mirror "https://bitbucket.org/berkeleylab/gasnet/downloads/GASNet-1.26.0.tar.gz"
   sha256 "32b84c47910c36137db198a9c5396dd0a87c29ad72f2040493aa9e8b2a24f929"
+  revision 1
 
   bottle do
     revision 1
@@ -24,6 +25,10 @@ class Gasnet < Formula
   option "without-test", "Skip build time tests (requires properly configured MPI and firewall settings)"
 
   depends_on :mpi => [:cc, :cxx]
+
+  # We need the standard env because gasnet installation will use
+  # full paths to compilers in makefile include stubs
+  env :std
 
   def install
     system "./bootstrap" if build.head?
