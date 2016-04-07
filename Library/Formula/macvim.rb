@@ -50,12 +50,16 @@ class Macvim < Formula
       --enable-multibyte
       --with-macarchs=#{MacOS.preferred_arch}
       --enable-perlinterp
-      --enable-rubyinterp
       --enable-tclinterp
       --with-tlib=ncurses
       --with-compiledby=Homebrew
       --with-local-dir=#{HOMEBREW_PREFIX}
     ]
+
+    # MacVim uses the system ruby, but fails to compile against the ruby
+    # provided with Snow Leopard.
+    # See https://github.com/Homebrew/homebrew/issues/38047
+    args << "--enable-rubyinterp" unless MacOS.version <= :snow_leopard
 
     args << "--enable-cscope" if build.with? "cscope"
 
