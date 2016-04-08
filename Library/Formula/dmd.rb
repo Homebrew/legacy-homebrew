@@ -23,29 +23,30 @@ class Dmd < Formula
   end
 
   bottle do
-    sha256 "cbeb3eca1d8a0a461ab4fb05cd0584ee1da0af1b53e3fa5309b51a3e680eea28" => :el_capitan
-    sha256 "e69d0d1c748fc9cf7b4dcb1daa26a25834f865c75e6ec44737510d37d9e463b1" => :yosemite
-    sha256 "da113931aa8d0437c49ea2bfa525a5f7eac67f5e532dd6a481f4660185e44693" => :mavericks
+    revision 1
+    sha256 "42d01357a030077af310c5f873aa539d27a41a29785f9882880ca85adc37ff47" => :el_capitan
+    sha256 "3f95013991bb5e260ffc51ff339b1f9da7ed78234e7817b63ab40c79d4ac775a" => :yosemite
+    sha256 "72e67e06cdf18d34c7fe849db3ad45d5439a037be2f39fbf425bcc898953a1e7" => :mavericks
   end
 
   devel do
-    url "https://github.com/D-Programming-Language/dmd/archive/v2.071.0-b1.tar.gz"
-    sha256 "9f93cc820938a54f12261b7c1d22212cefd176729daafb571dcdf382f7a64a20"
-    version "2.071.0-b1"
+    url "https://github.com/D-Programming-Language/dmd/archive/v2.071.0-b2.tar.gz"
+    sha256 "4a75866c357feb2d7d328775671fc2e97a8368d25ca2732d4bc532a957a480a1"
+    version "2.071.0-b2"
 
     resource "druntime" do
-      url "https://github.com/D-Programming-Language/druntime/archive/v2.071.0-b1.tar.gz"
-      sha256 "5a2c497b2d09182cc3b849c95d086d6f8f976129843ddd1b9b2e934cd993766e"
+      url "https://github.com/D-Programming-Language/druntime/archive/v2.071.0-b2.tar.gz"
+      sha256 "7a2af258fbf36ea6e0fd2f25710c5b842da443c2e884724c41ccd7890b99a7d6"
     end
 
     resource "phobos" do
-      url "https://github.com/D-Programming-Language/phobos/archive/v2.071.0-b1.tar.gz"
-      sha256 "7a3bbf6788a3e467907e86a769b546a6cec64191b65e2bbe36792228c323a24e"
+      url "https://github.com/D-Programming-Language/phobos/archive/v2.071.0-b2.tar.gz"
+      sha256 "69c112ea8f7673d397e81dd0bec0ce234fce750cfcd2857e1787bae0b2c4f436"
     end
 
     resource "tools" do
-      url "https://github.com/D-Programming-Language/tools/archive/v2.071.0-b1.tar.gz"
-      sha256 "3d601493debb2ff53a59d0ed9aeb636a2d0fe509d70cfba36c1a0b3830b94c20"
+      url "https://github.com/D-Programming-Language/tools/archive/v2.071.0-b2.tar.gz"
+      sha256 "e80f934f814f96aee90ef511c7829608e23d2dfb4f920c86128c6c15f3ddb37c"
     end
   end
 

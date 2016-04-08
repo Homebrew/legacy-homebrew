@@ -21,9 +21,9 @@ class Fltk < Formula
   end
 
   devel do
-    url "http://fltk.org/pub/fltk/snapshots/fltk-1.3.x-r10866.tar.gz"
-    sha256 "4fd4911a1da99c2fa1e6cc0c985b3b8645a7e954802230338fb513ae880ff2cc"
-    version "1.3.3-r10866" # convince brew that this is newer than stable
+    url "http://fltk.org/pub/fltk/snapshots/fltk-1.3.x-r11419.tar.gz"
+    sha256 "fd5a445634b799c031d78e7c046cb083779fd2dc79fab072cd512cfb0fc48262"
+    version "1.3.3-r11419" # convince brew that this is newer than stable
 
     depends_on "autoconf" => :build
     depends_on "autogen" => :build
@@ -50,6 +50,26 @@ class Fltk < Formula
                           "--enable-threads",
                           "--enable-shared"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <FL/Fl.H>
+      #include <FL/Fl_Window.H>
+      #include <FL/Fl_Box.H>
+      int main(int argc, char **argv) {
+        Fl_Window *window = new Fl_Window(340,180);
+        Fl_Box *box = new Fl_Box(20,40,300,100,"Hello, World!");
+        box->box(FL_UP_BOX);
+        box->labelfont(FL_BOLD+FL_ITALIC);
+        box->labelsize(36);
+        box->labeltype(FL_SHADOW_LABEL);
+        window->end();
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-lfltk", "-o", "test"
+    system "./test"
   end
 end
 

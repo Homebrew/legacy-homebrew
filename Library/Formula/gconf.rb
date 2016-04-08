@@ -1,5 +1,5 @@
 class Gconf < Formula
-  desc "GConf is a system for storing user application preferences"
+  desc "System for storing user application preferences"
   homepage "https://projects.gnome.org/gconf/"
   url "https://download.gnome.org/sources/GConf/3.2/GConf-3.2.6.tar.xz"
   sha256 "1912b91803ab09a5eed34d364bf09fe3a2a9c96751fde03a4e0cfa51a04d784c"

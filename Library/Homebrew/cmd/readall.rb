@@ -38,7 +38,6 @@ module Homebrew
     if ARGV.named.empty?
       formulae = Formula.files
       alias_dirs = Tap.map(&:alias_dir)
-      alias_dirs.unshift CoreTap.instance.alias_dir
     else
       tap = Tap.fetch(ARGV.named.first)
       raise TapUnavailableError, tap.name unless tap.installed?

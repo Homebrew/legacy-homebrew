@@ -1,15 +1,13 @@
 class ClangFormat < Formula
   desc "Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2016-03-08"
+  version "2016-03-29"
 
   stable do
-    url "http://llvm.org/releases/3.8.0/llvm-3.8.0.src.tar.xz"
-    sha256 "555b028e9ee0f6445ff8f949ea10e9cd8be0d084840e21fbbe1d31d51fc06e46"
+    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2016-03-29/", :using => :svn
 
     resource "clang" do
-      url "http://llvm.org/releases/3.8.0/cfe-3.8.0.src.tar.xz"
-      sha256 "04149236de03cf05232d68eb7cb9c50f03062e339b68f4f8a03b650a11536cf9"
+      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2016-03-29/", :using => :svn
     end
 
     resource "libcxx" do
@@ -20,9 +18,9 @@ class ClangFormat < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e6b26890dc59982f2beb0bf45a6de51c5f63dbcc9739f583a84c47495eae2fa3" => :el_capitan
-    sha256 "f6cd9d90f3acbac3cfbce746ba476f3c1b8633787a9d6bddef1d12dae2f1b563" => :yosemite
-    sha256 "114b346b627ffb49e03d28fb20d0ebe6380090478795cc43b503ba841db4016c" => :mavericks
+    sha256 "cd16f7709d86c5f24dfd275b7e1e3dd2c61c6ec4fc4a8d772e0f6ea1b623c77b" => :el_capitan
+    sha256 "d54a9f81ab19d6ca65fc71f0217c2e2effbbf23e9e736857fa4abc770be26073" => :yosemite
+    sha256 "20c6d7675e2f5bb15d39bcbccd61fced755992fa3a54e893adc417f1bc99f557" => :mavericks
   end
 
   head do

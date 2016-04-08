@@ -16,7 +16,7 @@ class Jcal < Formula
   depends_on "libtool" => :build
 
   def install
-    system "/bin/sh autogen.sh"
+    system "/bin/sh", "autogen.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking"

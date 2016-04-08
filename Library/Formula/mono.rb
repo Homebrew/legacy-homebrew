@@ -1,17 +1,17 @@
 class Mono < Formula
   desc "Cross platform, open source .NET development framework"
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-4.2.2.30.tar.bz2"
-  sha256 "57858cd033be9915d7abdc5158c1faae8fa05757c3b7117cab3d703aa696c56b"
+  url "http://download.mono-project.com/sources/mono/mono-4.2.3.4.tar.bz2"
+  sha256 "4703d390416a6e9977585f13711f59a6d54431086c2dbacee49888dcc31937be"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    sha256 "b090cf8f95e8553a7907fbf3a06386a78b1cd55059900a1716adc3c02def7698" => :el_capitan
-    sha256 "3e9475e28d700e6f624800de33973afd38c62e5a6b2fbb96c714244bfb5a3a99" => :yosemite
-    sha256 "2e67605bea7caa18ddcd3e0345b4abdc1870940529ec3f44b93c25dbc785e778" => :mavericks
+    sha256 "497caf59e4ec884f8e027850f260e74b4eb396db1522177461759404af9a98f2" => :el_capitan
+    sha256 "ed0d5c49e0fedc6ceb51a2a787ef261f6d5d0d712ae4c1436054cf3eb7ef1582" => :yosemite
+    sha256 "397237006223604ca29a0c7b826d935e1d262df76de49255a9e25806cfe4db52" => :mavericks
   end
 
   conflicts_with "czmq", :because => "both install `makecert` binaries"

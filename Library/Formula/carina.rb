@@ -2,15 +2,15 @@ class Carina < Formula
   desc "Work with Swarm clusters on Carina"
   homepage "https://github.com/getcarina/carina"
   url "https://github.com/getcarina/carina.git",
-        :tag => "v1.2.1",
-        :revision => "6cb596b5066d47074df5c071925bcf559282d3b5"
+        :tag => "v1.3.0",
+        :revision => "b611b9dad3f33e1ee9c810ece98a03643b3a4902"
   head "https://github.com/getcarina/carina.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3195137f3235383309c7a0843c289adc9bafb86cf9a6470a70e27bd7df268081" => :el_capitan
-    sha256 "e6cb300ba3939a469c48d88fee62c7c687d6c6607958b396823efac32b6aa278" => :yosemite
-    sha256 "621d48af23f4cf41e137f12e8044dac6766465076b775636de03e1588151303f" => :mavericks
+    sha256 "1dddc87516c06d1cd5e88a915f23b91308cc6b9301c18fce823758686fa7a5d3" => :el_capitan
+    sha256 "3462ea1b0cb963882d479a771da6fd71b5e8cbc517ea953aa7d9d4360ece4e10" => :yosemite
+    sha256 "260429922cb3fd08a333a6948cc619e66881df0778ea7f1a6aa70655093f622a" => :mavericks
   end
 
   depends_on "go" => :build
