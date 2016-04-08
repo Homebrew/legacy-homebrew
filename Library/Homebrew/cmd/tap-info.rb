@@ -10,8 +10,6 @@ module Homebrew
       end
     end
 
-    raise "#{tap} is not allowed" if taps.any?(&:core_tap?)
-
     if ARGV.json == "v1"
       print_tap_json(taps)
     else

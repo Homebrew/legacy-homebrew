@@ -454,13 +454,15 @@ module Homebrew
       def check_for_bad_install_name_tool
         return if MacOS.version < "10.9"
 
-        libs = Pathname.new("/usr/bin/install_name_tool").dynamically_linked_libraries
+        install_name_tool = OS::Mac.install_name_tool
+        libs = Pathname.new(install_name_tool).dynamically_linked_libraries
 
         # otool may not work, for example if the Xcode license hasn't been accepted yet
         return if libs.empty?
 
-        unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
-        You have an outdated version of /usr/bin/install_name_tool installed.
+        expectedLibs = ["/usr/lib/libSystem.B.dylib", "/usr/lib/libxcselect.dylib"]
+        if (libs & expectedLibs).empty? then <<-EOS.undent
+        You have an outdated version of #{install_name_tool} installed.
         This will cause binary package installations to fail.
         This can happen if you install osx-gcc-installer or RailsInstaller.
         To restore it, you must reinstall OS X or restore the binary from

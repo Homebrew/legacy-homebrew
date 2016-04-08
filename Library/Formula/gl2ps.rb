@@ -3,19 +3,25 @@ class Gl2ps < Formula
   homepage "http://www.geuz.org/gl2ps/"
   url "http://geuz.org/gl2ps/src/gl2ps-1.3.9.tgz"
   sha256 "8a680bff120df8bcd78afac276cdc38041fed617f2721bade01213362bcc3640"
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "660715c44772d7fb7463216af03797a9f377390550857fafb60ff07e8307d54c" => :el_capitan
-    sha256 "2641d23b28b8800c346e6c5b5579b56cbbfb5922086d9c68b3f51a243054c45f" => :yosemite
-    sha256 "601ef91d17ee6390113b98ce744493eb71ab0d17026994dfa64f6a83783b6d79" => :mavericks
+    sha256 "f98527a92984dcb172b803c0a5503a06a3fec0c7ff980f1921adc0d77fda19c3" => :el_capitan
+    sha256 "884f489b6106f81cfe2821230065333e36894e9316fa90b9af4ef84a1d7af749" => :yosemite
+    sha256 "22504f9aa0239aa8395bb6a9c48b374885b7fb20603da15e28d730cf97a2990d" => :mavericks
   end
 
   depends_on "cmake" => :build
   depends_on "libpng"
 
   def install
-    system "cmake", ".", *std_cmake_args
+    # Prevent linking against X11's libglut.dylib when it's present
+    # Reported to upstream's mailing list gl2ps@geuz.org (1st April 2016)
+    # http://www.geuz.org/pipermail/gl2ps/2016/000433.html
+    # Reported to cmake's bug tracker, as well (1st April 2016)
+    # https://public.kitware.com/Bug/view.php?id=16045
+    system "cmake", ".", "-DGLUT_glut_LIBRARY=/System/Library/Frameworks/GLUT.framework", *std_cmake_args
     system "make", "install"
   end
 
