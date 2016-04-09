@@ -16,6 +16,7 @@ class Eralchemy < Formula
   depends_on "pkg-config" => :build
   depends_on "graphviz"
   depends_on "openssl"
+  depends_on :postgresql => :optional
 
   resource "pygraphviz" do
     url "https://pypi.python.org/packages/source/p/pygraphviz/pygraphviz-1.3.1.tar.gz"
@@ -45,6 +46,11 @@ class Eralchemy < Formula
       end
     end
 
+    if build.with?("postgresql")
+      resource("psycopg2").stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
