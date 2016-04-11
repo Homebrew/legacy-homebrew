@@ -7,6 +7,11 @@ class Libffi < Formula
 
   bottle do
     cellar :any
+    sha256 "d512d7c3258d61e088097f1f9a1fd010bd1a197e760e0b3abc08a3f767624745" => :el_capitan
+    sha256 "f75c1beb848231ed3e2275c867620da91dd16be9dc7c4b88f86675ac62159323" => :yosemite
+    sha256 "aa60d56351d36a45f2e7f16114fc17f9bd8fe805931f36d744c6ccb5fa5df238" => :mavericks
+    sha256 "fad1fe049554d37471408fe451ef2e46628177c94eaafb23a3af56336603baad" => :mountain_lion
+    sha256 "dc4718ebb77ff384386e0ef1782d8418c821637044b5dff7c08f21c401d0668d" => :lion
   end
 
   head do
@@ -30,18 +35,17 @@ class Libffi < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
     if build.universal?
-      cd("build_macosx-x86_64"){system "make"}
-      cd("build_macosx-i386"){system "make"}
+      system "make", "-C", "build_macosx-x86_64"
+      system "make", "-C", "build_macosx-i386"
       system "lipo", "-create", "build_macosx-x86_64/.libs/libffi.6.dylib", "build_macosx-i386/.libs/libffi.6.dylib", "-output", "libffi.6.dylib"
       system "lipo", "-create", "build_macosx-x86_64/.libs/libffi.a", "build_macosx-i386/.libs/libffi.a", "-output", "libffi.a"
-      lib.install "libffi.6.dylib"
-      lib.install "libffi.a"
+      lib.install %w["libffi.6.dylib", "libffi.a"]
     else
       if Hardware::CPU.intel?
-        if OS::Mac.prefer_64_bit?
-          cd("build_macosx-x86_64"){system "make";lib.install ".libs/libffi.6.dylib";lib.install ".libs/libffi.a"}
-         else
-          cd("build_macosx-i386"){system "make";lib.install ".libs/libffi.6.dylib";lib.install ".libs/libffi.a"}
+        directory = OS::Mac.prefer_64_bit? ? "build_macosx-x86_64" : "build_macosx-i386"
+        cd directory do
+          system "make"
+          lib.install %w[.libs/libffi.6.dylib .libs/libffi.a]
         end
       end
     end
