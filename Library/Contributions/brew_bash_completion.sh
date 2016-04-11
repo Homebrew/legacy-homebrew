@@ -162,6 +162,13 @@ _brew_bottle ()
 
 _brew_cleanup ()
 {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    -*)
+        __brewcomp "--prune= --dry-run -n -s"
+        return
+        ;;
+    esac
     __brew_complete_installed
 }
 
