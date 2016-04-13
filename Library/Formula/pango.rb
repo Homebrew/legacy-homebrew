@@ -3,8 +3,8 @@ class Pango < Formula
   homepage "http://www.pango.org/"
 
   stable do
-    url "https://download.gnome.org/sources/pango/1.40/pango-1.40.0.tar.xz"
-    sha256 "da17985df314cb07d066ab5424f59c21ce973ece05b7de4df04d798ec8511c8b"
+    url "https://download.gnome.org/sources/pango/1.40/pango-1.40.1.tar.xz"
+    sha256 "e27af54172c72b3ac6be53c9a4c67053e16c905e02addcf3a603ceb2005c1a40"
   end
 
   bottle do
