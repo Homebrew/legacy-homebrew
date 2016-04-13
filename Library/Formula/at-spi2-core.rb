@@ -1,8 +1,8 @@
 class AtSpi2Core < Formula
   desc "Protocol definitions and daemon for D-Bus at-spi"
   homepage "http://a11y.org"
-  url "https://download.gnome.org/sources/at-spi2-core/2.18/at-spi2-core-2.18.3.tar.xz"
-  sha256 "ada26add94155f97d0f601a20cb7a0e3fd3ba1588c3520b7288316494027d629"
+  url "https://download.gnome.org/sources/at-spi2-core/2.20/at-spi2-core-2.20.1.tar.xz"
+  sha256 "6ed858e781f5aa9a9662b3beb5ef82f733dac040afc8255d85dffd2097f16900"
 
   bottle do
     sha256 "96b67926248f6950a20ea28fde034e9a91b6c4c4a14eb3cd54e0aead53224ce6" => :el_capitan

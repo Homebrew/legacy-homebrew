@@ -1,8 +1,8 @@
 class Gtksourceview3 < Formula
   desc "Text view with syntax, undo/redo, and text marks"
   homepage "https://projects.gnome.org/gtksourceview/"
-  url "https://download.gnome.org/sources/gtksourceview/3.18/gtksourceview-3.18.2.tar.xz"
-  sha256 "60f75a9f0039e13a2281fc595b5ef7344afa06732cc53b57d13234bfb0a5b7b2"
+  url "https://download.gnome.org/sources/gtksourceview/3.20/gtksourceview-3.20.1.tar.xz"
+  sha256 "322d95c0eaba768a47956ccf1af732ea9377ab7a8afc145b1a34a04012ae8c4c"
 
   bottle do
     sha256 "8e2a97d367acfcf94217360f793e16b8946718d3da95b88907ec1b969e7b7087" => :el_capitan

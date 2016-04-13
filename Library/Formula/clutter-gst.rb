@@ -1,8 +1,8 @@
 class ClutterGst < Formula
   desc "ClutterMedia interface using GStreamer for video and audio"
   homepage "https://developer.gnome.org/clutter-gst/"
-  url "https://download.gnome.org/sources/clutter-gst/3.0/clutter-gst-3.0.16.tar.xz"
-  sha256 "803e8b7265e63e0581e21fd0c6064792dfe951512e9f515e9e7a9b452caaf9f0"
+  url "https://download.gnome.org/sources/clutter-gst/3.0/clutter-gst-3.0.18.tar.xz"
+  sha256 "0aec0d0c6020cd19a5bb0dab1165a92748f81a9a3acdfabb0f966d5f53bc8093"
 
   bottle do
     sha256 "713a99de8f38abe30e09c31259c678e461464b6b1d525373d21405a5028ef830" => :el_capitan

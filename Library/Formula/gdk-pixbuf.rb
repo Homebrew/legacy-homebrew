@@ -1,8 +1,8 @@
 class GdkPixbuf < Formula
   desc "Toolkit for image loading and pixel buffer manipulation"
   homepage "http://gtk.org"
-  url "https://download.gnome.org/sources/gdk-pixbuf/2.32/gdk-pixbuf-2.32.3.tar.xz"
-  sha256 "2b6771f1ac72f687a8971e59810b8dc658e65e7d3086bd2e676e618fd541d031"
+  url "https://download.gnome.org/sources/gdk-pixbuf/2.34/gdk-pixbuf-2.34.0.tar.xz"
+  sha256 "d55e5b383ee219bd0e23bf6ed4427d56a7db5379729a6e3e0a0e0eba9a8d8879"
 
   bottle do
     revision 1
@@ -34,7 +34,7 @@ class GdkPixbuf < Formula
             "--enable-introspection=yes",
             "--disable-Bsymbolic",
             "--enable-static",
-            "--without-gdiplus",]
+            "--without-gdiplus"]
 
     args << "--enable-relocations" if build.with?("relocations")
 

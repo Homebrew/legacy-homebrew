@@ -1,9 +1,8 @@
 class GnomeBuilder < Formula
   desc "IDE for GNOME"
   homepage "https://wiki.gnome.org/Apps/Builder"
-  url "https://download.gnome.org/sources/gnome-builder/3.18/gnome-builder-3.18.1.tar.xz"
-  mirror "https://launchpad.net/ubuntu/+archive/primary/+files/gnome-builder_3.18.1.orig.tar.xz"
-  sha256 "501c95220dcf8ca44a5748e863492377fe2c3aee78a95973d6819b1836e5407c"
+  url "https://download.gnome.org/sources/gnome-builder/3.20/gnome-builder-3.20.0.tar.xz"
+  sha256 "1260f38d6fa0008c1b10238873b764b3fb47c383267bad083b298a7bcae8fb9b"
 
   bottle do
     sha256 "f7d422a29b7c9b98c20bdce9e8a56b14265fad5d9ce174d77c686adb26d752ad" => :el_capitan
@@ -13,6 +12,7 @@ class GnomeBuilder < Formula
 
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
+  depends_on "itstool" => :build
   depends_on "libgit2-glib"
   depends_on "gtk+3"
   depends_on "libpeas"
@@ -31,13 +31,6 @@ class GnomeBuilder < Formula
 
   def install
     ENV.cxx11
-
-    # Fix build failure on case-sensitive volumes for libgit2-glib without vala.
-    # Reported 7th Mar 2016 to https://bugzilla.gnome.org/show_bug.cgi?id=763208
-    unless File.exist?(Formula["libgit2-glib"].share/"vala/vapi/ggit-1.0.vapi")
-      inreplace Dir["libide/{Makefile.am,Makefile.in,libide-1.0.deps}"],
-        "ggit-1.0", "Ggit-1.0"
-    end
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

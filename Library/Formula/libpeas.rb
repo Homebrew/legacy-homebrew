@@ -1,8 +1,8 @@
 class Libpeas < Formula
   desc "GObject plugin library"
   homepage "https://developer.gnome.org/libpeas/stable/"
-  url "https://download.gnome.org/sources/libpeas/1.16/libpeas-1.16.0.tar.xz"
-  sha256 "b093008ecd65f7d55c80517589509698ff15ad41f664b11a3eb88ff461b1454e"
+  url "https://download.gnome.org/sources/libpeas/1.18/libpeas-1.18.0.tar.xz"
+  sha256 "bf49842c64c36925bbc41d954de490b6ff7faa29b45f6fd9e91ddcc779165e26"
 
   bottle do
     sha256 "fc930781e9c52420acfb590e634551230a2cb0682c904a1466844d0fc0e04673" => :el_capitan
@@ -13,20 +13,12 @@ class Libpeas < Formula
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gettext" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
   depends_on "gnome-common" => :build
   depends_on "glib"
   depends_on "gobject-introspection"
   depends_on "gtk+3"
 
-  # fixes a linking issue in the tests
-  # submitted upsteam as a PR: https://github.com/gregier/libpeas/pull/3
-  patch :DATA
-
   def install
-    system "autoreconf", "-i"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
@@ -72,19 +64,3 @@ class Libpeas < Formula
     system "./test"
   end
 end
-
-__END__
-diff --git a/tests/libpeas/plugins/extension-c/Makefile.am b/tests/libpeas/plugins/extension-c/Makefile.am
-index 9f18008..ed51b06 100644
---- a/tests/libpeas/plugins/extension-c/Makefile.am
-+++ b/tests/libpeas/plugins/extension-c/Makefile.am
-@@ -18,7 +18,8 @@ libextension_c_la_SOURCES = \
- libextension_c_la_LDFLAGS = $(TEST_PLUGIN_LIBTOOL_FLAGS)
- libextension_c_la_LIBADD = \
-	$(PEAS_LIBS)						\
--	$(builddir)/../../introspection/libintrospection-1.0.la
-+	$(builddir)/../../introspection/libintrospection-1.0.la \
-+	$(top_builddir)/libpeas/libpeas-1.0.la
-
- libextension_c_missing_symbol_la_SOURCES = \
-	extension-c-missing-symbol-plugin.c

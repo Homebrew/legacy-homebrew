@@ -1,9 +1,8 @@
 class Evince < Formula
   desc "GNOME document viewer"
   homepage "https://wiki.gnome.org/Apps/Evince"
-  url "https://download.gnome.org/sources/evince/3.18/evince-3.18.2.tar.xz"
-  sha256 "42ad6c7354d881a9ecab136ea84ff867acb942605bcfac48b6c12e1c2d8ecb17"
-  revision 3
+  url "https://download.gnome.org/sources/evince/3.20/evince-3.20.0.tar.xz"
+  sha256 "cf8358a453686c2a7f85d245f83fe918c0ce02eb6532339f3e02e31249a5a280"
 
   bottle do
     sha256 "1285a7fdb434b1954a82b626af26541e6de62da829701c9c8804f033dc449ed3" => :el_capitan
@@ -25,10 +24,6 @@ class Evince < Formula
   depends_on "shared-mime-info"
   depends_on "djvulibre"
   depends_on :python if MacOS.version <= :snow_leopard
-
-  # adds support for UTF-8 filenames in the DjVu backend
-  # submitted upstream as https://bugzilla.gnome.org/show_bug.cgi?id=761161
-  patch :DATA
 
   def install
     # forces use of gtk3-update-icon-cache instead of gtk-update-icon-cache. No bugreport should
@@ -58,23 +53,3 @@ class Evince < Formula
     assert_match /#{version}/, shell_output("#{bin}/evince --version")
   end
 end
-
-__END__
-diff --git a/backend/djvu/djvu-document.c b/backend/djvu/djvu-document.c
-index 06ce813..6711f31 100644
---- a/backend/djvu/djvu-document.c
-+++ b/backend/djvu/djvu-document.c
-@@ -164,8 +164,12 @@ djvu_document_load (EvDocument  *document,
-	filename = g_filename_from_uri (uri, NULL, error);
-	if (!filename)
-		return FALSE;
--
-+
-+#ifdef __APPLE__
-+	doc = ddjvu_document_create_by_filename_utf8 (djvu_document->d_context, filename, TRUE);
-+#else
-	doc = ddjvu_document_create_by_filename (djvu_document->d_context, filename, TRUE);
-+#endif
-
-	if (!doc) {
-		g_free (filename);
