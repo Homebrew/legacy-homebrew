@@ -9,14 +9,15 @@ class Citus < Formula
   depends_on "postgresql"
 
   def install
-    config_args = %W[--prefix=#{prefix} PG_CONFIG=#{Formula["postgresql"].opt_bin}/pg_config]
+    ENV["PG_CONFIG"] = Formula["postgresql"].opt_bin/"pg_config"
+
+    system "./configure"
 
     # workaround for https://github.com/Homebrew/homebrew/issues/49948
-    make_args = ["libpq=-L#{Formula["postgresql"].opt_lib} -lpq"]
+    system "make", "libpq=-L#{Formula["postgresql"].opt_lib} -lpq"
 
-    system "./configure", *config_args
-    system "make", *make_args
-
+    # Use stage directory to prevent installing to pg_config-defined dirs,
+    # which would not be within this package's Cellar.
     mkdir "stage"
     system "make", "install", "DESTDIR=#{buildpath}/stage"
 
