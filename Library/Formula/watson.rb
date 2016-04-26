@@ -1,16 +1,16 @@
 class Watson < Formula
   desc "Command-line tool to track (your) time"
   homepage "https://tailordev.github.io/Watson/"
-  url "https://github.com/TailorDev/Watson/archive/1.3.1.tar.gz"
-  sha256 "de7190f8cb304004b096be1b5992eb826306da75cbaa04fd588ab113c08e0250"
+  url "https://pypi.python.org/packages/source/t/td-watson/td-watson-1.3.2.tar.gz"
+  sha256 "f92f3b33595f3e31bb0417b6443541f036bd7dabea19daf471fe5c3ac75b9c8d"
 
   head "https://github.com/TailorDev/Watson.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1e339ad5addbd5db13e77aafb488a548de1f0ce59bd4a8b3e4ab8b9563ee2c88" => :el_capitan
-    sha256 "6d322b05eeb5d37129e8ffe5b91747a3de1d7300bd69dd1a21ca2744f5fdd521" => :yosemite
-    sha256 "6ade33b986db02b3f33f459b68ab0fd59b1536510a4ccb269fb8e3a6ff02b119" => :mavericks
+    sha256 "b28bfbdc75e530760733360be2c40f0a02c2ef6a3c31f5665779903786a1e92e" => :el_capitan
+    sha256 "edb07d1e281f0a359c12c12a74402640499402037c7acc82da9c29d4781af605" => :yosemite
+    sha256 "5e57982340da15e3e58642c7be8f3f9d3b9239f8433bf8bf680a968efc050cd8" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -23,11 +23,6 @@ class Watson < Formula
   resource "click" do
     url "https://pypi.python.org/packages/source/c/click/click-6.2.tar.gz"
     sha256 "fba0ff70f5ebb4cebbf64c40a8fbc222fb7cf825237241e548354dabe3da6a82"
-  end
-
-  resource "pytest-runner" do
-    url "https://pypi.python.org/packages/source/p/pytest-runner/pytest-runner-2.6.2.tar.gz"
-    sha256 "e775a40ee4a3a1d45018b199c44cc20bbe7f3df2dc8882f61465bb4141c78cdb"
   end
 
   resource "python-dateutil" do

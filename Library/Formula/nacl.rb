@@ -7,13 +7,23 @@ class Nacl < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "55af6242b2da64f373ddb2c60a2725b556a945ba7f1c7e9c90f7795bfe42e20e" => :el_capitan
-    sha256 "e97604331197c2d4fd013fcab8b68d5ac9627872a3d550afa4920a95ac1cfe5c" => :yosemite
-    sha256 "f223d3283ef0003d2693d45d4d83b9e57c85a69ef2da29a38611dae45c649572" => :mavericks
+    revision 2
+    sha256 "e08c93b814989405fa3b7db9e3a9c4f149e36aaab32aba44e9a2f1659d2d3efd" => :el_capitan
+    sha256 "1a1a7fffc6d41f2f7bcc393375f2907f63b5a13f9414fe0827daef96246301e7" => :yosemite
+    sha256 "44bbb2d7cb0daa6eb06c79e5881ae827786a04dece9b4a34cb0a6ea06cddb1e1" => :mavericks
   end
 
   def install
+    # Print the build to stdout rather than the default logfile.
+    # Logfile makes it hard to debug and spot hangs. Applied by Debian:
+    # https://sources.debian.net/src/nacl/20110221-4.1/debian/patches/output-while-building/
+    # Also, like Debian, inreplace the hostname because it isn't used outside
+    # build process and adds an unpredictable factor.
+    inreplace "do" do |s|
+      s.gsub! 'exec >"$top/log"', 'exec | tee "$top/log"'
+      s.gsub! /^shorthostname=`.*$/, "shorthostname=brew"
+    end
+
     system "./do" # This takes a while since it builds *everything*
 
     # NaCL has an odd compilation model (software by djb, who'da thunk it?)
@@ -26,17 +36,16 @@ class Nacl < Formula
     # It also builds both x86 and x86_64 copies if your compiler can
     # handle it. Here we only install one copy, based on if you're a
     # 64bit system or not. A --universal could come later though I guess.
-    archstr  = Hardware.is_64_bit? ? "amd64" : "x86"
-    hoststr  = `hostname | sed 's/\\..*//' | tr -cd '[a-z][A-Z][0-9]'`.strip
+    archstr = Hardware.is_64_bit? ? "amd64" : "x86"
 
     # Don't include cpucycles.h
-    include.install Dir["build/#{hoststr}/include/#{archstr}/crypto_*.h"]
-    include.install "build/#{hoststr}/include/#{archstr}/randombytes.h"
+    include.install Dir["build/brew/include/#{archstr}/crypto_*.h"]
+    include.install "build/brew/include/#{archstr}/randombytes.h"
 
     # Add randombytes.o to the libnacl.a archive - I have no idea why it's separated,
     # but plenty of the key generation routines depend on it. Users shouldn't have to
     # know this.
-    nacl_libdir = "build/#{hoststr}/lib/#{archstr}"
+    nacl_libdir = "build/brew/lib/#{archstr}"
     system "ar", "-r", "#{nacl_libdir}/libnacl.a", "#{nacl_libdir}/randombytes.o"
     lib.install "#{nacl_libdir}/libnacl.a"
   end

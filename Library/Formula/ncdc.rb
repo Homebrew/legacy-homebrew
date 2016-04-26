@@ -7,13 +7,14 @@ class Ncdc < Formula
 
   bottle do
     cellar :any
-    sha256 "7005cc775a8d1aeeaab80561459b2ef228496bd563f731b0e320ecdeaaca2345" => :el_capitan
-    sha256 "f4a58fb7b8300463979e6548a6483956b791dd9bd1d9293b9a629e6942563ccd" => :yosemite
-    sha256 "65441ec1a2911ca9d362288a9ba9c21257597ef1c1d8bc4c0f00a2790b0ec2e5" => :mavericks
+    revision 1
+    sha256 "f7feefe3718e9c3a05ce79f2041dc32bfee134bd8814441add9619be68bf4e80" => :el_capitan
+    sha256 "1ef7784bd2c40aa5e20c9fd125bf9707dbebd2af6c8df82587d5831ba8f089a8" => :yosemite
+    sha256 "1446fb4a72a5af8abc839e6b8e2e4ccbf53fbb95f0ff005ccdc36045965210d6" => :mavericks
   end
 
   head do
-    url "git://g.blicky.net/ncdc.git", :shallow => false
+    url "https://g.blicky.net/ncdc.git", :shallow => false
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -32,7 +33,7 @@ class Ncdc < Formula
 
     args = [
       "--disable-dependency-tracking",
-      "--prefix=#{prefix}"
+      "--prefix=#{prefix}",
     ]
     args << "--with-geoip" if build.with? "geoip"
 

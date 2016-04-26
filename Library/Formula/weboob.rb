@@ -3,13 +3,14 @@ class Weboob < Formula
   homepage "http://weboob.org/"
   url "https://symlink.me/attachments/download/324/weboob-1.1.tar.gz"
   sha256 "cbc0d8a88e402ec71a79f0cf09594fd3a969122111f5cd695f4a4ca67961661c"
-  head "git://git.symlink.me/pub/weboob/stable.git"
+  head "https://git.symlink.me/pub/weboob/stable.git"
 
   bottle do
     cellar :any_skip_relocation
+    revision 1
     sha256 "de891de1a4983a14f56a46686e1296a1c9bea8868f4fbb9f6e655c4c8c288734" => :el_capitan
     sha256 "6c301ce9314dac5f56415d186d18eb8a749094c0cfa135495555af1d16b8642c" => :yosemite
-    sha256 "449b424632e8a6fd04dfdbcd183311cb545e7da9beba801010ca0a984c783616" => :mavericks
+    sha256 "5899a8cbcd70b8f0607cd438f45b4cce6a91cdc8168fc26704abbbc1866eeb1b" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

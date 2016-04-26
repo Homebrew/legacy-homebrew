@@ -1,21 +1,21 @@
 class Dxpy < Formula
   desc "DNAnexus toolkit utilities and platform API bindings for Python"
   homepage "https://github.com/dnanexus/dx-toolkit"
-  url "https://pypi.python.org/packages/source/d/dxpy/dxpy-0.172.0.tar.gz"
-  sha256 "4ab4f761f6ee0f7d31189738373c76d8c93d0e3eea0fc7e166d61e183d8cc01c"
+  url "https://pypi.python.org/packages/source/d/dxpy/dxpy-0.182.1.tar.gz"
+  sha256 "0022f5f89e64b994b8c4cbcf596b0e514d9958569e7fc000ae36d5a49cdf1e9a"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a5c3d99fd2ed6d1f88b5d942835921b20af0ad86dad521aeb93ddaf534ae3911" => :el_capitan
-    sha256 "800d463fd4f11d35dd5354dd449721bb22b32d76b84d2b4149f294844909ac00" => :yosemite
-    sha256 "88da6a2323f390d3b0cfcb193f5de2801ea6e7ef943f9886c948a3505ce92a94" => :mavericks
+    sha256 "d6992446c517b78e4403496fdb66880874073b245443051818e10d6d7591fb4a" => :el_capitan
+    sha256 "ba2a6fa30bef04d14dd9e8a9d346077ba67f46aa58753d4297dd1731ff470767" => :yosemite
+    sha256 "ef227fb761e15e46d7c1fb662e7d8c0a056bc4eb9fcf6c7262243134740b77cf" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "futures" do
-    url "https://pypi.python.org/packages/source/f/futures/futures-3.0.3.tar.gz"
-    sha256 "2fe2342bb4fe8b8e217f0d21b5921cbe5408bf966d9f92025e707e881b198bed"
+    url "https://pypi.python.org/packages/source/f/futures/futures-3.0.4.tar.gz"
+    sha256 "19485d83f7bd2151c0aeaf88fbba3ee50dadfb222ffc3b66a344ef4952b782a3"
   end
 
   resource "ws4py" do
@@ -34,8 +34,8 @@ class Dxpy < Formula
   end
 
   resource "beautifulsoup4" do
-    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.3.2.tar.gz"
-    sha256 "a2b29bd048ca2fe54a046b29770964738872a9747003a371344a93eedf7ad58e"
+    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.4.1.tar.gz"
+    sha256 "87d4013d0625d4789a4f56b8d79a04d5ce6db1152bb65f1d39744f7709a366b4"
   end
 
   resource "argcomplete" do
@@ -44,8 +44,8 @@ class Dxpy < Formula
   end
 
   resource "psutil" do
-    url "https://pypi.python.org/packages/source/p/psutil/psutil-2.1.3.tar.gz"
-    sha256 "b434c75f01715777391f10f456002e33d0ca14633f96fdbd9ff9139b42d9452c"
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.3.0.tar.gz"
+    sha256 "421b6591d16b509aaa8d8c15821d66bb94cb4a8dc4385cad5c51b85d4a096d85"
   end
 
   resource "requests" do

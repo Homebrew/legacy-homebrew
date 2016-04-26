@@ -1,16 +1,16 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.3.tar.gz"
-  sha256 "f2e720d3147b259de2bb763f0854fbd2d12da70669bb3958f0dffffd34f95e81"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.7.tar.gz"
+  sha256 "b765a83c0c675bcd9fd0377dd8079d73d50412cc59b2981d5bb35530635d1268"
 
   head "https://github.com/nvbn/thefuck.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9c21b012d0cca0b469fef8d45f487c5d30643095fe56beae8cdb031a5ad323f8" => :el_capitan
-    sha256 "0af3c42bc8cbbdb9810e013f611f4c2b1a2877d07deef3425631c8c69b79d672" => :yosemite
-    sha256 "4d5cea822835b513032699396bd39b174824c709ce353532e78302c731826c02" => :mavericks
+    sha256 "e2c51657e0ed4856876f8eabc15b044d48fd683ad069784999aa783881771bb2" => :el_capitan
+    sha256 "f0419f4c855f521279cbfeabe44a4a3fa30cf4a6ed8f5f25c994a0ddc09e9a8d" => :yosemite
+    sha256 "e4d5321c608a42b43d809287354d767bfb8f3db682ab1b77c5fc38f9266fc0fa" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -45,10 +45,15 @@ class Thefuck < Formula
     sha256 "1a089279d5de2471c47624d4463f2e5b3fc6a2cf65045c39bf714fc461a25206"
   end
 
+  resource "pip" do
+    url "https://pypi.python.org/packages/source/p/pip/pip-8.0.3.tar.gz"
+    sha256 "30f98b66f3fe1069c529a491597d34a1c224a68640c82caf2ade5f88aa1405e8"
+  end
+
   def install
     xy = Language::Python.major_minor_version "python"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
-    %w[setuptools pathlib psutil colorama six decorator].each do |r|
+    %w[setuptools pathlib psutil colorama six decorator pip].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end

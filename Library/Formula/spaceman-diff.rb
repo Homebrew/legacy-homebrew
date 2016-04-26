@@ -1,8 +1,8 @@
 class SpacemanDiff < Formula
   desc "Diff images from the command-line"
   homepage "https://github.com/holman/spaceman-diff"
-  url "https://github.com/holman/spaceman-diff/archive/1.0.2.tar.gz"
-  sha256 "aae3d16d5c486c34127ac836cfb6d30ab45c9dea4c66212a412f7aab83eb6da2"
+  url "https://github.com/holman/spaceman-diff/archive/v1.0.3.tar.gz"
+  sha256 "347bf7d32d6c2905f865b90c5e6f4ee2cd043159b61020381f49639ed5750fdf"
 
   head "https://github.com/holman/spaceman-diff.git"
 

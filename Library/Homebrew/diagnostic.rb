@@ -454,13 +454,15 @@ module Homebrew
       def check_for_bad_install_name_tool
         return if MacOS.version < "10.9"
 
-        libs = Pathname.new("/usr/bin/install_name_tool").dynamically_linked_libraries
+        install_name_tool = OS::Mac.install_name_tool
+        libs = Pathname.new(install_name_tool).dynamically_linked_libraries
 
         # otool may not work, for example if the Xcode license hasn't been accepted yet
         return if libs.empty?
 
-        unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
-        You have an outdated version of /usr/bin/install_name_tool installed.
+        expectedLibs = ["/usr/lib/libSystem.B.dylib", "/usr/lib/libxcselect.dylib"]
+        if (libs & expectedLibs).empty? then <<-EOS.undent
+        You have an outdated version of #{install_name_tool} installed.
         This will cause binary package installations to fail.
         This can happen if you install osx-gcc-installer or RailsInstaller.
         To restore it, you must reinstall OS X or restore the binary from
@@ -501,7 +503,7 @@ module Homebrew
 
       def check_access_homebrew_repository
         unless HOMEBREW_REPOSITORY.writable_real? then <<-EOS.undent
-          The #{HOMEBREW_REPOSITORY} is not writable.
+          #{HOMEBREW_REPOSITORY} is not writable.
 
           You should probably change the ownership and permissions of #{HOMEBREW_REPOSITORY}
           back to your user account.
@@ -514,7 +516,7 @@ module Homebrew
         return unless HOMEBREW_PREFIX.to_s == "/usr/local"
 
         unless HOMEBREW_PREFIX.writable_real? then <<-EOS.undent
-        The /usr/local directory is not writable.
+        /usr/local is not writable.
         Even if this directory was writable when you installed Homebrew, other
         software may change permissions on this directory. For example, upgrading
         to OS X El Capitan has been known to do this. Some versions of the
@@ -523,7 +525,7 @@ module Homebrew
 
         You should probably change the ownership and permissions of /usr/local
         back to your user account.
-          sudo chown -R $(whoami):admin /usr/local
+          sudo chown -R $(whoami) /usr/local
         EOS
         end
       end
@@ -1003,7 +1005,7 @@ module Homebrew
       def check_git_newline_settings
         return unless Utils.git_available?
 
-        autocrlf = `git config --get core.autocrlf`.chomp
+        autocrlf = HOMEBREW_REPOSITORY.cd { `git config --get core.autocrlf`.chomp }
 
         if autocrlf == "true" then <<-EOS.undent
         Suspicious Git newline settings found.

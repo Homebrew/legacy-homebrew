@@ -37,12 +37,12 @@ module Homebrew
     if ARGV.include?("--new-issue") || ARGV.switch?("n")
       auth = :AUTH_TOKEN
 
-      unless HOMEBREW_GITHUB_API_TOKEN
+      if GitHub.api_credentials_type == :none
         puts "You can create a personal access token: https://github.com/settings/tokens"
         puts "and then set HOMEBREW_GITHUB_API_TOKEN as authentication method."
         puts
 
-        auth = :AUTH_BASIC
+        auth = :AUTH_USER_LOGIN
       end
 
       url = new_issue(f.tap, "#{f.name} failed to build on #{MacOS.full_version}", url, auth)
@@ -115,19 +115,24 @@ module Homebrew
   end
 
   def make_request(path, data, auth)
-    headers = {
-      "User-Agent"   => HOMEBREW_USER_AGENT,
-      "Accept"       => "application/vnd.github.v3+json",
-      "Content-Type" => "application/json"
-    }
+    headers = GitHub.api_headers
+    headers["Content-Type"] = "application/json"
 
-    if auth == :AUTH_TOKEN || (auth.nil? && HOMEBREW_GITHUB_API_TOKEN)
-      headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}"
+    basic_auth_credentials = nil
+    if auth != :AUTH_USER_LOGIN
+      token, username = GitHub.api_credentials
+      case GitHub.api_credentials_type
+      when :keychain
+        basic_auth_credentials = [username, token]
+      when :environment
+        headers["Authorization"] = "token #{token}"
+      end
     end
 
     request = Net::HTTP::Post.new(path, headers)
+    request.basic_auth(*basic_auth_credentials) if basic_auth_credentials
 
-    login(request) if auth == :AUTH_BASIC
+    login(request) if auth == :AUTH_USER_LOGIN
 
     request.body = Utils::JSON.dump(data)
     request
@@ -140,6 +145,7 @@ module Homebrew
     when Net::HTTPCreated
       Utils::JSON.load get_body(response)
     else
+      GitHub.api_credentials_error_message(response)
       raise "HTTP #{response.code} #{response.message} (expected 201)"
     end
   end

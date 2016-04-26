@@ -1,13 +1,13 @@
 class GstLibav < Formula
   desc "GStreamer plugins for Libav (a fork of FFmpeg)"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.6.3.tar.xz"
-  sha256 "857b9c060a0337de38c6d26238c47352433c02eabf26c2f860c854dbc35bd4ab"
+  url "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.8.0.tar.xz"
+  sha256 "5a1ce28876aee93cb4f3d090f0e807915a5d9bc1325e3480dd302b85aeb4291c"
 
   bottle do
-    sha256 "04cfb1f456753fb8ef83827ac724e6cc50e517d4416aba9030d2cda2f78043fa" => :el_capitan
-    sha256 "276225949d2a1e68e94949b168714a3cb8e0641f58b4145ae506a2b022544afc" => :yosemite
-    sha256 "fe5bf35c1075d1f8a0c8d96b6500a5f4747e18235cb2498b72b767517fac1bae" => :mavericks
+    sha256 "4148307a8895c277eafd9257a26123d0b15a765de8957b5a469ee6d4576bde56" => :el_capitan
+    sha256 "eef873207410841f166f616cc357242e8faca5942fb63716c3e63f91d35b3dd1" => :yosemite
+    sha256 "52363512965813a8794da326a89e60855751211b0ad39ad7772c877803bdd7dc" => :mavericks
   end
 
   head do

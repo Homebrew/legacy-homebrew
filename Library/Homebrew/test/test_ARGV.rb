@@ -48,9 +48,9 @@ class ArgvExtensionTests < Homebrew::TestCase
   end
 
   def test_switch?
-    @argv << "-ns" << "-i" << "--bar"
+    @argv << "-ns" << "-i" << "--bar" << "-a-bad-arg"
     %w[n s i].each { |s| assert @argv.switch?(s) }
-    %w[b ns bar --bar -n].each { |s| assert !@argv.switch?(s) }
+    %w[b ns bar --bar -n a bad arg].each { |s| assert !@argv.switch?(s) }
   end
 
   def test_flag?

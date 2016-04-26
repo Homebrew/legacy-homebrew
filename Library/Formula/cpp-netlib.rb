@@ -13,6 +13,15 @@ class CppNetlib < Formula
     sha256 "093cc615abf08eeb6d698d85e9d4bb8003e536548f925246d86baa7f1ec45506" => :mountain_lion
   end
 
+  devel do
+    url "https://github.com/cpp-netlib/cpp-netlib/archive/cpp-netlib-0.12.0-rc1.tar.gz"
+    version "0.12.0-rc1"
+    sha256 "f692253c57219b52397a886af769afe207e9cf2eda8ad22ed0e9e48bb483fc03"
+
+    # Version 0.12.0+ moves from boost::asio to asio.
+    depends_on "asio"
+  end
+
   depends_on "cmake" => :build
   depends_on "openssl"
 
@@ -27,7 +36,8 @@ class CppNetlib < Formula
   def install
     ENV.cxx11
 
-    system "cmake", *std_cmake_args
+    # NB: Do not build examples or tests as they require submodules.
+    system "cmake", "-DCPP-NETLIB_BUILD_TESTS=OFF", "-DCPP-NETLIB_BUILD_EXAMPLES=OFF", *std_cmake_args
     system "make"
     system "make", "install"
   end
@@ -36,13 +46,29 @@ class CppNetlib < Formula
     (testpath/"test.cpp").write <<-EOS.undent
       #include <boost/network/protocol/http/client.hpp>
       int main(int argc, char *argv[]) {
-        using namespace boost::network;
-        http::client client;
+        namespace http = boost::network::http;
+        http::client::options options;
+        http::client client(options);
         http::client::request request("");
         return 0;
       }
     EOS
-    flags = ["-stdlib=libc++", "-I#{include}", "-I#{Formula["boost"].include}", "-L#{lib}", "-L#{Formula["boost"].lib}", "-lboost_thread-mt", "-lboost_system-mt", "-lssl", "-lcrypto", "-lcppnetlib-client-connections", "-lcppnetlib-server-parsers", "-lcppnetlib-uri"] + ENV.cflags.to_s.split
+    flags = [
+      "-std=c++11",
+      "-stdlib=libc++",
+      "-I#{include}",
+      "-I#{Formula["asio"].include}",
+      "-I#{Formula["boost"].include}",
+      "-L#{lib}",
+      "-L#{Formula["boost"].lib}",
+      "-lssl",
+      "-lcrypto",
+      "-lboost_thread-mt",
+      "-lboost_system-mt",
+      "-lcppnetlib-uri",
+      "-lcppnetlib-client-connections",
+      "-lcppnetlib-server-parsers",
+    ] + ENV.cflags.split
     system ENV.cxx, "-o", "test", "test.cpp", *flags
     system "./test"
   end

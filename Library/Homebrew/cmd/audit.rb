@@ -4,10 +4,8 @@ require "utils"
 require "extend/ENV"
 require "formula_cellar_checks"
 require "official_taps"
-require "tap_migrations"
 require "cmd/search"
 require "date"
-require "formula_renames"
 
 module Homebrew
   def audit
@@ -249,7 +247,7 @@ class FormulaAuditor
       return
     end
 
-    if oldname = CoreFormulaRepository.instance.formula_renames[name]
+    if oldname = CoreTap.instance.formula_renames[name]
       problem "'#{name}' is reserved as the old name of #{oldname}"
       return
     end
@@ -510,6 +508,8 @@ class FormulaAuditor
     rescue GitHub::HTTPNotFoundError
       return
     end
+
+    return if metadata.nil?
 
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
     if (metadata["forks_count"] < 20) && (metadata["subscribers_count"] < 20) &&
@@ -898,14 +898,14 @@ class FormulaAuditor
   end
 
   def audit_reverse_migration
-    # Only enforce for new formula being re-added to core
+    # Only enforce for new formula being re-added to core and official taps
     return unless @strict
-    return unless formula.core_formula?
+    return unless formula.tap && formula.tap.official?
 
-    if TAP_MIGRATIONS.key?(formula.name)
+    if formula.tap.tap_migrations.key?(formula.name)
       problem <<-EOS.undent
-       #{formula.name} seems to be listed in tap_migrations.rb!
-       Please remove #{formula.name} from present tap & tap_migrations.rb
+       #{formula.name} seems to be listed in tap_migrations.json!
+       Please remove #{formula.name} from present tap & tap_migrations.json
        before submitting it to Homebrew/homebrew.
       EOS
     end

@@ -30,9 +30,8 @@ class Tap
     user = "Homebrew" if user == "homebrew"
     repo = repo.strip_prefix "homebrew-"
 
-    if user == "Homebrew" && repo == "homebrew"
-      require "core_formula_repository"
-      return CoreFormulaRepository.instance
+    if user == "Homebrew" && (repo == "homebrew" || repo == "core")
+      return CoreTap.instance
     end
 
     cache_key = "#{user}/#{repo}".downcase
@@ -70,19 +69,21 @@ class Tap
     @remote = nil
     @formula_dir = nil
     @formula_files = nil
+    @alias_dir = nil
     @alias_files = nil
     @aliases = nil
     @alias_table = nil
     @alias_reverse_table = nil
     @command_files = nil
     @formula_renames = nil
+    @tap_migrations = nil
   end
 
   # The remote path to this {Tap}.
   # e.g. `https://github.com/user/homebrew-repo`
   def remote
     @remote ||= if installed?
-      if git?
+      if git? && Utils.git_available?
         path.cd do
           Utils.popen_read("git", "config", "--get", "remote.origin.url").chomp
         end
@@ -95,6 +96,34 @@ class Tap
   # True if this {Tap} is a git repository.
   def git?
     (path/".git").exist?
+  end
+
+  # git HEAD for this {Tap}.
+  def git_head
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "rev-parse", "--verify", "-q", "HEAD").chuzzle }
+  end
+
+  # git HEAD in short format for this {Tap}.
+  def git_short_head
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "rev-parse", "--short=4", "--verify", "-q", "HEAD").chuzzle }
+  end
+
+  # time since git last commit for this {Tap}.
+  def git_last_commit
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "show", "-s", "--format=%cr", "HEAD").chuzzle }
+  end
+
+  # git last commit date for this {Tap}.
+  def git_last_commit_date
+    raise TapUnavailableError, name unless installed?
+    return unless git? && Utils.git_available?
+    path.cd { Utils.popen_read("git", "show", "-s", "--format=%cd", "--date=short", "HEAD").chuzzle }
   end
 
   # The issues URL of this {Tap}.
@@ -130,7 +159,7 @@ class Tap
   end
 
   # @private
-  def core_formula_repository?
+  def core_tap?
     false
   end
 
@@ -139,17 +168,21 @@ class Tap
   # @param [Hash] options
   # @option options [String]  :clone_targe If passed, it will be used as the clone remote.
   # @option options [Boolean] :full_clone If set as true, full clone will be used.
+  # @option options [Boolean] :quiet If set, suppress all output.
   def install(options = {})
     require "descriptions"
     raise TapAlreadyTappedError, name if installed?
     clear_cache
 
+    quiet = options.fetch(:quiet, false)
+
     # ensure git is installed
     Utils.ensure_git_installed!
-    ohai "Tapping #{name}"
+    ohai "Tapping #{name}" unless quiet
     remote = options[:clone_target] || "https://github.com/#{user}/homebrew-#{repo}"
-    args = %W[clone #{remote} #{path}]
+    args = %W[clone #{remote} #{path} --config core.autocrlf=false]
     args << "--depth=1" unless options.fetch(:full_clone, false)
+    args << "-q" if quiet
 
     begin
       safe_system "git", *args
@@ -164,10 +197,10 @@ class Tap
     link_manpages
 
     formula_count = formula_files.size
-    puts "Tapped #{formula_count} formula#{plural(formula_count, "e")} (#{path.abv})"
+    puts "Tapped #{formula_count} formula#{plural(formula_count, "e")} (#{path.abv})" unless quiet
     Descriptions.cache_formulae(formula_names)
 
-    if !options[:clone_target] && private?
+    if !options[:clone_target] && private? && !quiet
       puts <<-EOS.undent
         It looks like you tapped a private repository. To avoid entering your
         credentials each time you update, you can use git HTTP credential
@@ -264,7 +297,7 @@ class Tap
   # path to the directory of all alias files for this {Tap}.
   # @private
   def alias_dir
-    path/"Aliases"
+    @alias_dir ||= path/"Aliases"
   end
 
   # an array of all alias files of this {Tap}.
@@ -370,6 +403,17 @@ class Tap
     end
   end
 
+  # Hash with tap migrations
+  def tap_migrations
+    require "utils/json"
+
+    @tap_migrations ||= if (migration_file = path/"tap_migrations.json").file?
+      Utils::JSON.load(migration_file.read)
+    else
+      {}
+    end
+  end
+
   def ==(other)
     other = Tap.fetch(other) if other.is_a?(String)
     self.class == other.class && self.name == other.name
@@ -398,5 +442,107 @@ class Tap
   # @private
   def alias_file_to_name(file)
     "#{name}/#{file.basename}"
+  end
+end
+
+# A specialized {Tap} class for the core formulae
+class CoreTap < Tap
+  if OS.mac?
+    OFFICIAL_REMOTE = "https://github.com/Homebrew/homebrew-core"
+  else
+    OFFICIAL_REMOTE = "https://github.com/Linuxbrew/homebrew-core"
+  end
+
+  # @private
+  def initialize
+    super "Homebrew", "core"
+  end
+
+  def self.instance
+    @instance ||= CoreTap.new
+  end
+
+  def self.ensure_installed!(options = {})
+    return if instance.installed?
+    args = ["tap", instance.name]
+    args << "-q" if options.fetch(:quiet, true)
+    safe_system HOMEBREW_BREW_FILE, *args
+  end
+
+  def install(options = {})
+    options[:clone_target] ||= OFFICIAL_REMOTE
+    super options
+  end
+
+  # @private
+  def uninstall
+    raise "Tap#uninstall is not available for CoreTap"
+  end
+
+  # @private
+  def pin
+    raise "Tap#pin is not available for CoreTap"
+  end
+
+  # @private
+  def unpin
+    raise "Tap#unpin is not available for CoreTap"
+  end
+
+  # @private
+  def pinned?
+    false
+  end
+
+  # @private
+  def custom_remote?
+    remote != OFFICIAL_REMOTE
+  end
+
+  # @private
+  def core_tap?
+    true
+  end
+
+  # @private
+  def formula_dir
+    @formula_dir ||= begin
+      self.class.ensure_installed!
+      super
+    end
+  end
+
+  # @private
+  def alias_dir
+    @alias_dir ||= begin
+      self.class.ensure_installed!
+      super
+    end
+  end
+
+  # @private
+  def formula_renames
+    @formula_renames ||= begin
+      self.class.ensure_installed!
+      super
+    end
+  end
+
+  # @private
+  def tap_migrations
+    @tap_migrations ||= begin
+      self.class.ensure_installed!
+      super
+    end
+  end
+
+  # @private
+  def formula_file_to_name(file)
+    file.basename(".rb").to_s
+  end
+
+  # @private
+  def alias_file_to_name(file)
+    file.basename.to_s
   end
 end

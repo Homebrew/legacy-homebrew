@@ -12,7 +12,7 @@ require "rbconfig"
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = "0.9.5"
+HOMEBREW_VERSION = ENV["HOMEBREW_VERSION"]
 HOMEBREW_WWW = "http://brew.sh"
 
 require "config"
@@ -26,7 +26,6 @@ else
 end
 RUBY_BIN = RUBY_PATH.dirname
 
-HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
 
 HOMEBREW_CURL_ARGS = "-f#LA"
@@ -41,8 +40,8 @@ module Homebrew
   alias_method :failed?, :failed
 end
 
-HOMEBREW_PULL_API_REGEX = %r{https://api\.github\.com/repos/([\w-]+)/homebrew(-[\w-]+)?/pulls/(\d+)}
-HOMEBREW_PULL_OR_COMMIT_URL_REGEX = %r[https://github\.com/([\w-]+)/homebrew(-[\w-]+)?/(?:pull/(\d+)|commit/[0-9a-fA-F]{4,40})]
+HOMEBREW_PULL_API_REGEX = %r{https://api\.github\.com/repos/([\w-]+)/([\w-]+)?/pulls/(\d+)}
+HOMEBREW_PULL_OR_COMMIT_URL_REGEX = %r[https://github\.com/([\w-]+)/([\w-]+)?/(?:pull/(\d+)|commit/[0-9a-fA-F]{4,40})]
 
 require "compat" unless ARGV.include?("--no-compat") || ENV["HOMEBREW_NO_COMPAT"]
 

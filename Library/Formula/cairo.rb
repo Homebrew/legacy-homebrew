@@ -12,6 +12,11 @@ class Cairo < Formula
     sha256 "15ec1a777186dc6af988c9d1de94449ce730ec64a1588d63f3a1b95222d75a8d" => :mavericks
   end
 
+  devel do
+    url "http://cairographics.org/snapshots/cairo-1.15.2.tar.xz"
+    sha256 "268cc265a7f807403582f440643064bf52896556766890c8df7bad02d230f6c9"
+  end
+
   keg_only :provided_pre_mountain_lion
 
   option :universal

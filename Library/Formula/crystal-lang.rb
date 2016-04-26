@@ -1,14 +1,14 @@
 class CrystalLang < Formula
   desc "Fast and statically typed, compiled language with Ruby-like syntax"
   homepage "http://crystal-lang.org/"
-  url "https://github.com/manastech/crystal/archive/0.12.0.tar.gz"
-  sha256 "918bad9b906fe252f3f66685487892ad7c13a31135aa5874ac1e52ea399328e3"
+  url "https://github.com/crystal-lang/crystal/archive/0.15.0.tar.gz"
+  sha256 "d79445ec92faa2a045af150fca4886d90ecd9fba27451003b68118c8714b26bd"
   head "https://github.com/manastech/crystal.git"
 
   bottle do
-    sha256 "3c6704cfff8e64b40c1446a02ac881e7c24c08bca005856b465df57896389f37" => :el_capitan
-    sha256 "5befdddc3c7625074f7146d4d97e2a96f05c357ef6439c507d2d38a8794d5ce4" => :yosemite
-    sha256 "8a06de0e04c0e4dc61925e43dc960a31e1329776e33905ce2e36df366ae143af" => :mavericks
+    sha256 "ad7c29c8fb31a01bf7c84d53188897afeaefdd6dc8d6d14490d15f6f9ea37af4" => :el_capitan
+    sha256 "4009fdf987166c815428738a1fd2e6d784846899a9d36685f3380f19f00b6b8f" => :yosemite
+    sha256 "51f05828adedb594550f42ee1f4c3e3352aa9c110249786ed0c69acce247e2ad" => :mavericks
   end
 
   option "without-release", "Do not build the compiler in release mode"
@@ -20,14 +20,14 @@ class CrystalLang < Formula
   depends_on "libyaml" if build.with?("shards")
 
   resource "boot" do
-    url "https://github.com/manastech/crystal/releases/download/0.11.1/crystal-0.11.1-1-darwin-x86_64.tar.gz"
-    version "0.11.1"
-    sha256 "117af7bc7a5031ff77dba443d65e885c5f99189eac9fed7b35ca4e99f2a3b51f"
+    url "https://github.com/crystal-lang/crystal/releases/download/0.14.2/crystal-0.14.2-1-darwin-x86_64.tar.gz"
+    version "0.14.2"
+    sha256 "f75036b1950035b49a73faa125acd9ff031cecab7020f15cd4db4c4ee6417bfa"
   end
 
   resource "shards" do
-    url "https://github.com/ysbaddaden/shards/archive/v0.6.1.tar.gz"
-    sha256 "8e7d179a499a2fca895b534c6204e2e34828e6a645e48f83f08fbefcd6a03951"
+    url "https://github.com/ysbaddaden/shards/archive/v0.6.2.tar.gz"
+    sha256 "11d22086d736598efa87eea558e7b304d538372f017fce9bb21476e40c586110"
   end
 
   def install
@@ -47,7 +47,7 @@ class CrystalLang < Formula
     else
       system "make", "deps"
       (buildpath/".build").mkpath
-      system "bin/crystal", "build", "-o", ".build/crystal", "src/compiler/crystal.cr"
+      system "bin/crystal", "build", "-o", "-D", "without_openssl", "-D", "without_zlib", ".build/crystal", "src/compiler/crystal.cr"
     end
 
     if build.with? "shards"

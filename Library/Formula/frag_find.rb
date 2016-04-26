@@ -7,6 +7,7 @@ class FragFind < Formula
 
   bottle do
     cellar :any
+    sha256 "19f7e394d229a6935ce951fcd13346bc1ee902aac1e1bf2b1d84dff4e6839414" => :el_capitan
     sha256 "8c05d6633002612e03edddc4ca9399c60483fbfda1566be809bc19164bc0b425" => :yosemite
     sha256 "e077b8ad31f22e3d43b53ba88c2d0f812014b34a15d60c14002630fb24522925" => :mavericks
     sha256 "039e86dd48ff0fbba870859d00ec2a0271184986fc760a1deb640550610afcac" => :mountain_lion

@@ -2,7 +2,7 @@ class Checksum
   attr_reader :hash_type, :hexdigest
   alias_method :to_s, :hexdigest
 
-  TYPES = [:sha1, :sha256]
+  TYPES = [:sha256]
 
   def initialize(hash_type, hexdigest)
     @hash_type = hash_type

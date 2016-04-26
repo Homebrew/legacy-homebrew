@@ -15,12 +15,23 @@ class Agda < Formula
           :tag => "v0.11",
           :revision => "8602c29a7627eb001344cf50e6b74f880fb6bf18"
     end
+
+    # Remove when 2.5.1 is released
+    # https://github.com/agda/agda/issues/1779
+    # This is the last config that has
+    #   - unordered-containers ==0.2.5.1
+    #   - transformers-compat-0.4.0.4
+    resource "cabal_config" do
+      url "https://www.stackage.org/nightly-2016-02-08/cabal.config"
+      sha256 "d4f4a0fcdfe486d0604d3e9810e8671793f4bb64d610bcd81fafa2aaa14c60c8"
+    end
   end
 
   bottle do
-    sha256 "499162feef2e0f8357743b4166a468cfa46b75145f44bc4684e7ad7ca3164f9f" => :el_capitan
-    sha256 "9da031fabbbac72c22bcc6788d1a76d02be5947d496ee7d590bc735762e7c21c" => :yosemite
-    sha256 "4a8b2ecdaec7b443cfac1b0e2336f2d849e1180919fff3f6682f70ae6a57c0f0" => :mavericks
+    revision 1
+    sha256 "f768533c1dae7b890211b834296285075b59242f3a445c694f57dbe26d80a749" => :el_capitan
+    sha256 "65d52209f9897bf1857e0691848543e00d8f60ff11f23b51525f4348d73f1479" => :yosemite
+    sha256 "2bc50943308f863403b4095f603e5eb2a227fa9bff60b1f8783b58477c759acc" => :mavericks
   end
 
   head do
@@ -45,6 +56,10 @@ class Agda < Formula
   depends_on :emacs => ["21.1", :recommended]
 
   def install
+    # Remove when 2.5.1 is released
+    # https://github.com/agda/agda/issues/1779
+    resource("cabal_config").stage(buildpath) if build.stable?
+
     # install Agda core
     install_cabal_package :using => ["alex", "happy", "cpphs"]
 

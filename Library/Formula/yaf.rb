@@ -6,6 +6,7 @@ class Yaf < Formula
 
   bottle do
     cellar :any
+    sha256 "bf0da505db25ee2e0ea55803dfe649c183c9cbd30eeffdb736a8f0d02e178eea" => :el_capitan
     sha256 "14f8698ab1e0eb80dab5fcfe3321ed81353ad2e81d778123b881943f52d45384" => :yosemite
     sha256 "9a80bbd53e02e0646e0dcea1bb2246898476bc9bba96f3c9ed2903d6ac114e53" => :mavericks
     sha256 "35eda635f388b8ab2a69fda16fd80cf00aa1882c166ecc4b944384941ab42d92" => :mountain_lion

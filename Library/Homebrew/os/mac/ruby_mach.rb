@@ -41,7 +41,15 @@ module RubyMachO
       end
 
       mach_data
+    rescue MachO::NotAMachOError
+      # Silently ignore errors that indicate the file is not a Mach-O binary ...
+      []
     rescue
+      # ... but complain about other (parse) errors for further investigation.
+      if ARGV.homebrew_developer?
+        onoe "Failed to read Mach-O binary: #{self}"
+        raise
+      end
       []
     end
   end

@@ -5,12 +5,13 @@ class Libav < Formula
   sha256 "0b7dabc2605f3a254ee410bb4b1a857945696aab495fe21b34c3b6544ff5d525"
   revision 2
 
-  head "git://git.libav.org/libav.git"
+  head "https://git.libav.org/libav.git"
 
   bottle do
-    sha256 "ed32bdb580f771d661c2e7d5ee449d523b3233c2317207b84c8c102d85dc8e14" => :el_capitan
-    sha256 "52468f23de8f658ba2b9d74c86eca06971497607e03bda63ac59746f1d724351" => :yosemite
-    sha256 "cf5e6fb5519cb8941d96339a96b99270ebcda14763a8dafc9b9f6ca5985f1bb7" => :mavericks
+    revision 1
+    sha256 "3223c7dd692ab5f842161c25bd000dc7e35e4dbd115075e689f24761917c3b28" => :el_capitan
+    sha256 "918a06af5462bb2854099ff9df522f03d86d2913961305a0ea250cae48058f95" => :yosemite
+    sha256 "4d67498870e513e072c2ccbbf43f23657bb90dc6c2871d52221902823bcfbf40" => :mavericks
   end
 
   option "without-faac", "Disable AAC encoder via faac"
@@ -78,7 +79,7 @@ class Libav < Formula
       "--enable-vda",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
-      "--host-ldflags=#{ENV.ldflags}"
+      "--host-ldflags=#{ENV.ldflags}",
     ]
 
     args << "--enable-frei0r" if build.with? "frei0r"

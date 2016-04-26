@@ -159,7 +159,7 @@ class FormulaTests < Homebrew::TestCase
       homepage "http://example.com"
       url "http://example.com/test-0.1.tbz"
       mirror "http://example.org/test-0.1.tbz"
-      sha1 TEST_SHA1
+      sha256 TEST_SHA256
 
       head "http://example.com/test.git", :tag => "foo"
 
@@ -202,7 +202,7 @@ class FormulaTests < Homebrew::TestCase
 
   def test_path
     name = "foo-bar"
-    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formulary.core_path(name)
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Taps/homebrew/homebrew-core/Formula/#{name}.rb"), Formulary.core_path(name)
   end
 
   def test_class_specs_are_always_initialized

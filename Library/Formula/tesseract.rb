@@ -3,11 +3,12 @@ class Tesseract < Formula
   homepage "https://github.com/tesseract-ocr/"
   url "https://github.com/tesseract-ocr/tesseract/archive/3.04.01.tar.gz"
   sha256 "57f63e1b14ae04c3932a2683e4be4954a2849e17edd638ffe91bc5a2156adc6a"
+  revision 1
 
   bottle do
-    sha256 "03c047a1b844454c9f02b0b75ef95e851d5e4b017a0d5ab863bfa5b3b44d98f9" => :el_capitan
-    sha256 "0251215f2ffefeb9857041b883780bdf1e7f5a4489baa29bbfe0b5e0e77198a1" => :yosemite
-    sha256 "cf90c87132162f9e9d1f3a8b4ee32b0d3896144a0034614882a51b13381294ad" => :mavericks
+    sha256 "0e1ea373a757f19a7f19f3412cda85b612cc2d230e14cacb26ea0ddc694ca101" => :el_capitan
+    sha256 "99a634c471474235b5c846cd74e242b30691b2a02153e6e1bd63aa4a8f2c9b6f" => :yosemite
+    sha256 "aee2237246941213a2a042c2a305a460751678046ce0c27af832d5da8935667f" => :mavericks
   end
 
   head do
@@ -69,6 +70,11 @@ class Tesseract < Formula
     ENV["LIBLEPT_HEADERSDIR"] = HOMEBREW_PREFIX/"include"
 
     ENV.cxx11
+
+    # Fix broken pkg-config file
+    # Can be removed with next version bump
+    # https://github.com/tesseract-ocr/tesseract/issues/241
+    inreplace "tesseract.pc.in", "@OPENCL_LIB@", "@OPENCL_LDFLAGS@" if build.stable?
 
     system "./autogen.sh" if build.head?
 

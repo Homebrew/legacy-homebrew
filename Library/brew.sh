@@ -1,3 +1,5 @@
+HOMEBREW_VERSION="0.9.8"
+
 odie() {
   if [[ -t 2 ]] # check whether stderr is a tty.
   then
@@ -70,6 +72,7 @@ then
   fi
 fi
 
+export HOMEBREW_VERSION
 export HOMEBREW_BREW_FILE
 export HOMEBREW_RUBY_PATH
 export HOMEBREW_PREFIX
@@ -117,10 +120,10 @@ then
   set -- "$@" -v
 fi
 
+HOMEBREW_ARG_COUNT="$#"
 HOMEBREW_COMMAND="$1"
 shift
 case "$HOMEBREW_COMMAND" in
-  '')          HOMEBREW_COMMAND="help";;
   ls)          HOMEBREW_COMMAND="list";;
   homepage)    HOMEBREW_COMMAND="home";;
   -S)          HOMEBREW_COMMAND="search";;
@@ -146,7 +149,7 @@ fi
 if [[ "$(id -u)" = "0" && "$(/usr/bin/stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
 then
   case "$HOMEBREW_COMMAND" in
-    install|reinstall|postinstall|link|pin|update|update-ruby|upgrade|create|migrate|tap|switch)
+    install|reinstall|postinstall|link|pin|update|upgrade|create|migrate|tap|tap-pin|switch)
       odie <<EOS
 Cowardly refusing to 'sudo brew $HOMEBREW_COMMAND'
 You can use brew with sudo, but only if the brew executable is owned by root.
@@ -169,5 +172,7 @@ then
   source "$HOMEBREW_BASH_COMMAND"
   { "homebrew-$HOMEBREW_COMMAND" "$@"; exit $?; }
 else
-  exec "$HOMEBREW_RUBY_PATH" -W0 "$HOMEBREW_LIBRARY/brew.rb" "$HOMEBREW_COMMAND" "$@"
+  # Unshift command back into argument list (unless argument list was empty).
+  [[ "$HOMEBREW_ARG_COUNT" -gt 0 ]] && set -- "$HOMEBREW_COMMAND" "$@"
+  exec "$HOMEBREW_RUBY_PATH" -W0 "$HOMEBREW_LIBRARY/brew.rb" "$@"
 fi

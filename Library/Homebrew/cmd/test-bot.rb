@@ -11,6 +11,8 @@
 # --junit:         Generate a JUnit XML test results file.
 # --no-bottle:     Run brew install without --build-bottle
 # --keep-old:      Run brew bottle --keep-old to build new bottles for a single platform.
+# --legacy         Bulid formula from legacy Homebrew/homebrew repo.
+#                  (TODO remove it when it's not longer necessary)
 # --HEAD:          Run brew install with --HEAD
 # --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
 # --tap=<tap>:     Use the git repository of the given tap
@@ -31,17 +33,17 @@ require "rexml/document"
 require "rexml/xmldecl"
 require "rexml/cdata"
 require "tap"
-require "core_formula_repository"
 
 module Homebrew
   BYTES_IN_1_MEGABYTE = 1024*1024
+  HOMEBREW_TAP_REGEX = %r{^([\w-]+)/homebrew-([\w-]+)$}
 
   def resolve_test_tap
     if tap = ARGV.value("tap")
       return Tap.fetch(tap)
     end
 
-    if tap = ENV["TRAVIS_REPO_SLUG"]
+    if (tap = ENV["TRAVIS_REPO_SLUG"]) && (tap =~ HOMEBREW_TAP_REGEX)
       return Tap.fetch(tap)
     end
 
@@ -57,12 +59,12 @@ module Homebrew
       # Also can get tap from Jenkins GIT_URL.
       url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/").sub(%r{\.git$}, "")
       begin
-        return Tap.fetch(url_path)
+        return Tap.fetch(url_path) if url_path =~ HOMEBREW_TAP_REGEX
       rescue
       end
     end
 
-    CoreFormulaRepository.instance
+    CoreTap.instance
   end
 
   class Step
@@ -209,7 +211,7 @@ module Homebrew
       @added_formulae = []
       @modified_formula = []
       @steps = []
-      @tap = options.fetch(:tap,  CoreFormulaRepository.instance)
+      @tap = options.fetch(:tap, CoreTap.instance)
       @repository = @tap.path
       @skip_homebrew = options.fetch(:skip_homebrew, false)
 
@@ -329,7 +331,11 @@ module Homebrew
         # the right commit to BrewTestBot.
         unless travis_pr
           diff_start_sha1 = current_sha1
-          test "brew", "pull", "--clean", @url
+          if ARGV.include?("--legacy")
+            test "brew", "pull", "--clean", "--legacy", @url
+          else
+            test "brew", "pull", "--clean", @url
+          end
           diff_end_sha1 = current_sha1
         end
         @short_url = @url.gsub("https://github.com/", "")
@@ -609,7 +615,7 @@ module Homebrew
       @category = __method__
       return if @skip_homebrew
       test "brew", "tests"
-      if @tap.core_formula_repository?
+      if @tap.core_tap?
         tests_args = ["--no-compat"]
         readall_args = ["--aliases"]
         if RUBY_VERSION.split(".").first.to_i >= 2
@@ -633,8 +639,15 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "-ffdx" unless ENV["HOMEBREW_RUBY"] == "1.8.7"
-      pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/*.lock"
+      git "clean", "-ffdx"
+      HOMEBREW_REPOSITORY.cd do
+        safe_system "git", "reset", "--hard"
+        safe_system "git", "checkout", "-f", "master"
+        # This will uninstall all formulae, as long as
+        # HOMEBREW_REPOSITORY == HOMEBREW_PREFIX, which is true on the test bots
+        safe_system "git", "clean", "-ffdx", "--exclude=/Library/Taps/" unless ENV["HOMEBREW_RUBY"] == "1.8.7"
+      end
+      pr_locks = "#{@repository}/.git/refs/remotes/*/pr/*/*.lock"
       Dir.glob(pr_locks) { |lock| FileUtils.rm_rf lock }
     end
 
@@ -654,6 +667,10 @@ module Homebrew
         test "brew", "cleanup", "--prune=7"
         git "gc", "--auto"
         test "git", "clean", "-ffdx"
+        HOMEBREW_REPOSITORY.cd do
+          safe_system "git", "reset", "--hard"
+          safe_system "git", "clean", "-ffdx", "--exclude=/Library/Taps/"
+        end
         if ARGV.include? "--local"
           FileUtils.rm_rf ENV["HOMEBREW_HOME"]
           FileUtils.rm_rf ENV["HOMEBREW_LOGS"]
@@ -747,6 +764,7 @@ module Homebrew
 
     ARGV << "--verbose"
     ARGV << "--keep-old" if ENV["UPSTREAM_BOTTLE_KEEP_OLD"]
+    ARGV << "--legacy" if ENV["UPSTREAM_BOTTLE_LEGACY"]
 
     bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
     return if bottles.empty?
@@ -767,20 +785,20 @@ module Homebrew
     safe_system "brew", "update"
 
     if pr
-      pull_pr = if tap.core_formula_repository?
-        pr
+      if ARGV.include?("--legacy")
+        pull_pr = "https://github.com/Homebrew/homebrew/pull/#{pr}"
+        safe_system "brew", "pull", "--clean", "--legacy", pull_pr
       else
-        "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
+        pull_pr = "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
+        safe_system "brew", "pull", "--clean", pull_pr
       end
-      safe_system "brew", "pull", "--clean", pull_pr
     end
 
     bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
     system "brew", "bottle", *bottle_args
 
-    remote_repo = tap.core_formula_repository? ? "homebrew" : "homebrew-#{tap.repo}"
-    remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
+    remote = "git@github.com:BrewTestBot/homebrew-#{tap.repo}.git"
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
@@ -805,9 +823,14 @@ module Homebrew
       unless formula_packaged[formula_name]
         package_url = "#{bintray_repo_url}/#{bintray_package}"
         unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
+          package_blob = <<-EOS.undent
+            {"name": "#{bintray_package}",
+             "public_download_numbers": true,
+             "public_stats": true}
+          EOS
           curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
                "-H", "Content-Type: application/json",
-               "-d", "{\"name\":\"#{bintray_package}\"}", bintray_repo_url
+               "-d", package_blob, bintray_repo_url
           puts
         end
         formula_packaged[formula_name] = true
@@ -862,9 +885,17 @@ module Homebrew
     p ARGV
 
     tap = resolve_test_tap
-    # Tap repository if required, this is done before everything else
-    # because Formula parsing and/or git commit hash lookup depends on it.
-    safe_system "brew", "tap", tap.name unless tap.installed?
+    if tap.installed?
+      # make sure Tap is not a shallow clone.
+      # bottle revision and bottle upload rely on full clone.
+      if (tap.path/".git/shallow").exist?
+        safe_system "git", "-C", tap.path, "fetch", "--unshallow"
+      end
+    else
+      # Tap repository if required, this is done before everything else
+      # because Formula parsing and/or git commit hash lookup depends on it.
+      safe_system "brew", "tap", tap.name, "--full"
+    end
 
     if ARGV.include? "--ci-upload"
       return test_ci_upload(tap)

@@ -10,8 +10,6 @@ module Homebrew
       end
     end
 
-    raise "Homebrew/homebrew is not allowed" if taps.any?(&:core_formula_repository?)
-
     if ARGV.json == "v1"
       print_tap_json(taps)
     else

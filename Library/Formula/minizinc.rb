@@ -1,15 +1,15 @@
 class Minizinc < Formula
   desc "Medium-level constraint modeling language"
   homepage "http://www.minizinc.org"
-  url "https://github.com/MiniZinc/libminizinc/archive/2.0.6.tar.gz"
-  sha256 "95b413c82f510e406f32bbb779fe1221a3b6bf2931854f61ca44bcefc0788f50"
+  url "https://github.com/MiniZinc/libminizinc/archive/2.0.13.tar.gz"
+  sha256 "0b94f56553d162c6888d5eb336342df27cb605e0c18b01c7f2a54ee7e31dcd46"
   head "https://github.com/MiniZinc/libminizinc.git", :branch => "develop"
 
   bottle do
-    cellar :any
-    sha256 "57ecab3e20c9353ba8e0945c20885469b8e4890f4f931346f27398458c7241dd" => :yosemite
-    sha256 "661e0eb3d7b3cb601ba4a1d08ebc277cfc42ab0d05370a6d9c9989e03abf7dd1" => :mavericks
-    sha256 "6e450774291e5065beaef7337e66869cb698f1cb8bd07089d7d9ffe3188fca96" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "c764e61dc7f9e2508d9bf7fb5bb2bfa1e0d3c85521f441f9dc0e65447e30a626" => :el_capitan
+    sha256 "b36ee719d486ca15850472ed50d523eca256710079e236ac879ff4c700887732" => :yosemite
+    sha256 "2b48f64eabd1c4e88c71dc2c45d50fa7a6ba9fa90fc5e620de6baf2555e51ea6" => :mavericks
   end
 
   depends_on :arch => :x86_64

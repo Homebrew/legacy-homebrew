@@ -2,7 +2,7 @@ class Lcrack < Formula
   desc "Generic password cracker"
   homepage "https://packages.debian.org/sid/lcrack"
   url "https://mirrors.ocf.berkeley.edu/debian/pool/main/l/lcrack/lcrack_20040914.orig.tar.gz"
-  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/lcrack/lcrack_20040914.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/l/lcrack/lcrack_20040914.orig.tar.gz"
   version "20040914"
   sha256 "63fe93dfeae92677007f1e1022841d25086b92d29ad66435ab3a80a0705776fe"
 

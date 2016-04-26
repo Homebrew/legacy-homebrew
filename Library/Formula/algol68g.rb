@@ -1,13 +1,14 @@
 class Algol68g < Formula
   desc "Algol 68 compiler-interpreter"
-  homepage "http://jmvdveer.home.xs4all.nl/algol.html"
-  url "http://jmvdveer.home.xs4all.nl/algol68g-2.8.2.tar.gz"
+  homepage "https://jmvdveer.home.xs4all.nl/algol.html"
+  url "https://jmvdveer.home.xs4all.nl/algol68g-2.8.2.tar.gz"
   sha256 "bf0416b296e4935908a39b12688822d0b017d3dbb74cb4dc0ab2a15184c9ddb1"
 
   bottle do
-    sha256 "fdc60030a0c5ca5787a8bc88e9f365f4c9ab9b9a792ab058a9792b3f539674ea" => :el_capitan
-    sha256 "14dc332e1aa14ad318b6a5878fca573360f54bc1ef3adef87ac3e739974ac3fc" => :yosemite
-    sha256 "7ebe13640eb6cab2163f37aa013ddf3adf94c887160940deacb1b30bc15c1f51" => :mavericks
+    revision 1
+    sha256 "bc5f3a74664dd5c74948c0c351108817a053dc13be030e51e00a339b9405132e" => :el_capitan
+    sha256 "44ca43b333c52205a6e5e5981f80b4edbe0533a377907ffcef4322037d49c830" => :yosemite
+    sha256 "e0e8b42526096a6e40498c159f8b490dd0bb2b5c4d284a17f19a742af4c3d3c2" => :mavericks
   end
 
   depends_on "gsl" => :optional

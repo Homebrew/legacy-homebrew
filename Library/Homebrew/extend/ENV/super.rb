@@ -28,7 +28,7 @@ module Superenv
   def self.bin
     return unless MacOS.has_apple_developer_tools?
 
-    bin = (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
+    bin = HOMEBREW_ENV_PATH.subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
     bin.realpath unless bin.nil?
   end
 
@@ -67,7 +67,7 @@ module Superenv
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
 
-    if MacOS::Xcode.without_clt?
+    if MacOS::Xcode.without_clt? || (MacOS::Xcode.installed? && MacOS::Xcode.version.to_i >= 7)
       self["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s
       self["SDKROOT"] = MacOS.sdk_path
     end
@@ -150,7 +150,7 @@ module Superenv
   end
 
   def determine_pkg_config_libdir
-    paths = %W[/usr/lib/pkgconfig #{HOMEBREW_LIBRARY}/ENV/pkgconfig/#{MacOS.version}]
+    paths = %W[/usr/lib/pkgconfig #{HOMEBREW_ENV_PATH}/pkgconfig/#{MacOS.version}]
     paths << "#{MacOS::X11.lib}/pkgconfig" << "#{MacOS::X11.share}/pkgconfig" if x11?
     paths.to_path_s
   end
@@ -263,7 +263,7 @@ module Superenv
   alias_method :j1, :deparallelize
 
   def make_jobs
-    self["MAKEFLAGS"] =~ /-\w*j(\d)+/
+    self["MAKEFLAGS"] =~ /-\w*j(\d+)/
     [$1.to_i, 1].max
   end
 

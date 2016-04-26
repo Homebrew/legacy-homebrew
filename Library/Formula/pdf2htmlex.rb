@@ -1,16 +1,16 @@
 class Pdf2htmlex < Formula
   desc "PDF to HTML converter"
   homepage "https://coolwanglu.github.io/pdf2htmlEX/"
-  url "https://github.com/coolwanglu/pdf2htmlEX/archive/v0.13.6.tar.gz"
-  sha256 "fc133a5791bfd76a4425af16c6a6a2460f672501b490cbda558213cb2b03d5d7"
-  revision 7
+  url "https://github.com/coolwanglu/pdf2htmlEX/archive/v0.14.6.tar.gz"
+  sha256 "320ac2e1c2ea4a2972970f52809d90073ee00a6c42ef6d9833fb48436222f0e5"
+  revision 1
 
   head "https://github.com/coolwanglu/pdf2htmlEX.git"
 
   bottle do
-    sha256 "8e11f8223f9268111a3bdd300f4042ee73560d32b106504b9f7f41e6ed50ff7f" => :el_capitan
-    sha256 "89e8d81c0c074c71a66be5c57f6ca1ec25811f00c39e40d291cbe37d0f3ac6be" => :yosemite
-    sha256 "b383c1a3b55fac3601730b994326d2a1f3be5c1cc048e8b229b701d6fd5272b7" => :mavericks
+    sha256 "7fb9a99daaea6f372d7ea2bc2511114bb719deb3b8a35f589a547211d053c22a" => :el_capitan
+    sha256 "3e8730530fe8eae8ff63b8eb3539fd6e55f959d6edd10a5fbb2fdd605221c57e" => :yosemite
+    sha256 "ed3f86c149d5ce601e6d63dcae147f541a0745623244a7bc0a88941ec5963b5f" => :mavericks
   end
 
   depends_on :macos => :lion
@@ -42,11 +42,6 @@ class Pdf2htmlex < Formula
     build 2336
     cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
   end
-
-  # Fix a compilation failure with poppler 0.31.0+
-  # Upstream is aware of the issue and suggested this patch:
-  # https://github.com/coolwanglu/pdf2htmlEX/commit/d4fc82b#commitcomment-12239022
-  patch :DATA
 
   def install
     resource("fontforge").stage do
@@ -84,18 +79,3 @@ class Pdf2htmlex < Formula
     system "#{bin}/pdf2htmlEX", test_fixtures("test.pdf")
   end
 end
-
-__END__
-diff --git a/3rdparty/poppler/git/CairoFontEngine.cc b/3rdparty/poppler/git/CairoFontEngine.cc
-index 229a86c..7cc448b 100644
---- a/3rdparty/poppler/git/CairoFontEngine.cc
-+++ b/3rdparty/poppler/git/CairoFontEngine.cc
-@@ -421,7 +421,7 @@ CairoFreeTypeFont *CairoFreeTypeFont::create(GfxFont *gfxFont, XRef *xref,
-   ref = *gfxFont->getID();
-   fontType = gfxFont->getType();
-
--  if (!(fontLoc = gfxFont->locateFont(xref, gFalse))) {
-+  if (!(fontLoc = gfxFont->locateFont(xref, nullptr))) {
-     error(errSyntaxError, -1, "Couldn't find a font for '{0:s}'",
-	gfxFont->getName() ? gfxFont->getName()->getCString()
-	                       : "(unnamed)");

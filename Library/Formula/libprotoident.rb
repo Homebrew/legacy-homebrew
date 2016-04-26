@@ -1,14 +1,15 @@
 class Libprotoident < Formula
-  desc "Libprotoident performs application layer protocol identification"
+  desc "Performs application layer protocol identification for flows"
   homepage "http://research.wand.net.nz/software/libprotoident.php"
   url "http://research.wand.net.nz/software/libprotoident/libprotoident-2.0.7.tar.gz"
   sha256 "5063497274e546b01b0606c8906a292cbe1e2ba8d6f3b6cd25de16a91fef635e"
 
   bottle do
     cellar :any
-    sha256 "6e855130c99dffc512308b78811954b6b233bd5bbbb79a0f532cb302dcb346e1" => :yosemite
-    sha256 "3c488040b17583688eb485b54f2e08a596d06921c18be68c9d7cb9241037eca7" => :mavericks
-    sha256 "f343ff0a3df33dfaf670073a18ad3cf46368cf51b3a1b1c7ec935000f419b99e" => :mountain_lion
+    revision 1
+    sha256 "9f761841d9dd58fcdadbe545d52832bf05efa3b84b936a60c4e2fa564de101a1" => :el_capitan
+    sha256 "a3c9fed0934c5e8c8f414cdc2abc7b1dec3dd991d97b2d9f057fb1a66ac0e550" => :yosemite
+    sha256 "7a9c3dfc6052466f4be61cca44996ef98654f9c40d7da26e3e96be4ae17730d3" => :mavericks
   end
 
   depends_on "libflowmanager"

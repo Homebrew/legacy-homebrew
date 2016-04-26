@@ -4,38 +4,33 @@ class Kapacitor < Formula
   desc "Open source time series data processor"
   homepage "https://github.com/influxdata/kapacitor"
   url "https://github.com/influxdata/kapacitor.git",
-    :tag => "v0.10.1",
-    :revision => "22b917b4722addf9ff604d16fa01a09431641c55"
+    :tag => "v0.11.0",
+    :revision => "97ac4edb295c9f11b5c428fe5906bc6aa4e0865b"
 
   head "https://github.com/influxdata/kapacitor.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "efc23ea8552b81deb78223f2ebdec8769846a4f84756411c323e20d3bc1e4505" => :el_capitan
-    sha256 "9c9fd038c39e970a02f0c05482c5211094bbe429dbf162a746064a0be13e55f7" => :yosemite
-    sha256 "f948ff298c8bdac82b0caefb743a834348d67b38644b2746dea6ae720cca4275" => :mavericks
+    sha256 "a9dd1fec28dc4863bb8983721ad79213a3911eeed2934fd963ecf37bf772096c" => :el_capitan
+    sha256 "52de9ce4609f2d138e5ff8b2bc69dbf6dbc3beb8c9f5ede2c8d12816e385f4ca" => :yosemite
+    sha256 "115703595c641ed2007eec944ae4605b95a1ca4550440b19a5712585f88af7fd" => :mavericks
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
-    :revision => "5c4df71dfe9ac89ef6287afc05e4c1b16ae65a1e"
-  end
-
-  go_resource "github.com/armon/go-metrics" do
-    url "https://github.com/armon/go-metrics.git",
-    :revision => "345426c77237ece5dab0e1605c3e4b35c3f54757"
+    :revision => "bbd5bb678321a0d6e58f1099321dfa73391c1b6f"
   end
 
   go_resource "github.com/boltdb/bolt" do
     url "https://github.com/boltdb/bolt.git",
-    :revision => "ee4a0888a9abe7eefe5a0992ca4cb06864839873"
+    :revision => "c2610ee091a94978d6092586b2b98b78cd8f7aca"
   end
 
   go_resource "github.com/cenkalti/backoff" do
     url "https://github.com/cenkalti/backoff.git",
-    :revision => "4dc77674aceaabba2c7e3da25d4c823edfb73f99"
+    :revision => "32cd0c5b3aef12c76ed64aaf678f6c79736be7dc"
   end
 
   go_resource "github.com/dustin/go-humanize" do
@@ -45,32 +40,17 @@ class Kapacitor < Formula
 
   go_resource "github.com/gogo/protobuf" do
     url "https://github.com/gogo/protobuf.git",
-    :revision => "82d16f734d6d871204a3feb1a73cb220cc92574c"
+    :revision => "4168943e65a2802828518e95310aeeed6d84c4e5"
   end
 
   go_resource "github.com/gorhill/cronexpr" do
     url "https://github.com/gorhill/cronexpr.git",
-    :revision => "a557574d6c024ed6e36acc8b610f5f211c91568a"
+    :revision => "f0984319b44273e83de132089ae42b1810f4933b"
   end
 
-  go_resource "github.com/hashicorp/go-msgpack" do
-    url "https://github.com/hashicorp/go-msgpack.git",
-    :revision => "fa3f63826f7c23912c15263591e65d54d080b458"
-  end
-
-  go_resource "github.com/hashicorp/raft" do
-    url "https://github.com/hashicorp/raft.git",
-    :revision => "057b893fd996696719e98b6c44649ea14968c811"
-  end
-
-  go_resource "github.com/hashicorp/raft-boltdb" do
-    url "https://github.com/hashicorp/raft-boltdb.git",
-    :revision => "d1e82c1ec3f15ee991f7cc7ffd5b67ff6f5bbaee"
-  end
-
-  go_resource "github.com/influxdb/influxdb" do
-    url "https://github.com/influxdb/influxdb.git",
-    :revision => "af1a22da763414b6cc2f8c12f25b107521c19a30"
+  go_resource "github.com/influxdata/influxdb" do
+    url "https://github.com/influxdata/influxdb.git",
+    :revision => "5e8e849ebdeb66e13a4c32069acd101e23f368f9"
   end
 
   go_resource "github.com/influxdb/usage-client" do
@@ -80,32 +60,32 @@ class Kapacitor < Formula
 
   go_resource "github.com/kimor79/gollectd" do
     url "https://github.com/kimor79/gollectd.git",
-    :revision => "61d0deeb4ffcc167b2a1baa8efd72365692811bc"
+    :revision => "b5dddb1667dcc1e6355b9305e2c1608a2db6983c"
   end
 
   go_resource "github.com/mattn/go-runewidth" do
     url "https://github.com/mattn/go-runewidth.git",
-    :revision => "e882a96ec18dd43fa283187b66af74497c9101c0"
+    :revision => "d6bea18f789704b5f83375793155289da36a3c7f"
   end
 
   go_resource "github.com/russross/blackfriday" do
     url "https://github.com/russross/blackfriday.git",
-    :revision => "006144af03eeeff1037240a71865a9fd61f1c25f"
+    :revision => "b43df972fb5fdf3af8d2e90f38a69d374fe26dd0"
   end
 
   go_resource "github.com/serenize/snaker" do
     url "https://github.com/serenize/snaker.git",
-    :revision => "d88cc11617e4f179fa2c821a60908d5fabd7bdad"
+    :revision => "8824b61eca66d308fcb2d515287d3d7a28dba8d6"
   end
 
   go_resource "github.com/shurcooL/go" do
     url "https://github.com/shurcooL/go.git",
-    :revision => "4d829e4f99c3765122ba92c78b8f69cc0392983d"
+    :revision => "4df21823efe0d75ceac67879b43bcd28c8b864ad"
   end
 
   go_resource "github.com/shurcooL/markdownfmt" do
     url "https://github.com/shurcooL/markdownfmt.git",
-    :revision => "b191517d76ef6b1ac2599ea819579d6256fb160e"
+    :revision => "f9ece38f23b0150fcfaa82de98ec43ce0b98a83e"
   end
 
   go_resource "github.com/shurcooL/sanitized_anchor_name" do
@@ -115,7 +95,7 @@ class Kapacitor < Formula
 
   go_resource "github.com/stretchr/testify" do
     url "https://github.com/stretchr/testify.git",
-    :revision => "a1f97990ddc16022ec7610326dd9bce31332c116"
+    :revision => "f390dcf405f7b83c997eac1b06768bb9f44dec18"
   end
 
   go_resource "github.com/twinj/uuid" do
@@ -125,17 +105,12 @@ class Kapacitor < Formula
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-    :revision => "1f22c0103821b9390939b6776727195525381532"
-  end
-
-  go_resource "gopkg.in/fatih/pool.v2" do
-    url "https://gopkg.in/fatih/pool.v2.git",
-    :revision => "cba550ebf9bce999a02e963296d4bc7a486cb715"
+    :revision => "c197bcf24cde29d3f73c7b4ac6fd41f4384e8af6"
   end
 
   go_resource "gopkg.in/gomail.v2" do
     url "https://gopkg.in/gomail.v2.git",
-    :revision => "fbb71ddc63acd07dd0ed49ababdf02c551e2539a"
+    :revision => "84856b343c307d0d076818e93d6122b71591c4a7"
   end
 
   def install
@@ -200,6 +175,13 @@ class Kapacitor < Formula
 
   test do
     (testpath/"config.toml").write shell_output("kapacitord config")
+
+    inreplace testpath/"config.toml" do |s|
+      s.gsub! /\[\[influxdb\]\]\n  enabled = true/m, "[[influxdb]]\n  enabled = false"
+      s.gsub! %r{data_dir = "/.*/.kapacitor}, "data_dir = \"#{testpath}/kapacitor"
+      s.gsub! %r{/.*/.kapacitor/replay}, "#{testpath}/kapacitor/replay"
+      s.gsub! %r{/.*/.kapacitor/tasks}, "#{testpath}/kapacitor/tasks"
+    end
 
     pid = fork do
       exec "#{bin}/kapacitord -config #{testpath}/config.toml"

@@ -1,14 +1,14 @@
 class Jsonnet < Formula
   desc "Domain specific configuration language for defining JSON data."
   homepage "https://google.github.io/jsonnet/doc/"
-  url "https://github.com/google/jsonnet/archive/v0.8.5.tar.gz"
-  sha256 "514df86f954150baac5cace169bc7df3c6989d61c6d95cf5c0f483a68e84dcac"
+  url "https://github.com/google/jsonnet/archive/v0.8.7.tar.gz"
+  sha256 "c1cc21fcc8b6d590bc13af05e5932b07ec0e00c1a9737a01f858a7aefca52ffb"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b2ecd2c543dffa729829c4ac274b63d93f36555ab3fd1cd2f175e24abf56c447" => :el_capitan
-    sha256 "a3baed2fa2c5f00aa41274de6824eb12e1f6b8d35f3d7b7a204e4d877e0c5184" => :yosemite
-    sha256 "4d60ec983b864e64042d702c80e1e47a64a43272778533715abb28a0fa2fc9e9" => :mavericks
+    sha256 "de8636d5e2c72b12302d0b580cc523dd69d42515df6b7e989d3f7d70bf12c626" => :el_capitan
+    sha256 "a4f3f40594c54f87347348f1398610f1e7755f1328345572d259bd7d3a0564db" => :yosemite
+    sha256 "d873d720f899167b86bb62aa7ef77c148e7daca45d16ecefc9b42e7a5b9185c4" => :mavericks
   end
 
   needs :cxx11

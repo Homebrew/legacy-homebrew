@@ -8,6 +8,7 @@ class Gistit < Formula
 
   bottle do
     cellar :any
+    sha256 "b968a2885e3ac3e0c717fdabb9986149a39d58d031476d4ef3ada7a9e1ad07e9" => :el_capitan
     sha256 "052536cb990d1c5ea4b48612026dfb13addd03cbc06ed8c6b42f3636eb6771a7" => :yosemite
     sha256 "c2388d390d86f39934ae51e71edfa1fd890d8ad4384427ab14275280eece97ce" => :mavericks
     sha256 "a937902abd77953fa61689cb8bdb58344cf0d8a20e36bf1745f31fac9beb14b8" => :mountain_lion

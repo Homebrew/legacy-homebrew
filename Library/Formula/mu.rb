@@ -9,9 +9,10 @@ class Mu < Formula
   head "https://github.com/djcb/mu.git"
 
   bottle do
-    sha256 "ea254d8d244906f99306237d988273ba90cd3a82c0aa7101dbffabd8fca79b85" => :el_capitan
-    sha256 "4336bed7c4560b5c810f0a58b82c2a7196196c1699f7f7577e0af36541dad633" => :yosemite
-    sha256 "42367663837d83860c9d3ffbd0b3d744d9d0f61487c653ea4e455f786f458961" => :mavericks
+    revision 1
+    sha256 "e0e3532baa75ecee2d71a264a8bed4725a1dc1a6ecb9b0afbcc6f225a77dd06e" => :el_capitan
+    sha256 "927ba3c36a061061c679ad91319d614532dbbd7c450ec0e0172681465b8f06e3" => :yosemite
+    sha256 "99553174cd38a3d19993a94c07dafab56e98f591ac5054bf6b79d1d6b13f5e02" => :mavericks
   end
 
   depends_on "autoconf" => :build
@@ -29,10 +30,6 @@ class Mu < Formula
     # shipped by default with Mac OS X is too old.
     ENV["EMACS"] = "no" if build.without? "emacs"
 
-    # https://github.com/djcb/mu/issues/380
-    # https://github.com/djcb/mu/issues/332
-    ENV.O0 if MacOS.version >= :mavericks && ENV.compiler == :clang
-
     system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -48,6 +45,10 @@ class Mu < Formula
     EOS
   end
 
+  # Regression test for:
+  # https://github.com/djcb/mu/issues/397
+  # https://github.com/djcb/mu/issues/380
+  # https://github.com/djcb/mu/issues/332
   test do
     mkdir (testpath/"cur")
 

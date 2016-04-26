@@ -1,16 +1,16 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
   homepage "http://www.ansible.com"
-  url "https://releases.ansible.com/ansible/ansible-2.0.0.2.tar.gz"
-  sha256 "27db0b99113fab85b1430c361c7790a0aa7f5c614c9af13362e2adbba07e5828"
+  url "https://releases.ansible.com/ansible/ansible-2.0.1.0.tar.gz"
+  sha256 "cddc4fa6af4c1be6cd1d6634de1bd0397abad921c76b32cab6722c042744ee5d"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
     revision 2
-    sha256 "7d1afbbf70603d8e1c3bf14b507d6b1ffc50bc2694e99fafde63a5b2cc601d22" => :el_capitan
-    sha256 "d5b256451edee339c92b3ca1ea2dd9c91ae012afa0efc6f0716f1af79cefa463" => :yosemite
-    sha256 "c4291da7b959bca1455367f205e9a334dece4937a27faab14dc919b65c4fcd4d" => :mavericks
+    sha256 "457a6bcbe29bde7543544dbd44d702e9d6ee51135dc59687cd923f8737a3d31d" => :el_capitan
+    sha256 "339d9bc27942b45d7322f6960422718523a92dbd167869bb3f5cb80d54075369" => :yosemite
+    sha256 "d0684bc344e8bfee3ecdc79316c24b57cf06c1417cc84a79643c10d81ea74d96" => :mavericks
   end
 
   devel do
@@ -79,8 +79,8 @@ class Ansible < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.1.2.tar.gz"
-    sha256 "7f51459f84d670444275e615839f4542c93547a12e938a0a4906dafe5f7de153"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.3.tar.gz"
+    sha256 "8eb11c77dd8e73f48df6b2f7a7e16173fe0fe8fdfe266232832e88477e08454e"
   end
 
   resource "enum34" do
@@ -223,6 +223,11 @@ class Ansible < Formula
   resource "debtcollector" do
     url "https://pypi.python.org/packages/source/d/debtcollector/debtcollector-1.2.0.tar.gz"
     sha256 "6467a3a074f0f042dc610f994c4f67a26d10f4e2e6b4d12adfb8380dc7a5d169"
+  end
+
+  resource "dnspython" do
+    url "https://pypi.python.org/packages/source/d/dnspython/dnspython-1.12.0.zip"
+    sha256 "63bd1fae61809eedb91f84b2185816fac1270ae51494fbdd36ea25f904a8502f"
   end
 
   resource "funcsigs" do

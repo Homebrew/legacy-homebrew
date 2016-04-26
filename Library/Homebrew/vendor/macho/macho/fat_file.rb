@@ -13,6 +13,16 @@ module MachO
     # @return [Array<MachO::MachOFile>] an array of Mach-O binaries
     attr_reader :machos
 
+    # Creates a new FatFile instance from a binary string.
+    # @param bin [String] a binary string containing raw Mach-O data
+    # @return [MachO::FatFile] a new FatFile
+    def self.new_from_bin(bin)
+      instance = allocate
+      instance.initialize_from_bin(bin)
+
+      instance
+    end
+
     # Creates a new FatFile from the given filename.
     # @param filename [String] the fat file to load from
     # @raise [ArgumentError] if the given filename does not exist
@@ -21,6 +31,15 @@ module MachO
 
       @filename = filename
       @raw_data = open(@filename, "rb") { |f| f.read }
+      @header = get_fat_header
+      @fat_archs = get_fat_archs
+      @machos = get_machos
+    end
+
+    # @api private
+    def initialize_from_bin(bin)
+      @filename = nil
+      @raw_data = bin
       @header = get_fat_header
       @fat_archs = get_fat_archs
       @machos = get_machos
@@ -131,8 +150,10 @@ module MachO
     # All shared libraries linked to the file's Mach-Os.
     # @return [Array<String>] an array of all shared libraries
     def linked_dylibs
-      # can machos inside fat binaries have different dylibs?
-      machos.flat_map(&:linked_dylibs).uniq
+      # Individual architectures in a fat binary can link to different subsets
+      # of libraries, but at this point we want to have the full picture, i.e.
+      # the union of all libraries used by all architectures.
+      machos.map(&:linked_dylibs).flatten.uniq
     end
 
     # Changes all dependent shared library install names from `old_name` to `new_name`.
@@ -168,25 +189,45 @@ module MachO
     end
 
     # Write all (fat) data to the file used to initialize the instance.
+    # @return [void]
+    # @raise [MachO::MachOError] if the instance was initialized without a file
     # @note Overwrites all data in the file!
     def write!
-      File.open(@filename, "wb") { |f| f.write(@raw_data) }
+      if filename.nil?
+        raise MachOError.new("cannot write to a default file when initialized from a binary string")
+      else
+        File.open(@filename, "wb") { |f| f.write(@raw_data) }
+      end
     end
 
     private
 
     # Obtain the fat header from raw file data.
     # @return [MachO::FatHeader] the fat header
+    # @raise [MachO::TruncatedFileError] if the file is too small to have a valid header
     # @raise [MachO::MagicError] if the magic is not valid Mach-O magic
     # @raise [MachO::MachOBinaryError] if the magic is for a non-fat Mach-O file
+    # @raise [MachO::JavaClassFileError] if the file is a Java classfile
     # @private
     def get_fat_header
-      magic, nfat_arch = @raw_data[0..7].unpack("N2")
+      # the smallest fat Mach-O header is 8 bytes
+      raise TruncatedFileError.new if @raw_data.size < 8
 
-      raise MagicError.new(magic) unless MachO.magic?(magic)
-      raise MachOBinaryError.new unless MachO.fat_magic?(magic)
+      fh = FatHeader.new_from_bin(@raw_data[0, FatHeader.bytesize])
 
-      FatHeader.new(magic, nfat_arch)
+      raise MagicError.new(fh.magic) unless MachO.magic?(fh.magic)
+      raise MachOBinaryError.new unless MachO.fat_magic?(fh.magic)
+
+      # Rationale: Java classfiles have the same magic as big-endian fat
+      # Mach-Os. Classfiles encode their version at the same offset as
+      # `nfat_arch` and the lowest version number is 43, so we error out
+      # if a file claims to have over 30 internal architectures. It's
+      # technically possible for a fat Mach-O to have over 30 architectures,
+      # but this is extremely unlikely and in practice distinguishes the two
+      # formats.
+      raise JavaClassFileError.new if fh.nfat_arch > 30
+
+      fh
     end
 
     # Obtain an array of fat architectures from raw file data.
@@ -195,9 +236,10 @@ module MachO
     def get_fat_archs
       archs = []
 
+      fa_off = FatHeader.bytesize
+      fa_len = FatArch.bytesize
       header.nfat_arch.times do |i|
-        fields = @raw_data[8 + (FatArch.bytesize * i), FatArch.bytesize].unpack("N5")
-        archs << FatArch.new(*fields)
+        archs << FatArch.new_from_bin(@raw_data[fa_off + (fa_len * i), fa_len])
       end
 
       archs

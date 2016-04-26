@@ -8,22 +8,28 @@ class Wine < Formula
   head "git://source.winehq.org/git/wine.git"
 
   stable do
-    url "https://dl.winehq.org/wine/source/1.8/wine-1.8.tar.bz2"
-    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.8.tar.bz2"
-    sha256 "f33b45c18112b2071fbf9edee0e8c575407f9e2a9855ca4ee918ed33efa7c6f4"
+    url "https://dl.winehq.org/wine/source/1.8/wine-1.8.1.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.8.1.tar.bz2"
+    sha256 "149ad3daaf8593b36c5c061285df0ec2a25e20ea48c61323be91088c4d22ca97"
+
+    # Patch to fix MSI creation issues.
+    # https://bugs.winehq.org/show_bug.cgi?id=40129
+    patch do
+      url "https://bugs.winehq.org/attachment.cgi?id=53632"
+      sha256 "b9f98711cfe62228f5d84ab394394008ee10127bebcea7ef966d24127b466e0a"
+    end
   end
 
   bottle do
-    revision 2
-    sha256 "33b161d56526335f422f15442da31ab25196556538031ad3fd5825102bb1b484" => :el_capitan
-    sha256 "c62a3dd6630de472510be71c50b4724c826dd8daaad9c71bfdb737daa6ccf338" => :yosemite
-    sha256 "8bfc2b0d412c8edffde2054f7a42f86545b5466843fabd9e0fcf765f5e428d85" => :mavericks
+    sha256 "04203794850697cab2119e3a5ac31a77119067780b3f468e4f195279e77bd11c" => :el_capitan
+    sha256 "9c0a4c424a60284e7020df46301c7cb559a0bec187ba402fd221644fec7bedf3" => :yosemite
+    sha256 "2c332eb04f43ea0f7ae6d953a21be102348f156d6b2b407043914d6bf53e40dd" => :mavericks
   end
 
   devel do
-    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.3.tar.bz2"
-    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.3.tar.bz2"
-    sha256 "475f54855534c8ec45bb4be70d84fb98e7fe8467fb1a35f66b3c0e92f4ea090d"
+    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.6.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.6.tar.bz2"
+    sha256 "3d2b862feefd89eca954c1cbc16a28e0ce851aeea1555bc1842ffc9aab2c1557"
   end
 
   # note that all wine dependencies should declare a --universal option in their formula,
@@ -59,13 +65,6 @@ class Wine < Formula
   patch do
     url "https://bugs.winehq.org/attachment.cgi?id=52384"
     sha256 "30766403f5064a115f61de8cacba1defddffe2dd898b59557956400470adc699"
-  end
-
-  # Patch to fix MSI creation issues.
-  # https://bugs.winehq.org/show_bug.cgi?id=40129
-  patch do
-    url "https://bugs.winehq.org/attachment.cgi?id=53632"
-    sha256 "b9f98711cfe62228f5d84ab394394008ee10127bebcea7ef966d24127b466e0a"
   end
 
   # This option is currently disabled because Apple clang currently doesn't

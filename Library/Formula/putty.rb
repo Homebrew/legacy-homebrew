@@ -1,16 +1,16 @@
 class Putty < Formula
   desc "Implementation of Telnet and SSH"
   homepage "http://www.chiark.greenend.org.uk/~sgtatham/putty/"
-  url "https://the.earth.li/~sgtatham/putty/0.66/putty-0.66.tar.gz"
-  mirror "https://fossies.org/linux/misc/putty-0.66.tar.gz"
-  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.66.tar.gz"
-  sha256 "fe7312f66c54865868b362f4b79bd1fbe7ce9e8b1fd504b04034182db1f32993"
+  url "https://the.earth.li/~sgtatham/putty/0.67/putty-0.67.tar.gz"
+  mirror "https://fossies.org/linux/misc/putty-0.67.tar.gz"
+  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.67.tar.gz"
+  sha256 "80192458e8a46229de512afeca5c757dd8fce09606b3c992fbaeeee29b994a47"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "02b14c65a6041b6fec2cb042e7d110d34fd13ca55553605f1baacb4d4a514452" => :el_capitan
-    sha256 "b1e686cd941a087a6bb5f56e9954bc5550533d8689c1024d7507c0e5a41b44fe" => :yosemite
-    sha256 "98b118bc2f5642194b3be582d3d3e1b8e75a1ffeb4a27924a732a6daa0f65345" => :mavericks
+    sha256 "36280287489637eebb3b5994ad0ec4821e7cb0705a4ca109dd1d3ddb40e2f6bf" => :el_capitan
+    sha256 "132fd31add6b21cc25bb79f778c48ce004c236d18ea99e22acc8a8d1ad51e819" => :yosemite
+    sha256 "066385a68e8c73e006f886930a267899eb02da47b8802b17c8f9cfe1263a45b6" => :mavericks
   end
 
   conflicts_with "pssh", :because => "both install `pscp` binaries"

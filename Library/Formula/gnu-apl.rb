@@ -7,6 +7,7 @@ class GnuApl < Formula
 
   bottle do
     revision 1
+    sha256 "272fc906d7e7889c87e7f2f3a46af194730482c6fc6e8021b06580798694ff91" => :el_capitan
     sha256 "0a061c8ca10b237d15eddd13acf0bc1007b1b18888eda30cd43beeaa77602979" => :yosemite
     sha256 "350db093b3749d355147717f3e3209378c32aae2e508e2b54534f002be5fdedd" => :mavericks
   end

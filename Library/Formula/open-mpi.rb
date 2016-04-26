@@ -5,9 +5,10 @@ class OpenMpi < Formula
   sha256 "8846e7e69a203db8f50af90fa037f0ba47e3f32e4c9ccdae2db22898fd4d1f59"
 
   bottle do
-    sha256 "a2f66b3a19c916752c0dbda29d09d97c7fa86e36cac403bbfaf161a41f4edcae" => :el_capitan
-    sha256 "f304a938f8e55640758e9005dc6de4d847a1b97b4e1f0dc17d7553cd66043f98" => :yosemite
-    sha256 "480ad18bcb7debf3b7d99e6d37d402dafeaa9fd6a5424932ed208c47320d0cc6" => :mavericks
+    revision 1
+    sha256 "3a6ec528d87a0648b30ec17b0dd88a7c40bac25719cb6509421879d9dab009bb" => :el_capitan
+    sha256 "8682efb08c38e781245783991a2ed1019f92eb735288c8d1a0cf25ea8b559ed7" => :yosemite
+    sha256 "168b60f491efc640c17fb92afd64eacf5b9430d519f594934106be01561bf907" => :mavericks
   end
 
   head do
@@ -26,9 +27,9 @@ class OpenMpi < Formula
   conflicts_with "mpich", :because => "both install mpi__ compiler wrappers"
   conflicts_with "lcdf-typetools", :because => "both install same set of binaries."
 
-  depends_on :java => :build
   depends_on :fortran => :recommended
   depends_on "libevent"
+  depends_on :java => :optional
 
   def install
     ENV.cxx11 if build.cxx11?
@@ -44,6 +45,7 @@ class OpenMpi < Formula
     args << "--with-platform-optimized" if build.head?
     args << "--disable-mpi-fortran" if build.without? "fortran"
     args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
+    args << "--enable-mpi-java" if build.with? "java"
 
     system "./autogen.pl" if build.head?
     system "./configure", *args

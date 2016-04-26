@@ -2,7 +2,6 @@ class Jerasure < Formula
   desc "Library in C that supports erasure coding in storage applications"
   homepage "http://jerasure.org/"
   url "http://lab.jerasure.org/jerasure/jerasure/repository/archive.tar.gz?ref=v2.0"
-  version "2.0"
   sha256 "61b2fbb25affeddc2d94d6f67778098597b14ff5440f39d8fba3dbdbaa6739b6"
 
   bottle do

@@ -1,11 +1,11 @@
 class Qjackctl < Formula
   desc "simple Qt application to control the JACK sound server daemon"
   homepage "http://qjackctl.sourceforge.net"
-  url "https://downloads.sourceforge.net/qjackctl/qjackctl-0.4.1.tar.gz"
-  sha256 "98024e1ea9f55ac16c290feda051d6494b2261e83f6a918f0fa583b509e2bfd1"
   head "http://git.code.sf.net/p/qjackctl/code", :using=>:git
 
   stable do
+    url "https://downloads.sourceforge.net/qjackctl/qjackctl-0.4.1.tar.gz"
+    sha256 "98024e1ea9f55ac16c290feda051d6494b2261e83f6a918f0fa583b509e2bfd1"
     # fixes compile error with getDeviceUIDFromID and combo box device selection is general
     # also fixes linking without X11
     #

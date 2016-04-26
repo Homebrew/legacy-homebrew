@@ -16,6 +16,8 @@ class Pgtap < Formula
   # Not :postgresql, because we need to install into its share directory.
   depends_on "postgresql"
 
+  conflicts_with "mytop", :because => "both install `perllocal.pod`"
+
   resource "Test::Harness" do
     url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.36.tar.gz"
     sha256 "e7566f13b041d028b56f184b77ec2545ec6f0bb5a0f8f5368f7e4a08b496b63e"

@@ -1,7 +1,5 @@
 require "digest/md5"
-require "formula_renames"
 require "tap"
-require "core_formula_repository"
 
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
@@ -279,7 +277,7 @@ class Formulary
       return FormulaLoader.new(ref, formula_with_that_name)
     end
 
-    possible_alias = CoreFormulaRepository.instance.alias_dir/ref
+    possible_alias = CoreTap.instance.alias_dir/ref
     if possible_alias.file?
       return AliasLoader.new(possible_alias)
     end
@@ -293,7 +291,7 @@ class Formulary
       return FormulaLoader.new(name, path)
     end
 
-    if newref = CoreFormulaRepository.instance.formula_renames[ref]
+    if newref = CoreTap.instance.formula_renames[ref]
       formula_with_that_oldname = core_path(newref)
       if formula_with_that_oldname.file?
         return FormulaLoader.new(newref, formula_with_that_oldname)
@@ -322,7 +320,7 @@ class Formulary
   end
 
   def self.core_path(name)
-    CoreFormulaRepository.instance.formula_dir/"#{name.downcase}.rb"
+    CoreTap.instance.formula_dir/"#{name.downcase}.rb"
   end
 
   def self.tap_paths(name, taps = Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"])
@@ -346,7 +344,7 @@ class Formulary
       if core_path(ref).file?
         opoo <<-EOS.undent
           #{ref} is provided by core, but is now shadowed by #{selected_formula.full_name}.
-          To refer to the core formula, use Homebrew/homebrew/#{ref} instead.
+          To refer to the core formula, use Homebrew/core/#{ref} instead.
         EOS
       end
       selected_formula

@@ -1,13 +1,14 @@
 class Groonga < Formula
   desc "Fulltext search engine and column store"
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-5.1.2.tar.gz"
-  sha256 "f39553c799e05b2926f4a38eaa183347c6d27fb1c55577eed555a4dc4cd9a9c4"
+  url "http://packages.groonga.org/source/groonga/groonga-6.0.0.tar.gz"
+  sha256 "a14c93240dcf749eb583087988703b72dada4a06ab3f6f2e985a3fe3828b4f6c"
+  revision 1
 
   bottle do
-    sha256 "2666fd66030fd63670bae4f38e69ac0c12ec6bcbd1427ff6601aa3b467198b31" => :el_capitan
-    sha256 "44796c50850901605ed18490f0ef4c24019c9fe538a222e82d176f1abc519bda" => :yosemite
-    sha256 "a5bae0c0d9ba628108532c72c14cf55971bfb11dbf2a48cbbd82c1d0ab1004a3" => :mavericks
+    sha256 "6d689d96def16b1519a5cf56cda44c3fa1faac896eb8e70c3995bf882bfd5c9b" => :el_capitan
+    sha256 "5d45d7d58c454dad31b7c218bbe1733dba140dc78af9bf633621658bc3872abb" => :yosemite
+    sha256 "9b914098f34d412e38148e127d2f1555f4b7bbf836f67ad4a550b1132d7edb07" => :mavericks
   end
 
   head do
@@ -49,6 +50,7 @@ class Groonga < Formula
     args = %W[
       --prefix=#{prefix}
       --with-zlib
+      --with-ssl
       --enable-mruby
       --without-libstemmer
     ]

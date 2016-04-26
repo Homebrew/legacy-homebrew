@@ -1,15 +1,14 @@
 class Global < Formula
   desc "Source code tag system"
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.5.2.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.5.2.tar.gz"
-  sha256 "c0fc831c1a54a5ee4f5fc765a7af90ade773e4fb4763416c0b6d4d2e571b1d1f"
+  url "http://ftpmirror.gnu.org/global/global-6.5.4.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.5.4.tar.gz"
+  sha256 "af16e0a686a46f759156cb685e25f345680703f43f93af1ce8d834caaf541da6"
 
   bottle do
-    revision 1
-    sha256 "432b8b30de89d9ed96823ebe4b47c43014d5814906b20d6245f76fe26fa0af3d" => :el_capitan
-    sha256 "f9c2a8ccb08ad3c0a0c64baa3c5bbb08e2e0fcc0a6a05feea0bc29bebee4c3b5" => :yosemite
-    sha256 "c39ec27d6f39fb26594522bb0e4d104669292631d361fe8768ad679079ad0203" => :mavericks
+    sha256 "02cbcdec74c631e5c9136748570eaaa10d492c7bfe48a2a914c0245c91a84f33" => :el_capitan
+    sha256 "1228a3bb9625f8dbc7700b7846cc5f96e3bbe369ed6f0884840c4d8dacd05980" => :yosemite
+    sha256 "37948700d06490f5b8a8fce8ca4f869e98c5e6be4c2b14bf70a28b908f971c5a" => :mavericks
   end
 
   head do

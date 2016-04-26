@@ -6,13 +6,13 @@ class Postgrest < Formula
 
   desc "Serves a fully RESTful API from any existing PostgreSQL database."
   homepage "https://github.com/begriffs/postgrest"
-  url "https://github.com/begriffs/postgrest/archive/v0.3.0.4.tar.gz"
-  sha256 "2afbb8735a157e0b6afbec7da57cc70396cdbecb0670d96e2b006c0a1625f2f0"
+  url "https://github.com/begriffs/postgrest/archive/v0.3.1.1.tar.gz"
+  sha256 "1830900175879d4be40b93410a7617cb637aae7e9e70792bf70e2bf72b0b2150"
 
   bottle do
-    sha256 "1f73fc12b6017629128bb3427a646d2822e60dbeff42e62e869bb1474b15652c" => :el_capitan
-    sha256 "3eb8bf4f6a22c5d6ee1d69e572c73266739e66c71e15dc1d3b99c1fb1b907023" => :yosemite
-    sha256 "20a5e7499db351cef6647e3db0c0107ec5f8c8ecbbe5137b1f76832697af1c97" => :mavericks
+    sha256 "17403cf79873ee9771e6af936386c07ee57d4e74dbef893ca813b856726339e9" => :el_capitan
+    sha256 "13195c0ffc3095ff433e71f080410162732e9353c2bea70b12a6d2578de5bf38" => :yosemite
+    sha256 "d75b2d421104cb8d9d052b59ef7ca014ea07bb6984756ec0566694b07bae8ac9" => :mavericks
   end
 
   depends_on "ghc" => :build

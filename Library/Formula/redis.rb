@@ -3,6 +3,7 @@ class Redis < Formula
   homepage "http://redis.io/"
   url "http://download.redis.io/releases/redis-3.0.7.tar.gz"
   sha256 "b2a791c4ea3bb7268795c45c6321ea5abcc24457178373e6a6e3be6372737f23"
+  head "https://github.com/antirez/redis.git", :branch => "unstable"
 
   bottle do
     cellar :any_skip_relocation
@@ -13,8 +14,6 @@ class Redis < Formula
   end
 
   option "with-jemalloc", "Select jemalloc as memory allocator when building Redis"
-
-  head "https://github.com/antirez/redis.git", :branch => "unstable"
 
   fails_with :llvm do
     build 2334

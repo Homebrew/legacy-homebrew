@@ -1,32 +1,35 @@
 class Vc4asm < Formula
   desc "Macro assembler for Broadcom VideoCore IV aka Raspberry Pi GPU"
   homepage "http://maazl.de/project/vc4asm/doc/index.html"
-  url "https://github.com/maazl/vc4asm/archive/V0.1.8.tar.gz"
-  sha256 "6e98d5263879c7e24762f707961fa3e31db9c43e6ffc2ef5b22d5d44a180d666"
+  url "https://github.com/maazl/vc4asm/archive/V0.2.1.tar.gz"
+  sha256 "c9ffb315961a634cef1a26620a73483e7b819a963374952046aa7099d7ceb25c"
 
   bottle do
-    cellar :any
-    sha256 "61d33586464106166ab596587e9e568d966073f328830b96b895cbd0e7f387b7" => :yosemite
-    sha256 "9a4abc2e869f51c8045468e7bc261ae5d863e9fd3eabefd797c898a88580bfc9" => :mavericks
-    sha256 "8c78b6050331c1580dfe22a330a0e449a8b94e18d6432078668f08a2ffc99583" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d3e5bf0d350fe121f98dc5f9382a540246a35aa6ba329738ff6d328537521311" => :el_capitan
+    sha256 "0f859510fcf092ac9aea3edf1a3bdca06fb33fbac058a6c6b07c4fe8485cf756" => :yosemite
+    sha256 "17e23f6685049ca463e555f56947f2694fd14d45ac3e5be7cc82475cae251ca9" => :mavericks
   end
-
-  depends_on "cmake" => :build
 
   needs :cxx11
 
+  # Removes ELF support for OSX (merged upstream)
   patch do
-    url "https://github.com/maazl/vc4asm/pull/2.patch"
-    sha256 "9b7996563a6b15ae7d5578df6d08b43413dc1758e8e2002115ba414daed323e3"
+    url "https://github.com/maazl/vc4asm/pull/7.patch"
+    sha256 "50e8d58bf406aed69c8e247cb447353cc7a9fb6d5c6c7862c6447bf28a4c8779"
+  end
+  patch do
+    url "https://github.com/maazl/vc4asm/commit/e2e855cd728f7f2eab45499dd251cf63db19c0cb.patch"
+    sha256 "72aa18f016669cdafec927b917f951f30c3f8946f1e8a4df1fd0016c171fa6d4"
   end
 
   def install
     ENV.cxx11
-    mkdir "build"
-    cd "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "install"
+    cd "src" do
+      system "make"
     end
+    bin.install %w[bin/vc4asm bin/vc4dis]
+    share.install "share/vc4.qinc"
   end
 
   test do

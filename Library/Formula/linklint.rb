@@ -4,12 +4,12 @@ class Linklint < Formula
   url "http://linklint.org/download/linklint-2.3.5.tar.gz"
   sha256 "ecaee456a3c2d6a3bd18a580d6b09b6b7b825df3e59f900270fe3f84ec3ac9c7"
 
-  bottle :unneeded
-
   devel do
     url "http://linklint.org/download/linklint-2.4.beta.tar.gz"
     sha256 "e06ba7aef6c34a80a71bf3e463ca8b470384ebfb16cedfba30219f8a56762d55"
   end
+
+  bottle :unneeded
 
   def install
     mv "READ_ME.txt", "README" unless build.devel?

@@ -3,28 +3,27 @@ class Scala < Formula
   homepage "http://www.scala-lang.org/"
 
   stable do
-    url "http://www.scala-lang.org/files/archive/scala-2.11.7.tgz"
-    sha256 "ffe4196f13ee98a66cf54baffb0940d29432b2bd820bd0781a8316eec22926d0"
+    url "https://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.tgz"
+    sha256 "87fc86a19d9725edb5fd9866c5ee9424cdb2cd86b767f1bb7d47313e8e391ace"
 
     depends_on :java => "1.6+"
 
     resource "docs" do
-      url "http://www.scala-lang.org/files/archive/scala-docs-2.11.7.zip"
-      sha256 "90981bf388552465ce07761c8f991c13be332ee07e97ff44f4b8be278f489667"
+      url "https://downloads.lightbend.com/scala/2.11.8/scala-docs-2.11.8.zip"
+      sha256 "73bd44375ebffd5f401950a11d78addc52f8164c30d8528d26c82c1f819cfc16"
     end
 
     resource "src" do
-      url "https://github.com/scala/scala/archive/v2.11.7.tar.gz"
-      sha256 "1679ee604bc4e881b0d325e164c39c02dcfa711d53cd3115f5a6c9676c5915ef"
+      url "https://github.com/scala/scala/archive/v2.11.8.tar.gz"
+      sha256 "4f11273b4b3c771019253b2c09102245d063a7abeb65c7b1c4519bd57605edcf"
     end
   end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "dcc350cf8dcc527b283b52d81ce27f0ee19403f1b805c6de74cbbd1c00571483" => :el_capitan
-    sha256 "abe3bdb7c49c2d8542731b5bff8ddd2b64b361e5fbc104217ca2f2423b73fbb9" => :yosemite
-    sha256 "87619ccc086a0636f89fec974759ae952dc1979948567f7e7d6200b7be64dffc" => :mavericks
-    sha256 "44c9502a3195a7cd25699162948b4eb80676547a24ed0a001520320d6a54aac7" => :mountain_lion
+    sha256 "05a10bbcce35c526dba3b475bc53ad076b7b1bb5088751eec7a962f718274308" => :el_capitan
+    sha256 "2da6cd4894a9291c2fb0a341cc84f96522291d76644e35c9f00cf710eb6cb417" => :yosemite
+    sha256 "ddd6e527a6e93c326d761c61d9811648c1eba82044ef24ded32837fa37581c16" => :mavericks
   end
 
   devel do

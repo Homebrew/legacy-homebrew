@@ -1,13 +1,14 @@
 class Squid < Formula
   desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.14.tar.xz"
-  sha256 "79ec4cdd4f965314e6db8e3f6ddcebf2d24518edd790a68e0bd4d0a7735ace1b"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.15.tar.xz"
+  sha256 "9cfce3231c7b3b33816fc54414d8720a51ac5e723663e0685a8bb995b9f450d2"
 
   bottle do
-    sha256 "0cd7c80832c6e12d724d4d2ea4df8407ab8966cd036252e4075c19a8c7890804" => :el_capitan
-    sha256 "64d7b33c7e3795b0946d8285748d60e27acab82e41f505da3902860918f08289" => :yosemite
-    sha256 "d28a45a1c7d7d8d1be96c485f92ffa676fe0f4e1723e2760ad59fb5a51c19adc" => :mavericks
+    revision 1
+    sha256 "cc9bd188c13570baf1cbe9027082036938c13a35eca56fce28a52f54e2e0f2b4" => :el_capitan
+    sha256 "172cd259fa8ee17fd97480186e1edbb88b2f89512cddaf883525e2326fbcdcbf" => :yosemite
+    sha256 "2fed545b5a34f0625e657f7347b10be8dc213fa8c9f291a50b7b5886133cf7b7" => :mavericks
   end
 
   depends_on "openssl"
@@ -30,6 +31,10 @@ class Squid < Formula
       --enable-pf-transparent
       --with-included-ltdl
       --with-openssl
+      --enable-delay-pools
+      --enable-disk-io=yes
+      --enable-removal-policies=yes
+      --enable-storeio=yes
     ]
 
     system "./configure", *args

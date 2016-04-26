@@ -13,7 +13,8 @@ class Gmtl < Formula
   end
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "8aa9f0f1fb77376dd333bb03e9c5a07f6457b76008a74018a932dca930148606" => :el_capitan
     sha256 "5e6d70f957f11e58d8b3cd24d5474a8bedc73e0aec6df13f85322f4fda8a1164" => :mavericks
     sha256 "ffeb26dd58a9b05a4427ca02392f93f9d5b352af790e536e4d2989baa81e4faf" => :mountain_lion
     sha256 "568a43df4aebd32ab9638d2725721b9c062bca0ecb778dbffb67fafd926d4a1a" => :lion

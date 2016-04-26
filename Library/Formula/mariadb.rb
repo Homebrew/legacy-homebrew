@@ -1,13 +1,13 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.11/source/mariadb-10.1.11.tar.gz"
-  sha256 "cd32927370343b4f14bcc6073bca163623c27843ae7bc59c8c6a9ebeda0325ce"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.13/source/mariadb-10.1.13.tar.gz"
+  sha256 "21e1c7da1421146c69f5e8077333aaac06778a87046a1943ee4f449fbcefc00d"
 
   bottle do
-    sha256 "4e1cce301d858389bbd772f6fa4673290dc5a747c82db47f6f24f80b98b76b84" => :el_capitan
-    sha256 "1caaca8c441b4288013e165ddccac0ffd949726199fd32383bd9dc55da6af31f" => :yosemite
-    sha256 "7701f36c03cee889aa3dbd0573ae8c04a9270631d87ff4bd7a9a134b89e6f9c8" => :mavericks
+    sha256 "8ed95893c2972e42f36ca839d1d3ede415e534de180149773addbaa06f3807c9" => :el_capitan
+    sha256 "ced80e12a86d96195dc70d1da078eb6917f0933688f3241218787850a6a8e1df" => :yosemite
+    sha256 "01a7918d7d2d6f3346defe4ed61dc1b661a1e70df908389de33b0df3e6935329" => :mavericks
   end
 
   option :universal
@@ -141,8 +141,6 @@ class Mariadb < Formula
         s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
       end
     end
-    # remove non-executable from bin
-    rm bin+"maria_add_gis_sp.sql"
   end
 
   def post_install

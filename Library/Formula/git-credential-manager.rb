@@ -1,12 +1,16 @@
 class GitCredentialManager < Formula
   desc "Stores Git credentials for Visual Studio Team Services"
   homepage "https://java.visualstudio.com/Docs/tools/gitcredentialmanager"
-  url "https://github.com/Microsoft/Git-Credential-Manager-for-Mac-and-Linux/releases/download/git-credential-manager-1.4.0/git-credential-manager-1.4.0.jar"
-  sha256 "9a2c405b1876753734774fc63dc01ce8751d4af1a892bea59f823d996624efec"
+  url "https://github.com/Microsoft/Git-Credential-Manager-for-Mac-and-Linux/releases/download/git-credential-manager-1.6.0/git-credential-manager-1.6.0.jar"
+  sha256 "ff86d25c4d1760bdb14f69d17a7c290b34a82292aa9ea9bdf00e7c57f5ed53a1"
 
   bottle :unneeded
 
-  depends_on :java => "1.7+"
+  if MacOS.version >= :el_capitan
+    depends_on :java => "1.8+"
+  else
+    depends_on :java => "1.7+"
+  end
 
   def install
     libexec.install "git-credential-manager-#{version}.jar"

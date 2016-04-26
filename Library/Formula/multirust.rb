@@ -4,16 +4,16 @@ class Multirust < Formula
 
   # Use the tag instead of the tarball to get submodules
   url "https://github.com/brson/multirust.git",
-    :tag => "0.7.0",
-    :revision => "b222fcd277898c7e364cbe7dfa0cf7edb5d922d5"
+    :tag => "0.8.0",
+    :revision => "8654d1c07729e961c172425088c451509557ef32"
 
   head "https://github.com/brson/multirust.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "835c85c711bc3df23da5eadb11eaaa715e3dba989cb32a52bd9ec37f1a33c7f3" => :el_capitan
-    sha256 "a931aa36e3264b5b73a61171b8615428bd79dac7322c0dff5192140f9a340335" => :yosemite
-    sha256 "14310f6110a75f9888a2ddb16be8371b1ad72601a1486984fdeaf8a673bc2f4a" => :mavericks
+    sha256 "6900a083146692e8d30fd94dbd969856bbee8186b945b328fa40068c5955c8cd" => :el_capitan
+    sha256 "0abc281d9aaf174e12c31c04f2c68af246cb21f094d87d41ab901f25c301b5f1" => :yosemite
+    sha256 "c7bd82c7f7efe53eb53a10aa97713f37913397d813e1637a1e21708dc41c57c3" => :mavericks
   end
 
   depends_on :gpg => [:recommended, :run]
