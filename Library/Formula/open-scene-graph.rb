@@ -5,7 +5,7 @@ class OpenSceneGraph < Formula
   sha256 "5c727d84755da276adf8c4a4a3a8ba9c9570fc4b4969f06f1d2e9f89b1e3040e"
   revision 1
 
-  head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
+  head "https://github.com/openscenegraph/osg.git"
 
   bottle do
     revision 1
@@ -14,7 +14,6 @@ class OpenSceneGraph < Formula
     sha256 "64d9990922aeff846ae9263e4f4457c6173d4b3be998150206c113490506e4ff" => :mavericks
   end
 
-  option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
 
@@ -35,6 +34,8 @@ class OpenSceneGraph < Formula
   depends_on "qt5" => :optional
   depends_on "qt" => :optional
 
+  needs :cxx11
+
   # patch necessary to ensure support for gtkglext-quartz
   # filed as an issue to the developers https://github.com/openscenegraph/osg/issues/34
   patch :DATA
@@ -45,7 +46,7 @@ class OpenSceneGraph < Formula
   end
 
   def install
-    ENV.cxx11 if build.cxx11?
+    ENV.cxx11
 
     # Turning off FFMPEG takes this change or a dozen "-DFFMPEG_" variables
     if build.without? "ffmpeg"
@@ -56,6 +57,10 @@ class OpenSceneGraph < Formula
     args << "-DBUILD_DOCUMENTATION=" + ((build.with? "docs") ? "ON" : "OFF")
     args << "-DCMAKE_CXX_FLAGS=-Wno-error=narrowing" # or: -Wno-c++11-narrowing
 
+    # Fixes Xcode 7.1 failure due to warning in system Framework
+    # https://github.com/Homebrew/homebrew/issues/46372
+    args << "-DCMAKE_CXX_FLAGS=-Wno-c++11-narrowing"
+
     if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.arch_64_bit}"
       args << "-DOSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX=imageio"
@@ -65,7 +70,11 @@ class OpenSceneGraph < Formula
     end
 
     if build.with? "collada-dom"
-      args << "-DCOLLADA_INCLUDE_DIR=#{Formula["collada-dom"].opt_include}/collada-dom"
+      # https://github.com/Homebrew/homebrew/issues/43536
+      collada_include_dir = Dir.glob("#{Formula["collada-dom"].opt_include}/collada-dom*").first
+      raise "Could not locate collada-dom include directory" unless collada_include_dir
+      args << "-DCOLLADA_INCLUDE_DIR=#{collada_include_dir}"
+      args << "-DCOLLADA_DOM_ROOT=#{collada_include_dir}/1.4/dom"
     end
 
     if build.with? "qt5"
@@ -112,3 +121,16 @@ index 321cede..6497589 100644
      ENDIF()
 
  ENDIF()
+diff --git a/src/osgPlugins/dicom/CMakeLists.txt b/src/osgPlugins/dicom/CMakeLists.txt
+index 55c2a57..e6e3f4a 100644
+--- a/src/osgPlugins/dicom/CMakeLists.txt
++++ b/src/osgPlugins/dicom/CMakeLists.txt
+@@ -5,7 +5,7 @@ IF  (DCMTK_FOUND)
+
+     SET(TARGET_SRC ReaderWriterDICOM.cpp )
+
+-    LINK_LIBRARIES(${DCMTK_LIBRARIES} ${ZLIB_LIBRARY})
++    LINK_LIBRARIES(${DCMTK_LIBRARIES} iconv ${ZLIB_LIBRARY})
+
+     ADD_DEFINITIONS(-DUSE_DCMTK)
+
