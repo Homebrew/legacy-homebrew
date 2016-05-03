@@ -25,7 +25,7 @@ class Pyenv < Formula
       export PYENV_ROOT=#{var}/pyenv
 
     To enable shims and autocompletion add to your profile:
-      if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+      command -v pyenv >/dev/null 2>&1 && {eval "$(pyenv init -)";}
     EOS
   end
 
