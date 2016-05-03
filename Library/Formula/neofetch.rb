@@ -1,8 +1,8 @@
 class Neofetch < Formula
   desc "fast, highly customisable system info script"
   homepage "https://github.com/dylanaraps/neofetch"
-  url "https://github.com/dylanaraps/neofetch/archive/1.5.tar.gz"
-  sha256 "a29f9aa194892940a5ec34a449049fbce92bc50dc4a0f608549980318f4136d8"
+  url "https://github.com/dylanaraps/neofetch/archive/1.6.tar.gz"
+  sha256 "d48f581473fbfc37d250509f8dc2b10bc48df8eafef2429b2a48865d14c88092"
   head "https://github.com/dylanaraps/neofetch.git"
 
   bottle do
@@ -12,11 +12,14 @@ class Neofetch < Formula
     sha256 "ca7ebd89b1a2b1fc2036088bf3bdc08205ae5152f14ba3b1a81315dd8b39efb2" => :mavericks
   end
 
+  depends_on "screenresolution" => :recommended
+  depends_on "imagemagick" => :recommended
+
   def install
     system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
-    system "#{bin}/neofetch"
+    system "#{bin}/neofetch", "--test", "--config off"
   end
 end
