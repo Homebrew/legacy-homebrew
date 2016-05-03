@@ -19,6 +19,13 @@ class Libmodplug < Formula
     sha256 "f80735b77123cc7e02c4dad6ce8197bfefcb8748b164a66ffecd206cc4b63d97"
   end
 
+  resource "testmod" do
+    # Most favourited song on modarchive:
+    # http://modarchive.org/index.php?request=view_by_moduleid&query=60395
+    url "http://api.modarchive.org/downloads.php?moduleid=60395#2ND_PM.S3M"
+    sha256 "f80735b77123cc7e02c4dad6ce8197bfefcb8748b164a66ffecd206cc4b63d97"
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
