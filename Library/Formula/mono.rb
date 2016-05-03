@@ -18,6 +18,11 @@ class Mono < Formula
 
   option "without-fsharp", "Build without support for the F# language."
 
+  resource "libgdiplus" do
+    url "https://github.com/mono/libgdiplus/tarball/3b284ab28cb8737f9d14dabfedc6903655c66a7f"
+    sha256 "c7b6e68f4f4ef62e1f7551769c7f0b87e7debd52311123a0264d23cf7ac9aee8"
+  end
+
   depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "pkg-config" => :build
@@ -61,6 +66,17 @@ class Mono < Formula
         ENV.prepend_path "PKG_CONFIG_PATH", lib/"pkgconfig"
         system "./autogen.sh", "--prefix=#{prefix}"
         system "make"
+        system "make", "install"
+      end
+    end
+
+    if build.with? "libgdiplus"
+      resource("libgdiplus").stage do
+        system "./autogen.sh"
+        system "./configure", "--disable-dependency-tracking",
+                              "--disable-silent-rules",
+                              "--disable-tests",
+                              "--prefix=#{prefix}"
         system "make", "install"
       end
     end
