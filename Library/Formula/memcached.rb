@@ -47,6 +47,8 @@ class Memcached < Formula
         <string>#{opt_bin}/memcached</string>
         <string>-l</string>
         <string>localhost</string>
+        <string>-u</string>
+        <string>nobody</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
