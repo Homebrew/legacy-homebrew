@@ -11,16 +11,21 @@ class Portmidi < Formula
     sha256 "091871a9be11e7af35cd455bb55e8020ce911ac768ac0569fa489d7b34fd715e" => :yosemite
     sha256 "c950ba2eed6221f1734ab05fe44c263eedbabd7510bec2de3333c61984bfb87c" => :mavericks
   end
-
   option "with-java", "Build java based app and bindings. You need the Java SDK for this."
 
   depends_on "cmake" => :build
   depends_on :python => :optional
-  depends_on "Cython" => :python if build.with? "python"
 
   # Avoid that the Makefile.osx builds the java app and fails because: fatal error: 'jni.h' file not found
   # Since 217 the Makefile.osx includes pm_common/CMakeLists.txt wich builds the Java app
   patch :DATA if build.without? "java"
+
+  if build.with? "python"
+    resource "Cython" do
+      url "http://cython.org/release/Cython-0.24b0.tar.gz"
+      sha256 "465919231cd7fd80b902543405e1dd531a15f49b0de6430de74506e130c08a48"
+    end
+  end
 
   def install
     inreplace "pm_mac/Makefile.osx", "PF=/usr/local", "PF=#{prefix}"
@@ -36,6 +41,11 @@ class Portmidi < Formula
     system "make", "-f", "pm_mac/Makefile.osx", "install"
 
     if build.with? "python"
+      resource("Cython").stage do
+        ENV.prepend_create_path "PYTHONPATH", buildpath+"lib/python2.7/site-packages"
+        system "python", "setup.py", "build", "install", "--prefix=#{buildpath}",
+                 "--single-version-externally-managed", "--record=installed.txt"
+      end
       cd "pm_python" do
         # There is no longer a CHANGES.txt or TODO.txt.
         inreplace "setup.py", "CHANGES = open('CHANGES.txt').read()", 'CHANGES = ""'
