@@ -22,37 +22,42 @@ class Llvm < Formula
   homepage "http://llvm.org/"
 
   stable do
-    url "http://llvm.org/releases/3.6.2/llvm-3.6.2.src.tar.xz"
-    sha256 "f60dc158bfda6822de167e87275848969f0558b3134892ff54fced87e4667b94"
+    url "http://llvm.org/releases/3.7.1/llvm-3.7.1.src.tar.xz"
+    sha256 "be7794ed0cec42d6c682ca8e3517535b54555a3defabec83554dbc74db545ad5"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.6.2/cfe-3.6.2.src.tar.xz"
-      sha256 "ae9180466a23acb426d12444d866b266ff2289b266064d362462e44f8d4699f3"
+      url "http://llvm.org/releases/3.7.1/cfe-3.7.1.src.tar.xz"
+      sha256 "56e2164c7c2a1772d5ed2a3e57485ff73ff06c97dff12edbeea1acc4412b0674"
     end
 
     resource "clang-extra-tools" do
-      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
-      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
+      url "http://llvm.org/releases/3.7.1/clang-tools-extra-3.7.1.src.tar.xz"
+      sha256 "4a91edaccad1ce984c7c49a4a87db186b7f7b21267b2b03bcf4bd7820715bc6b"
     end
 
     resource "compiler-rt" do
-      url "http://llvm.org/releases/3.6.2/compiler-rt-3.6.2.src.tar.xz"
-      sha256 "0f2ff37d80a64575fecd8cf0d5c50f7ac1f837ddf700d1855412bb7547431d87"
+      url "http://llvm.org/releases/3.7.1/compiler-rt-3.7.1.src.tar.xz"
+      sha256 "9d4769e4a927d3824bcb7a9c82b01e307c68588e6de4e7f04ab82d82c5af8181"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
-      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+      url "http://llvm.org/releases/3.7.1/libcxx-3.7.1.src.tar.xz"
+      sha256 "357fbd4288ce99733ba06ae2bec6f503413d258aeebaab8b6a791201e6f7f144"
     end
 
     resource "lld" do
-      url "http://llvm.org/releases/3.6.2/lld-3.6.2.src.tar.xz"
-      sha256 "43f553c115563600577764262f1f2fac3740f0c639750f81e125963c90030b33"
+      url "http://llvm.org/releases/3.7.1/lld-3.7.1.src.tar.xz"
+      sha256 "a929cb44b45e3181a0ad02d8c9df1d3fc71e001139455c6805f3abf2835ef3ac"
     end
 
     resource "lldb" do
-      url "http://llvm.org/releases/3.6.2/lldb-3.6.2.src.tar.xz"
-      sha256 "940dc96b64919b7dbf32c37e0e1d1fc88cc18e1d4b3acf1e7dfe5a46eb6523a9"
+      url "http://llvm.org/releases/3.7.1/lldb-3.7.1.src.tar.xz"
+      sha256 "9a0bc315ef55f44c98cdf92d064df0847f453ed156dd0ef6a87e04f5fd6a0e01"
+    end
+
+    resource "polly" do
+      url "http://llvm.org/releases/3.7.1/polly-3.7.1.src.tar.xz"
+      sha256 "ce9273ad315e1904fd35dc64ac4375fd592f3c296252ab1d163b9ff593ec3542"
     end
   end
 
@@ -95,11 +100,6 @@ class Llvm < Formula
       url "http://llvm.org/git/lldb.git"
     end
 
-    # Polly is --HEAD-only because it requires isl and the version of Polly
-    # shipped with 3.6.2 only compiles with isl 0.14 and earlier (current
-    # version is 0.15). isl is distributed with the Polly source code from LLVM
-    # 3.7 and up, so --HEAD builds do not need to depend on homebrew isl.
-    option "with-polly", "Build with the experimental Polly optimizer"
     resource "polly" do
       url "http://llvm.org/git/polly.git"
     end
@@ -116,6 +116,7 @@ class Llvm < Formula
   option "with-lldb", "Build LLDB debugger"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "with-rtti", "Build with C++ RTTI"
+  option "with-polly", "Build with the experimental Polly optimizer"
 
   deprecated_option "rtti" => "with-rtti"
 
@@ -189,6 +190,17 @@ class Llvm < Formula
     ]
 
     args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
+
+    # include libc++ headers so that the test below passes.
+    # For some reason I need to provide a relative path for
+    # el capitan and an absolute path for yosemite.
+    if build.with? "clang"
+      if MacOS.version < :el_capitan
+        args << "-DC_INCLUDE_DIRS=#{MacOS.sdk_path}/usr/include:#{MacOS::Xcode.toolchain_path}/usr/include/c++/v1/"
+      else
+        args << "-DC_INCLUDE_DIRS=/usr/include:/../../../../../Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/"
+      end
+    end
 
     if build.universal?
       ENV.permit_arch_flags
