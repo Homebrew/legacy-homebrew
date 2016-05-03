@@ -1,19 +1,8 @@
 class Avidemux < Formula
   desc "Multiformat video editor that cuts, filters, and encodes"
   homepage "http://fixounet.free.fr/avidemux/"
-  revision 1
-
-  stable do
-    url "https://downloads.sourceforge.net/avidemux/avidemux_2.6.8.tar.gz"
-    sha256 "02998c235a89894d184d745c94cac37b78bc20e9eb44b318ee2bb83f2507e682"
-
-    # remove ffmpeg binary from targets (fixed upstream)
-    # http://avidemux.org/smuf/index.php/topic,16379.15.html
-    patch do
-      url "https://github.com/mean00/avidemux2/commit/bf0185.diff"
-      sha256 "3ca5b4f1b5b3ec407a3daa5c811862ea6ed7ef6cdaaf187045e6e1c77c193800"
-    end
-  end
+  url "https://downloads.sourceforge.net/avidemux/avidemux/2.6.12/avidemux_2.6.12.tar.gz"
+  sha256 "769a8bc1bc8ca64038971d2d02f5973d95a3561370366be328ce6904a317e55b"
 
   bottle do
     revision 2
@@ -78,6 +67,7 @@ class Avidemux < Formula
       args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
       args << "-DGETTEXT_INCLUDE_DIR=#{Formula["gettext"].opt_include}"
       args << "-DSDL=OFF" if build.without? "sdl2"
+      args << "-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}"
 
       if build.with? "debug"
         ENV.O2
@@ -108,6 +98,7 @@ class Avidemux < Formula
         args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
         args << "-DAVIDEMUX_LIB_DIR=#{lib}"
         args << "-DSDL=OFF" if build.without? "sdl2"
+        args << "-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}"
         args << "../avidemux/#{interface}"
         system "cmake", *args
         system "make"
@@ -124,6 +115,7 @@ class Avidemux < Formula
           -DPLUGIN_UI=#{plugin}
           -DAVIDEMUX_LIB_DIR=#{lib}
           -DAVIDEMUX_SOURCE_DIR=#{buildpath}
+          -DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}"
         ]
 
         if build.with? "debug"
