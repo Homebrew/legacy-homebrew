@@ -29,6 +29,7 @@ class Cntlm < Formula
         <key>ProgramArguments</key>
         <array>
           <string>#{opt_bin}/cntlm</string>
+          <string>-f</string>
         </array>
         <key>KeepAlive</key>
         <false/>
