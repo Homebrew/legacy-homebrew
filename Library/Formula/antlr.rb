@@ -16,7 +16,7 @@ class Antlr < Formula
 
     (bin/"grun").write <<-EOS.undent
       #!/bin/bash
-      java -classpath #{prefix}/antlr-#{version}-complete.jar:. org.antlr.v4.runtime.misc.TestRig "$@"
+      java -classpath #{prefix}/antlr-#{version}-complete.jar:. org.antlr.v4.gui.TestRig "$@"
     EOS
   end
 
