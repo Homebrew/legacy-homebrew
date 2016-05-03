@@ -1,9 +1,9 @@
 class Mediaconch < Formula
   desc "Conformance checker and technical metadata reporter"
   homepage "https://mediaarea.net/MediaConch"
-  url "https://mediaarea.net/download/binary/mediaconch/16.02/MediaConch_CLI_16.02_GNU_FromSource.tar.bz2"
-  version "16.02"
-  sha256 "62820ef7fe162fd5b50f6159e339358e6267f6078dbedb88b97493bb25f8a270"
+  url "https://mediaarea.net/download/binary/mediaconch/16.03/MediaConch_CLI_16.03_GNU_FromSource.tar.bz2"
+  version "16.03"
+  sha256 "05c8ec1f883bb30b84102b13e3ecb8303c2250824a471fa3c12abf10b2546892"
 
   bottle do
     cellar :any
