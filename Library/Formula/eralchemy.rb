@@ -4,6 +4,7 @@ class Eralchemy < Formula
   url "https://pypi.python.org/packages/source/E/ERAlchemy/ERAlchemy-1.0.1.tar.gz"
   sha256 "98425b21fe0f12ff33e72789c8a308baa1c2d5fdf157388162deaa510551da4f"
 
+  revision 1
   bottle do
     cellar :any
     sha256 "53e20a26f69a3530b499e540a9e33eeb4cf4a125625c0ff9369204c540192eff" => :el_capitan
@@ -12,8 +13,10 @@ class Eralchemy < Formula
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
-  depends_on "graphviz"
   depends_on "pkg-config" => :build
+  depends_on "graphviz"
+  depends_on "openssl"
+  depends_on :postgresql => :optional
 
   resource "pygraphviz" do
     url "https://pypi.python.org/packages/source/p/pygraphviz/pygraphviz-1.3.1.tar.gz"
@@ -23,6 +26,11 @@ class Eralchemy < Formula
   resource "SQLAlchemy" do
     url "https://pypi.python.org/packages/source/S/SQLAlchemy/SQLAlchemy-1.0.11.tar.gz"
     sha256 "0b24729787fa1455009770880ea32b1fa5554e75170763b1aef8b1eb470de8a3"
+  end
+
+  resource "psycopg2" do
+    url "https://pypi.python.org/packages/source/p/psycopg2/psycopg2-2.6.1.tar.gz"
+    sha256 "6acf9abbbe757ef75dc2ecd9d91ba749547941abaffbe69ff2086a9e37d4904c"
   end
 
   resource "er_example" do
@@ -38,6 +46,11 @@ class Eralchemy < Formula
       end
     end
 
+    if build.with?("postgresql")
+      resource("psycopg2").stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
