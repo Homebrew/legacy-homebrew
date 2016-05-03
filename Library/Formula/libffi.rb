@@ -1,9 +1,9 @@
 class Libffi < Formula
   desc "Portable Foreign Function Interface library"
   homepage "https://sourceware.org/libffi/"
-  url "https://mirrorservice.org/sites/sources.redhat.com/pub/libffi/libffi-3.0.13.tar.gz"
-  mirror "ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz"
-  sha256 "1dddde1400c3bcb7749d398071af88c3e4754058d2d4c0b3696c2f82dc5cf11c"
+  url "https://mirrorservice.org/sites/sources.redhat.com/pub/libffi/libffi-3.2.1.tar.gz"
+  mirror "ftp://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz"
+  sha256 "d06ebb8e1d9a22d19e38d63fdb83954253f39bedc5d46232a05645685722ca37"
 
   bottle do
     cellar :any
@@ -21,15 +21,34 @@ class Libffi < Formula
     depends_on "libtool" => :build
   end
 
-  keg_only :provided_by_osx, "Some formulae require a newer version of libffi."
+  keg_only :provided_by_osx," Some formulae require this version of libffi."
+
+  stable do
+    patch :DATA
+  end
 
   def install
     ENV.deparallelize # https://github.com/Homebrew/homebrew/pull/19267
-    ENV.universal_binary
     system "./autogen.sh" if build.head?
+    system "python", "./generate-darwin-source-and-headers.py", "--only-osx"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+    if build.universal?
+      system "make", "-C", "build_macosx-x86_64"
+      system "make", "-C", "build_macosx-i386"
+      system "lipo", "-create", "build_macosx-x86_64/.libs/libffi.6.dylib", "build_macosx-i386/.libs/libffi.6.dylib", "-output", "libffi.6.dylib"
+      system "lipo", "-create", "build_macosx-x86_64/.libs/libffi.a", "build_macosx-i386/.libs/libffi.a", "-output", "libffi.a"
+      lib.install %w["libffi.6.dylib", "libffi.a"]
+    else
+      if Hardware::CPU.intel?
+        directory = OS::Mac.prefer_64_bit? ? "build_macosx-x86_64" : "build_macosx-i386"
+        cd directory do
+          system "make"
+          lib.install %w[.libs/libffi.6.dylib .libs/libffi.a]
+        end
+      end
+    end
   end
 
   test do
@@ -87,3 +106,15 @@ class Libffi < Formula
     system "./closure"
   end
 end
+__END__
+--- ./Makefile.am.org	2016-03-22 14:58:33.000000000 +0900
++++ ./Makefile.am	2016-03-22 14:59:26.000000000 +0900
+@@ -140,7 +140,7 @@ endif
+ if X86_DARWIN
+ nodist_libffi_la_SOURCES += src/x86/ffi.c src/x86/darwin.S src/x86/ffi64.c src/x86/darwin64.S
+ if X86_DARWIN32
+-nodist_libffi_la_SOURCES += src/x86/win32.S
++nodist_libffi_la_SOURCES += src/x86/darwin.S
+ endif
+ endif
+ if SPARC
