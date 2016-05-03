@@ -4,7 +4,7 @@ class Duck < Formula
   # check the changelog for the latest stable version: https://cyberduck.io/changelog/
   url "https://dist.duck.sh/duck-src-4.7.3.18396.tar.gz"
   sha256 "47e25f0a28393c388f37d319c9d51dd51eebdf15198ee48df3995af8a60bcc16"
-  head "https://svn.cyberduck.io/trunk/"
+  head "https://svn.cyberduck.io/trunk/cli/osx/"
 
   bottle do
     cellar :any
@@ -14,7 +14,7 @@ class Duck < Formula
   end
 
   depends_on :java => ["1.8+", :build]
-  depends_on :xcode => :build
+  depends_on :xcode => ["7.1+", :build]
   depends_on "ant" => :build
 
   def install
