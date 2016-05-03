@@ -1,8 +1,8 @@
 class SphinxDoc < Formula
   desc "Tool to create intelligent and beautiful documentation"
   homepage "http://sphinx-doc.org"
-  url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.6.tar.gz"
-  sha256 "0b3be9221220af36090d139192347bb5f42b13401e4c53a4de8f5329a7a3ff8a"
+  url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.4.tar.gz"
+  sha256 "0ffb35263dbc7b6f3e5fdadc33815ae859e31bf1070226be52448cd43cd3ceeb"
 
   bottle do
     cellar :any_skip_relocation
@@ -33,6 +33,11 @@ class SphinxDoc < Formula
     sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
   end
 
+  resource "imagesize" do
+    url "https://pypi.python.org/packages/source/i/imagesize/imagesize-0.7.0.tar.gz"
+    sha256 "bb3d10fca0f66f771298d19035d8e6d01aaafb9ec8d9ae972dcb8acb2cf94f57"
+  end
+
   resource "Jinja2" do
     url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
     sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
@@ -49,8 +54,8 @@ class SphinxDoc < Formula
   end
 
   resource "pytz" do
-    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.7.tar.bz2"
-    sha256 "fbd26746772c24cb93c8b97cbdad5cb9e46c86bbdb1b9d8a743ee00e2fb1fc5d"
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2016.3.tar.bz2"
+    sha256 "c193dfa167ac32c8cb96f26cbcd92972591b22bda0bac3effdbdb04de6cc55d6"
   end
 
   resource "six" do
@@ -61,11 +66,6 @@ class SphinxDoc < Formula
   resource "snowballstemmer" do
     url "https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-1.2.1.tar.gz"
     sha256 "919f26a68b2c17a7634da993d91339e288964f93c274f1343e3bbbe2096e1128"
-  end
-
-  resource "sphinx_rtd_theme" do
-    url "https://pypi.python.org/packages/source/s/sphinx_rtd_theme/sphinx_rtd_theme-0.1.9.tar.gz"
-    sha256 "273846f8aacac32bf9542365a593b495b68d8035c2e382c9ccedcac387c9a0a1"
   end
 
   def install
