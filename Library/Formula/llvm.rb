@@ -17,6 +17,35 @@ class CodesignRequirement < Requirement
   end
 end
 
+class OCamlRequirement < Requirement
+  include FileUtils
+  fatal true
+
+  def opam_is_installed(package_name)
+    # "opam show <package>" outputs a bunch of text giving the package name,
+    # version, checksum, etc. One of the lines lists the installed version[s]
+    # if any, and is blank otherwise. The below matches that line and looks
+    # for at least 1 digit after the colon, which should imply that some
+    # version is installed.
+    `opam show #{package_name}`[/^\s+installed-version[s]?:\s+\d.*$/]
+  end
+
+  satisfy(:build_env => false) do
+    opam_is_installed("ocamlfind")
+    opam_is_installed("ctypes")
+    opam_is_installed("ounit")
+  end
+
+  def message
+    <<-EOS.undent
+      ocamlfind, ctypes, and ounit 2 are required to build
+      OCaml bindings for LLVM. You can install them using:
+
+          opam install ocamlfind ctypes ounit
+    EOS
+  end
+end
+
 class Llvm < Formula
   desc "Next-gen compiler infrastructure"
   homepage "http://llvm.org/"
@@ -114,6 +143,7 @@ class Llvm < Formula
   option "with-libcxx", "Build the libc++ standard library"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
+  option "with-ocaml", "Build with OCaml bindings"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "with-rtti", "Build with C++ RTTI"
 
@@ -131,6 +161,12 @@ class Llvm < Formula
     depends_on CodesignRequirement
   end
 
+  if build.with? "ocaml"
+    depends_on "ocaml"
+    depends_on "opam"
+    depends_on OCamlRequirement
+  end
+
   # Apple's libstdc++ is too old to build LLVM
   fails_with :gcc
   fails_with :llvm
@@ -144,6 +180,18 @@ class Llvm < Formula
     if build.with? "clang-extra-tools"
       odie "--with-extra-tools requires --with-clang" if build.without? "clang"
       (buildpath/"tools/clang/tools/extra").install resource("clang-extra-tools")
+    end
+
+    if build.with? "compiler-rt"
+      odie "--with-compiler-rt requires --with-clang" if build.without? "clang"
+      (buildpath/"projects/compiler-rt").install resource("compiler-rt")
+
+      # compiler-rt has some iOS simulator features that require i386 symbols
+      # I'm assuming the rest of clang needs support too for 32-bit compilation
+      # to work correctly, but if not, perhaps universal binaries could be
+      # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
+      # can almost be treated as an entirely different build from llvm.
+      ENV.permit_arch_flags
     end
 
     if build.with? "libcxx"
@@ -172,18 +220,6 @@ class Llvm < Formula
       (buildpath/"tools/polly").install resource("polly")
     end
 
-    if build.with? "compiler-rt"
-      odie "--with-compiler-rt requires --with-clang" if build.without? "clang"
-      (buildpath/"projects/compiler-rt").install resource("compiler-rt")
-
-      # compiler-rt has some iOS simulator features that require i386 symbols
-      # I'm assuming the rest of clang needs support too for 32-bit compilation
-      # to work correctly, but if not, perhaps universal binaries could be
-      # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
-      # can almost be treated as an entirely different build from llvm.
-      ENV.permit_arch_flags
-    end
-
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
@@ -200,6 +236,7 @@ class Llvm < Formula
     mktemp do
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       system "make"
+      system "make", "ocaml_doc" if build.with? "ocaml"
       system "make", "install"
     end
 
