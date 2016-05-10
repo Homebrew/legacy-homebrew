@@ -522,6 +522,19 @@ class FormulaAuditor
     end
   end
 
+  def audit_tls_potential
+    # This only handles stable URLs at the moment. I'd like to give it some field
+    # testing on a relatively simple check before we expand it further.
+    return unless @online
+
+    url = formula.stable.url
+    unless url =~ %r[^https://]
+      if system "curl", "--connect-timeout", "3", "--silent", "-I", "https://#{url.split("http://")[1]}", "-o", "/dev/null"
+        problem "Please change #{url} to use https://"
+      end
+    end
+  end
+
   def audit_specs
     if head_only?(formula) && formula.tap.to_s.downcase !~ /-head-only$/
       problem "Head-only (no stable download)"
@@ -953,6 +966,7 @@ class FormulaAuditor
     audit_homepage
     audit_bottle_spec
     audit_github_repository
+    audit_tls_potential
     audit_deps
     audit_conflicts
     audit_options
