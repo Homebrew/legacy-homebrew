@@ -10,6 +10,7 @@ class GstPython < Formula
     sha256 "d8c516e3a67d13905b4dac5401c7cf78e2a8836bb4555b7bda4916f9222c11c1" => :mavericks
   end
 
+  depends_on :python => :optional
   depends_on "gst-plugins-base"
   depends_on "pygobject3"
 
