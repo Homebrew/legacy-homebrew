@@ -15,7 +15,7 @@ class Pygobject < Formula
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
 
   # https://bugzilla.gnome.org/show_bug.cgi?id=668522
   patch do
