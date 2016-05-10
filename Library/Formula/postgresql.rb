@@ -75,6 +75,17 @@ class Postgresql < Formula
       ENV.append %w[CFLAGS LDFLAGS], "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
+    # When extensions request to be build against libpq, they will compile
+    # against the Homebrew PostgreSQL's headers, but because the libdir is
+    # set to /usr/local/lib, the superenv's argument refurbishment will move
+    # the relevant -L argument to the end of the linker argument list. This
+    # results in linking against OS X's libpq, which is not in sync with the
+    # headers provided by Homebrew's PostgreSQL. Simply changing the value
+    # of libpq_builddir to opt_lib ensures refurbishment will not touch it.
+    inreplace "src/Makefile.global.in",
+              "libpq_builddir = $(libdir)",
+              "libpq_builddir = #{opt_lib}"
+
     system "./configure", *args
     system "make"
     system "make", "install-world", "datadir=#{pkgshare}",
