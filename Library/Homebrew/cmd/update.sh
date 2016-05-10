@@ -56,7 +56,7 @@ rename_taps_dir_if_necessary() {
       user="$(echo "${tap_dir_basename%-*}" | tr "[:upper:]" "[:lower:]")"
       repo="$(echo "${tap_dir_basename:${#user}+1}" | tr "[:upper:]" "[:lower:]")"
       mkdir -p "$HOMEBREW_LIBRARY/Taps/$user"
-      mv "$tap_dir", "$HOMEBREW_LIBRARY/Taps/$user/homebrew-$repo"
+      mv "$tap_dir" "$HOMEBREW_LIBRARY/Taps/$user/homebrew-$repo"
 
       if [[ ${#${tap_dir_basename//[^\-]}} -gt 1 ]]
       then
