@@ -1,7 +1,12 @@
 require "tmpdir"
 require "pathname"
 
-HOMEBREW_BREW_FILE = Pathname.new(ENV["HOMEBREW_BREW_FILE"])
+# HOMEBREW_BREW_FILE is most likely unset if this is called via `rake test`
+begin
+  HOMEBREW_BREW_FILE = Pathname.new(ENV.fetch("HOMEBREW_BREW_FILE"))
+rescue KeyError
+  odie "HOMEBREW_BREW_FILE was not exported! Please call via `brew tests`!"
+end
 HOMEBREW_TEMP = Pathname.new(ENV["HOMEBREW_TEMP"] || Dir.tmpdir)
 
 TEST_TMPDIR = ENV.fetch("HOMEBREW_TEST_TMPDIR") { |k|
