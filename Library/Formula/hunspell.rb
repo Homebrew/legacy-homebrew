@@ -29,7 +29,7 @@ class Hunspell < Formula
     ~/Library/Spelling/ or /Library/Spelling/.  Homebrew itself
     provides no dictionaries for Hunspell, but you can download
     compatible dictionaries from other sources, such as
-    https://wiki.openoffice.org/wiki/Dictionaries .
+    https://wiki.openoffice.org/wiki/Dictionaries or https://sourceforge.net/projects/hunspell/files/Spelling%20dictionaries/en_US/.
     EOS
   end
 
