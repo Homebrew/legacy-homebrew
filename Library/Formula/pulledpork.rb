@@ -1,9 +1,10 @@
 class Pulledpork < Formula
   desc "Snort rule management"
-  homepage "https://code.google.com/p/pulledpork/"
-  url "https://pulledpork.googlecode.com/files/pulledpork-0.7.0.tar.gz"
-  sha256 "f60c005043850bb65a72582b9d6d68a7e7d51107f30f2b3fc67e607c995aa1a8"
-  head "http://pulledpork.googlecode.com/svn/trunk/"
+  homepage "https://github.com/shirkdog/pulledpork"
+  url "https://github.com/shirkdog/pulledpork/archive/0.7.2.tar.gz"
+  sha256 "f4b72d03d1ae509049d771fe646c421ec1a877a4a07addc5f6046a3d614e4be7"
+
+  head "https://github.com/shirkdog/pulledpork.git", :branch => "master"
 
   bottle :unneeded
 
