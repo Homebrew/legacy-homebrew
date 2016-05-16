@@ -14,6 +14,7 @@ class Postgresql < Formula
   option "without-perl", "Build without Perl support"
   option "without-tcl", "Build without Tcl support"
   option "with-dtrace", "Build with DTrace support"
+  option "with-debugger", "Build with debugger support (for pgAdmin)"
 
   deprecated_option "no-perl" => "without-perl"
   deprecated_option "no-tcl" => "without-tcl"
@@ -22,6 +23,13 @@ class Postgresql < Formula
   depends_on "openssl"
   depends_on "readline"
   depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
+
+  # The debugger module is shipped separately.
+  resource "debugger" do
+    url "git://git.postgresql.org/git/pldebugger.git",
+      :revision => "85d7b3b2821301e182d5974d9e6f353d7a241eff"
+  end
+
   depends_on :python => :optional
 
   conflicts_with "postgres-xc",
@@ -80,6 +88,18 @@ class Postgresql < Formula
     system "make", "install-world", "datadir=#{pkgshare}",
                                     "libdir=#{lib}",
                                     "pkglibdir=#{lib}/postgresql"
+    if build.with? "debugger"
+      resource("debugger").stage("#{buildpath}/contrib/pldebugger")
+      cd "contrib/pldebugger" do
+        system "make"
+        system "make", "install", "datadir=#{pkgshare}",
+                                  "libdir=#{lib}",
+                                  "pkglibdir=#{lib}/postgresql"
+        File.open("#{pkgshare}/postgresql.conf.sample", "a") do |f|
+          f.write "shared_preload_libraries = '#{HOMEBREW_PREFIX}/lib/#{name}/plugin_debugger'\n"
+        end
+      end
+    end
   end
 
   def post_install
