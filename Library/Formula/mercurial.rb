@@ -6,6 +6,10 @@ class Mercurial < Formula
   url "https://mercurial-scm.org/release/mercurial-3.7.3.tar.gz"
   sha256 "c099c42d74e2d520b61dd372cd996b0fa7605c06617834fd7b13c79b9a9a5b30"
 
+  if OS.linux? then
+    depends_on "python" => :build
+  end
+
   bottle do
     cellar :any_skip_relocation
     sha256 "7104edcb38cdc3bf123ef2f79b5c1d6dc1a5777621a67e19e36ea125229849a6" => :el_capitan
