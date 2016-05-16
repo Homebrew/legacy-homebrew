@@ -3,7 +3,7 @@ class Duplicity < Formula
   homepage "http://www.nongnu.org/duplicity/"
   url "https://code.launchpad.net/duplicity/0.7-series/0.7.06/+download/duplicity-0.7.06.tar.gz"
   sha256 "0075595edb894399cf00fae9154aae93a07eaadc031fede5df4cc595436c7f8c"
-  revision 1
+  revision 2
 
   bottle do
     revision 2
@@ -319,6 +319,8 @@ class Duplicity < Formula
       r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
     end
 
+    chmod 0644, Dir[vendor_site_packages/"prettytable-*-py*.egg-info/*"]
+    
     # ndg is a namespace package
     touch vendor_site_packages/"ndg/__init__.py"
 
