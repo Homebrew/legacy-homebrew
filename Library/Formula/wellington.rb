@@ -1,12 +1,13 @@
 require "language/go"
 
 class Wellington < Formula
-  desc "Adds file awareness to SASS"
+  desc "Sass project tool with spriting using libSass"
   homepage "https://github.com/wellington/wellington"
 
   stable do
-    url "https://github.com/wellington/wellington/archive/v0.9.3.tar.gz"
-    sha256 "108e5626dad9494a1de7d6241a2f96c6fa5bd774133a00c301d42abd1089f3e2"
+    # git required to resolve submodule
+    url "https://github.com/wellington/wellington.git", :tag => "v1.0.2", :revision => "afa2957ac2df46ebf7208322089b6ef27dc4df88"
+    sha256 "8936a7dde95e5620055732d5f73c1d1f5f581c1ad69cd86072a797e18b0c1fea"
   end
 
   bottle do
@@ -17,62 +18,30 @@ class Wellington < Formula
     sha256 "2ef26afb326f22102249daee8c795fb467ce9716a2aae306efd23efc65020df3" => :mavericks
   end
 
-  devel do
-    url "https://github.com/wellington/wellington/archive/v1.0.0-beta1.tar.gz"
-    sha256 "6ea2a260ba7146a6bd87f42ab22082dfd84eb5aa52adae0629cbe71395cf56de"
-    version "1.0.0-beta1"
-  end
-
   needs :cxx11
 
   head do
     url "https://github.com/wellington/wellington.git"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
   end
 
   depends_on "go" => :build
-  depends_on "godep" => :build
-  depends_on "pkg-config" => :build
-
-  go_resource "github.com/kr/fs" do
-    url "https://github.com/kr/fs.git",
-      :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
-  end
-
-  go_resource "golang.org/x/tools" do
-    url "https://github.com/golang/tools.git",
-      :revision => "ea5101579e09ace53571c8a5bae6ebb896f8d5e4"
-  end
 
   def install
     ENV.cxx11 if MacOS.version < :mavericks
 
     version = File.read("version.txt").chomp
     ENV["GOPATH"] = buildpath
+    ENV["GO15VENDOREXPERIMENT"] = "1"
+
+    # move all the files into expected Go path
+    wtpath = buildpath/"src/github.com/wellington/wellington"
+    wtpath.install Dir["*"]
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "godep", "restore"
-
-    # Build libsass from source for head build
-    if build.head?
-      ENV.cxx11
-      ENV["PKG_CONFIG_PATH"] = buildpath/"src/github.com/wellington/go-libsass/lib/pkgconfig"
-
-      ENV.append "CGO_LDFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
-      cd "src/github.com/wellington/go-libsass/" do
-        system "make", "deps"
-      end
+    cd wtpath do
+      system "go", "build", "-ldflags", "-X github.com/wellington/wellington/version.Version #{version}", "-o", "dist/wt", "wt/main.go"
+      bin.install "dist/wt"
     end
-
-    # symlink into $GOPATH so builds work
-    mkdir_p buildpath/"src/github.com/wellington"
-    ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
-
-    system "go", "build", "-ldflags", "-X github.com/wellington/wellington/version.Version #{version}", "-o", "dist/wt", "wt/main.go"
-    bin.install "dist/wt"
   end
 
   test do
