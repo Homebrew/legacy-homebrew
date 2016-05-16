@@ -16,6 +16,7 @@ class Scmpuff < Formula
   def install
     mkdir_p buildpath/"src/github.com/mroth"
     ln_s buildpath, buildpath/"src/github.com/mroth/scmpuff"
+    ENV["GO15VENDOREXPERIMENT"] = "0"
     ENV["GOPATH"] = buildpath
 
     # scmpuff's build script normally does version detection which depends on
