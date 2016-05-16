@@ -22,17 +22,33 @@ class Collectd < Formula
     depends_on "autoconf" => :build
   end
 
-  option "with-java", "Enable Java support"
-  option "with-protobuf-c", "Enable write_riemann via protobuf-c support"
   option "with-debug", "Enable debug support"
+  option "with-hiredis", "Enable Redis and write_redis plugins"
+  option "with-java", "Enable Java support"
+  option "with-libvirt", "Enable Libvirt plugin"
+  option "with-mysql", "Enable MySQL plugin"
+  option "with-net-snmp", "Enable SNMP plugin"
+  option "with-postgresql", "Enable PostgreSQL plugin"
+  option "with-protobuf-c", "Enable write_riemann plugin"
+  option "with-rrdtool", "Enable rrdtool and rrdcached plugins"
+  option "with-varnish", "Enable Varnish plugin"
+  option "with-yajl", "Enable Curl JSON and log_logstash plugins"
 
   deprecated_option "java" => "with-java"
   deprecated_option "debug" => "with-debug"
 
-  depends_on "pkg-config" => :build
-  depends_on "protobuf-c" => :optional
-  depends_on :java => :optional
+  depends_on "hiredis" => :optional
+  depends_on "libvirt" => :optional
+  depends_on "mysql" => :optional
   depends_on "openssl"
+  depends_on "pkg-config" => :build
+  depends_on "postgresql" => :optional
+  depends_on "protobuf-c" => :optional
+  depends_on "net-snmp" => :optional
+  depends_on "rrdtool" => :optional
+  depends_on "varnish" => :optional
+  depends_on "yajl" => :optional
+  depends_on :java => :optional
 
   fails_with :clang do
     build 318
@@ -44,16 +60,78 @@ class Collectd < Formula
 
   def install
     args = %W[
-      --disable-debug
       --disable-dependency-tracking
       --prefix=#{prefix}
       --localstatedir=#{var}
+      --disable-all-plugins
+      --enable-aggregation
+      --enable-apache
+      --enable-apple_sensors
+      --enable-battery
+      --enable-cpu
+      --enable-csv
+      --enable-curl
+      --enable-curl_xml
+      --enable-df
+      --enable-disk
+      --enable-exec
+      --enable-filecount
+      --enable-interface
+      --enable-load
+      --enable-logfile
+      --enable-match_empty_counter
+      --enable-match_hashed
+      --enable-match_regex
+      --enable-match_timediff
+      --enable-match_value
+      --enable-memcached
+      --enable-memory
+      --enable-network
+      --enable-nginx
+      --enable-ntpd
+      --enable-openvpn
+      --enable-perl
+      --enable-powerdns
+      --enable-processes
+      --enable-statsd
+      --enable-swap
+      --enable-syslog
+      --enable-table
+      --enable-tail_csv
+      --enable-tail
+      --enable-target_notification
+      --enable-target_replace
+      --enable-target_scale
+      --enable-target_set
+      --enable-target_v5upgrade
+      --enable-tcpconns
+      --enable-threshold
+      --enable-unixsock
+      --enable-uptime
+      --enable-users
+      --enable-write_graphite
+      --enable-write_http
+      --enable-write_log
+      --enable-write_sensu
+      --enable-write_tsdb
+      --enable-zookeeper
     ]
 
     args << "--disable-embedded-perl" if MacOS.version <= :leopard
-    args << "--disable-java" if build.without? "java"
-    args << "--enable-write_riemann" if build.with? "protobuf-c"
     args << "--enable-debug" if build.with? "debug"
+    args << "--enable-curl_json" if build.with? "yajl"
+    args << "--enable-java" if build.with? "java"
+    args << "--enable-log_logstash" if build.with? "protobuf-c"
+    args << "--enable-mysql" if build.with? "mysql"
+    args << "--enable-postgresql" if build.with? "postgresql"
+    args << "--enable-redis" if build.with? "hiredis-c"
+    args << "--enable-rrdcached" if build.with? "rrdtool"
+    args << "--enable-rrdtool" if build.with? "rrdtool"
+    args << "--enable-snmp" if build.with? "net-snmp"
+    args << "--enable-varnish" if build.with? "varnish"
+    args << "--enable-virt" if build.with? "libvirt"
+    args << "--enable-write_redis" if build.with? "hiredis-c"
+    args << "--enable-write_riemann" if build.with? "protobuf-c"
 
     system "./build.sh" if build.head?
     system "./configure", *args
