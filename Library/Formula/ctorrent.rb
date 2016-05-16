@@ -20,6 +20,14 @@ class Ctorrent < Formula
     sha256 "d24d04760a3480e921c54ea1af39e7bb094a8b774ee09bb8849f9c1f76731193"
   end
 
+  # This patch skips over negative integer values appearing before "info" section in torrent file
+  # which makes ctorrent exit with "error, initial meta info failed" message.
+  # Please see https://sourceforge.net/p/dtorrent/bugs/21/ for more details
+  patch do
+    url "https://raw.githubusercontent.com/achikin/ctorrent-patch/master/ctorrent-3.3.2-negative-ints.patch"
+    sha256 "d24d04760a3480e921c54ea1af39e7bb094a8b774ee09bb8849f9c1f76731193"
+  end
+
   depends_on "openssl"
 
   def install
