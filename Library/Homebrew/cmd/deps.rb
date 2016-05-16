@@ -17,9 +17,9 @@ module Homebrew
     elsif mode.all?
       puts_deps Formula
     elsif mode.tree?
-      raise FormulaUnspecifiedError if ARGV.named.empty?
+      raise FormulaUnspecifiedError if ARGV.formulae.empty?
       puts_deps_tree ARGV.formulae
-    elsif ARGV.named.empty?
+    elsif ARGV.formulae.empty?
       raise FormulaUnspecifiedError unless mode.installed?
       puts_deps Formula.installed
     else
