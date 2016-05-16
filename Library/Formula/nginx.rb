@@ -26,6 +26,7 @@ class Nginx < Formula
   option "with-debug", "Compile with support for debug log"
   option "with-spdy", "Compile with support for either SPDY or HTTP/2 module"
   option "with-gunzip", "Compile with support for gunzip module"
+  option "with-sub", "Compile with support for ngx_http_sub_module module"
 
   depends_on "pcre"
   depends_on "passenger" => :optional
@@ -78,6 +79,7 @@ class Nginx < Formula
     args << "--with-http_dav_module" if build.with? "webdav"
     args << "--with-debug" if build.with? "debug"
     args << "--with-http_gunzip_module" if build.with? "gunzip"
+    args << "--with-http_sub_module" if build.with? "sub"
 
     # This became "with-http_v2_module" in 1.9.5
     # http://nginx.org/en/docs/http/ngx_http_spdy_module.html
