@@ -173,6 +173,24 @@ class FormulaAuditorTests < Homebrew::TestCase
       fa.problems
   end
 
+  def test_audit_file_strict_plist_placement
+    fa = formula_auditor "foo", <<-EOS.undent, :strict => true
+      class Foo < Formula
+        url "https://example.com/foo-1.0.tgz"
+
+        test do
+          assert_match "Dogs are terrific", shell_output("./dogs")
+        end
+
+        def plist
+        end
+      end
+    EOS
+    fa.audit_file
+    assert_equal ["`plist block` (line 8) should be put before `test block` (line 4)"],
+      fa.problems
+  end
+
   def test_audit_file_strict_url_outside_of_stable_block
     fa = formula_auditor "foo", <<-EOS.undent, :strict => true
       class Foo < Formula
