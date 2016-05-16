@@ -16,6 +16,13 @@ class Nomad < Formula
     sha256 "eecc51d26cd0867c669d723d09fb90cd2f879c052ac4f3184f5441ccfd0a9576" => :mavericks
   end
 
+  devel do
+    url "https://github.com/hashicorp/nomad.git",
+      :tag => "v0.3rc1",
+      :revision => "5e1a3c636c56410f7a025908b70cbb8700be0a71"
+    version "0.3rc1"
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/ugorji/go" do
