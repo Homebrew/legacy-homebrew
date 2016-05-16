@@ -15,6 +15,9 @@ class GitOctopus < Formula
     system "make", "build"
     bin.install "bin/git-octopus", "bin/git-conflict", "bin/git-apply-conflict-resolution"
     man1.install "doc/git-octopus.1", "doc/git-conflict.1"
+
+    # Clearly need something here to point to git "doc/git-doc" instead of git-octopus "doc/git-doc"
+    (share+"doc/git-doc").install "doc/git-octopus.html" "doc/git-octopus.html"
   end
 
   test do
