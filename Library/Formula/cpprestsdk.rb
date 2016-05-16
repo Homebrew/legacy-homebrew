@@ -6,6 +6,8 @@ class Cpprestsdk < Formula
 
   head "https://github.com/Microsoft/cpprestsdk.git", :branch => "development"
 
+  head "https://github.com/Microsoft/cpprestsdk.git", :branch => "development"
+
   bottle do
     cellar :any
     sha256 "aaf11100fd9698a5776a4cd9a5f73610e927d87135c40a1824007cc16d3d9cab" => :el_capitan
