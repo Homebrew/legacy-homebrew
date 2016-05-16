@@ -22,6 +22,7 @@ class Sbcl < Formula
   option "without-core-compression", "Build SBCL without support for compressed cores and without a dependency on zlib"
   option "with-ldb", "Include low-level debugger in the build"
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
+  option "with-sources", "Install SBCL sources"
 
   # Current binary versions are listed at http://sbcl.sourceforge.net/platform-table.html
   resource "bootstrap64" do
@@ -97,6 +98,11 @@ class Sbcl < Formula
 
     ENV["INSTALL_ROOT"] = prefix
     system "sh", "install.sh"
+
+    if build.with? "sources"
+      system "cp", "-R", "contrib", prefix
+      system "cp", "-R", "src", prefix
+    end
   end
 
   test do
