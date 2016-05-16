@@ -56,6 +56,8 @@ class Tmux < Formula
       bash_completion.install "examples/bash_completion_tmux.sh" => "tmux"
       pkgshare.install "examples"
     end
+
+    man1.install "tmux.1"
   end
 
   def caveats; <<-EOS.undent
