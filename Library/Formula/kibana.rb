@@ -3,6 +3,7 @@ class Kibana < Formula
   homepage "https://www.elastic.co/products/kibana"
   url "https://github.com/elastic/kibana.git", :tag => "v4.5.0", :revision => "ff5cfc5d05a58e53f7acaa762428fa803318d31e"
   head "https://github.com/elastic/kibana.git"
+  revision 1
 
   bottle do
     sha256 "70427af44d49688d5d4bfead4d1dcfd132e080013c2a114935c14de867da490a" => :el_capitan
