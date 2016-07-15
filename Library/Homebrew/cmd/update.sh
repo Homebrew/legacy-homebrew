@@ -3,7 +3,7 @@ brew() {
 }
 
 git() {
-  "$HOMEBREW_LIBRARY/ENV/scm/git" "$@"
+  "$HOMEBREW_LIBRARY/Homebrew/shims/scm/git" "$@"
 }
 
 git_init_if_necessary() {
