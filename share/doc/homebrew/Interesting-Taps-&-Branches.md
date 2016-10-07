@@ -1,1 +1,1 @@
-Moved to https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Interesting-Taps-%26-Branches.md.
+Moved to https://github.com/Homebrew/brew/blob/master/docs/Interesting-Taps-%26-Forks.md.

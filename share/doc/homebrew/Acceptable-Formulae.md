@@ -1,1 +1,1 @@
-Moved to https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Acceptable-Formulae.md.
+Moved to https://github.com/Homebrew/brew/blob/master/docs/Acceptable-Formulae.md.

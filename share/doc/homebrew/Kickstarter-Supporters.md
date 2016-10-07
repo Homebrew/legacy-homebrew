@@ -1,1 +1,1 @@
-Moved to https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Kickstarter-Supporters.md.
+Moved to https://github.com/Homebrew/brew/blob/master/docs/Kickstarter-Supporters.md.

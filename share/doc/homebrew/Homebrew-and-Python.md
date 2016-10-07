@@ -1,1 +1,1 @@
-Moved to https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Homebrew-and-Python.md.
+Moved to https://github.com/Homebrew/brew/blob/master/docs/Homebrew-and-Python.md.
