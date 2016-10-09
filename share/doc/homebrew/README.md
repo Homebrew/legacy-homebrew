@@ -1,1 +1,1 @@
-Moved to https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/README.md.
+Moved to https://github.com/Homebrew/brew/blob/master/docs/README.md.

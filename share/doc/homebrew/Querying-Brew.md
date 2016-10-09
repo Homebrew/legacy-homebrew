@@ -1,1 +1,1 @@
-Moved to https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Querying-Brew.md.
+Moved to https://github.com/Homebrew/brew/blob/master/docs/Querying-Brew.md.

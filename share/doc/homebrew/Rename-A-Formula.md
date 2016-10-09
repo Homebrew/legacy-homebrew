@@ -1,1 +1,1 @@
-Moved to https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Rename-A-Formula.md.
+Moved to https://github.com/Homebrew/brew/blob/master/docs/Rename-A-Formula.md.

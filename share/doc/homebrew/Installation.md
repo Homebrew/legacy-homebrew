@@ -1,1 +1,1 @@
-Moved to https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Installation.md.
+Moved to https://github.com/Homebrew/brew/blob/master/docs/Installation.md.
