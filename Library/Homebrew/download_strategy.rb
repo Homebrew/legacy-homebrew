@@ -393,6 +393,23 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# Will convert "https://downloads.sourceforge.net/project/..." URLs to mirrorservice.org
+# In case environment variable HOMEBREW_NO_INSECURE_REDIRECT is set, so the Sourceforge is not ultimately broken
+class CurlSourceForgeSecureMirrorDownloadStrategy < CurlDownloadStrategy
+  def fetch
+    unless ENV["HOMEBREW_NO_INSECURE_REDIRECT"].nil?
+      mirrors.unshift *https_mirror
+    end
+    super
+  end
+
+  def https_mirror
+     @url.gsub(%r{(^https?://)(?:.+)(.net/project/)(.+)}) do
+       "#{$1}www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/#{$3[0]}/#{$3[0,2]}/#{$3}"
+     end
+  end
+end
+
 # Download via an HTTP POST.
 # Query parameters on the URL are converted into POST parameters
 class CurlPostDownloadStrategy < CurlDownloadStrategy
@@ -868,6 +885,8 @@ class DownloadStrategyDetector
       SubversionDownloadStrategy
     when %r{^https?://(.+?\.)?sourceforge\.net/hgweb/}
       MercurialDownloadStrategy
+    when %r{^https://(.+?\.)?sourceforge\.net}
+      CurlSourceForgeSecureMirrorDownloadStrategy
     else
       CurlDownloadStrategy
     end
