@@ -114,6 +114,15 @@ module Homebrew
     end
   end
 
+  def describe_go
+    describe_path(which 'go')
+  end
+
+  def describe_gopath
+    value = `echo $GOPATH`
+    value = `#{"echo $GOPATH"}`
+  end
+
   def hardware
     "CPU: #{Hardware.cores_as_words}-core #{Hardware::CPU.bits}-bit #{Hardware::CPU.family}"
   end
@@ -180,6 +189,8 @@ module Homebrew
     f.puts "X11: #{describe_x11}"
     f.puts "System Ruby: #{describe_system_ruby}"
     f.puts "Perl: #{describe_perl}"
+    f.puts "Go: #{describe_go}"
+    f.puts "GoPath: #{describe_gopath}"
     f.puts "Python: #{describe_python}"
     f.puts "Ruby: #{describe_ruby}"
     f.puts "Java: #{describe_java}"
