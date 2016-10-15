@@ -270,7 +270,16 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
     @temporary_path = Pathname.new("#{cached_location}.incomplete")
   end
 
+  def try_urls
+    @try_urls ||= [mirrors, @url].flatten.compact
+  end
+
+  def try_next_url!
+    @url = try_urls.delete_at(rand(try_urls.size)) unless try_urls.empty?
+  end
+
   def fetch
+    try_next_url!
     ohai "Downloading #{@url}"
 
     unless cached_location.exist?
@@ -305,9 +314,8 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
       puts "Already downloaded: #{cached_location}"
     end
   rescue CurlDownloadStrategyError
-    raise if mirrors.empty?
-    puts "Trying a mirror..."
-    @url = mirrors.shift
+    raise if try_urls.empty?
+    puts "Trying another mirror..."
     retry
   end
 
