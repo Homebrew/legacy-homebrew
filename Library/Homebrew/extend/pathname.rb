@@ -427,7 +427,7 @@ class Pathname
     mkpath
     (self+script_name).write <<-EOS.undent
       #!/bin/bash
-      exec java #{java_opts} -jar #{target_jar} "$@"
+      exec java #{java_opts} $JAVA_OPTS -jar #{target_jar} "$@"
     EOS
   end
 
