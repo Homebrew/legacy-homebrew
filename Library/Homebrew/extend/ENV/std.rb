@@ -100,6 +100,10 @@ module Stdenv
   end
   alias_method :j1, :deparallelize
 
+  def parallelize
+    self['MAKEFLAGS'] ||= "-j#{self.make_jobs}"
+  end
+
   # These methods are no-ops for compatibility.
   %w[fast O4 Og].each { |opt| define_method(opt) {} }
 

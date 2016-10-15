@@ -262,6 +262,10 @@ module Superenv
   end
   alias_method :j1, :deparallelize
 
+  def parallelize
+    self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
+  end
+
   def make_jobs
     self["MAKEFLAGS"] =~ /-\w*j(\d+)/
     [$1.to_i, 1].max
