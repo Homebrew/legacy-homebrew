@@ -138,6 +138,10 @@ module MacCPUs
   def ssse3?
     sysctl_bool("hw.optional.supplementalsse3")
   end
+  
+  def ssse3?
+    @ssse3 ||= sysctl_bool('hw.optional.supplementalsse3')
+  end
 
   def sse4?
     sysctl_bool("hw.optional.sse4_1")
