@@ -367,10 +367,21 @@ class FormulaInstaller
 
   def inherited_options_for(dep)
     inherited_options = Options.new
+
+    # Universal is a special case of an inheritable option
     u = Option.new("universal")
     if (options.include?(u) || formula.require_universal_deps?) && !dep.build? && dep.to_formula.option_defined?(u)
       inherited_options << u
     end
+
+    # Handle other inheritable options
+    inheritableOptions = [Option.new("without-x11"), Option.new("without-x")]
+    inheritableOptions.each do |inheritableOption|
+      if options.include?(inheritableOption) && !dep.build? && dep.to_formula.option_defined?(inheritableOption)
+        inherited_options << inheritableOption
+      end
+    end
+
     inherited_options
   end
 
