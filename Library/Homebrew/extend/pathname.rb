@@ -170,8 +170,19 @@ class Pathname
         old_stat = default_stat
       end
 
-      uid = Process.uid
-      gid = Process.groups.delete(old_stat.gid) { Process.gid }
+      # Process.uid/Process.gid return an unsigned int for nobody/nogroup
+      # (-2/-1) but tf.chown() below expects a signed Fixnum value (which
+      # is internally converted back to its two's complement representation)
+      def to_signed32bit(i)
+        if i >= 2**31
+          return i - 2**32
+        else
+          return i
+        end
+      end
+
+      uid = to_signed32bit(Process.uid)
+      gid = to_signed32bit(Process.groups.delete(old_stat.gid) { Process.gid })
 
       begin
         tf.chown(uid, gid)
