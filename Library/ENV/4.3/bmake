@@ -1,0 +1,3 @@
+#!/usr/bin/env HOMEBREW_CCCFG="O$HOMEBREW_CCCFG" sh
+bmake="$("$HOMEBREW_BREW_FILE" --prefix bmake)/bin/bmake"
+[ -x "$bmake" ] && exec "$bmake" "$@" || echo "Missing bmake." >&2 && exit 1
