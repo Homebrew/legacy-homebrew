@@ -1943,7 +1943,9 @@ class Formula
     # <pre>conflicts_with "imagemagick", :because => "because this is just a stupid example"</pre>
     def conflicts_with(*names)
       opts = Hash === names.last ? names.pop : {}
-      names.each { |name| conflicts << FormulaConflict.new(name, opts[:because]) }
+      racks = HOMEBREW_CELLAR.subdirs.map { |rack| rack.basename.to_s }
+      all_names = names.map { |name| Regexp === name ? racks.grep(name) : name }.flatten.uniq.sort
+      all_names.each { |name| conflicts << FormulaConflict.new(name, opts[:because]) }
     end
 
     def skip_clean(*paths)
