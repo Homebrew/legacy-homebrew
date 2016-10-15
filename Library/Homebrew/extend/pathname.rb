@@ -334,7 +334,7 @@ class Pathname
 
   # @private
   def resolved_path
-    self.symlink? ? dirname+readlink : self
+    self.symlink? ? dirname.realpath+readlink : self
   end
 
   # @private
@@ -344,7 +344,7 @@ class Pathname
     # The link target contains NUL bytes
     false
   else
-    (dirname+link).exist?
+    (dirname.realpath+link).exist?
   end
 
   # @private
