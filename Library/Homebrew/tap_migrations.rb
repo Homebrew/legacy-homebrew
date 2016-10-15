@@ -132,6 +132,7 @@ TAP_MIGRATIONS = {
   "libodbc++" => "homebrew/boneyard",
   "libqxt" => "homebrew/boneyard",
   "librets" => "homebrew/boneyard",
+  "libqxt" => "homebrew/boneyard",
   "libspotify" => "homebrew/binary",
   "lilypond" => "homebrew/tex",
   "lmutil" => "homebrew/binary",
