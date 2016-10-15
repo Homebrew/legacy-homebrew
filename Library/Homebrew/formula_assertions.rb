@@ -15,8 +15,6 @@ module Homebrew
 
     if defined?(MiniTest::Assertion)
       FailedAssertion = MiniTest::Assertion
-    elsif defined?(Minitest::Assertion)
-      FailedAssertion = Minitest::Assertion
     else
       FailedAssertion = Test::Unit::AssertionFailedError
     end
