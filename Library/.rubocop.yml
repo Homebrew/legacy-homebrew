@@ -1,0 +1,124 @@
+# 1.8-style hash keys
+Style/HashSyntax:
+    EnforcedStyle: hash_rockets
+
+# ruby style guide favorite
+Style/StringLiterals:
+    EnforcedStyle: double_quotes
+
+# consistency with above
+Style/StringLiteralsInInterpolation:
+    EnforcedStyle: double_quotes
+
+# no metrics for formulas
+Metrics/AbcSize:
+    Enabled: false
+Metrics/CyclomaticComplexity:
+    Enabled: false
+Metrics/MethodLength:
+    Enabled: false
+Metrics/ClassLength:
+    Enabled: false
+Metrics/PerceivedComplexity:
+    Enabled: false
+
+# respect width, but be smart
+Metrics/LineLength:
+    AllowURI: true
+    URISchemes:
+        - http
+        - https
+        - ftp
+        - git
+
+# formulas have no mandatory doc
+Style/Documentation:
+    Enabled: false
+
+# favor parens-less DSL-style arguments
+Lint/AmbiguousOperator:
+    Enabled: false
+Lint/AmbiguousRegexpLiteral:
+    Enabled: false
+Lint/AssignmentInCondition:
+    Enabled: false
+Lint/ParenthesesAsGroupedExpression:
+    Enabled: false
+
+# compact style
+Style/EmptyLineBetweenDefs:
+    AllowAdjacentOneLineDefs: true
+
+# and/or as flow control
+Style/AndOr:
+    EnforcedStyle: conditionals
+
+# port numbers and such tech stuff
+Style/NumericLiterals:
+    Enabled: false
+
+# paths abound, easy escape
+Style/RegexpLiteral:
+    MaxSlashes: 0
+
+# consistency and readability when faced with string interpolation
+Style/PercentLiteralDelimiters:
+    PreferredDelimiters:
+        '%':  '()'
+        '%i': '()'
+        '%q': '()'
+        '%Q': '()'
+        '%r': '{}'
+        '%s': '()'
+        '%w': '[]'
+        '%W': '[]'
+        '%x': '()'
+
+# comma on last element is editor friendly
+Style/TrailingComma:
+    EnforcedStyleForMultiline: comma
+
+# conflicts with DSL-style path concatenation with `/`
+Style/SpaceAroundOperators:
+    Enabled: false
+
+# not a problem for typical shell users
+Style/SpecialGlobalVars:
+    Enabled: false
+
+# `system` is a special case and aligns on second argument
+Style/AlignParameters:
+    Enabled: false
+
+# counterproductive in formulas, notably within the install method
+Style/GuardClause:
+    Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
+
+# dashes in filenames are typical
+# TODO: enforce when rubocop has fixed this
+# https://github.com/bbatsov/rubocop/issues/1545
+Style/FileName:
+    Enabled: false
+
+# no percent word array, being friendly to non-ruby users
+# TODO: enforce when rubocop has fixed this
+# https://github.com/bbatsov/rubocop/issues/1543
+Style/WordArray:
+    Enabled: false
+
+# percent-x is allowed for multiline
+# TODO: enforce when rubocop has fixed this
+# https://github.com/bbatsov/rubocop/issues/1397
+Style/UnneededPercentX:
+    Enabled: false
+
+# TODO: rubocop bug regarding __END__
+# see https://github.com/bbatsov/rubocop/issues/1541
+Style/TrailingWhitespace:
+    Enabled: false
+Style/Tab:
+    Enabled: false
+Style/TrailingBlankLines:
+    Enabled: false
