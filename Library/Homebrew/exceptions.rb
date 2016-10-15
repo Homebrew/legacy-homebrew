@@ -1,6 +1,7 @@
 class UsageError < RuntimeError; end
 class FormulaUnspecifiedError < UsageError; end
 class KegUnspecifiedError < UsageError; end
+class SHAUnspecifiedError < UsageError; end
 
 class MultipleVersionsInstalledError < RuntimeError
   attr_reader :name
