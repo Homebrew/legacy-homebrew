@@ -1,0 +1,3 @@
+[submodule "homebrew.wiki"]
+	path = homebrew.wiki
+	url = ../homebrew.wiki/
