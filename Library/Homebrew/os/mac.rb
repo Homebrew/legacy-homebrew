@@ -83,7 +83,8 @@ module OS
     end
 
     def active_developer_dir
-      @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
+      @active_developer_dir ||= which("xcode-select") ?
+        Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip : ""
     end
 
     # If a specific SDK is requested
