@@ -166,6 +166,7 @@ TAP_MIGRATIONS = {
   "paq8px" => "homebrew/boneyard",
   "par2tbb" => "homebrew/boneyard",
   "pari" => "homebrew/x11",
+  "par2tbb" => "homebrew/boneyard",
   "pathfinder" => "homebrew/boneyard",
   "pcb" => "homebrew/science",
   "pdf-tools" => "homebrew/emacs",
