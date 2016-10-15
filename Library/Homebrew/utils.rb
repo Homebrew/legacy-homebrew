@@ -395,6 +395,8 @@ def which_editor
   editor = ENV.values_at("HOMEBREW_EDITOR", "VISUAL", "EDITOR").compact.first
   return editor unless editor.nil?
 
+  # Find SublimeText
+  return 'subl' if which "subl"
   # Find Textmate
   editor = "mate" if which "mate"
   # Find BBEdit / TextWrangler
