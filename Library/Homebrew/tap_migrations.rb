@@ -93,6 +93,7 @@ TAP_MIGRATIONS = {
   "grace" => "homebrew/x11",
   "grads" => "homebrew/binary",
   "graylog2-server" => "homebrew/boneyard",
+  "guilt" => "homebrew/boneyard",
   "gromacs" => "homebrew/science",
   "gsmartcontrol" => "homebrew/gui",
   "gtk-chtheme" => "homebrew/gui",
