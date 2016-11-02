@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BrewBot: <%= @test.name %></title>
+	<title>BrewBot</title>
+	<style>
+	<%= css %>
+	</style>
+</head>
+<body>
+	<div>
+		<h1><a href="../index.html">BrewBot</a></h1>
+		<h2><%= @test.name %> <%= DateTime.now.strftime "%T %D" %></h2>
+		<table>
+			<% for step in @test.steps %>
+			<tr>
+				<td><span class="prompt">$</span> <%= step.command %></td>
+				<td class='status <%= step.status %>'><a href='<%= step.log_file_path false %> '><%= step.status_upcase %></a></td>
+			</tr>
+			<% end %>
+		</table>
+	</div>
+</body>
+</html>
