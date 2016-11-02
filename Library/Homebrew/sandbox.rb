@@ -141,8 +141,15 @@ class Sandbox
   class SandboxProfile
     SEATBELT_ERB = <<-EOS.undent
       (version 1)
+      (deny network-inbound)
+      (deny network-outbound)
       (debug deny) ; log all denied operations to /var/log/system.log
       <%= rules.join("\n") %>
+      (allow network-outbound
+        (subpath "/tmp")
+        (subpath "/private")
+        (subpath "#{HOMEBREW_TEMP}")
+        )
       (allow file-write*
           (literal "/dev/ptmx")
           (literal "/dev/dtracehelper")
