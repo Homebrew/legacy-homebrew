@@ -21,7 +21,7 @@ module OS
     # This can be compared to numerics, strings, or symbols
     # using the standard Ruby Comparable methods.
     def full_version
-      @full_version ||= Version.new(`/usr/bin/sw_vers -productVersion`.chomp)
+      @full_version ||= Version.new(ENV["HOMEBREW_OSX_VERSION"].chomp)
     end
 
     def prerelease?
