@@ -171,21 +171,42 @@ class Tap
   # @option options [Boolean] :quiet If set, suppress all output.
   def install(options = {})
     require "descriptions"
-    raise TapAlreadyTappedError, name if installed?
-    clear_cache
 
+    full_clone = options.fetch(:full_clone, true)
     quiet = options.fetch(:quiet, false)
+
+    if installed?
+      raise TapAlreadyTappedError, name unless full_clone
+      unless (path/".git/shallow").exist?
+        ohai "#{name} is already a full clone" unless quiet
+        return
+      end
+    end
+
+    clear_cache unless installed?
 
     # ensure git is installed
     Utils.ensure_git_installed!
-    ohai "Tapping #{name}" unless quiet
+    if installed?
+      ohai "Unshallowing #{name}" unless quiet
+    else
+      ohai "Tapping #{name}" unless quiet
+    end
     remote = options[:clone_target] || "https://github.com/#{user}/homebrew-#{repo}"
-    args = %W[clone #{remote} #{path} --config core.autocrlf=false]
-    args << "--depth=1" unless options.fetch(:full_clone, false)
+    args = if installed?
+      %W[fetch --unshallow]
+    else
+      %W[clone #{remote} #{path} --config core.autocrlf=false]
+    end
+    args << "--depth=1" unless full_clone
     args << "-q" if quiet
 
     begin
-      safe_system "git", *args
+      if installed?
+        path.cd { safe_system "git", *args }
+      else
+        safe_system "git", *args
+      end
     rescue Interrupt, ErrorDuringExecution
       ignore_interrupts do
         sleep 0.1 # wait for git to cleanup the top directory when interrupt happens.
