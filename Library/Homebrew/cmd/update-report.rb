@@ -46,7 +46,7 @@ module Homebrew
     end
 
     if !updated
-      puts "Already up-to-date."
+      puts "Already up-to-date." unless ARGV.include?("--preinstall")
     elsif hub.empty?
       puts "No changes to formulae."
     else
