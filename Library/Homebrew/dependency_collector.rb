@@ -119,6 +119,8 @@ class DependencyCollector
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :python2
       PythonRequirement.new(tags)
+    when :blas
+      BlasRequirement.new(tags)
     else
       raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
