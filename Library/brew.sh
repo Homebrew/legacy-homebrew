@@ -170,7 +170,7 @@ then
   # Hide shellcheck complaint:
   # shellcheck source=/dev/null
   source "$HOMEBREW_BASH_COMMAND"
-  { "homebrew-$HOMEBREW_COMMAND" "$@"; exit $?; }
+  { "homebrew_${HOMEBREW_COMMAND}" "$@"; exit $?; }
 else
   # Unshift command back into argument list (unless argument list was empty).
   [[ "$HOMEBREW_ARG_COUNT" -gt 0 ]] && set -- "$HOMEBREW_COMMAND" "$@"
