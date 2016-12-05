@@ -347,7 +347,7 @@ class FormulaInstaller
 
       if (dep.optional? || dep.recommended?) && build.without?(dep)
         Dependency.prune
-      elsif dep.build? && install_bottle_for?(dependent, build)
+      elsif dep.build? && (install_bottle_for?(dependent, build) || dependent.installed?)
         Dependency.prune
       elsif dep.satisfied?(options)
         Dependency.skip
