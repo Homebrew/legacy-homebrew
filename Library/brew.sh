@@ -1,4 +1,5 @@
 HOMEBREW_VERSION="0.9.8"
+HOMEBREW_USER_AGENT="Homebrew $HOMEBREW_VERSION"
 
 odie() {
   if [[ -t 2 ]] # check whether stderr is a tty.
@@ -158,6 +159,39 @@ your own risk.
 EOS
       ;;
   esac
+fi
+
+if [[ -n "$HOMEBREW_ANALYTICS" ]]
+then
+  # User UUID file. Used for Homebrew user counting. Can be deleted and
+  # recreated with no adverse effect (beyond our user counts being inflated).
+  HOMEBREW_ANALYTICS_USER_UUID_FILE="$HOME/.homebrew_analytics_user_uuid"
+  if [[ -r "$HOMEBREW_ANALYTICS_USER_UUID_FILE" ]]
+  then
+    HOMEBREW_ANALYTICS_USER_UUID="$(cat "$HOMEBREW_ANALYTICS_USER_UUID_FILE")"
+  else
+    HOMEBREW_ANALYTICS_USER_UUID="$(uuidgen)"
+    echo "$HOMEBREW_ANALYTICS_USER_UUID" > "$HOMEBREW_ANALYTICS_USER_UUID_FILE"
+  fi
+  export HOMEBREW_ANALYTICS_ID="UA-75654628-1"
+  export HOMEBREW_ANALYTICS_USER_UUID
+
+  # Send the to-be-executed command as an "App Screen View". Anonymise the IP
+  # address (aip=1) and don't send or store any personally identifiable
+  # information.
+  # https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide#screenView
+  # https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
+  curl https://www.google-analytics.com/collect -d v=1 \
+    --silent --max-time 3 --output /dev/null \
+    --user-agent "$HOMEBREW_USER_AGENT" \
+    -d tid="$HOMEBREW_ANALYTICS_ID" \
+    -d cid="$HOMEBREW_ANALYTICS_USER_UUID" \
+    -d aip=1 \
+    -d an=Homebrew \
+    -d av="$HOMEBREW_VERSION" \
+    -d t=screenview \
+    -d cd="$HOMEBREW_COMMAND" \
+    &
 fi
 
 if [[ -n "$HOMEBREW_BASH_COMMAND" ]]
