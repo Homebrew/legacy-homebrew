@@ -95,6 +95,7 @@ class Dependency
         end
       end
 
+      @expand_stack.pop
       merge_repeats(expanded_deps)
     ensure
       @expand_stack.pop
