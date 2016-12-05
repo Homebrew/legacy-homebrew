@@ -228,6 +228,8 @@ homebrew-update() {
   local option
   local DIR
   local UPSTREAM_BRANCH
+  
+  echo "brew updating. This may take some time."
 
   for option in "$@"
   do
