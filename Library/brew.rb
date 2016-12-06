@@ -2,6 +2,7 @@
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 
+SOME_ENV1 = ENV['SOME_ENV1']
 HOMEBREW_BREW_FILE = ENV["HOMEBREW_BREW_FILE"]
 
 if ARGV == %w[--prefix]
