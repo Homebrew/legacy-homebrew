@@ -16,20 +16,16 @@ class CxxStdlib
     if type && ![:libstdcxx, :libcxx].include?(type)
       raise ArgumentError, "Invalid C++ stdlib type: #{type}"
     end
-    klass = GNU_GCC_REGEXP === compiler.to_s ? GnuStdlib : AppleStdlib
-    klass.new(type, compiler)
+    new(type, compiler)
   end
 
   def self.check_compatibility(formula, deps, keg, compiler)
     return if formula.skip_cxxstdlib_check?
 
     stdlib = create(keg.detect_cxx_stdlibs.first, compiler)
-
-    begin
-      stdlib.check_dependencies(formula, deps)
-    rescue CompatibilityError => e
-      opoo e.message
-    end
+    stdlib.check_dependencies(formula, deps)
+  rescue CompatibilityError
+    opoo $!.message
   end
 
   attr_reader :type, :compiler
@@ -37,6 +33,10 @@ class CxxStdlib
   def initialize(type, compiler)
     @type = type
     @compiler = compiler.to_sym
+  end
+
+  def apple_compiler?
+    !(GNU_GCC_REGEXP === @compiler.to_s)
   end
 
   # If either package doesn't use C++, all is well
@@ -71,17 +71,5 @@ class CxxStdlib
 
   def inspect
     "#<#{self.class.name}: #{compiler} #{type}>"
-  end
-
-  class AppleStdlib < CxxStdlib
-    def apple_compiler?
-      true
-    end
-  end
-
-  class GnuStdlib < CxxStdlib
-    def apple_compiler?
-      false
-    end
   end
 end
