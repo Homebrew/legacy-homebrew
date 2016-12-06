@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="dc.creator" content="Rémi Prévost - http://exomel.com">
+    <title>Homebrew — MacPorts sizi içmeye mi teşvik ediyor? Homebrew'i deneyin!</title>
+    <link rel="stylesheet" href="brew_files/screen.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="brew_files/chunkfive.css" type="text/css" media="screen">
+    
+    <script type="text/javascript">
+        function selectText() {
+            if (document.selection) {
+                var range = document.body.createTextRange();
+                range.moveToElementText(document.getElementById('selectable'));
+                range.select();
+            } else if (window.getSelection) {
+                var range = document.createRange();
+                range.selectNode(document.getElementById('selectable'));
+                window.getSelection().addRange(range);
+            }
+        }
+    </script>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="header">
+        <h1><a href="http://brew.sh/">Homebrew</a></h1>
+        <p id="subtitle"><strong>OS X için eksik paket yöneticisi</strong></p>
+        <p>
+            
+                English
+            
+            
+                |
+            
+  	
+            
+                <a href="http://brew.sh/index_de.html">
+                Deutsch
+                </a>
+            
+            
+                |
+            
+		
+            
+                <a href="http://brew.sh/index_es.html">
+                Español
+                </a>
+            
+            
+                |
+            
+		
+            
+                <a href="http://brew.sh/index_fr.html">
+                Français
+                </a>
+            
+            
+                |
+            
+		
+            
+                <a href="http://brew.sh/index_zh-cn.html">
+                简体中文
+                </a>
+            
+            
+                |
+            
+		
+            
+                <a href="http://brew.sh/index_zh-tw.html">
+                繁體中文
+                </a>
+            
+            
+                |
+            
+		
+            
+                <a href="http://brew.sh/index_ja.html">
+                日本語
+                </a>
+            
+            
+                |
+            
+		
+            
+                <a href="http://brew.sh/index_ko.html">
+                한국어
+                </a>
+            
+            
+                |
+            
+		
+            
+                <a href="http://brew.sh/index_pt-br.html">
+                Português Brasileiro
+                </a>
+            
+            
+                |
+            
+		
+            
+                <a href="http://brew.sh/index_ru.html">
+                Русский
+                </a>
+            
+            
+                |
+            
+		
+            
+                <a href="http://brew.sh/index_th.html">
+                ไทย
+                </a>
+                |
+            
+    
+            
+                <a href="http://brew.sh/index_tr.html">
+                Türkçe
+                </a>
+            
+            
+            
+		
+        </p>
+      </div>
+
+      <div id="informations">
+        <ul>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew Apple'ın ihtiyaç duymadığı ama <a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="List of Homebrew packages">size lazım olabilecek şeyleri</a> kurar.</p>
+              </div>
+              <div class="col-2">
+                <pre><code><span style="color: #e3d796;">$</span> brew install wget</code></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew paketleri kendi dizinlerine kurar ve dosyalarını kısayolla <code>/usr/local</code>'a bağlar.</p>
+              </div>
+              <div class="col-2">
+                <pre><code><span style="color: #e3d796;">$</span> cd /usr/local
+<span style="color: #e3d796;">$</span> find Cellar
+Cellar/wget/1.12
+Cellar/wget/1.12/bin/wget
+Cellar/wget/1.12/share/man/man1/wget.1
+
+<span style="color: #e3d796;">$</span> ls -l bin
+bin/wget -&gt; ../Cellar/wget/1.12/bin/wget</code></pre>
+
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew kendisine belirtilen alan dışında yerlere kurulum yapmaz, ve Homebrew'i istediğiniz herhangi biryere koyabilirsiniz.</p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Basitçe kendi Homebrew paketlerinizi oluşturun.</p>
+              </div>
+              <div class="col-2">
+                <pre><code><span style="color: #e3d796;">$</span> brew create http://foo.com/bar-1.0.tgz
+Created /usr/local/Library/Formula/bar.rb
+</code></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>İçersinde tamamen git ve ruby'den oluşur, böylece değişikliklerinizi geri alabileceğiniz ve kaynağa doğru güncellemeleri birleştirebileceğiniz bilgisiyle kod yazabilirsiniz.</p>
+              </div>
+              <div class="col-2">
+                <pre><code><span style="color: #e3d796;">$</span> brew edit wget <span style="color: #666;"># opens in $EDITOR!</span></code></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew formülleri basit Ruby betikleridir:</p>
+              </div>
+              <div class="col-2">
+                <pre class="overflow"><code><span style="color: #8a9597;">require</span>&nbsp;<span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">formula</span><span style="color: #c2c98f;">'</span>
+
+<span style="color: #8a9597;">class</span>&nbsp;<span style="color: #e3d796;"><em>Wget</em></span>&nbsp;&lt; Formula
+&nbsp;&nbsp;homepage <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">http://www.gnu.org/wget/</span><span style="color: #c2c98f;">'</span>
+&nbsp;&nbsp;url <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">http://ftp.gnu.org/wget-1.12.tar.gz</span><span style="color: #c2c98f;">'</span>
+&nbsp;&nbsp;md5 <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">308a5476fc096a8a525d07279a6f6aa3</span><span style="color: #c2c98f;">'</span>
+
+&nbsp;&nbsp;<span style="color: #8a9597;">def</span>&nbsp;<span style="color: #a999ac;">install</span>
+&nbsp;&nbsp;&nbsp;&nbsp;system <span style="color: #c2c98f;">"</span><span style="color: #a2a96f;">./configure</span><span style="color: #c2c98f;"> </span><span style="color: #a2a96f;">--prefix=</span><span style="color: #c2c98f;">#{</span>prefix<span style="color: #c2c98f;">}</span><span style="color: #c2c98f;">"</span>
+&nbsp;&nbsp;&nbsp;&nbsp;system <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">make install</span><span style="color: #c2c98f;">'</span>
+&nbsp;&nbsp;<span style="color: #8a9597;">end</span>
+<span style="color: #8a9597;">end</span></code></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="group row">
+              <div class="col-1">
+                <p>Homebrew OS X'i tamamlar. Gem'lerinizi <code>gem</code> ile, ve bağlılıklarını <code>brew</code> ile yükleyin.</p>
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <div class="group row">
+              <h2>Homebrew'i yükleyin</h2>
+              <pre style="clear:both;text-align:center;margin:0 -3em;margin-bottom:0.9em"><code id="selectable" onclick="selectText()">ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"</code></pre>
+              <div class="col-1">
+                <p>Bunu bir Terminal penceresine yapıştırın.</p>
+              </div>
+              <div class="col-2">
+                <p>Betik yapacaklarını açıklar ve yapmadan önce bekler. <a href="https://github.com/mxcl/homebrew/wiki/Installation">Burada</a> 
+                  (10.5 için gereklidir) başka kurulum seçenekleri bulunur.</p>
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <div class="group row">
+              <h2>Ilave Dokumantasyon</h2>
+              <div class="button">
+                <p><a href="https://github.com/mxcl/homebrew/wiki">Homebrew Wiki</a></p>
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <div class="group row credits">
+              <p>Özgün kodu yazan <a href="http://methylblue.com/">Max Howell</a>. Siteyi hazırlayan <a href="http://exomel.com/">Rémi Prévost</a>. </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <a href="http://github.com/mxcl/homebrew"><img style="position: absolute; top: 0; right: 0; border: 0;" src="brew_files/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+  
+
+</body></html>
