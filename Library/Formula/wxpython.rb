@@ -1,0 +1,18 @@
+require 'formula'
+
+class Wxpython < Formula
+  url 'http://downloads.sourceforge.net/wxpython/wxPython-src-2.9.1.1.tar.bz2'
+  homepage 'http://www.wxpython.org/'
+  md5 'f7ef8d0f68b514e17da40f957f48ca4e'
+
+  def patches
+    # see here: http://trac.wxwidgets.org/ticket/13030
+    { :p3 => "http://trac.wxwidgets.org/changeset/67170?format=diff&new=67170" }
+  end
+
+  def install
+    cd "wxPython"
+    system "python", "build-wxpython.py",
+           "--osx_cocoa", "--prefix=#{prefix}", "--install"
+  end
+end
