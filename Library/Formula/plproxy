@@ -1,0 +1,12 @@
+require 'formula'
+
+class Plproxy < Formula
+  homepage 'http://plproxy.projects.pgfoundry.org/'
+  url 'http://pgfoundry.org/frs/download.php/3392/plproxy-2.5.tar.gz'
+  sha1 '6658ead83f12157e1e7fe6ef2e71b08083c2eae8'
+
+  def install
+    system "make"
+    system "make install"
+  end
+end
