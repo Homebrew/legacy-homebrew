@@ -12,11 +12,23 @@ class LanguageModuleRequirement < Requirement
 
   satisfy(:build_env => false) { quiet_system(*the_test) }
 
-  def message; <<-EOS.undent
-    Unsatisfied dependency: #{@module_name}
-    Homebrew does not provide #{@language.to_s.capitalize} dependencies; install with:
-      #{command_line} #{@module_name}
+  def message
+    s = <<-EOS.undent
+      Unsatisfied dependency: #{@module_name}
+      Homebrew does not provide special #{@language.to_s.capitalize} dependencies; install with:
+        `#{command_line} #{@module_name}`
     EOS
+
+    sys_prov = :python || :perl || :ruby
+    unless @language == sys_prov
+      s << <<-EOS.undent
+
+      You may need to: `brew install #{@language}`
+
+      EOS
+    end
+
+    s
   end
 
   def the_test
