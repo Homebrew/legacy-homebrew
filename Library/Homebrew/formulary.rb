@@ -281,6 +281,16 @@ class Formulary
     if possible_alias.file?
       return AliasLoader.new(possible_alias)
     end
+ 
+    # before looking for formula in Taps, check PinnedTaps:
+    possible_pinned_tap_formulae = tap_paths(ref, Dir["#{HOMEBREW_LIBRARY}/PinnedTaps/*/*/"]).map(&:realpath)
+    if possible_pinned_tap_formulae.size > 1
+      raise TapFormulaAmbiguityError.new(ref, possible_pinned_tap_formulae)
+    elsif possible_pinned_tap_formulae.size == 1
+      path = possible_pinned_tap_formulae.first.resolved_path
+      name = path.basename(".rb").to_s
+      return FormulaLoader.new(name, path)
+    end
 
     possible_tap_formulae = tap_paths(ref)
     if possible_tap_formulae.size > 1
