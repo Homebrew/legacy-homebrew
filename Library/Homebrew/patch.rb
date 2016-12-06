@@ -64,9 +64,12 @@ class EmbeddedPatch
   end
 
   def apply
+    Utils.ensure_git_installed!
+
     data = contents.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
-    cmd = "/usr/bin/patch"
-    args = %W[-g 0 -f -#{strip}]
+    cmd = "git"
+    args = %W[apply -p #{strip[1..-1]}]
+
     IO.popen("#{cmd} #{args.join(" ")}", "w") { |p| p.write(data) }
     raise ErrorDuringExecution.new(cmd, args) unless $?.success?
   end
