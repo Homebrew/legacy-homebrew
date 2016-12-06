@@ -1,0 +1,20 @@
+require 'formula'
+
+class Msktutil < Formula
+  homepage 'https://code.google.com/p/msktutil/'
+  url 'https://msktutil.googlecode.com/files/msktutil-0.5.tar.bz2'
+  sha1 '2f00acabd7a98f4ad5be2dd88f3f52349f658bb7'
+
+  def install
+    system "./configure", "--disable-debug",
+                          "--mandir=#{man}",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install" # if this fails, try separate  steps
+  end
+
+  test do
+    system "msktutil --version"
+  end
+end
